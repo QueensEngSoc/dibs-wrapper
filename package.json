@@ -1,0 +1,23 @@
+{
+  "name": "dibs-wrapper",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "dependencies": {
+    "express": "^4.16.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/essdev-team/dibs-wrapper.git"
+  },
+  "author": "ESSDev-Team",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/essdev-team/dibs-wrapper/issues"
+  },
+  "homepage": "https://github.com/essdev-team/dibs-wrapper#readme"
+}
