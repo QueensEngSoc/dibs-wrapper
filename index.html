@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DIBS Wrapper</title>
+    <script src="http://code.jquery.com/jquery-latest.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $.getJSON("https://queensu.evanced.info/dibsAPI/rooms",
+                function processData(jsonData) {
+
+                    // Loop through each data block
+                    $.each(jsonData, function (object, objectData) {
+
+                        $('#roomBlock').append("<div>Room ID: " + objectData.RoomID + "");
+                        $('#roomBlock').append("<div>Name: " + objectData.Name + "");
+                        $('#roomBlock').append("<div>Building ID: " + objectData.BuildingID + "");
+                        $('#roomBlock').append("<div>Picture: " + objectData.Picture + "");
+                        $('#roomBlock').append("<div>Description: " + objectData.Description + "");
+                        $('#roomBlock').append("<div>Map: " + objectData.Map + "");
+                        $('#roomBlock').append("<br />");
+                    });
+                });
+        });
+    </script>
+</head>
+<body>
+    <div id="roomBlock"></div>
+</body>
+</html>

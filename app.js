@@ -1,10 +1,13 @@
-const express = require('express')
-const app = express()
+const express = require('express');
+const server = express();
+const path = require('path');
 
-app.get('/', function (req, res) {
-  res.send('Hello World!')
-})
+server.use(express.static('public'));
 
-app.listen(8000, function () {
-  console.log('Example app listening on port 8000!')
-})
+server.get('/', function (req, res) {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+server.listen(8000, function () {
+    console.log('Example app listening on port 8000!');
+});
