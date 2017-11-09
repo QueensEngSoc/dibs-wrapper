@@ -1,0 +1,31 @@
+extends layout
+
+block content
+    h1= title
+    p Welcome to the #{title}
+
+    br
+    p Looking at room #{jaderoom} for #{jadedate}
+    p There are #{count} bookings for this room today
+
+    iframe(name='dibsFrame', width='800', height='800', scrolling='no', frameborder='no', src= srcStr, onload="loaded()")
+
+    script(src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js")
+    script.
+        console.log('Testing!  The below code will error')
+        //$('dibsFrame').contents().find('txtUsername');
+        var dibs = document.getElementById('dibsFrame').contentWindow;
+        var username = dibs.getElementById('frmSearch').txtUsername;
+        username.value = 'test';
+        console.log(username.value);
+    script.
+        function loaded() {
+            //dibsFrame.document.getElementById("frmSearch").txtUsername.value = 'test';
+            //console.log(dibsFrame.document.getElementById("frmSearch").txtUsername.value);
+            //dibsFrame.document.getElementById("searchForm").submit();
+            $.getJSON('http://www.whateverorigin.org/get?url=' + encodeURIComponent('https://queensu.evanced.info/dibs/Login') + '&callback=?', function (data) {
+                alert(data.contents);
+            });
+
+            }
+//https://stackoverflow.com/questions/6170925/get-dom-content-of-cross-domain-iframe
