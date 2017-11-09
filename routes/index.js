@@ -1,10 +1,12 @@
 var express = require('express');
 var router = express.Router();
 var date = '10-23-2017';
+var dateOBJ;
 var room = 3;
 var bookingCount = 'test';
 var jsonObj;
 var isFreeNow;
+var numLoad = 0;    // everytime the dibs Iframe changes it's url, it loads again
 
 /* GET home page. */
 function getDate(){
@@ -14,7 +16,7 @@ function getDate(){
     dateObj.toDateString();
     console.log("DATE IS: " + dateObj);
     date = (dateObj.getMonth() + 1) + "-" + dateObj.getDate() + "-" + dateObj.getFullYear();
-
+    dateOBJ = dateObj;
 }
 
 var http = require('https');
@@ -71,9 +73,24 @@ function checkRoomAvaliable(json){
     isFreeNow = isFree;
 }
 
+function bookRoom(roomId){
+
+    var url = "https://queensu.evanced.info/dibs/Times?SelectedBuildingID=0&SelectedRoomSize=2%2C6&SelectedTime=1&SelectedTimeSort=Now&SelectedSearchDate=" + dateOBJ.getFullYear() + "%2F" + (dateOBJ.getMonth() + 1)+ "%2F" + dateOBJ.getDate() + "&SelectedRoomID=" + roomId + "&RoomIDPassedIn=True&staffAccess=False&SingleBuildingWorkflow=True";
+    console.log(url);
+    return url;
+}
+
 router.get('/', function(req, res, next) {
     var string = 'https://queensu.evanced.info/dibs/Login';
     res.render('index', { title: 'Dibs Wrapper Test', srcStr: string, count: bookingCount, jaderoom: room, jadedate: date, jadeJson: jsonObj, jadeRoomFreeNow: isFreeNow});
+
+});
+
+router.post('/book', function(req, res) {
+    console.log("hey");
+
+    var postUrl = bookRoom(room);
+    res.send(postUrl);
 
 });
 

@@ -27,25 +27,66 @@ block content
                     td= res.StartTime
                     td= res.EndTime
 
+    button(name='dibsBookBtn', type='submit', class='.btn-primary', onclick='dibsRoomBookClick()', enabled) Book This Room
 
-    iframe(name='dibsFrame', width='800', height='800', scrolling='no', frameborder='no', src= srcStr, onload="loaded()")
+    br
+    br
+
+    script.
+        function dibsRoomBookClick(){
+
+            $.ajax({
+                url: "/book",
+                type: "POST",
+                success: function (result) {
+                    console.log("result value is: " + result);
+                    document.getElementById('dibsFrame').src = result;
+                }
+            });
+        }
+
+    iframe(id='dibsFrame' name='dibsFrame', width='800', height='800', scrolling='no', frameborder='no', src= srcStr, onload="loaded()")
 
     script(src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js")
     script.
-        console.log('Testing!  The below code will error')
-        //$('dibsFrame').contents().find('txtUsername');
-        var dibs = document.getElementById('dibsFrame').contentWindow;
-        var username = dibs.getElementById('frmSearch').txtUsername;
-        username.value = 'test';
-        console.log(username.value);
+        window.addEventListener("load", function () {
+            document.getElementById('dibsFrame').onload = myFunction;
+        });
+
+        window.addEventListener("message", receiveMessage, false);
+        function receiveMessage(event) {
+            console.log(event.data)
+        }
+
+    //script.
+    //    function loaded() {
+    //        //dibsFrame.document.getElementById("frmSearch").txtUsername.value = 'test';
+    //        //console.log(dibsFrame.document.getElementById("frmSearch").txtUsername.value);
+    //        //dibsFrame.document.getElementById("searchForm").submit();
+    //        $.getJSON('http://www.whateverorigin.org/get?url=' + encodeURIComponent('https://queensu.evanced.info/dibs/Login') + '&callback=?', function (data) {
+    //            alert(data.contents);
+    //        });
+    //
+    //        }
+
     script.
         function loaded() {
-            //dibsFrame.document.getElementById("frmSearch").txtUsername.value = 'test';
-            //console.log(dibsFrame.document.getElementById("frmSearch").txtUsername.value);
-            //dibsFrame.document.getElementById("searchForm").submit();
-            $.getJSON('http://www.whateverorigin.org/get?url=' + encodeURIComponent('https://queensu.evanced.info/dibs/Login') + '&callback=?', function (data) {
-                alert(data.contents);
-            });
+            //alert('loaded ');
 
-            }
+
+        }
+
+//        function ready() {
+//
+//            $("a").click(function () {
+//                var $urls = $(this).attr("title");
+//                $("#dibsFrame").attr("src", $urls);
+//                return false;
+//            });
+//        }
+
+
+
+
+
 //https://stackoverflow.com/questions/6170925/get-dom-content-of-cross-domain-iframe
