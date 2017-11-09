@@ -6,7 +6,9 @@ var room = 3;
 var bookingCount = 'test';
 var jsonObj;
 var isFreeNow;
-var numLoad = 0;    // everytime the dibs Iframe changes it's url, it loads again
+var numLoad = 0;    // everytime the dibs Iframe changes it's url, it loads again, store the number of times this happens in here.
+// This is not currently implemented, the logic is that if the user has not yet reloaded the frame, they are most likely not logged in.
+// The problem with this is that if the user tries to log in, and they enter a wrong uername / password, this will refresh the iframe
 
 /* GET home page. */
 function getDate(){
@@ -68,7 +70,6 @@ function checkRoomAvaliable(json){
 
     jsonObj = json;
     bookingCount = Object.keys(json).length;
-    // bookingCount = Object.keys(JSON).length;
     console.log("COUNT: ", bookingCount + " Is the room free: " + isFree);
     isFreeNow = isFree;
 }
