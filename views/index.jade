@@ -45,18 +45,9 @@ block content
             });
         }
 
-    iframe(id='dibsFrame' name='dibsFrame', width='800', height='800', scrolling='no', frameborder='no', src= srcStr, onload="loaded()")
+    iframe(id='dibsFrame' name='dibsFrame', width='800', height='800', scrolling='no', frameborder='no', src= srcStr, onload="loaded()") //, onmouseover="alert(document.cookie)"
 
-    script(src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js")
     script.
-        window.addEventListener("load", function () {
-            document.getElementById('dibsFrame').onload = myFunction;
-        });
-
-        window.addEventListener("message", receiveMessage, false);
-        function receiveMessage(event) {
-            console.log(event.data)
-        }
 
     //script.
     //    function loaded() {
@@ -72,9 +63,12 @@ block content
     script.
         function loaded() {
             //alert('loaded ');
+            console.log(document.getElementById("dibsFrame").content.toSource());
 
+            var children = document.getElementById("dibsFrame").children;
+            alert(children);
 
-        }
+         }
 
 //        function ready() {
 //
@@ -88,5 +82,6 @@ block content
 
 
 
+script(src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js")
 
 //https://stackoverflow.com/questions/6170925/get-dom-content-of-cross-domain-iframe
