@@ -3,33 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <title>ILC Room Reservation</title>
-    <link rel="stylesheet" type="text/css" href="/liststyles.css">
+    <link rel="stylesheet" type="text/css" href="css/liststyles.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"
+          integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="js/scripts.js"></script>
+    <script>
+        $( function() {
+            $( "#datepicker" ).datepicker({ minDate: 0, maxDate: "+1M" });
+        } );
+    </script>
 </head>
 <body>
-    <!-- This is the fixed header! -->
+    <!-- This is the fixed header -->
     <div class="header">
         <div class="container">
             <div class="logo">
-                <h1>ILC Room Reservation</h1>
+                <h1><img src="logo.png" width="40" height="50"/>&nbspILC Room Reservation</h1>
             </div>
             <div class="nav">
                 <ul>
-                    <li><a href="#">MAP</a></li>
+                    <li><a href="#"style="color: #fff; text-decoration: none;">MAP</a></li>
                     <li><a href="#"><img src="mapfix.png" width="50" height="25"/></a></li>
                 </ul>
             </div>
         </div>
     </div>
-    <!-- This is where the inputs are! -->
+    <!-- This is where the input options are -->
 <div class="content">
-    <p style="font-size:22px; font-weight: bold;">I want a room on &nbsp&nbsp<input type="date" name="day" min="2017-11-07">&nbsp&nbsp
-        at &nbsp&nbsp<input type="time" name="hour"</p>
+    <p style="font-size:22px; font-weight: bold;">
+        I want a room on &nbsp&nbsp
+        <input style="width: 160px;" type="text" id="datepicker">&nbsp&nbsp
+        at &nbsp&nbsp
+        <input style="width: 110px;" type="text" id="timepick" class="time"></p>
     <p style="font-size:18px">
-        <strong>Duration:</strong>
+        <strong>Duration:&nbsp</strong>
         <input type="radio" name="duration" value="one" checked> One Hour &nbsp
         <input type="radio" name="duration" value="two"> Two Hours &nbsp
         <input type="radio" name="duration" value="three"> Three Hours<br><br>
-        <strong>Room Size:</strong>
+        <strong>Room Size:&nbsp</strong>
         <input type="radio" name="size" value="all" checked> All &nbsp
         <input type="radio" name="size" value="small"> Small &nbsp
         <input type="radio" name="size" value="medium"> Medium &nbsp
@@ -38,7 +53,12 @@
         <input type="checkbox" name="filter2" value="tv"> Rooms with a TV &nbsp&nbsp
     </p>
 </div>
-    <!-- This is where the rooms are listed! -->
+    <script>
+        $('#timepick').timepicker({
+            'minTime': '7:30am',
+            'maxTime': '11:30pm'
+        });</script>
+    <!-- This is where the rooms are listed -->
 <div class="rooms">
     <button class="yroom">111</button>
     <button class="nroom">112</button>
