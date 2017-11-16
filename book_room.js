@@ -40,37 +40,33 @@ function checkReservation(f, l, e) {
         var postData = {
             firstName: firstName,
             lastName: lastName,
-            roomid: "18",//$('#SelectedRoomID').val(),
-            startDate: "2017/11/16 22:30:00",//$('#SelectedStartTime').val(),
-            reservationLength: "10",//$('#SelectedTime').val(),
+            roomid: "21",//$('#SelectedRoomID').val(),
+            startDate: "2017/11/21 10:30:00",//$('#SelectedStartTime').val(),
+            reservationLength: "1",//$('#SelectedTime').val(),
             phoneNumber: phoneNumber,
             emailAddress: emailAddress,
             langCode: "en-US",//$('#SelectedLang').val(),
             staffAccess: false
         };
 
-        $.post({
+        $({
+            type: "POST",
             url: dibsWSURL,
             data: JSON.stringify(postData),
             contentType: "application/json; charset=utf-8",
             async: true,
             success: function(objReturn) {
+                console.log(objReturn);
                 if (objReturn.IsSuccess == true) {
                     console.log('Submitted!');
-                    // $('SuccessMessage').val(objReturn.Message);
                     verifySubmitBool = true;
-                    // $('#frmReg').submit();
                 } else {
-                    console.log('Error: ' + objReturn);// $('#divErrorMsg').html(objReturn.Message);
-                    // $('errorModal').modal('show');
-                    // $('#btnCallDibs').bootstrapBtn('reset');
                     reservationSent = false;
                 }
             },
             error: function(xmlHttpRequest) {
-                // $('#btnCallDibs').bootstrapBtn('reset');
             }
         });
     }
 }
-checkReservation();
+checkReservation('Andrew', 'Farley', 'amf7crazy@gmail.com');
