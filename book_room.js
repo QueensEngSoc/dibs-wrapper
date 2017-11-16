@@ -1,4 +1,6 @@
-function checkReservation() {
+const $ = require('najax');
+
+function checkReservation(f, l, e) {
     var dibsWSURL = 'https://queensu.evanced.info/admin/dibs/api/reservations/post';
     var reservationSent = false;
     if (!reservationSent) {
@@ -30,25 +32,24 @@ function checkReservation() {
         //     emailAddress = "";
         // }
 
-        firstName = 'Andrew';
-        lastName = 'Farley';
-        emailAddress = '16amf8@queensu.ca';
+        firstName = f;
+        lastName = l;
+        emailAddress = e;
         phoneNumber = "";
 
         var postData = {
             firstName: firstName,
             lastName: lastName,
-            roomid: "22",//$('#SelectedRoomID').val(),
-            startDate: "2017/11/14 22:30:00",//$('#SelectedStartTime').val(),
-            reservationLength: "1",//$('#SelectedTime').val(),
+            roomid: "18",//$('#SelectedRoomID').val(),
+            startDate: "2017/11/16 22:30:00",//$('#SelectedStartTime').val(),
+            reservationLength: "10",//$('#SelectedTime').val(),
             phoneNumber: phoneNumber,
             emailAddress: emailAddress,
             langCode: "en-US",//$('#SelectedLang').val(),
             staffAccess: false
         };
 
-        $.ajax({
-            type: "POST",
+        $.post({
             url: dibsWSURL,
             data: JSON.stringify(postData),
             contentType: "application/json; charset=utf-8",
@@ -60,7 +61,7 @@ function checkReservation() {
                     verifySubmitBool = true;
                     // $('#frmReg').submit();
                 } else {
-                    console.log(objReturn.Message);// $('#divErrorMsg').html(objReturn.Message);
+                    console.log('Error: ' + objReturn);// $('#divErrorMsg').html(objReturn.Message);
                     // $('errorModal').modal('show');
                     // $('#btnCallDibs').bootstrapBtn('reset');
                     reservationSent = false;
@@ -72,3 +73,4 @@ function checkReservation() {
         });
     }
 }
+checkReservation();
