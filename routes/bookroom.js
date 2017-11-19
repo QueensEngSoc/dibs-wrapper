@@ -1,4 +1,7 @@
 var express = require('express');
+var http = require('https');
+const $ = require('najax');
+
 var router = express.Router();
 var date = '10-23-2017';
 var dateOBJ;
@@ -18,31 +21,6 @@ function getDate() {
     console.log("DATE IS: " + dateObj);
     date = (dateObj.getMonth() + 1) + "-" + dateObj.getDate() + "-" + dateObj.getFullYear();
     dateOBJ = dateObj;
-}
-var http = require('https');
-
-function getRoomInfo() {
-    getDate();
-    // console.log(router.get("roomID") + "RoomID");
-
-    var url = 'https://queensu.evanced.info/dibsAPI/reservations/' + date + '/' + room;
-    console.log("URL IS: ", url);
-    getRoomPicture();
-    http.get(url, function (res) {
-        var body = '';
-
-        res.on('data', function (chunk) {
-            body += chunk;
-        });
-
-        res.on('end', function () {
-            var dibsResponse = JSON.parse(body);
-            console.log("Got a response: ", dibsResponse);
-            checkRoomAvaliable(dibsResponse);
-        });
-    }).on('error', function (e) {
-        console.log("Got an error: ", e);
-    });
 }
 
 function checkRoomAvaliable(json) {
@@ -83,8 +61,6 @@ function bookRoom(roomId) {
     console.log("Booked Room " + roomId + " successfully!");
     return "true";
 }
-
-const $ = require('najax');
 
 function checkReservation(firstName, lastName, phoneNumber, emailAddress, roomID, dateTime, resLength) {
     var dibsWSURL = 'https://queensu.evanced.info/admin/dibs/api/reservations/post';
@@ -134,30 +110,58 @@ function checkReservation(firstName, lastName, phoneNumber, emailAddress, roomID
 //
 // req.params.uid + ' with id ' + req.params.roomID
 
-function getRoomPicture() {
-    var url = "https://queensu.evanced.info/dibsAPI/rooms/" + room;
+function getRoomPicture(room) {
+    return new Promise(function(resolve, reject) {
+        var url = "https://queensu.evanced.info/dibsAPI/rooms/" + room;
 
-    http.get(url, function (res) {
-        var body = '';
+        http.get(url, function (res) {
+            var body = '';
 
-        res.on('data', function (chunk) {
-            body += chunk;
+            res.on('data', function (chunk) {
+                body += chunk;
+            });
+
+            res.on('end', function () {
+                var roomList = JSON.parse(body);
+                var roomStr = JSON.stringify(roomList);
+                roomStr = roomStr.substr(roomStr.indexOf("\"Picture\":\"") + 11);
+                roomStr = roomStr.substr(0, roomStr.indexOf("\""));
+                console.log(roomStr);
+                roomPicUrl = roomStr;
+                console.log("got room url!");
+                resolve();
+            });
+        }).on('error', function (e) {
+            console.log("Got an error: ", e);
+            reject();
         });
-
-        res.on('end', function () {
-            var roomList = JSON.parse(body);
-            var roomStr = JSON.stringify(roomList);
-            roomStr = roomStr.substr(roomStr.indexOf("\"Picture\":\"") + 11);
-            roomStr = roomStr.substr(0, roomStr.indexOf("\""));
-            roomPicUrl = roomStr;
-            console.log(roomPicUrl);
-        });
-    }).on('error', function (e) {
-        console.log("Got an error: ", e);
-    });
+    })
 }
 
-// getDate();
+function getUsefulStuff() {
+    return new Promise(function (resolve, reject) {
+        var url = 'https://queensu.evanced.info/dibsAPI/reservations/' + date + '/' + room;
+        console.log("URL IS: ", url);
+        http.get(url, function (httpres) {
+            var body = '';
+
+            httpres.on('data', function (chunk) {
+                body += chunk;
+            });
+
+            httpres.on('end', function () {
+                var dibsResponse = JSON.parse(body);
+                console.log("Got a response: ", dibsResponse);
+                checkRoomAvaliable(dibsResponse);
+                resolve();
+            });
+        }).on('error', function (e) {
+            console.log("Got an error: ", e);
+            res.send('error');
+            reject();
+        });
+    })
+}
 
 router.get('/book/:uid-:roomID/', function (req, res, next) {
     room = req.params.roomID;
@@ -165,36 +169,24 @@ router.get('/book/:uid-:roomID/', function (req, res, next) {
 
     getDate();
     // console.log(router.get("roomID") + "RoomID");
-
-    var url = 'https://queensu.evanced.info/dibsAPI/reservations/' + date + '/' + room;
-    console.log("URL IS: ", url);
-    getRoomPicture();
-    http.get(url, function (res) {
-        var body = '';
-
-        res.on('data', function (chunk) {
-            body += chunk;
+    getUsefulStuff(room).then(function() {
+        return getRoomPicture(room);
+    }).then(function() {
+        res.render('bookroom', {
+            title: 'Details for Room ' + req.params.uid,
+            count: bookingCount,
+            jaderoom: req.params.uid,
+            jadedate: date,
+            jadeRoomPicUrl: roomPicUrl ? roomPicUrl : 'https://thumb7.shutterstock.com/display_pic_with_logo/2892448/486584521/stock-vector-retro-man-with-a-beer-pop-art-vector-beer-pubs-and-bars-retro-advertising-of-alcoholic-beverages-486584521.jpg',
+            jadeJson: jsonObj,
+            jadeRoomFreeNow: isFreeNow,
+            jadeRoomID: req.params.roomID
         });
+    }).catch(function() {
+        res.send('err');
+    })
 
-        res.on('end', function () {
-            var dibsResponse = JSON.parse(body);
-            console.log("Got a response: ", dibsResponse);
-            checkRoomAvaliable(dibsResponse);
-        });
-    }).on('error', function (e) {
-        console.log("Got an error: ", e);
-    });
 
-    res.render('bookroom', {
-        title: 'Details for Room ' + req.params.uid,
-        count: bookingCount,
-        jaderoom: req.params.uid,
-        jadedate: date,
-        jadeRoomPicUrl: roomPicUrl,
-        jadeJson: jsonObj,
-        jadeRoomFreeNow: isFreeNow,
-        jadeRoomID: req.params.roomID
-    });
 });
 
 module.exports = router;
