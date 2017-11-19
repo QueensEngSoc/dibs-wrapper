@@ -3,29 +3,31 @@ var router = express.Router();
 var date = '10-23-2017';
 var dateOBJ;
 var room = 3;
+var bookingCount = '0';
 var jsonObj;
 var isFreeNow;
-var isroomFreeNow = [];
-var isroomDataReady = false;
+var roomName = 0;
+var roomPicUrl = "";
 
 /* GET home page. */
 function getDate() {
     var dateObj = new Date();
     var current_hour = dateObj.getHours();
-    dateObj.setDate(dateObj.getDate());
+    dateObj.setDate(dateObj.getDate() + 2);
     dateObj.toDateString();
-    // console.log("DATE IS: " + dateObj);
+    console.log("DATE IS: " + dateObj);
     date = (dateObj.getMonth() + 1) + "-" + dateObj.getDate() + "-" + dateObj.getFullYear();
     dateOBJ = dateObj;
 }
-
 var http = require('https');
 
-function getRoomData(roomid, roomNum) {
+function getRoomInfo() {
     getDate();
-    var url = 'https://queensu.evanced.info/dibsAPI/reservations/' + date + '/' + roomid;
-    // console.log("URL IS: ", url);
+    // console.log(router.get("roomID") + "RoomID");
 
+    var url = 'https://queensu.evanced.info/dibsAPI/reservations/' + date + '/' + room;
+    console.log("URL IS: ", url);
+    getRoomPicture();
     http.get(url, function (res) {
         var body = '';
 
@@ -35,35 +37,24 @@ function getRoomData(roomid, roomNum) {
 
         res.on('end', function () {
             var dibsResponse = JSON.parse(body);
-            // console.log("Got a response: ", dibsResponse);
-            var isFree = checkRoomAvaliable(dibsResponse);
-            var roomData = new roomDataObj(isFree, roomid, roomNum);
-            console.log("Room ID: " + roomData.roomid + " Room Number: " + roomData.roomNum + " isFree: " + roomData.isFree);
-            isroomFreeNow.push(roomData);
-            if (roomid >= 40)
-                roomDataCallback();
+            console.log("Got a response: ", dibsResponse);
+            checkRoomAvaliable(dibsResponse);
         });
     }).on('error', function (e) {
         console.log("Got an error: ", e);
     });
 }
 
-function roomDataObj(isFree, roomid, roomNum) {
-    this.isFree = isFree;
-    this.roomid = roomid;
-    this.roomNum = roomNum;
-}
-
 function checkRoomAvaliable(json) {
     var dateObj = new Date();
     var current_hour = dateObj.getHours();
     var isFree = true;
-    // current_hour = 12;
+
 
     for (var booking in json) {
         console.log("Booking Start: " + booking + ", value: " + JSON.stringify(json[booking]));
         var roomStr = JSON.stringify(json[booking]);
-        // console.log("RoomString:\n" + roomStr);
+        console.log("RoomString:\n" + roomStr);
         var start = roomStr.substr(roomStr.indexOf('StartTime') + 12);
         start = start.substr(start.indexOf('T') + 1);
         start = start.substr(0, start.indexOf(':'));
@@ -72,29 +63,25 @@ function checkRoomAvaliable(json) {
         end = end.substr(0, end.indexOf(':'));
 
         if ((start <= current_hour && end > current_hour)) {
-            // console.log('Found a time!');
+            console.log('Found a time!');
             isFree = false;
             break;
         }
 
-        // console.log("\nStartTime " + start + " EndTime " + end + " CurrentHour " + current_hour );
+        console.log("\nStartTime " + start + " EndTime " + end + " CurrentHour " + current_hour);
     }
 
     jsonObj = json;
     bookingCount = Object.keys(json).length;
     console.log("COUNT: ", bookingCount + " Is the room free: " + isFree);
     isFreeNow = isFree;
-    return isFree;
 }
 
 function bookRoom(roomId) {
-    console.log("date is: " + date);
-    var hourMin = " " + dateOBJ.getHours() + ":" + dateOBJ.getMinutes() + ":00";
-    console.log("TIME IS: " + date + hourMin);
-    var success = checkReservation("Alex", "Mar", "", "14ar75@queensu.ca", roomId, date + hourMin, 1);
-    if (success)
-        console.log("Booked Room " + roomId + " successfully!");
-    return success;
+    console.log("date is: " + date)
+    checkReservation("Alex", "", "", "14ar75@queensu.ca", roomId, date, 1);
+    console.log("Booked Room " + roomId + " successfully!");
+    return "true";
 }
 
 const $ = require('najax');
@@ -127,7 +114,6 @@ function checkReservation(firstName, lastName, phoneNumber, emailAddress, roomID
                     console.log('Submitted!');
                 } else {
                     console.log('Booking Success: ' + objReturn);
-                    return false;
                 }
             },
             error: function (xmlHttpRequest) {
@@ -137,8 +123,19 @@ function checkReservation(firstName, lastName, phoneNumber, emailAddress, roomID
     }
 }
 
-function getRooms() {
-    var url = "https://queensu.evanced.info/dibsAPI/rooms";
+// '/book/'+ roomName + '-' + room + '/bookroom
+// router.post('/bookroom', function (req, res) {
+//     console.log("hey, this worked!");
+//
+//     var postUrl = bookRoom(room);
+//     res.send(postUrl);
+//
+// });
+//
+// req.params.uid + ' with id ' + req.params.roomID
+
+function getRoomPicture() {
+    var url = "https://queensu.evanced.info/dibsAPI/rooms/" + room;
 
     http.get(url, function (res) {
         var body = '';
@@ -149,70 +146,55 @@ function getRooms() {
 
         res.on('end', function () {
             var roomList = JSON.parse(body);
-            // console.log("Room list: ", roomList);
-            parseRoomList(roomList);
+            var roomStr = JSON.stringify(roomList);
+            roomStr = roomStr.substr(roomStr.indexOf("\"Picture\":\"") + 11);
+            roomStr = roomStr.substr(0, roomStr.indexOf("\""));
+            roomPicUrl = roomStr;
+            console.log(roomPicUrl);
         });
     }).on('error', function (e) {
         console.log("Got an error: ", e);
     });
 }
 
-function parseRoomList(roomList) {
+// getDate();
 
-    for (var room in roomList) {
-        var roomStr = JSON.stringify(roomList[room]);
-        var roomID = roomStr.substr(roomStr.indexOf('"RoomID":') + 9);
-        roomID = roomID.substr(0, roomID.indexOf('}'));
-        var roomName = roomStr.substr(roomStr.indexOf('"Name":') + 11);
-        roomName = roomName.substr(0, roomName.indexOf('"'));
-        roomName = roomName.replace(/\D/g, '');
-        console.log("Room Info -> Room ID: " + roomID + " Room Name: " + roomName);
-        getRoomData(roomID, roomName);
-    }
-}
+router.get('/book/:uid-:roomID/', function (req, res, next) {
+    room = req.params.roomID;
+    roomName = req.params.uid;
 
-function roomDataCallback() {
-    // console.log("IS ROOM FREE NOW OBJ: " + isroomFreeNow);
-    // isroomFreeNow.sort();
-    isroomFreeNow.sort(function (a, b) {
-        return (a.roomNum > b.roomNum) ? 1 : ((b.roomNum > a.roomNum) ? -1 : 0);
+    getDate();
+    // console.log(router.get("roomID") + "RoomID");
+
+    var url = 'https://queensu.evanced.info/dibsAPI/reservations/' + date + '/' + room;
+    console.log("URL IS: ", url);
+    getRoomPicture();
+    http.get(url, function (res) {
+        var body = '';
+
+        res.on('data', function (chunk) {
+            body += chunk;
+        });
+
+        res.on('end', function () {
+            var dibsResponse = JSON.parse(body);
+            console.log("Got a response: ", dibsResponse);
+            checkRoomAvaliable(dibsResponse);
+        });
+    }).on('error', function (e) {
+        console.log("Got an error: ", e);
     });
-}
 
-var minutes = 3, the_interval = minutes * 60 * 1000;
-setInterval(function () {
-    console.log("It's been 3 minutes, update the database");
-    // do your stuff here
-    isroomFreeNow = [];
-    getRooms();
-}, the_interval);
-
-getRooms();
-
-router.get('/', function (req, res, next) {
-    var string = 'https://queensu.evanced.info/dibs/Login';
-    res.render('index', {
-        title: 'Dibs Wrapper Test',
-        srcStr: string,
+    res.render('bookroom', {
+        title: 'Details for Room ' + req.params.uid,
         count: bookingCount,
-        jaderoom: room,
+        jaderoom: req.params.uid,
         jadedate: date,
+        jadeRoomPicUrl: roomPicUrl,
         jadeJson: jsonObj,
         jadeRoomFreeNow: isFreeNow,
-        jadeRoomStatus: isroomFreeNow
+        jadeRoomID: req.params.roomID
     });
-
-});
-
-router.post('/bookroom', function (req, res) {
-    console.log("hey");
-    var roomToBook = JSON.stringify(req.body);
-    roomToBook = roomToBook.substr(roomToBook.indexOf('"') + 1);
-    roomToBook = roomToBook.substr(0, roomToBook.indexOf('"'));
-    console.log("Request Body: " + JSON.stringify(req.body) + " room id: " + roomToBook);
-    var postUrl = bookRoom(roomToBook);
-    res.send(postUrl);
-
 });
 
 module.exports = router;

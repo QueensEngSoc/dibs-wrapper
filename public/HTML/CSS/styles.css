@@ -1,0 +1,63 @@
+@import url('https://fonts.googleapis.com/css?family=Nunito');
+@import url('https://fonts.googleapis.com/css?family=Montserrat');
+@import url('https://fonts.googleapis.com/css?family=Roboto+Mono');
+
+
+body{
+    width: 100%;
+    margin: auto;
+}
+.container {
+    width: 900px;
+    margin: 0 auto;
+}
+
+.header {
+    background: #c771e9;
+    width: 100%;
+    top: 0;
+    position: fixed;
+    z-index: 500;
+}
+.logo {
+    float: left;
+    font-family: "Nunito";
+    font-size: 15px;
+}
+
+.nav {
+    float: right;
+}
+
+.room{
+    background: #9494b8;
+    border-radius: 10px;
+    font-size: 35px;
+}
+
+
+.times{
+    right:400px;
+    text-align: left;
+    width: 400px;
+    margin: 0 auto;
+    position: relative;
+    top: -225px;
+}
+
+.description{
+    width:400px;
+    position: relative;
+    left: 800px;
+    top:280px;
+}
+
+.visual{
+    position: relative;
+    left:800px;
+    top: 300px;
+}
+
+.img{
+    border-radius: 50%;
+}

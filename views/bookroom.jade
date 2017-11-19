@@ -1,0 +1,73 @@
+extends layout
+
+block content
+    //h1= title
+    //p Showing Information for Room #{jaderoom}
+    div.header
+        div.container
+            div.logo
+                h1
+                    img.className#IdName(src="/html/logo.png" alt="Image Title" width='40' height='50')
+                    | &nbsp#{title}
+            div.nav
+                ul
+                    li
+                        a(href="#").style("color: #fff; text-decoration") MAP
+                    li
+                        a(href="#")
+                            img(src="/html/mapfix.png" width="50" height="25")
+
+    div(style="margin-top: 100px;")
+    br
+
+    div.row
+        div.col
+            p Looking at room #{jaderoom} for #{jadedate}
+            p There are #{count} bookings for this room today
+            if jadeRoomFreeNow == true
+                p This room is currently free
+            else
+                p This room is currently booked
+        div.col
+            img(src="#{jadeRoomPicUrl}" alt='"ILC Room #{jaderoom}"' width='150' height='150')
+
+    br
+    p #{jadeRoomPicUrl}
+    p Room booking info:
+
+    table.table.table-striped.table-bordered.table-hover.table-condensed(style="width:85%; margin: auto")
+        thead
+            tr
+                th RoomID
+                th Start Time
+                th End Time
+        tbody
+            if isroomDataReady == true
+                for res in jadeJson
+                    tr
+                        td= res.RoomID
+                        td= res.StartTime
+                        td= res.EndTime
+            else
+                script
+
+    button(name='dibsBookBtn', type='submit', class='.btn-primary', onclick='dibsRoomBookClick()', enabled) Book This Room
+
+    br
+    br
+
+    script.
+        function dibsRoomBookClick(){
+
+            $.ajax({
+                url: "/bookroom",
+                type: "POST",
+                data: JSON.stringify(#{jadeRoomID}),
+                success: function (result) {
+                    console.log("result value is: " + result);
+                    document.getElementById('dibsFrame').src = result;
+                }
+            });
+        }
+
+//https://stackoverflow.com/questions/6170925/get-dom-content-of-cross-domain-iframe
