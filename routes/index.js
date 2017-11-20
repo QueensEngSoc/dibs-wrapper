@@ -6,7 +6,6 @@ var room = 3;
 var jsonObj;
 var isFreeNow;
 var isroomFreeNow = [];
-var isroomDataReady = false;
 
 /* GET home page. */
 function getDate() {
@@ -61,7 +60,7 @@ function checkRoomAvaliable(json) {
     // current_hour = 12;
 
     for (var booking in json) {
-        console.log("Booking Start: " + booking + ", value: " + JSON.stringify(json[booking]));
+        //console.log("Booking Start: " + booking + ", value: " + JSON.stringify(json[booking]));
         var roomStr = JSON.stringify(json[booking]);
         // console.log("RoomString:\n" + roomStr);
         var start = roomStr.substr(roomStr.indexOf('StartTime') + 12);
@@ -88,9 +87,9 @@ function checkRoomAvaliable(json) {
 }
 
 function bookRoom(roomId) {
-    console.log("date is: " + date);
+    //console.log("date is: " + date);
     var hourMin = " " + dateOBJ.getHours() + ":" + dateOBJ.getMinutes() + ":00";
-    console.log("TIME IS: " + date + hourMin);
+    //console.log("TIME IS: " + date + hourMin);
     var success = checkReservation("Alex", "Mar", "", "14ar75@queensu.ca", roomId, date + hourMin, 1);
     if (success)
         console.log("Booked Room " + roomId + " successfully!");
@@ -192,7 +191,7 @@ getRooms();
 router.get('/', function (req, res, next) {
     var string = 'https://queensu.evanced.info/dibs/Login';
     res.render('index', {
-        title: 'Dibs Wrapper Test',
+        title: 'D!bs 2.0.0.1.a.r1 alpha',
         srcStr: string,
         count: bookingCount,
         jaderoom: room,

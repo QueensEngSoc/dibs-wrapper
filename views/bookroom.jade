@@ -7,15 +7,16 @@ block content
         div.container
             div.logo
                 h1
-                    img.className#IdName(src="/html/logo.png" alt="Image Title" width='40' height='50')
-                    | &nbsp#{title}
+                    a(href='/' style='color: #fff; text-decoration: none;')
+                        img.className#IdName(src="/html/logo.png" alt="Image Title" width='40' height='50')
+                        | &nbsp#{title}
             div.nav
                 ul
-                    li
-                        a(href="#").style("color: #fff; text-decoration") MAP
-                    li
-                        a(href="#")
-                            img(src="/html/mapfix.png" width="50" height="25")
+                    a(href="/map" style='color: #fff; text-decoration: none;')
+                        li
+                             |MAP
+                        li
+                             img(src="/html/mapfix.png" width="50" height="25")
 
     div(style="margin-top: 100px;")
     br
@@ -29,36 +30,37 @@ block content
             else
                 p This room is currently booked
         div.col
-            img(src="#{jadeRoomPicUrl}" alt='"ILC Room #{jaderoom}"' width='150' height='150')
+            img(src="#{jadeRoomPicUrl}" alt='"ILC Room #{jaderoom}"' height='150')
 
     br
-    p #{jadeRoomPicUrl}
-    p Room booking info:
+    if count > 0
+        //display the following if there is at least one booking today
+        p Room booking info:
 
-    table.table.table-striped.table-bordered.table-hover.table-condensed(style="width:85%; margin: auto")
-        thead
-            tr
-                th RoomID
-                th Start Time
-                th End Time
-        tbody
-            if isroomDataReady == true
-                for res in jadeJson
-                    tr
-                        td= res.RoomID
-                        td= res.StartTime
-                        td= res.EndTime
-            else
-                script
+        table.table.table-striped.table-bordered.table-hover.table-condensed(style="width:85%; margin: auto")
+            thead
+                tr
+                    th Booking Length (Hours)
+                    th Start Time
+                    th End Time
+            tbody
+                    for res in jadeJson
+                        tr
+                            td= res.bookingLength
+                            td= res.bookingStart
+                            td= res.bookingEnd
 
-    button(name='dibsBookBtn', type='submit', class='.btn-primary', onclick='dibsRoomBookClick()', enabled) Book This Room
+    br
+
+    button(name='dibsBookBtn', type='submit', class='.btn-primary', style='margin-left: 100px; ', onclick='dibsRoomBookClick()', enabled) Book This Room
 
     br
     br
 
     script.
         function dibsRoomBookClick(){
-
+            // this function gets the current room id, embeds it into the post request, and then sends a post.
+            // On success, it returns whether the booking was successful, or the error that occurred
             $.ajax({
                 url: "/bookroom",
                 type: "POST",

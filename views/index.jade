@@ -12,15 +12,15 @@ block content
                         | &nbspILC Room Reservation
              div.nav
                 ul
-                   li
-                      a(href="#" style="color: #fff; text-decoration") MAP
-                   li
-                      a(href="#" style="color: #fff; text-decoration: none;")
-                       img(src="/html/mapfix.png" width="50" height="25")
+                    a(href="/map" style='color: #fff; text-decoration: none;')
+                        li
+                            | MAP
+                        li
+                            img(src="/html/mapfix.png" width="50" height="25")
 
 
     div(style="margin-top: 100px;")
-    h1= title
+    h1(style='text-align: center;')= title
     p Welcome to the #{title}
 
     br
@@ -30,7 +30,6 @@ block content
         for roomInfo in jadeRoomStatus
             if roomInfo.isFree == true
                 button.yroom(onclick="location.href='/book/#{roomInfo.roomNum}-#{roomInfo.roomid}'") #{roomInfo.roomNum}
-                //a(href="/book/#{roomInfo.roomNum}-#{roomInfo.roomid}"):
             else
                 button.nroom(onclick="location.href='/book/#{roomInfo.roomNum}-#{roomInfo.roomid}'") #{roomInfo.roomNum}
 
