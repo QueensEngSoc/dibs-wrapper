@@ -131,12 +131,23 @@ function checkRoomAvaliable(json) {
  */
 function bookRoom(roomId) {
     console.log("date is: " + date)
-    checkReservation("Alex", "", "", "14ar75@queensu.ca", roomId, date, 1);
+    attemptReservation("Alex", "", "", "14ar75@queensu.ca", roomId, date, 1);
     console.log("Booked Room " + roomId + " successfully!");
     return "true";
 }
 
-function checkReservation(firstName, lastName, phoneNumber, emailAddress, roomID, dateTime, resLength) {
+/**
+ * BOOKINGS ARE CURRENTLY DISABLED
+ *
+ * @param firstName
+ * @param lastName
+ * @param phoneNumber
+ * @param emailAddress
+ * @param roomID
+ * @param dateTime
+ * @param resLength
+ */
+function attemptReservation(firstName, lastName, phoneNumber, emailAddress, roomID, dateTime, resLength) {
     var dibsWSURL = 'https://queensu.evanced.info/admin/dibs/api/reservations/post';
     var reservationSent = false;
     if (!reservationSent) {
@@ -154,6 +165,9 @@ function checkReservation(firstName, lastName, phoneNumber, emailAddress, roomID
             staffAccess: false
         };
 
+        console.warn('Real bookings are currently disabled. No Booking post request will be made.')
+
+        /* uncomment to allow bookings again
         $.post({
             url: dibsWSURL,
             data: JSON.stringify(postData),
@@ -170,6 +184,7 @@ function checkReservation(firstName, lastName, phoneNumber, emailAddress, roomID
                 console.log("SEVERE ERROR trying to contact the dibs server");
             }
         });
+        */
     }
 }
 
