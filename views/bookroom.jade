@@ -72,11 +72,54 @@ block content
                 url: "/bookroom",
                 type: "POST",
                 data: JSON.stringify([#{jadeRoomID}, time]),
-                success: function (result) {
-                    console.log("result value is: " + result);
-                    //document.getElementById('dibsFrame').src = result;
+                success: function (data) {
+                    console.log("Header: " + data.jadeHeader + " body: " + data.jadeBookingStatus + " data: " + data);
+                    var header = data.jadeHeader;
+                    var content = data.jadeBookingStatus;
+                    doModal(header, content);
                 }
             });
         }
+
+        function doModal(heading, formContent) {
+            html =  '<div id="dynamicModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="confirm-modal" aria-hidden="true">';
+                html += '<div class="modal-dialog">';
+                html += '<div class="modal-content">';
+                html += '<div class="modal-header">';
+                html += '<a class="close" data-dismiss="modal">×</a>';
+                html += '<h4>'+heading+'</h4>'
+                html += '</div>';
+                html += '<div class="modal-body">';
+                html += formContent;
+                html += '</div>';
+                html += '<div class="modal-footer">';
+                html += '<span class="btn btn-primary" data-dismiss="modal">Close</span>';
+                html += '</div>';  // content
+                html += '</div>';  // dialog
+                html += '</div>';  // footer
+                html += '</div>';  // modalWindow
+            $('body').append(html);
+            jQuery.noConflict();
+            $("#dynamicModal").modal();
+            $("#dynamicModal").modal('show');
+
+            $('#dynamicModal').on('hidden.bs.modal', function (e) {
+            $(this).remove();
+            });
+        }
+
+
+
+    //#confirmationModal.modal.fade(tabindex = '-1', role = 'dialog', aria - labelledby = 'confirmationModalLabel', aria - hidden = 'true')
+    //
+    //.modal-dialog
+    //    .modal-content
+    //        .modal-header
+    //            button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
+    //            h4#confirmationModalLabel.modal-title Modal title
+    //        .modal-body
+    //        .modal-footer
+    //            button.btn.btn-default(type='button', data-dismiss='modal') Close
+    //            button.btn.btn-primary(type='button') Save changes
 
 //https://stackoverflow.com/questions/6170925/get-dom-content-of-cross-domain-iframe

@@ -6,6 +6,7 @@ var room = 3;
 var jsonObj;
 var isFreeNow;
 var isroomFreeNow = [];
+var bookRoomReturnObj = "";
 
 /* GET home page. */
 function getDate() {
@@ -87,54 +88,66 @@ function checkRoomAvaliable(json) {
     return isFree;
 }
 
-function bookRoom(roomId, bookingTimeStart) {
-    //console.log("date is: " + date);
-    var hourMin = " " + bookingTimeStart + ":" + 30 + ":00";
-    //console.log("TIME IS: " + date + hourMin);
-    var success = checkReservation("Alex", "Mar", "", "14ar75@queensu.ca", roomId, date + hourMin, 1);
-    if (success)
-        console.log("Booked Room " + roomId + " successfully!");
-    return success;
+function bookRoom(roomId, bookingTimeStart, name, lastname, email, phone) {
+    return new Promise(function (resolve, reject) {
+
+        //console.log("date is: " + date);
+        var hourMin = " " + bookingTimeStart + ":" + 30 + ":00";
+        //console.log("TIME IS: " + date + hourMin);
+        var success = checkReservation(name, lastname, phone, email, roomId, date + hourMin, 1);
+        if (success)
+            console.log("Booked Room " + roomId + " successfully!");
+        console.log("Promise complete");
+        resolve();
+    });
 }
 
 const $ = require('najax');
 
 function checkReservation(firstName, lastName, phoneNumber, emailAddress, roomID, dateTime, resLength) {
-    var dibsWSURL = 'https://queensu.evanced.info/admin/dibs/api/reservations/post';
-    var reservationSent = false;
-    if (!reservationSent) {
-        reservationSent = true;
+    return new Promise(function (resolve, reject) {
+        var dibsWSURL = 'https://queensu.evanced.info/admin/dibs/api/reservations/post';
+        var reservationSent = false;
+        if (!reservationSent) {
+            reservationSent = true;
 
-        var postData = {
-            firstName: firstName,
-            lastName: lastName,
-            roomid: roomID,
-            startDate: dateTime,
-            reservationLength: resLength,
-            phoneNumber: phoneNumber,
-            emailAddress: emailAddress,
-            langCode: "en-US",
-            staffAccess: false
-        };
+            var postData = {
+                firstName: firstName,
+                lastName: lastName,
+                roomid: roomID,
+                startDate: dateTime,
+                reservationLength: resLength,
+                phoneNumber: phoneNumber,
+                emailAddress: emailAddress,
+                langCode: "en-US",
+                staffAccess: false
+            };
 
-        $.post({
-            url: dibsWSURL,
-            data: JSON.stringify(postData),
-            contentType: "application/json; charset=utf-8",
-            async: true,
-            success: function (objReturn) {
-                if (objReturn.IsSuccess === true) {
-                    console.log('Submitted!');
-                } else {
-                    console.log('Booking Success: ' + objReturn);
-                    return false;
+            $.post({
+                url: dibsWSURL,
+                data: JSON.stringify(postData),
+                contentType: "application/json; charset=utf-8",
+                async: true,
+                success: function (objReturn) {
+                    if (objReturn.IsSuccess === true) {
+                        console.log('Submitted!');
+                        bookRoomReturnObj = objReturn;
+                        resolve();
+                        return true;
+                    } else {
+                        console.log('Booking Failed: ' + objReturn);
+                        bookRoomReturnObj = objReturn;
+                        resolve();
+                        return true;
+                    }
+                },
+                error: function (xmlHttpRequest) {
+                    console.log("SEVERE ERROR trying to contact the dibs server");
+                    reject();
                 }
-            },
-            error: function (xmlHttpRequest) {
-                console.log("SEVERE ERROR trying to contact the dibs server");
-            }
-        });
-    }
+            });
+        }
+    });
 }
 
 function getRooms() {
@@ -204,16 +217,19 @@ router.get('/', function (req, res, next) {
 });
 
 router.post('/bookroom', function (req, res) {
-    console.log("hey");
     var roomToBook = JSON.stringify(req.body);
     roomToBook = roomToBook.substr(roomToBook.indexOf('[') + 1);
     var bookingTimeStart = roomToBook.substr(roomToBook.indexOf(',') + 1);
     roomToBook = roomToBook.substr(0, roomToBook.indexOf(','));
     bookingTimeStart = bookingTimeStart.substr(0,bookingTimeStart.indexOf(']'));
 
-    console.log("Request Body: " + JSON.stringify(req.body) + " room id: " + roomToBook);
-    var postUrl = bookRoom(roomToBook, bookingTimeStart);
-    res.send(postUrl);
+    //console.log("Request Body: " + JSON.stringify(req.body) + " room id: " + roomToBook);
+    bookRoom(roomToBook, bookingTimeStart, "Alex", "", "macsplash3@gmail.com", "").then(function () {
+        var header = (bookRoomReturnObj == true) ? "Booking Successful!" : bookRoomReturnObj;
+        bookRoomReturnObj = bookRoomReturnObj.substr(bookRoomReturnObj.indexOf("\"Message\":") + 11, bookRoomReturnObj.indexOf('"}'));
+        console.log("Sending: " + header + " -> " + bookRoomReturnObj + " -> ");
+        res.send({jadeHeader: header, jadeBookingStatus: bookRoomReturnObj});
+    });
 
 });
 
