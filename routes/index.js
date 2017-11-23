@@ -37,7 +37,7 @@ function getRoomData(roomid, roomNum) {
             // console.log("Got a response: ", dibsResponse);
             var isFree = checkRoomAvaliable(dibsResponse);
             var roomData = new roomDataObj(isFree, roomid, roomNum);
-            console.log("Room ID: " + roomData.roomid + " Room Number: " + roomData.roomNum + " isFree: " + roomData.isFree);
+            //console.log("Room ID: " + roomData.roomid + " Room Number: " + roomData.roomNum + " isFree: " + roomData.isFree);
             isroomFreeNow.push(roomData);
             if (roomid >= 40)
                 roomDataCallback();
@@ -70,6 +70,7 @@ function checkRoomAvaliable(json) {
         end = end.substr(end.indexOf('T') + 1);
         end = end.substr(0, end.indexOf(':'));
 
+        console.log("Current Hour: " + current_hour + " Start Hour " + start + " End: " + end);
         if ((start <= current_hour && end > current_hour)) {
             // console.log('Found a time!');
             isFree = false;
@@ -81,14 +82,14 @@ function checkRoomAvaliable(json) {
 
     jsonObj = json;
     bookingCount = Object.keys(json).length;
-    console.log("COUNT: ", bookingCount + " Is the room free: " + isFree);
+    //console.log("COUNT: ", bookingCount + " Is the room free: " + isFree);
     isFreeNow = isFree;
     return isFree;
 }
 
-function bookRoom(roomId) {
+function bookRoom(roomId, bookingTimeStart) {
     //console.log("date is: " + date);
-    var hourMin = " " + dateOBJ.getHours() + ":" + dateOBJ.getMinutes() + ":00";
+    var hourMin = " " + bookingTimeStart + ":" + 30 + ":00";
     //console.log("TIME IS: " + date + hourMin);
     var success = checkReservation("Alex", "Mar", "", "14ar75@queensu.ca", roomId, date + hourMin, 1);
     if (success)
@@ -165,7 +166,7 @@ function parseRoomList(roomList) {
         var roomName = roomStr.substr(roomStr.indexOf('"Name":') + 11);
         roomName = roomName.substr(0, roomName.indexOf('"'));
         roomName = roomName.replace(/\D/g, '');
-        console.log("Room Info -> Room ID: " + roomID + " Room Name: " + roomName);
+        //console.log("Room Info -> Room ID: " + roomID + " Room Name: " + roomName);
         getRoomData(roomID, roomName);
     }
 }
@@ -181,7 +182,6 @@ function roomDataCallback() {
 var minutes = 3, the_interval = minutes * 60 * 1000;
 setInterval(function () {
     console.log("It's been 3 minutes, update the database");
-    // do your stuff here
     isroomFreeNow = [];
     getRooms();
 }, the_interval);
@@ -206,10 +206,13 @@ router.get('/', function (req, res, next) {
 router.post('/bookroom', function (req, res) {
     console.log("hey");
     var roomToBook = JSON.stringify(req.body);
-    roomToBook = roomToBook.substr(roomToBook.indexOf('"') + 1);
-    roomToBook = roomToBook.substr(0, roomToBook.indexOf('"'));
+    roomToBook = roomToBook.substr(roomToBook.indexOf('[') + 1);
+    var bookingTimeStart = roomToBook.substr(roomToBook.indexOf(',') + 1);
+    roomToBook = roomToBook.substr(0, roomToBook.indexOf(','));
+    bookingTimeStart = bookingTimeStart.substr(0,bookingTimeStart.indexOf(']'));
+
     console.log("Request Body: " + JSON.stringify(req.body) + " room id: " + roomToBook);
-    var postUrl = bookRoom(roomToBook);
+    var postUrl = bookRoom(roomToBook, bookingTimeStart);
     res.send(postUrl);
 
 });

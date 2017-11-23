@@ -8,7 +8,7 @@ block content
             div.logo
                 h1
                     a(href='/' style='color: #fff; text-decoration: none;')
-                        img.className#IdName(src="/html/logo.png" alt="Image Title" width='40' height='50')
+                        img.className#IdName(src="/images/logo.png" alt="Image Title" width='40' height='50')
                         | &nbsp#{title}
             div.nav
                 ul
@@ -16,7 +16,7 @@ block content
                         li
                              |MAP
                         li
-                             img(src="/html/mapfix.png" width="50" height="25")
+                             img(src="/images/mapfix.png" width="50" height="25")
 
     div(style="margin-top: 100px;")
     br
@@ -52,22 +52,29 @@ block content
 
     br
 
+    ul
+        - for (var i=7; i< jadeRoomBookings.length; i++)
+            if jadeRoomBookings[i] == true
+                li: button.yroom(onclick='dibsRoomBookClick(#{i})') #{i} - #{i + 1}
+            else
+                li: button.nroom #{i} - #{i + 1}
+
     button(name='dibsBookBtn', type='submit', class='.btn-primary', style='margin-left: 100px; ', onclick='dibsRoomBookClick()', enabled) Book This Room
 
     br
     br
 
     script.
-        function dibsRoomBookClick(){
+        function dibsRoomBookClick(time){
             // this function gets the current room id, embeds it into the post request, and then sends a post.
             // On success, it returns whether the booking was successful, or the error that occurred
             $.ajax({
                 url: "/bookroom",
                 type: "POST",
-                data: JSON.stringify(#{jadeRoomID}),
+                data: JSON.stringify([#{jadeRoomID}, time]),
                 success: function (result) {
                     console.log("result value is: " + result);
-                    document.getElementById('dibsFrame').src = result;
+                    //document.getElementById('dibsFrame').src = result;
                 }
             });
         }

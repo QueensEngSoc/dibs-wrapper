@@ -11,6 +11,7 @@ var isFreeNow;          // simple flag to show if the room is currently free
 var roomName = 0;       // stores the room number, or friendly name (NOT THE ID)
 var roomPicUrl = "";    // stores the url for the room image
 var roomBookings = [];  // stores the list of the nicely formatted room bookings
+var allRoomBookingTimes = [];
 
 /**
  * gets the current date, and sets the global date variable to the current date
@@ -52,14 +53,20 @@ function checkRoomAvaliable(json) {
     var current_hour = dateObj.getHours();
     var isFree = true;
 
+    var allPossibleStartTimes = [];
+
+    for (var i = 7; i < 23; i++) {
+        allPossibleStartTimes[i] = true; // set all times to be free initially
+    }
+
     for (var booking in json) {
         // this function simply gets the JSON object, loops through each contained JSON object for each booking
         // then it parses out the start and end times from the JSON object.  It then changes the 24h times to 12h
         // (cause I don't wanna do math to see if this worked properly), and adds it to the list of bookings for that room
 
-        console.log("Booking Start: " + booking + ", value: " + JSON.stringify(json[booking]));
+        //console.log("Booking Start: " + booking + ", value: " + JSON.stringify(json[booking]));
         var roomStr = JSON.stringify(json[booking]);
-        console.log("RoomString:\n" + roomStr);
+        //console.log("RoomString:\n" + roomStr);
         var start = roomStr.substr(roomStr.indexOf('StartTime') + 12);
         start = start.substr(start.indexOf('T') + 1);
         start = start.substr(0, start.indexOf(':'));
@@ -71,18 +78,27 @@ function checkRoomAvaliable(json) {
             console.log('Found a time!');
             isFree = false;
         }
+
+        //console.log("Start: " + start +" End: " + end + " (12h) Start: " + (start - 12) + " end: " + (end - 12));
+
+        for (var i = start; i < end; i++) { // there is currently an odd bug with rooms booked in the morning, for some reason this does not catch them
+            // properly, and thus shows the room as free.  One example of this is room 317 (ID 29) on 11/20/2017, with the booking from 7:30AM to 10:30PM
+            allPossibleStartTimes[i] = false;
+            //console.log("i: " + i + " isTrue " + allPossibleStartTimes[i]);
+        }
+
         var length = end - start;
         if (start > 12)
-            start = start - 12 + "PM";
+            start = start - 12 + ":30PM";
         else
-            start = start + "AM";
+            start = start + ":30AM";
         if (end > 12) {
-            end = end - 12 + "PM";
+            end = end - 12 + ":30PM";
         }
         else
-            end += "AM";
+            end += ":30AM";
 
-        var booking = new roomBookingObj(isFree, room, roomName, start,end, length);
+        var booking = new roomBookingObj(isFree, room, roomName, start, end, length);
         console.log("Room ID: " + booking.roomid + " Room Number: " + booking.roomNum + " isFree: " + booking.isFree + " start time: " + booking.bookingStart + " end time: " + booking.bookingEnd);
 
         roomBookings.push(booking);
@@ -98,6 +114,12 @@ function checkRoomAvaliable(json) {
         return (a.bookingStart > b.bookingStart) ? 1 : ((b.bookingStart > a.bookingStart) ? -1 : 0);
     });
 
+    console.log("All Booking Times: " + allPossibleStartTimes +  " count: " + allPossibleStartTimes.length);
+    for (var i = 7; i < allPossibleStartTimes.length; i++){
+        console.log("Start: " + (i) + " isFree: " + allPossibleStartTimes[i]);
+    }
+
+    allRoomBookingTimes = allPossibleStartTimes;
 }
 
 /**
@@ -168,7 +190,7 @@ function checkReservation(firstName, lastName, phoneNumber, emailAddress, roomID
  * @param room
  */
 function getRoomPicture(room) {
-    return new Promise(function(resolve, reject) {
+    return new Promise(function (resolve, reject) {
         var url = "https://queensu.evanced.info/dibsAPI/rooms/" + room;
 
         http.get(url, function (res) {
@@ -185,7 +207,7 @@ function getRoomPicture(room) {
                 roomStr = roomStr.substr(0, roomStr.indexOf("\""));
                 console.log(roomStr);
                 roomPicUrl = roomStr;
-                console.log("got room url!");
+                //console.log("got room url!");
                 resolve();
             });
         }).on('error', function (e) {
@@ -211,7 +233,7 @@ function getUsefulStuff() {
 
             httpres.on('end', function () {
                 var dibsResponse = JSON.parse(body);
-                console.log("Got a response: ", dibsResponse);
+                //console.log("Got a response: ", dibsResponse);
                 checkRoomAvaliable(dibsResponse);
                 resolve();
             });
@@ -230,9 +252,9 @@ router.get('/book/:uid-:roomID/', function (req, res, next) {
     console.log("\n\nNow On Booking Page For Room: " + room);
     getDate();
     console.log("Room Bookings for Today: " + roomBookings.toString());
-    getUsefulStuff(room).then(function() {
+    getUsefulStuff(room).then(function () {
         return getRoomPicture(room);
-    }).then(function() {
+    }).then(function () {
         res.render('bookroom', {
             title: 'Details for Room ' + req.params.uid,
             count: bookingCount,
@@ -241,9 +263,10 @@ router.get('/book/:uid-:roomID/', function (req, res, next) {
             jadeRoomPicUrl: roomPicUrl ? roomPicUrl : 'https://thumb7.shutterstock.com/display_pic_with_logo/2892448/486584521/stock-vector-retro-man-with-a-beer-pop-art-vector-beer-pubs-and-bars-retro-advertising-of-alcoholic-beverages-486584521.jpg',
             jadeJson: roomBookings,
             jadeRoomFreeNow: isFreeNow,
-            jadeRoomID: req.params.roomID
+            jadeRoomID: req.params.roomID,
+            jadeRoomBookings: allRoomBookingTimes
         });
-    }).catch(function() {
+    }).catch(function () {
         res.send('err');
     })
 
