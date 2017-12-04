@@ -227,6 +227,8 @@ router.post('/bookroom', function (req, res) {
     bookRoom(roomToBook, bookingTimeStart, "Alex", "", "macsplash3@gmail.com", "").then(function () {
         var header = (bookRoomReturnObj == true) ? "Booking Successful!" : bookRoomReturnObj;
         bookRoomReturnObj = bookRoomReturnObj.substr(bookRoomReturnObj.indexOf("\"Message\":") + 11, bookRoomReturnObj.indexOf('"}'));
+        if (bookRoomReturnObj.length < 5)
+            bookRoomReturnObj = "Error: Dibs room booking features have been temporarily disabled.  To book a room, please use Dibs :(";
         console.log("Sending: " + header + " -> " + bookRoomReturnObj + " -> ");
         res.send({jadeHeader: header, jadeBookingStatus: bookRoomReturnObj});
     });

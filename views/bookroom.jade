@@ -68,15 +68,21 @@ block content
         function dibsRoomBookClick(time){
             // this function gets the current room id, embeds it into the post request, and then sends a post.
             // On success, it returns whether the booking was successful, or the error that occurred
+            console.log("Called my function!");
+
             $.ajax({
                 url: "/bookroom",
                 type: "POST",
                 data: JSON.stringify([#{jadeRoomID}, time]),
+
                 success: function (data) {
                     console.log("Header: " + data.jadeHeader + " body: " + data.jadeBookingStatus + " data: " + data);
                     var header = data.jadeHeader;
                     var content = data.jadeBookingStatus;
                     doModal(header, content);
+                },
+                error: function (data) {
+                    console.log("Error: " + data)
                 }
             });
         }
