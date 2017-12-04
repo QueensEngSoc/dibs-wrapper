@@ -1,20 +1,27 @@
-const Sequelize = require('sequelize');
-const express = require('express');
-const path = require('path');
+var express = require('express');
+var path = require('path');
+var sql = require('mssql');
 
-const server = express();
-const sequelize = new Sequelize('database', 'username', 'password',
-    {
-        host: 'localhost',
-        dialect: 'mysql',
-        pool: {
-            max: 5,
-            min: 0,
-            acquire: 30000,
-            idle: 10000
-        },
+var server = express();
+
+var config = {
+    user: 'user',
+    password: 'dibswrapper',
+    server: 'localhost\\SQLEXPRESS', // You can use 'localhost\\instance' to connect to named instance
+    database: 'master',
+
+    options: {
+    }
+}
+sql.connect(config, function (err) {
+    console.log(err);
+    var request = new sql.Request();
+
+    request.query('select @@servername', function (err, r) {
+        console.log(err);
+        console.log(r);
     });
-//console.log(sequelize);
+});
 
 server.use('/public', express.static('public'));
 server.use('/HTML', express.static('HTML'));
@@ -27,4 +34,3 @@ server.listen(8000, function () {
     console.log('Example app listening on port 8000!');
 });
 
-//$('#btnCallDibs').bootstrapBtn('loading'); checkReservation();
