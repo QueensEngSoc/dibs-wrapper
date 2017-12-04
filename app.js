@@ -8,6 +8,13 @@ var bodyParser = require('body-parser');
 var index = require('./routes/index');
 var users = require('./routes/users');
 var bookRoom = require('./routes/bookroom');
+var databaseTest = require('./routes/databaseTest');
+
+// Database
+var mongo = require('mongodb');
+var monk = require('monk');
+var db = monk('localhost:27017/roomDatabase');
+// End database
 
 var app = express();
 
@@ -23,8 +30,15 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Make the db accessible to the router, which allows us to access it from files other than app.js
+app.use(function(req,res,next){
+    req.db = db;
+    next();
+});
+
 app.use('/', index);
 app.use('/users', users);
+app.use('/databasetest', databaseTest);
 
 app.get('/book/:uid-:roomID', bookRoom);
 
@@ -34,6 +48,7 @@ app.use(function(req, res, next) {
     err.status = 404;
     next(err);
 });
+
 
 app.listen({
     host: 'localhost',
