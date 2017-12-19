@@ -1,0 +1,39 @@
+extends layout
+link(rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css")
+
+block content
+
+    div.header
+        div.container
+             a(href='/')
+                div.logo
+                    h1
+                        img.className#IdName(src="/images/logo.png" alt="Image Title" width='40' height='50')
+                        | &nbspILC Room Reservation
+             div.nav
+                ul
+                    a(href="/map" style='color: #fff; text-decoration: none;')
+                        li
+                            | MAP
+                        li
+                            img(src="/images/mapfix.png" width="50" height="25")
+
+
+    div(style="margin-top: 100px;")
+    h1(style='text-align: center;')= title
+    p Welcome to the #{title}
+
+    br
+
+    p ILC Rooms:
+    // display the information in the passed JSON object (jadeRooms) to the Jade page, and display the buttons from that
+    // right now room Name is taken directly from the database, which is fine if we clean up the names, or we should add a field to store just the room number if we decide rooms should have names as well (but that's probably not useful
+
+    div.rooms
+        for roomInfo in jadeRooms
+
+            if roomInfo.isFree == true
+                button.yroom(onclick="location.href='/book/#{roomInfo.Name}-#{roomInfo.RoomID}'") #{roomInfo.Name}
+            else
+                button.nroom(onclick="location.href='/book/#{roomInfo.Name}-#{roomInfo.RoomID}'") #{roomInfo.Name}
+    br
