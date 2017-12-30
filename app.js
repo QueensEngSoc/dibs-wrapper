@@ -1,36 +1,31 @@
 var express = require('express');
 var path = require('path');
-var sql = require('mssql');
+var exphbs = require('express-handlebars');
 
 var server = express();
 
-var config = {
-    user: 'user',
-    password: 'dibswrapper',
-    server: 'localhost\\SQLEXPRESS', // You can use 'localhost\\instance' to connect to named instance
-    database: 'master',
+//Routes
+var index = require('./routes/index');
 
-    options: {
-    }
-}
-sql.connect(config, function (err) {
-    console.log(err);
-    var request = new sql.Request();
+//View Engine
+server.engine('handlebars', exphbs({defaultLayout: 'main'}));
+server.set('view engine', 'handlebars');
 
-    request.query('select @@servername', function (err, r) {
-        console.log(err);
-        console.log(r);
-    });
+//Database setup and initialization
+var mongo = require('mongodb');
+var monk = require('monk');
+var db = monk('localhost:27017/roomDatabase');
+server.use(function(req, res, next) { //making database accessible to the router
+    req.db = db;
+    next();
 });
 
-server.use('/public', express.static('public'));
-server.use('/HTML', express.static('HTML'));
+//Serving routes
+server.use('/', index);
 
-server.get('/', function (req, res) {
-    res.sendFile(path.join(__dirname, '/HTML/temptest.html'));
-});
-
+//Run server
 server.listen(8000, function () {
     console.log('Example app listening on port 8000!');
 });
 
+module.exports = server;
