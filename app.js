@@ -20,6 +20,9 @@ server.use(function(req, res, next) { //making database accessible to the router
     next();
 });
 
+//Serving files
+server.use(express.static(path.join(__dirname, 'public')));
+
 //Serving routes
 server.use('/', index);
 
