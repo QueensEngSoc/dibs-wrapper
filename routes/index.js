@@ -48,6 +48,7 @@ router.get('/', function (req, res, next) {
         out.room = data.Name;
         out.size = data.Description;
         out.tempImgURL = data.Picture;
+        out.tv = data.tv;
         out.free = data.Free;
         res.render('test', out);
     });
