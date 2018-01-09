@@ -21,9 +21,11 @@ function createArray(len, val) {
     for (var i = 0; i < len; i++) {
         out[i] = {
             free: val,
-            time: ((7+i)>=10?(7+i):"0"+(7+i))  + ":30 - " + ((8+i)>=10?(8+i):"0"+(8+i)) + ":30"
+            time: ((7+i)>=10?(7+i):"0"+(7+i))  + ":30 - " + ((8+i)>=10?(8+i):"0"+(8+i)) + ":30",
         };
     }
     return out;
 }
+
+
 
