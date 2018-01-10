@@ -2,7 +2,7 @@
 var mongo = require('mongodb');
 var monk = require('monk');
 var db = monk('localhost:27017/roomDatabase');
-var roomInfo = db.get('roomInfo');
+var roomInfo = db.get('roomDatabase');
 
 var request = require('request');
 var str = "https://queensu.evanced.info/dibsAPI/rooms";
@@ -10,8 +10,6 @@ var str = "https://queensu.evanced.info/dibsAPI/rooms";
 request(str, function (err, res, body) {
     for (var json in JSON.parse(body)) {
         var data = JSON.parse(body)[json];
-        data.Free = createArray(16, true);
-
         var description = data.Description;
         if (description.indexOf("TV") > 0 || description.indexOf("Projector") > 0)
             data.tv = true;
@@ -31,6 +29,9 @@ request(str, function (err, res, body) {
 
         if (description.indexOf("phone") >= 0 || description.indexOf("Phone") >= 0)
             data.phone = true;
+
+        data.Free = createArray(16, true);
+
         roomInfo.insert(data);
         console.log(data);
     }

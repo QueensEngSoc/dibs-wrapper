@@ -26,57 +26,61 @@
 <div class="desc">
     <img alt="RoomPicture" src={{tempImgURL}}
          height="400" width="400"> <br><br>
-    <p style="text-align: left;">{{size}} room.<br><br>{{tv}} a TV.<br><br>{{special}}</p>
+    <p style="text-align: left;">{{size}} room.<br><br>{{#if tv}}There is{{else}}There is not{{/if}} a TV.<br><br>{{#if special}}This is a special room{{/if}}</p>
 </div>
 
-<!--<script>-->
-    <!--function RoomBookClick(time){-->
-        <!--// this function gets the current room id, embeds it into the post request, and then sends a post.-->
-        <!--// On success, it returns whether the booking was successful, or the error that occurred-->
-        <!--console.log("Called my function!");-->
+Handlebars.registerHelper('json', function(context) {
+return JSON.stringify(context);
+});
 
-        <!--$.ajax({-->
-            <!--url: "/bookroom",-->
-            <!--type: "POST",-->
-            <!--data: JSON.stringify([{{room}}, {{time}}]),-->
+<script>
+    function RoomBookClick(time){
+        // this function gets the current room id, embeds it into the post request, and then sends a post.
+        // On success, it returns whether the booking was successful, or the error that occurred
+        console.log("Called my function!");
 
-            <!--success: function (data) {-->
-                <!--console.log("Header: " + data.jadeHeader + " body: " + data.jadeBookingStatus + " data: " + data);-->
-                <!--var header = data.jadeHeader;-->
-                <!--var content = data.jadeBookingStatus;-->
-                <!--doModal(header, content);-->
-            <!--},-->
-            <!--error: function (data) {-->
-                <!--console.log("Error: " + data)-->
-            <!--}-->
-        <!--});-->
-    <!--}-->
+        $.ajax({
+            url: "/bookroom",
+            type: "POST",
+            data: JSON.stringify([{{room}}, {{time}}]),
 
-    <!--function doModal(heading, formContent) {-->
-        <!--html =  '<div id="dynamicModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="confirm-modal" aria-hidden="true">';-->
-        <!--html += '<div class="modal-dialog">';-->
-        <!--html += '<div class="modal-content">';-->
-        <!--html += '<div class="modal-header">';-->
-        <!--html += '<a class="close" data-dismiss="modal">×</a>';-->
-        <!--html += '<h4>'+heading+'</h4>'-->
-        <!--html += '</div>';-->
-        <!--html += '<div class="modal-body">';-->
-        <!--html += formContent;-->
-        <!--html += '</div>';-->
-        <!--html += '<div class="modal-footer">';-->
-        <!--html += '<span class="btn btn-primary" data-dismiss="modal">Close</span>';-->
-        <!--html += '</div>';  // content-->
-        <!--html += '</div>';  // dialog-->
-        <!--html += '</div>';  // footer-->
-        <!--html += '</div>';  // modalWindow-->
-        <!--$('body').append(html);-->
-        <!--jQuery.noConflict();-->
-        <!--$("#dynamicModal").modal();-->
-        <!--$("#dynamicModal").modal('show');-->
+            success: function (data) {
+                console.log("Header: " + data.jadeHeader + " body: " + data.jadeBookingStatus + " data: " + data);
+                var header = data.jadeHeader;
+                var content = data.jadeBookingStatus;
+                doModal(header, content);
+            },
+            error: function (data) {
+                console.log("Error: " + data)
+            }
+        });
+    }
 
-        <!--$('#dynamicModal').on('hidden.bs.modal', function (e) {-->
-            <!--$(this).remove();-->
-        <!--});-->
-    <!--}-->
+    function doModal(heading, formContent) {
+        html =  '<div id="dynamicModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="confirm-modal" aria-hidden="true">';
+        html += '<div class="modal-dialog">';
+        html += '<div class="modal-content">';
+        html += '<div class="modal-header">';
+        html += '<a class="close" data-dismiss="modal">×</a>';
+        html += '<h4>'+heading+'</h4>'
+        html += '</div>';
+        html += '<div class="modal-body">';
+        html += formContent;
+        html += '</div>';
+        html += '<div class="modal-footer">';
+        html += '<span class="btn btn-primary" data-dismiss="modal">Close</span>';
+        html += '</div>';  // content
+        html += '</div>';  // dialog
+        html += '</div>';  // footer
+        html += '</div>';  // modalWindow
+        $('body').append(html);
+        jQuery.noConflict();
+        $("#dynamicModal").modal();
+        $("#dynamicModal").modal('show');
 
-<!--</script>-->
+        $('#dynamicModal').on('hidden.bs.modal', function (e) {
+            $(this).remove();
+        });
+    }
+
+</script>

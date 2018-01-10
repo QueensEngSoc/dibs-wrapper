@@ -48,5 +48,17 @@ module.exports = server;
 //
 //  You can then run grabJSONS to set up the database, then run the app with app.js.  Navigate to localhost:8000 and it
 //  should work!
+//
+//  To view information in the database, type
+//                  db.roomDatabase.find().pretty()
+//
+//  Also note: if the app crashes for seemingly no reason, or you get a "Cannot set headers after they are sent to
+//  the client" error, do the following:
+//  in a CMD window within the MongoDB/bin folder, type the following command:
+//                  db.roomDatabase.drop()
+//
+//  if it returns true in the console, it worked!  You then have to re-run the grabJSON.js file, and the
+//  app should now work without issues
+//
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

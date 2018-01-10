@@ -35,7 +35,7 @@ router.get('/', function (req, res, next) {
         room: "Error",
         size: "Error",
         tv: "Error",
-        // phone: "Error",
+        phone: "Error",
         special: "Error",
         tempImgURL: "",
         free: []
@@ -44,12 +44,14 @@ router.get('/', function (req, res, next) {
     var roomID = 1;
 
 
-    var roomInfo = req.db.get('roomInfo');
+    var roomInfo = req.db.get('roomDatabase');
     roomInfo.find({RoomID: roomID}).each(function(data, val) {
         out.room = data.Name;
         out.size = data.Description;
         out.tempImgURL = data.Picture;
         out.tv = data.tv;
+        out.phone = data.phone;
+        out.special = data.special;
         out.free = data.Free;
         res.render('test', out);
     });
