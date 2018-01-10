@@ -5,7 +5,7 @@
         </div>
         <div class="nav">
             <ul>
-                <li><a href="#"style="color: #fff; text-decoration: none;">MAP</a></li>
+                <li><a href="#" style="color: #fff; text-decoration: none;">MAP</a></li>
                 <li><a href="#"><img src="/IMG/mapfix.png" width="50" height="25"/></a></li>
             </ul>
         </div>
@@ -16,33 +16,55 @@
     <ul>
         {{#each free}}
             {{#if free}}
-                <li><button class="ytime" style="font-size: 20px;" onclick='RoomBookClick()'>{{time}}</button></li>
+                <li>
+                    <button class="ytime" style="font-size: 20px;" onclick='RoomBookClick()'>{{time}}</button>
+                </li>
             {{else}}
-                <li><button class="ntime" style="font-size: 20px;">{{time}}</button></li>
+                <li>
+                    <button class="ntime" style="font-size: 20px;">{{time}}</button>
+                </li>
             {{/if}}
         {{/each}}
     </ul>
 </div>
 <div class="desc">
     <img alt="RoomPicture" src={{tempImgURL}}
-         height="400" width="400"> <br><br>
-    <p style="text-align: left;">{{size}} room.<br><br>{{#if tv}}There is{{else}}There is not{{/if}} a TV.<br><br>{{#if special}}This is a special room{{/if}}</p>
+            height="400" width="400"> <br><br>
+    <p style="text-align: left;">{{size}} room.<br><br>{{#if tv}}There is{{else}}There is not{{/if}} a TV.<br><br>{{#if
+            special}}This is a special room{{/if}}</p>
 </div>
 
-Handlebars.registerHelper('json', function(context) {
-return JSON.stringify(context);
-});
+<br/>
+This is a test button
+<button class="ytime" style="font-size: 20px;" onclick='{{foo return}}'>{{time}}</button>
+<div>Test: {{foo}} {{bar}}</div>
+<div id="divTemplate">
+    <button onclick="{{foo}}">click me!</button>
+</div>
 
+<div class="post">
+    <h1>By {{getName author}}</h1>
+    <div class="body">{{body}}</div>
+
+    <h1>Comments</h1>
+
+    {{#each comments}}
+        <h2>By {{getName author}}</h2>
+        <div class="body">{{body}}</div>
+    {{/each}}
+</div>
+
+<div class="mydiv">
+<input type="button" id="testBtn" class="js-btn" data-id="test" value="Test">
+</div>
 <script>
-    function RoomBookClick(time){
-        // this function gets the current room id, embeds it into the post request, and then sends a post.
-        // On success, it returns whether the booking was successful, or the error that occurred
+    $('.js-btn').on('click', '.mydiv', function (event) {
         console.log("Called my function!");
 
         $.ajax({
             url: "/bookroom",
             type: "POST",
-            data: JSON.stringify([{{room}}, {{time}}]),
+            data: "test",
 
             success: function (data) {
                 console.log("Header: " + data.jadeHeader + " body: " + data.jadeBookingStatus + " data: " + data);
@@ -54,33 +76,5 @@ return JSON.stringify(context);
                 console.log("Error: " + data)
             }
         });
-    }
-
-    function doModal(heading, formContent) {
-        html =  '<div id="dynamicModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="confirm-modal" aria-hidden="true">';
-        html += '<div class="modal-dialog">';
-        html += '<div class="modal-content">';
-        html += '<div class="modal-header">';
-        html += '<a class="close" data-dismiss="modal">×</a>';
-        html += '<h4>'+heading+'</h4>'
-        html += '</div>';
-        html += '<div class="modal-body">';
-        html += formContent;
-        html += '</div>';
-        html += '<div class="modal-footer">';
-        html += '<span class="btn btn-primary" data-dismiss="modal">Close</span>';
-        html += '</div>';  // content
-        html += '</div>';  // dialog
-        html += '</div>';  // footer
-        html += '</div>';  // modalWindow
-        $('body').append(html);
-        jQuery.noConflict();
-        $("#dynamicModal").modal();
-        $("#dynamicModal").modal('show');
-
-        $('#dynamicModal').on('hidden.bs.modal', function (e) {
-            $(this).remove();
-        });
-    }
-
+    })
 </script>

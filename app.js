@@ -4,11 +4,38 @@ var exphbs = require('express-handlebars');
 
 var server = express();
 
+//Here you can pass helpers that you would normally define in registerHelpers
+//and you can also define stuff like `defaultLayout` and `partialsDir`
+var hbs = exphbs.create({
+    helpers: {
+        sayHello: function () { console.log("Hello World") },
+        foo: function () {
+            return 'FOO!'; },
+        bar: function () { return 'BAR!'; },
+        getStringifiedJson: function (value) {
+            return JSON.stringify(value);
+        },
+        getName: function() {
+            return getName();
+        },
+        sendPostRequest: function(time){
+
+        }
+    },
+    defaultLayout: 'main',
+    partialsDir: ['views/']
+});
+
+function getName(){
+    return "Alex Ruffo";
+}
+
 //Routes
 var index = require('./routes/index');
 
 //View Engine
-server.engine('handlebars', exphbs({defaultLayout: 'main'}));
+// server.engine('handlebars', exphbs({defaultLayout: 'main'}));
+server.engine('handlebars', hbs.engine);
 server.set('view engine', 'handlebars');
 
 //Database setup and initialization
