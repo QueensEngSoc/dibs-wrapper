@@ -35,6 +35,7 @@ router.get('/', function (req, res, next) {
         room: "Error",
         size: "Error",
         tv: "Error",
+        // phone: "Error",
         special: "Error",
         tempImgURL: "",
         free: []
