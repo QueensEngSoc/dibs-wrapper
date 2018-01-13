@@ -1,6 +1,9 @@
 var express = require('express');
 var path = require('path');
 var exphbs = require('express-handlebars');
+// var favicon = require('serve-favicon');
+// var cookieParser = require('cookie-parser');
+var bodyParser = require('body-parser');
 
 var server = express();
 
@@ -38,6 +41,12 @@ var index = require('./routes/index');
 server.engine('handlebars', hbs.engine);
 server.set('view engine', 'handlebars');
 
+// uncomment after placing your favicon in /public
+//server.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+server.use(bodyParser.json());
+server.use(bodyParser.urlencoded({ extended: false }));
+// server.use(cookieParser());
+
 //Database setup and initialization
 var mongo = require('mongodb');
 var monk = require('monk');
@@ -53,12 +62,14 @@ server.use(express.static(path.join(__dirname, 'public')));
 //Serving routes
 server.use('/', index);
 
+
 //Run server
 server.listen(8000, function () {
     console.log('Example app listening on port 8000!');
 });
 
 module.exports = server;
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                              HOW TO USE THIS APP                                                   //

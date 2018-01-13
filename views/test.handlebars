@@ -17,11 +17,11 @@
         {{#each free}}
             {{#if free}}
                 <li>
-                    <button class="ytime" style="font-size: 20px;" onclick='RoomBookClick()'>{{time}}</button>
+                    <button class="ytime" style="font-size: 20px;" onclick='dibsRoomBookClick(1, {{startTime}}, this)'>{{time}}</button>
                 </li>
             {{else}}
                 <li>
-                    <button class="ntime" style="font-size: 20px;">{{time}}</button>
+                    <button class="ntime" style="font-size: 20px;" onclick='dibsRoomBookClick(1, {{startTime}}, this)'>{{time}}</button>
                 </li>
             {{/if}}
         {{/each}}
@@ -29,52 +29,9 @@
 </div>
 <div class="desc">
     <img alt="RoomPicture" src={{tempImgURL}}
-            height="400" width="400"> <br><br>
+            height="400"> <br><br>
     <p style="text-align: left;">{{size}} room.<br><br>{{#if tv}}There is{{else}}There is not{{/if}} a TV.<br><br>{{#if
             special}}This is a special room{{/if}}</p>
 </div>
 
-<br/>
-This is a test button
-<button class="ytime" style="font-size: 20px;" onclick='{{foo return}}'>{{time}}</button>
-<div>Test: {{foo}} {{bar}}</div>
-<div id="divTemplate">
-    <button onclick="{{foo}}">click me!</button>
-</div>
-
-<div class="post">
-    <h1>By {{getName author}}</h1>
-    <div class="body">{{body}}</div>
-
-    <h1>Comments</h1>
-
-    {{#each comments}}
-        <h2>By {{getName author}}</h2>
-        <div class="body">{{body}}</div>
-    {{/each}}
-</div>
-
-<div class="mydiv">
-<input type="button" id="testBtn" class="js-btn" data-id="test" value="Test">
-</div>
-<script>
-    $('.js-btn').on('click', '.mydiv', function (event) {
-        console.log("Called my function!");
-
-        $.ajax({
-            url: "/bookroom",
-            type: "POST",
-            data: "test",
-
-            success: function (data) {
-                console.log("Header: " + data.jadeHeader + " body: " + data.jadeBookingStatus + " data: " + data);
-                var header = data.jadeHeader;
-                var content = data.jadeBookingStatus;
-                doModal(header, content);
-            },
-            error: function (data) {
-                console.log("Error: " + data)
-            }
-        });
-    })
-</script>
+<script src="/JS/testJS.js"></script>

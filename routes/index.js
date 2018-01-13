@@ -1,44 +1,44 @@
 var express = require('express');
 var router = express.Router();
 var path = require('path');
+// const $ = require('najax');
 
 // console.log(path.join(__dirname, '/../'));
 
 
-router.post('/book', function (req, res) {
+router.post('/bookroom', function (req, res) {
     var roomToBook = JSON.stringify(req.body);
     roomToBook = roomToBook.substr(roomToBook.indexOf('[') + 1);
     var bookingTimeStart = roomToBook.substr(roomToBook.indexOf(',') + 1);
     roomToBook = roomToBook.substr(0, roomToBook.indexOf(','));
     bookingTimeStart = bookingTimeStart.substr(0,bookingTimeStart.indexOf(']'));
 
-    console.log("Request Body: " + JSON.stringify(req.body) + " room id: " + roomToBook);
-    bookRoom(roomToBook, bookingTimeStart, "Alex", "", "macsplash3@gmail.com", "").then(function () {
-        var header = (bookRoomReturnObj == true) ? "Booking Successful!" : bookRoomReturnObj;
-        bookRoomReturnObj = bookRoomReturnObj.substr(bookRoomReturnObj.indexOf("\"Message\":") + 11, bookRoomReturnObj.indexOf('"}'));
-        if (bookRoomReturnObj.length < 5)
-            bookRoomReturnObj = "Error: Dibs room booking features have been temporarily disabled.  To book a room, please use Dibs :(";
-        console.log("Sending: " + header + " -> " + bookRoomReturnObj + " -> ");
-        res.send({jadeHeader: header, jadeBookingStatus: bookRoomReturnObj});
+    var roomInfo = req.db.get('roomDatabase');
+    var roomID = parseInt(roomToBook, 10);
+
+    roomInfo.find({RoomID: roomID}).each(function(data, val) {
+        var temp = data.Free;
+        var success = false;
+        var header = "Booking failed";
+        var bookMsg = "Sorry, an error occured and the room was not booked.  Please try again later."
+        if (temp[bookingTimeStart - 7].free == true)
+        {
+            temp[bookingTimeStart - 7].free = false;
+            roomInfo.update({RoomID: roomID}, {$set: {Free : temp}});
+            success = true;
+            bookMsg = "Booking successful for " + data.Name + " at " + bookingTimeStart + ":30";
+            header = "Booking Success!";
+        }
+        else{
+            bookMsg = "Sorry, this room is booked.  Looks like someone beat you to it :(";
+            header = "Room Already Booked"
+        }
+
+        console.log("Request Body: " + JSON.stringify(req.body) + " room id: " + roomToBook + " Success" + success);
+        res.send({HeaderMsg: header, BookingStatusMsg: bookMsg, BookStatus: success});
     });
 });
 
-// var context = {
-//     items: [
-//         {name: "Handlebars", emotion: "love"},
-//         {name: "Mustache", emotion: "enjoy"},
-//         {name: "Ember", emotion: "want to learn"}
-//     ]
-// };
-//
-// router.registerHelper('agree_button', function() {
-//     var emotion = Handlebars.escapeExpression(this.emotion),
-//         name = Handlebars.escapeExpression(this.name);
-//
-//     return new Handlebars.SafeString(
-//         "<button>I agree. I " + emotion + " " + name + "</button>"
-//     );
-// });
 
 router.get('/', function (req, res, next) {
     // var db = req.db;
@@ -48,6 +48,9 @@ router.get('/', function (req, res, next) {
     //         room: result
     //     });
     // });
+
+    var roomID = 1;
+
     var out = {
         room: "Error",
         size: "Error",
@@ -55,10 +58,10 @@ router.get('/', function (req, res, next) {
         phone: "Error",
         special: "Error",
         tempImgURL: "",
-        free: []
+        free: [],
+        roomid: roomID,
     };
 
-    var roomID = 1;
 
 
     var roomInfo = req.db.get('roomDatabase');
@@ -70,6 +73,7 @@ router.get('/', function (req, res, next) {
         out.phone = data.phone;
         out.special = data.special;
         out.free = data.Free;
+        out.roomid = roomID;
         res.render('test', out);
     });
 

@@ -104,6 +104,15 @@ button {
     font-size: 50px;
 }
 
+.mtime {
+    background-color: #FFC107;
+    padding: 15px 22px;
+    font-family: "Roboto Mono";
+    border-radius: 12px;
+    display: inline-flex;
+    font-size: 50px;
+}
+
 .ntime {
     background-color: #FF8376;
     padding: 15px 22px;
