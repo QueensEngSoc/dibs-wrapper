@@ -74,7 +74,7 @@ router.get('/', function (req, res, next) { //the request to render the page
         out.special = data.special;
         out.free = data.Free;
         out.roomid = roomID;
-        res.render('test', out);
+        res.render('roomInfo', out);
     });
 
 });
