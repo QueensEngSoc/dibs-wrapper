@@ -5,7 +5,7 @@ var exphbs = require('express-handlebars');
 // var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var server = express();
+var server = express(); //initialize the server
 
 //Here you can pass helpers that you would normally define in registerHelpers
 //and you can also define stuff like `defaultLayout` and `partialsDir`
@@ -38,12 +38,12 @@ var index = require('./routes/index');
 
 //View Engine
 // server.engine('handlebars', exphbs({defaultLayout: 'main'}));
-server.engine('handlebars', hbs.engine);
+server.engine('handlebars', hbs.engine); //setting the view engine to render handlebars pages
 server.set('view engine', 'handlebars');
 
 // uncomment after placing your favicon in /public
 //server.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-server.use(bodyParser.json());
+server.use(bodyParser.json()); //need body parser to parse JSON objects
 server.use(bodyParser.urlencoded({ extended: false }));
 // server.use(cookieParser());
 

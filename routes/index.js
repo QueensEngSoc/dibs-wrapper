@@ -40,7 +40,7 @@ router.post('/bookroom', function (req, res) {
 });
 
 
-router.get('/', function (req, res, next) {
+router.get('/', function (req, res, next) { //the request to render the page
     // var db = req.db;
     // var roomInfo = db.get('roomInfo');
     // roomInfo.find({}, function(e, result) {
@@ -51,7 +51,7 @@ router.get('/', function (req, res, next) {
 
     var roomID = 1;
 
-    var out = {
+    var out = { //the object which contains everything needed for the handlebars template
         room: "Error",
         size: "Error",
         tv: "Error",
@@ -65,7 +65,7 @@ router.get('/', function (req, res, next) {
 
 
     var roomInfo = req.db.get('roomDatabase');
-    roomInfo.find({RoomID: roomID}).each(function(data, val) {
+    roomInfo.find({RoomID: roomID}).each(function(data, val) { //find the room from the database and render the page with res.render
         out.room = data.Name;
         out.size = data.Description;
         out.tempImgURL = data.Picture;
