@@ -16,11 +16,11 @@ var roomInfo = db.get('roomDatabase');
 
 if (require.main.filename.toString().indexOf("D:\\Development\\Queens\\ESSDEV\\DibsMain") >=0)
     isAlexDesktop = true;
+else if (require.main.filename.toString().indexOf("D:\\OneDrive\\Development\\Queens\\ESSDEV\\DibsMain\\MongoDB") >= 0)
+    isAlexLaptop = true;
 
 if (!isDebug && (isAlexDesktop ||isAlexLaptop))
 {
-    // start cmd.exe "/K cd H:\Programs\MongoDB\bin '&' mongod --dbpath D:\Development\Queens\ESSDEV\DibsMain\MongoDB"
-    // start cmd.exe /K cd H:\Programs\MongoDB\bin '&' mongo '&' use roomDatabase
 
     //spawn the first process containing the mongod.exe process
     var spawn = require('child_process').spawn,
@@ -41,9 +41,16 @@ if (!isDebug && (isAlexDesktop ||isAlexLaptop))
         });
 
         // give input
-        cp.stdin.write("H: \n");
-        cp.stdin.write("cd H:\\Programs\\MongoDB\\bin \n");
-        cp.stdin.write("mongod --dbpath D:\\Development\\Queens\\ESSDEV\\DibsMain\\MongoDB \n");
+        if (isAlexDesktop) {
+            cp.stdin.write("H: \n");
+            cp.stdin.write("cd H:\\Programs\\MongoDB\\bin \n");
+            cp.stdin.write("mongod --dbpath D:\\Development\\Queens\\ESSDEV\\DibsMain\\MongoDB \n");
+        }
+        else if (isAlexLaptop){
+            cp.stdin.write("C: \n");
+            cp.stdin.write("cd C:\\Program Files\\MongoDB\\Server\\3.6\\bin \n");
+            cp.stdin.write("mongod --dbpath D:\\OneDrive\\Development\\Queens\\ESSDEV\\DibsMain\\MongoDB \n");
+        }
 
     }, 1000);
 
@@ -68,8 +75,16 @@ if (!isDebug && (isAlexDesktop ||isAlexLaptop))
         });
 
         console.log(("MONGO IS NEXT: -------------------------------------------------------"));
-        mongo.stdin.write("H: \n");
-        mongo.stdin.write("cd H:\\Programs\\MongoDB\\bin \n");
+        if (isAlexDesktop) {
+            mongo.stdin.write("H: \n");
+            mongo.stdin.write("cd H:\\Programs\\MongoDB\\bin \n");
+        }
+        else if (isAlexLaptop)
+        {
+            mongo.stdin.write("C: \n");
+            mongo.stdin.write("cd C:\\Program Files\\MongoDB\\Server\\3.6\\bin \n");
+        }
+
         mongo.stdin.write("mongo terminal \n");
         mongo.stdin.write("use roomDatabase \n");
 
@@ -80,8 +95,13 @@ if (!isDebug && (isAlexDesktop ||isAlexLaptop))
 else
     getAPIInfo();
 
+//--------------------------------------------------------------------------------------------------------------------//
+//                                      END OF AUTOMAGIC™ COOL SECTION                                                //
+//--------------------------------------------------------------------------------------------------------------------//
+
 function getAPIInfo() {
     var request = require('request');
+    var fs = require('fs'); // file system calls, in order to see if we have a local copy of the photo on the server
     var str = "https://queensu.evanced.info/dibsAPI/rooms";
 
     request(str, function (err, res, body) {
@@ -104,6 +124,12 @@ function getAPIInfo() {
                 data.special = true;
             }
 
+            var roomNum = data.Name.match(/\d+/)[0] // get the number from the room
+            var roomPicName = "BMH" + roomNum + ".jpg";
+            if (fs.existsSync("public/IMG/" + roomPicName)) {
+                data.Picture = "IMG/" + roomPicName;
+            }
+
             if (description.indexOf("phone") >= 0 || description.indexOf("Phone") >= 0)
                 data.phone = true;
 
@@ -122,6 +148,7 @@ function createArray(len, val) {
             free: val,
             time: ((7+i)>=10?(7+i):"0"+(7+i))  + ":30 - " + ((8+i)>=10?(8+i):"0"+(8+i)) + ":30",
             startTime: 7+i,
+            owner: 0,
         };
     }
     return out;
