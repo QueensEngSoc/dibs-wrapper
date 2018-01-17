@@ -35,17 +35,20 @@ function dibsRoomBookClick(roomID, time, element){
 }
 
 function doModal(heading, formContent, success) {
-    html =  '<div id="dynamicModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="confirm-modal" aria-hidden="true">';
-    html += '<div class="modal-dialog">';
+    html =  '<div id="dynamicModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="confirm-modal" aria-hidden="true" aria-describedby="Booking confirmation modal">';
+    html += '<div class="modal-dialog" role="document">';
     html += '<div class="modal-content">';
     html += '<div class="modal-header">';
-    html += '<a class="close" data-dismiss="modal">×</a>';
-    html += '<h4>'+heading+'</h4>'
+    html += '<h5 class="modal-title" id="exampleModalLabel">'+heading+'</h5>';
+    html += '<button type="button" class="close" data-dismiss="modal" aria-label="Close">'
+    html += '<span aria-hidden="true">&times;</span>'
+    html += '</button>'
     html += '</div>';
     html += '<div class="modal-body">';
     html += formContent;
     if(!success)
-        html += '<video height="400" width="300" autoplay loop>\n' +
+        html += '<br/>' +
+            '<video height="400" width="300" autoplay loop>\n' +
             '  <source src="video/carson-1.webm" type="video/webm">\n' +
             '  Your browser does not support the video tag.\n' +
             '</video>';
