@@ -13,8 +13,15 @@ router.get('/login', function (req, res, next) { //the request to render the pag
     //     });
     // });
 
-        res.render('login', {    // render the page with server side variables passed to the client
-            test: "test"
+    var msg = req.flash('loginMessage');
+    var hasMsg = false;
+    if (msg != undefined && msg.length > 0) {
+        var msgTxt = msg[0];
+        hasMsg = (msgTxt.length > 0) ? true : false;
+    }
+    res.render('login', {    // render the page with server side variables passed to the client
+        message: msg[0],
+        hasMsg: hasMsg
     });
 
 });
