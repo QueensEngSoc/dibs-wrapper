@@ -2,8 +2,13 @@ var express = require('express');
 var path = require('path');
 var exphbs = require('express-handlebars');
 // var favicon = require('serve-favicon');
-// var cookieParser = require('cookie-parser');
+var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
+var mongoose = require('mongoose');
+var flash    = require('connect-flash');
+var configDB = require('./config/database.js');
 
 var server = express(); //initialize the server
 
@@ -14,29 +19,28 @@ var hbs = exphbs.create({
                     //handlers for anything, since AJAX and JQuerry are much easier to use, and much more powerful.  That being said,
                     // having a few examples is probably fairly useful, so I will leave these in for now.
         sayHello: function () { console.log("Hello World") },
-        foo: function () {
-            return 'FOO!'; },
-        bar: function () { return 'BAR!'; },
         getStringifiedJson: function (value) {
             return JSON.stringify(value);
         },
         getName: function() {
             return getName();
-        },
-        sendPostRequest: function(time){
-
         }
     },
     defaultLayout: 'main',
-    partialsDir: ['views/']
+    partialsDir: ['views/layouts']
 });
 
 function getName(){
     return "Alex Ruffo";
 }
 
-//Routes
-var index = require('./routes/index');
+// configuration ===============================================================
+mongoose.connect(configDB.accountURL); // connect to our database
+// comment out passport auth system for now
+require('./config/passport')(passport); // pass passport for configuration
+// enable this when ready for auth
+
+//Routes - moved to config/routes.js
 
 //View Engine
 // server.engine('handlebars', exphbs({defaultLayout: 'main'}));
@@ -49,6 +53,10 @@ server.use(bodyParser.json()); //need body parser to parse JSON objects
 server.use(bodyParser.urlencoded({ extended: false }));
 // server.use(cookieParser());
 
+// Authentication stuffs //
+server.use(cookieParser()); // read cookies (needed for auth)
+///
+
 //Database setup and initialization
 var mongo = require('mongodb');
 var monk = require('monk');
@@ -58,12 +66,24 @@ server.use(function(req, res, next) { //making database accessible to the router
     next();
 });
 
+// more auth stuff with passport //
+// followed this: https://scotch.io/tutorials/easy-node-authentication-setup-and-local //
+server.use(require('express-session')({
+    secret: 'CarsonIsTotallyNotDrunkInGifyVideo',
+    resave: false,
+    saveUninitialized: false
+}));
+server.use(passport.initialize());
+server.use(passport.session()); // persistent login sessions
+server.use(flash()); // use connect-flash for flash messages stored in session
+//
+
 //Serving files
 server.use(express.static(path.join(__dirname, 'public')));
 
-//Serving routes
-server.use('/', index);
-
+// routes ======================================================================
+require('./config/routes.js')(server, passport); // load our routes and pass in our app and fully configured passport
+// end for auth section //
 
 //Run server
 server.listen(8000, function () {

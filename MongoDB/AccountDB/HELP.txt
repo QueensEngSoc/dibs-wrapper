@@ -1,0 +1,1 @@
+This folder is where I have chosen to store the accountDB.  You do not have to also do this, but it may make things easier if we decide to keep a global copy of the accountDB
