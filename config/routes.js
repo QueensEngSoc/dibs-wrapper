@@ -58,6 +58,11 @@ module.exports = function(app, passport) {
         req.logout();
         res.redirect('/');
     });
+    app.get('/map', function(req, res) {
+        res.render('map', {    // render the page with server side variables passed to the client
+            title: "D!Bs Map View"
+        });
+    })
 };
 
 // route middleware to make sure a user is logged in

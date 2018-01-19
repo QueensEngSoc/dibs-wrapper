@@ -1,0 +1,70 @@
+<style type="text/css">
+    .hidden {
+        display: none;
+    }
+    .half {
+        width: 75%;
+    }
+
+    div {
+        text-align: center;
+    }
+
+    .btn {
+        cursor: pointer;
+    }
+</style>
+<script type="text/javascript">
+    var current = 'first';
+
+    function switchTo(toThis) {
+        if (toThis === current)
+            return;
+
+        switchVisible(current, toThis);
+        current = toThis;
+    }
+
+    function switchVisible(from, to) {
+        $('#' + from).addClass('hidden');
+        $('#' + from + '-button').removeClass('active');
+        $('#' + to).removeClass('hidden');
+        $('#' + to + '-button').addClass('active');
+    }
+</script>
+<div class="header" style="z-index: 500">
+    <div class="container">
+        <div class="logo">
+            <h1><a href="/" style=""><img src="/IMG/logo.png" width="40" height="50" /></a>&nbspMine! - Room {{room}}</h1>
+        </div>
+        <div class="nav">
+            <ul>
+                <li><a href="#" style="color: #fff; text-decoration: none;">MAP</a></li>
+                <li><a href="#"><img src="/IMG/mapfix.png" width="50" height="25"/></a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<br><br><br><br><br>
+<div style="text-align: center;">
+    <div class="btn-group" role="group" aria-label="Basic example">
+        <button id="first-button" type="button" class="btn btn-secondary active" onclick="switchTo('first')">First Floor</button>
+        <button id="second-button" type="button" class="btn btn-secondary" onclick="switchTo('second')">Second Floor</button>
+        <button id="third-button" type="button" class="btn btn-secondary" onclick="switchTo('third')">Third Floor</button>
+    </div>
+</div>
+<div id="first">
+    <object data="IMG/ILC-1.svg" type="image/svg+xml" class="half">
+        <img src="IMG/ILC-1.svg" />
+    </object>
+</div>
+<div id="second" class="hidden">
+    <object data="IMG/ILC-2.svg" type="image/svg+xml"  class="half">
+        <img src="IMG/ILC-2.svg" />
+    </object>
+</div>
+<div id="third" class="hidden">
+    <object data="IMG/ILC-3.svg" type="image/svg+xml"  class="half">
+        <img src="IMG/ILC-3.svg" />
+    </object>
+</div>
