@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var path = require('path');
+var roomDB = require('./roomDatabase.js'); //the roomDatabase interface which provide 5 functions. Look in the file for how to use them
 // const $ = require('najax');
 
 // console.log(path.join(__dirname, '/../'));
@@ -41,40 +42,13 @@ router.post('/bookroom', function (req, res) {
 
 
 router.get('/', function (req, res, next) { //the request to render the page
-    // var db = req.db;
-    // var roomInfo = db.get('roomInfo');
-    // roomInfo.find({}, function(e, result) {
-    //     res.render('test', {
-    //         room: result
-    //     });
-    // });
 
     var roomID = 1;
-
-    var out = { //the object which contains everything needed for the handlebars template
-        room: "Error",
-        size: "Error",
-        tv: "Error",
-        phone: "Error",
-        special: "Error",
-        tempImgURL: "",
-        free: [],
-        roomid: roomID,
-    };
-
-
-
-    var roomInfo = req.db.get('roomDatabase');
-    roomInfo.find({RoomID: roomID}).each(function(data, val) { //find the room from the database and render the page with res.render
-        out.room = data.Name;
-        out.size = data.Description;
-        out.tempImgURL = data.Picture;
-        out.tv = data.tv;
-        out.phone = data.phone;
-        out.special = data.special;
-        out.free = data.Free;
-        out.roomid = roomID;
-        res.render('roomInfo', out);
+    roomDB.getInfo(roomID).then(function(out) {
+        roomDB.getFree(0, roomID).then(function(out1){ //so this is the dumbest thing ever XD, we'll talk
+            out.free = out1;
+            res.render('roomInfo', out);
+        });
     });
 
 });
