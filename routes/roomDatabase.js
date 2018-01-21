@@ -142,7 +142,7 @@ function getListOfRoomState(day, time) { //returns whether or not a room is book
             listFree.push({
                 room: data.Name,
                 roomNum: mapRoomName,
-                isFree: data.Free[time].free
+                isFree: data.Free[time - 7].free
             })
         });
         resolve();
