@@ -136,8 +136,12 @@ function getListOfRoomState(day, time) { //returns whether or not a room is book
 
     var find = new Promise(function(resolve, reject) {
         roomDatabase.find({}).each(function(data, i) {
+            var roomNum = data.Name.match(/\d+/)[0] // get the number from the room
+            var mapRoomName = "bmh" + roomNum;
+
             listFree.push({
                 room: data.Name,
+                roomNum: mapRoomName,
                 isFree: data.Free[time].free
             })
         });

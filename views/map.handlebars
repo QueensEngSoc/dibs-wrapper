@@ -60,12 +60,12 @@
     </object>
 </div>
 <div id="second" class="hidden">
-    <object data="IMG/ILC-2.svg" type="image/svg+xml"  class="half">
+    <object data="IMG/ILC-2.svg" id="floor2" type="image/svg+xml"  class="half">
         <img src="IMG/ILC-2.svg" />
     </object>
 </div>
 <div id="third" class="hidden">
-    <object data="IMG/ILC-3.svg" type="image/svg+xml"  class="half">
+    <object data="IMG/ILC-3.svg" id="floor3" type="image/svg+xml"  class="half">
         <img src="IMG/ILC-3.svg" />
     </object>
 </div>
@@ -80,9 +80,68 @@
         // get the inner DOM of alpha.svg
         var svgDoc = a.contentDocument;
         // get the inner element by id
-        var room111 = svgDoc.getElementById("bmh111");
-        if ({{room111Booked}} ){
-            room111.classList.add('booked');
-        }
+
+        var roomStat = "{{roomStatus}}";
+        roomStat = roomStat.replace(/&quot;/g,'"');
+
+        var roomStatus = JSON.parse(roomStat);
+        <!--var roomStatus = {{roomStatus}};-->
+        roomStatus.forEach(function(room) {
+            if (room.isFree){
+                var svgRoom = svgDoc.getElementById(room.roomNum);
+                svgRoom.classList.add('booked');
+            }
+        });
+
     }, false);
+
+    var a = document.getElementById("floor2");
+
+    // It's important to add an load event listener to the object,
+    // as it will load the svg doc asynchronously
+    a.addEventListener("load",function(){
+
+        // get the inner DOM of alpha.svg
+        var svgDoc = a.contentDocument;
+        // get the inner element by id
+
+        var roomStat = "{{roomStatus}}";
+        roomStat = roomStat.replace(/&quot;/g,'"');
+
+        var roomStatus = JSON.parse(roomStat);
+        <!--var roomStatus = {{roomStatus}};-->
+        roomStatus.forEach(function(room) {
+            if (room.isFree){
+                var svgRoom = svgDoc.getElementById(room.roomNum);
+                svgRoom.classList.add('booked');
+            }
+        });
+
+    }, false);
+
+    var a = document.getElementById("floor3");
+
+    // It's important to add an load event listener to the object,
+    // as it will load the svg doc asynchronously
+    a.addEventListener("load",function(){
+
+        // get the inner DOM of alpha.svg
+        var svgDoc = a.contentDocument;
+        // get the inner element by id
+
+        var roomStat = "{{roomStatus}}";
+        roomStat = roomStat.replace(/&quot;/g,'"');
+
+        var roomStatus = JSON.parse(roomStat);
+        <!--var roomStatus = {{roomStatus}};-->
+        roomStatus.forEach(function(room) {
+            if (room.isFree){
+                var svgRoom = svgDoc.getElementById(room.roomNum);
+                svgRoom.classList.add('booked');
+            }
+        });
+
+    }, false);
+
+
 </script>

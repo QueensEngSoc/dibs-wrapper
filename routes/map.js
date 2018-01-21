@@ -24,12 +24,20 @@ router.get('/map', function (req, res, next) { //the request to render the page
 
     });
 
+    var testStatus = [];
+
+    testStatus.push({
+        room: "Room 111",
+        roomNum: "bmh111",
+        isFree: true
+    });
+
+    var test = JSON.stringify(testStatus);
 
     res.render('map', {    // render the page with server side variables passed to the client
         // vars go here, like if a room is booked or not
         title: "D!Bs Map View",
-        roomStatus: roomStatus,
-        room111Booked: true
+        roomStatus: test
     });
 
 });
