@@ -15,8 +15,8 @@ router.get('/map', function (req, res, next) { //the request to render the page
 
     var roomStatus = new Promise(function (resolve, reject) {
         var data = roomFuncs.getListOfRoomState(dateObj.getDate(), current_hour);
-        if (data != undefined) {
-            resolve();
+        if (data != null) {
+            resolve(data);
             return data;
         }
         else
