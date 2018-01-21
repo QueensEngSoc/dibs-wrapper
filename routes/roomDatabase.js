@@ -126,16 +126,36 @@ function getTimeFree(day, time, roomID) { //returns whether or not a room is boo
     return find;
 }
 
-function getListOfRoomState(day, time) { //returns whether or not a room is booked at a certain time and day, for each room  (useful for map / home page)
-    var out = false;
-    // var listFree = {
-    //     room: 0,
-    //     isFree: false,
-    // };
-    var listFree = [];
+// function getListOfRoomState(day, time) { //returns whether or not a room is booked at a certain time and day, for each room  (useful for map / home page)
+//     var out = false;
+//     // var listFree = {
+//     //     room: 0,
+//     //     isFree: false,
+//     // };
+//     var listFree = [];
+//
+//     var find = new Promise(function(resolve, reject) {
+//         roomDatabase.find({}).each(function(data, i) {
+//             var roomNum = data.Name.match(/\d+/)[0] // get the number from the room
+//             var mapRoomName = "bmh" + roomNum;
+//
+//             listFree.push({
+//                 room: data.Name,
+//                 roomNum: mapRoomName,
+//                 isFree: data.Free[time - 7].free
+//             })
+//         });
+//         resolve();
+//     });
+//
+//     return listFree;
+// }
 
-    var find = new Promise(function(resolve, reject) {
-        roomDatabase.find({}).each(function(data, i) {
+function getListOfRoomState(day, time) {
+    return new Promise(function(resolve, reject) {
+        var listFree = [];
+
+        return roomDatabase.find({}).each(function(data, i) {
             var roomNum = data.Name.match(/\d+/)[0] // get the number from the room
             var mapRoomName = "bmh" + roomNum;
 
@@ -144,13 +164,12 @@ function getListOfRoomState(day, time) { //returns whether or not a room is book
                 roomNum: mapRoomName,
                 isFree: data.Free[time - 7].free
             })
+        }).then(function () {
+            return resolve(listFree);
+
         });
-        resolve();
     });
-
-    return listFree;
 }
-
 
 module.exports = {
     getSort: getSort,

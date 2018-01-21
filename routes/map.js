@@ -13,32 +13,26 @@ router.get('/map', function (req, res, next) { //the request to render the page
     var current_hour = dateObj.getHours();
 
 
-    var roomStatus = new Promise(function (resolve, reject) {
-        var data = roomFuncs.getListOfRoomState(dateObj.getDate(), current_hour);
-        if (data != null) {
-            resolve(data);
-            return data;
-        }
-        else
-            reject();
+    roomFuncs.getListOfRoomState(dateObj.getDate(), current_hour).then(function(listFree){
+        var testStatus = [];
+
+        testStatus.push({
+            room: "Room 111",
+            roomNum: "bmh111",
+            isFree: true
+        });
+
+        var jsonList = JSON.stringify(listFree);
+
+        res.render('map', {    // render the page with server side variables passed to the client
+            // vars go here, like if a room is booked or not
+            title: "D!Bs Map View",
+            roomStatus: jsonList,
+            currentHour: current_hour
+        });
 
     });
 
-    var testStatus = [];
-
-    testStatus.push({
-        room: "Room 111",
-        roomNum: "bmh111",
-        isFree: true
-    });
-
-    var test = JSON.stringify(testStatus);
-
-    res.render('map', {    // render the page with server side variables passed to the client
-        // vars go here, like if a room is booked or not
-        title: "D!Bs Map View",
-        roomStatus: test
-    });
 
 });
 

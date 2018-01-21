@@ -54,20 +54,71 @@
         <button id="third-button" type="button" class="btn btn-secondary" onclick="switchTo('third')">Third Floor</button>
     </div>
 </div>
-<div id="first">
-    <object data="IMG/ILC-1.svg" id="floor1" type="image/svg+xml" class="half">
-        <img src="IMG/ILC-1.svg" />
-    </object>
-</div>
-<div id="second" class="hidden">
-    <object data="IMG/ILC-2.svg" id="floor2" type="image/svg+xml"  class="half">
-        <img src="IMG/ILC-2.svg" />
-    </object>
-</div>
-<div id="third" class="hidden">
-    <object data="IMG/ILC-3.svg" id="floor3" type="image/svg+xml"  class="half">
-        <img src="IMG/ILC-3.svg" />
-    </object>
+
+<div class="row" style="padding-top: 20px">
+    <div class="col-md-2">
+        <ul class="list-group" style="padding-top: 30px; padding-left: 10px; margin-right: -20px;">
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                7:30-8:30
+                <span class="badge badge-primary badge-pill">14</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                8:30-9:30
+                <span class="badge badge-primary badge-pill">2</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                9:30-10:30
+                <span class="badge badge-primary badge-pill">1</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                10:30-11:30
+                <span class="badge badge-primary badge-pill">1</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                11:30-12:30
+                <span class="badge badge-primary badge-pill">1</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                12:30-1:30
+                <span class="badge badge-primary badge-pill">1</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                1:30-2:30
+                <span class="badge badge-primary badge-pill">1</span>
+            </li>
+
+            {{#each free}}
+                {{#if free}}
+                    <li>
+                        <button class="ytime" style="font-size: 20px;" onclick='dibsRoomBookClick(1, {{startTime}}, this)'>{{time}}</button>
+                    </li>
+                {{else}}
+                    <li>
+                        <button class="ntime" style="font-size: 20px;" onclick='dibsRoomBookClick(1, {{startTime}}, this)'>{{time}}</button>
+                    </li>
+                {{/if}}
+            {{/each}}
+
+
+        </ul>
+    </div>
+    <div class="col-md-10">
+        <div id="first">
+            <object data="IMG/ILC-1.svg" id="floor1" type="image/svg+xml" class="half">
+                <img src="IMG/ILC-1.svg"/>
+            </object>
+        </div>
+        <div id="second" class="hidden">
+            <object data="IMG/ILC-2.svg" id="floor2" type="image/svg+xml" class="half">
+                <img src="IMG/ILC-2.svg"/>
+            </object>
+        </div>
+        <div id="third" class="hidden">
+            <object data="IMG/ILC-3.svg" id="floor3" type="image/svg+xml" class="half">
+                <img src="IMG/ILC-3.svg"/>
+            </object>
+        </div>
+    </div>
 </div>
 
 <script>
@@ -87,7 +138,7 @@
         var roomStatus = JSON.parse(roomStat);
         <!--var roomStatus = {{roomStatus}};-->
         roomStatus.forEach(function(room) {
-            if (room.isFree){
+            if (!room.isFree){
                 var svgRoom = svgDoc.getElementById(room.roomNum);
                 if (svgRoom != null)
                     svgRoom.classList.add('booked');
@@ -112,7 +163,7 @@
         var roomStatus = JSON.parse(roomStat);
         <!--var roomStatus = {{roomStatus}};-->
         roomStatus.forEach(function(room) {
-            if (room.isFree){
+            if (!room.isFree){
                 var svgRoom = svgDoc.getElementById(room.roomNum);
                 if (svgRoom != null)
                     svgRoom.classList.add('booked');
@@ -137,7 +188,7 @@
         var roomStatus = JSON.parse(roomStat);
         <!--var roomStatus = {{roomStatus}};-->
         roomStatus.forEach(function(room) {
-            if (room.isFree){
+            if (!room.isFree){
                 var svgRoom = svgDoc.getElementById(room.roomNum);
                 if (svgRoom != null)
                     svgRoom.classList.add('booked');
