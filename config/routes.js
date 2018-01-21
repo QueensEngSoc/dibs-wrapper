@@ -16,11 +16,14 @@ module.exports = function(app, passport) {
     // LOGIN ===============================
     // =====================================
     // show the login form
-    app.get('/login', loginPage);
+
+    app.get('/login', isLoggedInTest, function(req, res) {
+        app.get('/login', loginPage);
+    });
 
     // process the login form
     app.post('/login', passport.authenticate('local-login', {
-        successRedirect : '/profile', // redirect to the secure profile section
+        successRedirect : '/accounts', // redirect to the secure profile section
         failureRedirect : '/login', // redirect back to the signup page if there is an error
         failureFlash : true // allow flash messages
     }));
@@ -48,7 +51,9 @@ module.exports = function(app, passport) {
     app.get('/accounts', isLoggedIn, function(req, res) {
         console.log("User is logged in!");
 
-        app.get('/accounts', accountPage);
+        res.render('accountPage',{
+            user: req.user
+        });
     });
 
     // =====================================
@@ -71,4 +76,14 @@ function isLoggedIn(req, res, next) {
 
     // if they aren't redirect them to the login page
     res.redirect('/login');
+}
+
+function isLoggedInTest(req, res, next) {
+
+    // if user is authenticated in the session, carry on
+    if (req.isAuthenticated())
+        res.redirect('/accounts')
+
+    // if they aren't redirect them to the login page
+    return next();
 }

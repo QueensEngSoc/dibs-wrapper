@@ -4,16 +4,6 @@ var express = require('express');
 var router = express.Router();
 var path = require('path');
 
-function isLoggedIn(req, res, next) {
-
-    // if user is authenticated in the session, carry on
-    if (req.isAuthenticated())
-        return;
-
-    // if they aren't redirect them to the home page
-    res.redirect('/login');
-}
-
 router.get('/accounts', function (req, res, next) { //the request to render the page
     // var db = req.db;
     // var roomInfo = db.get('roomInfo');
@@ -23,10 +13,9 @@ router.get('/accounts', function (req, res, next) { //the request to render the 
     //     });
     // });
 
-    isLoggedIn(req, res, next);
-
     res.render('accountPage', {    // render the page with server side variables passed to the client
-        test: "test"
+        test: "test",
+        user: req.user,
     });
 
 });
