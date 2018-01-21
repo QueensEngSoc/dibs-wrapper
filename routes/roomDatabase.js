@@ -126,10 +126,33 @@ function getTimeFree(day, time, roomID) { //returns whether or not a room is boo
     return find;
 }
 
+function getListOfRoomState(day, time) { //returns whether or not a room is booked at a certain time and day, for each room  (useful for map / home page)
+    var out = false;
+    // var listFree = {
+    //     room: 0,
+    //     isFree: false,
+    // };
+    var listFree = [];
+
+    var find = new Promise(function(resolve, reject) {
+        roomDatabase.find({}).each(function(data, i) {
+            listFree.push({
+                room: data.Name,
+                isFree: data.Free[time].free
+            })
+        });
+        resolve();
+    });
+
+    return listFree;
+}
+
+
 module.exports = {
     getSort: getSort,
     getFree: getFree,
     getInfo: getInfo,
     getAllFree: getAllFree,
-    getTimeFree: getTimeFree
+    getTimeFree: getTimeFree,
+    getListOfRoomState: getListOfRoomState
 };

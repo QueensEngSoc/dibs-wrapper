@@ -3,7 +3,7 @@ var index = require('../routes/index');
 var loginPage = require('../routes/login');
 var accountPage = require('../routes/accounts');
 var signupPage = require('../routes/signup');
-
+var map = require('../routes/map')
 // app/routes.js
 module.exports = function(app, passport) {
 
@@ -58,11 +58,8 @@ module.exports = function(app, passport) {
         req.logout();
         res.redirect('/');
     });
-    app.get('/map', function(req, res) {
-        res.render('map', {    // render the page with server side variables passed to the client
-            title: "D!Bs Map View"
-        });
-    })
+
+    app.get('/map', map);
 };
 
 // route middleware to make sure a user is logged in

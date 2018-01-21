@@ -24,6 +24,9 @@
     .bookable {
       fill: rgba(0, 255, 0, 0.2);
     }
+      .booked{
+      fill: rgba(255, 0, 28, 0.3);
+      }
 
     .unbookable {
       fill: rgba(0, 0, 0, 0.1);

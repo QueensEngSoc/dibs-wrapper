@@ -25,14 +25,21 @@
       fill: rgba(0, 255, 0, 0.2);
     }
 
+    .booked{
+        fill: rgba(255, 0, 28, 0.3);
+    }
+
     .unbookable {
       fill: rgba(0, 0, 0, 0.1);
     }
   </style>
   <script>
-    function alertEl(el) {
-      alert(el.id);
-    }
+      function alertEl(el) {
+        var isBooked = false;
+        if (el.classList.contains("booked"))
+            isBooked = true;
+        alert(el.id + "\nBooked: " + isBooked);
+      }
   </script>
   <g
      id="layer1"

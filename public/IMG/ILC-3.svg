@@ -29,7 +29,11 @@
       fill: rgba(0, 0, 255, 0.2);
     }
 
-    .bookable {
+      .booked{
+      fill: rgba(255, 0, 28, 0.3);
+      }
+
+      .bookable {
       fill: rgba(0, 255, 0, 0.2);
     }
 

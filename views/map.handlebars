@@ -31,6 +31,7 @@
         $('#' + to).removeClass('hidden');
         $('#' + to + '-button').addClass('active');
     }
+
 </script>
 <div class="header" style="z-index: 500">
     <div class="container">
@@ -54,7 +55,7 @@
     </div>
 </div>
 <div id="first">
-    <object data="IMG/ILC-1.svg" type="image/svg+xml" class="half">
+    <object data="IMG/ILC-1.svg" id="floor1" type="image/svg+xml" class="half">
         <img src="IMG/ILC-1.svg" />
     </object>
 </div>
@@ -68,3 +69,20 @@
         <img src="IMG/ILC-3.svg" />
     </object>
 </div>
+
+<script>
+    var a = document.getElementById("floor1");
+
+    // It's important to add an load event listener to the object,
+    // as it will load the svg doc asynchronously
+    a.addEventListener("load",function(){
+
+        // get the inner DOM of alpha.svg
+        var svgDoc = a.contentDocument;
+        // get the inner element by id
+        var room111 = svgDoc.getElementById("bmh111");
+        if ({{room111Booked}} ){
+            room111.classList.add('booked');
+        }
+    }, false);
+</script>
