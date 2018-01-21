@@ -12,6 +12,8 @@ router.get('/login', function (req, res, next) { //the request to render the pag
     //         room: result
     //     });
     // });
+    if (req.isAuthenticated())
+        res.redirect('/accounts');
 
     var msg = req.flash('loginMessage');
     var hasMsg = false;

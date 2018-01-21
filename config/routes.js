@@ -17,9 +17,10 @@ module.exports = function(app, passport) {
     // =====================================
     // show the login form
 
-    app.get('/login', isLoggedInTest, function(req, res) {
-        app.get('/login', loginPage);
-    });
+    // app.get('/login', isLoggedInTest, function(req, res) {
+    //     app.get('/login', loginPage);
+    // });
+    app.get('/login', loginPage);
 
     // process the login form
     app.post('/login', passport.authenticate('local-login', {
@@ -82,7 +83,7 @@ function isLoggedInTest(req, res, next) {
 
     // if user is authenticated in the session, carry on
     if (req.isAuthenticated())
-        res.redirect('/accounts')
+        res.redirect('/accounts');
 
     // if they aren't redirect them to the login page
     return next();
