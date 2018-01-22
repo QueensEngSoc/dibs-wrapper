@@ -70,7 +70,7 @@ function getInfo(roomID) { //gets the info of the selected room (roomID)
         roomDatabase.find({RoomID: roomID}).each(function(data, i) {
             out.room = data.Name;
             out.size = data.Description;
-            out.tempImgURL = data.Picture;
+            out.tempImgURL =  "/" + data.Picture;
             out.tv = data.tv;
             out.phone = data.phone;
             out.special = data.special;

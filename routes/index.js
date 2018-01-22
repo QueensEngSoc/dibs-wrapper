@@ -15,7 +15,9 @@ router.post('/bookroom', function (req, res) {
     bookingTimeStart = bookingTimeStart.substr(0,bookingTimeStart.indexOf(']'));
 
     var roomInfo = req.db.get('roomDatabase');
-    var roomID = parseInt(roomToBook, 10);
+    var roomNum = roomToBook.trim().match(/\d+/)[0] // get the number from the room
+    var roomID = parseInt(roomNum, 10);
+
 
     roomInfo.find({RoomID: roomID}).each(function(data, val) {
         var temp = data.Free;
@@ -25,6 +27,17 @@ router.post('/bookroom', function (req, res) {
         if (temp[bookingTimeStart - 7].free == true)
         {
             temp[bookingTimeStart - 7].free = false;
+
+            if (req.isAuthenticated())
+            {
+                try{
+                    var user = req.user;
+                    var usrid = user.id;
+                    temp[bookingTimeStart - 7].owner = usrid;
+                }catch(exception){
+
+                }
+            }
             roomInfo.update({RoomID: roomID}, {$set: {Free : temp}});
             success = true;
             bookMsg = "Booking successful for " + data.Name + " at " + bookingTimeStart + ":30";
@@ -51,6 +64,29 @@ router.get('/', function (req, res, next) { //the request to render the page
         });
     });
 
+});
+
+router.get('/book/:roomName/', function (req, res, next) {
+    var room = req.params.roomName;
+    roomDB.getInfo(room).then(function (out) {
+        var roomID = out.RoomID;
+        roomDB.getFree(0, roomID).then(function (out1) { //so this is the dumbest thing ever XD, we'll talk
+            var usrid;
+            if (req.isAuthenticated()) {
+                try {
+                    var user = req.user;
+                    usrid = user.id;
+
+                } catch (exception) {
+
+                }
+            }
+            out.userid = usrid;
+            out.free = out1;
+
+            res.render('roomInfo', out);
+        });
+    });
 });
 
 module.exports = router;

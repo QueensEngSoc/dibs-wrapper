@@ -2,6 +2,11 @@ function testHello() {
     alert("hello world")
 };
 
+function checkUsrID(userID, bookingID) {
+
+};
+
+
 function dibsRoomBookClick(roomID, time, element){
     // this function gets the current room id, embeds it into the post request, and then sends a post.
     // On success, it returns whether the booking was successful, or the error that occurred
@@ -49,7 +54,7 @@ function doModal(heading, formContent, success) {
     if(!success)
         html += '<br/>' +
             '<video height="400" width="300" autoplay loop>\n' +
-            '  <source src="video/carson-1.webm" type="video/webm">\n' +
+            '  <source src="/video/carson-1.webm" type="video/webm">\n' +
             '  Your browser does not support the video tag.\n' +
             '</video>';
 

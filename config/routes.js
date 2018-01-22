@@ -66,6 +66,9 @@ module.exports = function(app, passport) {
     });
 
     app.get('/map', map);
+
+    app.get('/book/:roomID', index);
+
 };
 
 // route middleware to make sure a user is logged in
