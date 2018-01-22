@@ -68,8 +68,9 @@ router.get('/', function (req, res, next) { //the request to render the page
 
 router.get('/book/:roomName/', function (req, res, next) {
     var room = req.params.roomName;
-    roomDB.getInfo(room).then(function (out) {
-        var roomID = out.RoomID;
+    room = room.replace(/-/g, ' '); // strip out dashes
+    roomDB.getInfoByName(room).then(function (out) {
+        var roomID = out.roomid;
         roomDB.getFree(0, roomID).then(function (out1) { //so this is the dumbest thing ever XD, we'll talk
             var usrid;
             if (req.isAuthenticated()) {

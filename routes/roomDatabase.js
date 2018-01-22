@@ -83,6 +83,34 @@ function getInfo(roomID) { //gets the info of the selected room (roomID)
     return find;
 }
 
+function getInfoByName(roomName) { //gets the info of the selected room (roomID)
+    var out = {
+        room: "Error",
+        size: "Error",
+        tv: "Error",
+        phone: "Error",
+        special: "Error",
+        tempImgURL: "",
+        roomid: "Error",
+    };
+
+    var find = new Promise(function(resolve, reject) {
+        roomDatabase.find({Name: roomName}).each(function(data, i) {
+            out.room = data.Name;
+            out.size = data.Description;
+            out.tempImgURL =  "/" + data.Picture;
+            out.tv = data.tv;
+            out.phone = data.phone;
+            out.special = data.special;
+            out.roomid = data.RoomID;
+
+            resolve(out);
+        });
+    });
+
+    return find;
+}
+
 /**
  *
  * @param day
@@ -177,5 +205,6 @@ module.exports = {
     getInfo: getInfo,
     getAllFree: getAllFree,
     getTimeFree: getTimeFree,
-    getListOfRoomState: getListOfRoomState
+    getListOfRoomState: getListOfRoomState,
+    getInfoByName: getInfoByName
 };
