@@ -5,6 +5,7 @@ var router = express.Router();
 var path = require('path');
 
 var roomFuncs = require('./roomDatabase');
+var accountFuncs = require('../models/userFunctions');
 
 router.get('/map', function (req, res, next) { //the request to render the page
 
@@ -18,16 +19,7 @@ router.get('/map', function (req, res, next) { //the request to render the page
                             // and we should therefore subtract 1 from the hour to get the right data (eg. if it is 7:10pm
                             // right now, then we really want the data from 6:30 - 7:30, not 7:30 - 8:30)
 
-    var usrid = -1;
-
-    if (req.isAuthenticated()) {
-        try {
-            var user = req.user;
-            usrid = user.id;
-        } catch (exception) {
-
-        }
-    }
+    var usrid = accountFuncs.getUserID(req);
 
     roomFuncs.getListOfRoomState(dateObj.getDate(), current_hour, usrid).then(function(listFree){
         var jsonList = JSON.stringify(listFree);

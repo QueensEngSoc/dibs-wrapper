@@ -3,6 +3,7 @@ var router = express.Router();
 var path = require('path');
 var roomDB = require('./roomDatabase.js'); //the roomDatabase interface which provide 5 functions. Look in the file for how to use them
 // const $ = require('najax');
+var accountFuncs = require('../models/userFunctions');
 
 // console.log(path.join(__dirname, '/../'));
 
@@ -28,16 +29,10 @@ router.post('/bookroom', function (req, res) {
         {
             temp[bookingTimeStart - 7].free = false;
 
-            if (req.isAuthenticated())
-            {
-                try{
-                    var user = req.user;
-                    var usrid = user.id;
+            var usrid = accountFuncs.getUserID(req);
+            if (usrid != -1)
                     temp[bookingTimeStart - 7].owner = usrid;
-                }catch(exception){
 
-                }
-            }
             roomInfo.update({RoomID: roomID}, {$set: {Free : temp}});
             success = true;
             bookMsg = "Booking successful for " + data.Name + " at " + bookingTimeStart + ":30";
@@ -69,20 +64,12 @@ router.get('/', function (req, res, next) { //the request to render the page
 router.get('/book/:roomName/', function (req, res, next) {
     var room = req.params.roomName;
     room = room.toUpperCase();
+
     room = room.replace(/-/g, ' '); // strip out dashes
     roomDB.getInfoByName(room).then(function (out) {
         var roomID = out.roomid;
         roomDB.getFree(0, roomID).then(function (out1) { //so this is the dumbest thing ever XD, we'll talk
-            var usrid;
-            if (req.isAuthenticated()) {
-                try {
-                    var user = req.user;
-                    usrid = user.id;
-
-                } catch (exception) {
-
-                }
-            }
+            var usrid = accountFuncs.getUserID(req);
             out.userid = usrid;
             out.free = out1;
 

@@ -1,11 +1,4 @@
-function testHello() {
-    alert("hello world")
-};
-
-function checkUsrID(userID, bookingID) {
-
-};
-
+// this contains some JS functions that are used on the index and room pages
 
 function dibsRoomBookClick(roomID, time, element){
     // this function gets the current room id, embeds it into the post request, and then sends a post.
@@ -21,7 +14,6 @@ function dibsRoomBookClick(roomID, time, element){
         $.ajax({
             url: "/bookroom",
             type: "POST",
-            // data: JSON.stringify([roomID, time]),
             data: JSON.stringify([roomID, time]),
             success: function (data) {
                 console.log("Header: " + data.HeaderMsg + " body: " + data.BookingStatusMsg + " data: " + data);
