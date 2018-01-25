@@ -1,9 +1,10 @@
 var express = require('express');
 var router = express.Router();
 var path = require('path');
-var roomDB = require('./roomDatabase.js'); //the roomDatabase interface which provide 5 functions. Look in the file for how to use them
+var roomDB = require('../models/roomDatabase.js'); //the roomDatabase interface which provide 5 functions. Look in the file for how to use them
 // const $ = require('najax');
 var accountFuncs = require('../models/userFunctions');
+var roomBook = require('../models/roomBooking');
 
 // console.log(path.join(__dirname, '/../'));
 
@@ -15,37 +16,16 @@ router.post('/bookroom', function (req, res) {
     roomToBook = roomToBook.substr(0, roomToBook.indexOf(','));
     bookingTimeStart = bookingTimeStart.substr(0,bookingTimeStart.indexOf(']'));
 
-    var roomInfo = req.db.get('roomDatabase');
     var roomNum = roomToBook.trim().match(/\d+/)[0] // get the number from the room
     var roomID = parseInt(roomNum, 10);
+    var usrid = accountFuncs.getUserID(req);
 
-
-    roomInfo.find({RoomID: roomID}).each(function(data, val) {
-        var temp = data.Free;
-        var success = false;
-        var header = "Booking failed";
-        var bookMsg = "Sorry, an error occured and the room was not booked.  Please try again later."
-        if (temp[bookingTimeStart - 7].free == true)
-        {
-            temp[bookingTimeStart - 7].free = false;
-
-            var usrid = accountFuncs.getUserID(req);
-            if (usrid != -1)
-                    temp[bookingTimeStart - 7].owner = usrid;
-
-            roomInfo.update({RoomID: roomID}, {$set: {Free : temp}});
-            success = true;
-            bookMsg = "Booking successful for " + data.Name + " at " + bookingTimeStart + ":30";
-            header = "Booking Success!";
-        }
-        else{
-            bookMsg = "Sorry, this room is booked.  Looks like someone beat you to it :(";
-            header = "Room Already Booked"
-        }
-
-        console.log("Request Body: " + JSON.stringify(req.body) + " room id: " + roomToBook + " Success" + success);
-        res.send({HeaderMsg: header, BookingStatusMsg: bookMsg, BookStatus: success});
-    });
+    if (usrid != -1) {
+        roomBook.bookRoom(0, bookingTimeStart, roomID, usrid).then(function (data) {
+            console.log("Request Body: " + JSON.stringify(req.body) + " room id: " + roomToBook + " Success" + data.success);
+            res.send({HeaderMsg: data.header, BookingStatusMsg: data.bookMsg, BookStatus: data.success});
+        });
+    }
 });
 
 

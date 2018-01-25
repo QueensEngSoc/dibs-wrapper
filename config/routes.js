@@ -4,6 +4,7 @@ var loginPage = require('../routes/login');
 var accountPage = require('../routes/accounts');
 var signupPage = require('../routes/signup');
 var map = require('../routes/map');
+
 // app/routes.js
 module.exports = function(app, passport) {
 
@@ -64,6 +65,7 @@ module.exports = function(app, passport) {
     // LOGOUT ==============================
     // =====================================
     app.get('/logout', function(req, res) {
+        console.log(req);
         req.logout();
         res.redirect('/');
     });
@@ -71,6 +73,14 @@ module.exports = function(app, passport) {
     app.get('/map', map);
 
     app.get('/book/:roomID', index);
+
+    // =====================================
+    // Logout ==============================
+    // =====================================
+    app.get('/unbook', function(req, res) {
+        req.unbook();
+        res.redirect('/');
+    });
 
 };
 

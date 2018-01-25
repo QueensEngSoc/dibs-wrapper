@@ -3,7 +3,7 @@
 var express = require('express');
 var router = express.Router();
 var path = require('path');
-var roomFuncs = require('./roomDatabase');
+var roomFuncs = require('../models/roomDatabase');
 var accountFuncs = require('../models/userFunctions');
 
 router.get('/accounts', function (req, res, next) { //the request to render the page

@@ -207,7 +207,7 @@ function getListOfRoomsForUser(usrid) {
         var listBookings = [];
         usrid = typeof usrid  !== 'undefined' ? usrid : -1;
 
-        return roomDatabase.find({"Free": { $elemMatch: {owner: "5a65329bcf7dba25cc0103d0"}}}).each(function(data, i) {
+        return roomDatabase.find({"Free": { $elemMatch: {owner: "5a6962245468391934e424a1"}}}).each(function(data, i) {
             var roomNum = data.Name.match(/\d+/)[0] // get the number from the room
             var mapRoomName = "bmh" + roomNum;
 
