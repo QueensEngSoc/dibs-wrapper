@@ -3,7 +3,7 @@ var index = require('../routes/index');
 var loginPage = require('../routes/login');
 var accountPage = require('../routes/accounts');
 var signupPage = require('../routes/signup');
-var map = require('../routes/map')
+var map = require('../routes/map');
 // app/routes.js
 module.exports = function(app, passport) {
 

@@ -1,12 +1,9 @@
 function testHello() {
     alert("hello world")
-};
-
+}
 function checkUsrID(userID, bookingID) {
 
-};
-
-
+}
 function dibsRoomBookClick(roomID, time, element){
     // this function gets the current room id, embeds it into the post request, and then sends a post.
     // On success, it returns whether the booking was successful, or the error that occurred
@@ -45,9 +42,9 @@ function doModal(heading, formContent, success) {
     html += '<div class="modal-content">';
     html += '<div class="modal-header">';
     html += '<h5 class="modal-title" id="exampleModalLabel">'+heading+'</h5>';
-    html += '<button type="button" class="close" data-dismiss="modal" aria-label="Close">'
-    html += '<span aria-hidden="true">&times;</span>'
-    html += '</button>'
+    html += '<button type="button" class="close" data-dismiss="modal" aria-label="Close">';
+    html += '<span aria-hidden="true">&times;</span>';
+    html += '</button>';
     html += '</div>';
     html += '<div class="modal-body">';
     html += formContent;

@@ -8,9 +8,9 @@ function showAlert(header, message, success){
 
     html += '  <button type="button" class="close" data-dismiss="alert" aria-label="Close">\n' +
             '    <span aria-hidden="true">&times;</span>\n' +
-            '  </button>'
-    html += '<h4 class="alert-heading">'+header+'</h4>'
-    html += '<p>'+message+'</p>'
+            '  </button>';
+    html += '<h4 class="alert-heading">'+header+'</h4>';
+    html += '<p>'+message+'</p>';
     html += '</div>'
 }
 
@@ -20,7 +20,7 @@ function doModal(heading, formContent, success) {
     html += '<div class="modal-content">';
     html += '<div class="modal-header">';
     html += '<a class="close" data-dismiss="modal">×</a>';
-    html += '<h4>'+heading+'</h4>'
+    html += '<h4>'+heading+'</h4>';
     html += '</div>';
     html += '<div class="modal-body">';
     html += formContent;
@@ -97,7 +97,7 @@ document.addEventListener("DOMContentLoaded", function() {
     {
         var i = document.createElement("input");
         return "setCustomValidity" in i;
-    }
+    };
 
     if(supports_input_validity()) {
         var usernameInput = document.getElementById("field_username");
