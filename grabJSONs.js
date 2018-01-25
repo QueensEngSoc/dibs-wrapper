@@ -122,11 +122,11 @@ function getAPIInfo() {
                 else if (description.indexOf("Large") >= 0)
                     data.size = 2;  // set 2 as large
                 else {
-                    data.size = 3 // this is room 111, or the "other" type room
+                    data.size = 3; // this is room 111, or the "other" type room
                     data.special = true;
                 }
 
-                var roomNum = data.Name.match(/\d+/)[0] // get the number from the room
+                var roomNum = data.Name.match(/\d+/)[0]; // get the number from the room
                 var roomPicName = "BMH" + roomNum + ".jpg";
                 if (fs.existsSync("public/IMG/" + roomPicName)) {
                     data.Picture = "IMG/" + roomPicName;

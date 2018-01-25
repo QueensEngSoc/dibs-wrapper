@@ -168,7 +168,7 @@ function getListOfRoomState(day, time, usrid) {
 
 
         return roomDatabase.find({}).each(function(data, i) {
-            var roomNum = data.Name.match(/\d+/)[0] // get the number from the room
+            var roomNum = data.Name.match(/\d+/)[0]; // get the number from the room
             var mapRoomName = "bmh" + roomNum;
 
             if (!isValidTime(time))
