@@ -1,9 +1,5 @@
-function testHello() {
-    alert("hello world")
-}
-function checkUsrID(userID, bookingID) {
+// this contains some JS functions that are used on the index and room pages
 
-}
 function dibsRoomBookClick(roomID, time, element){
     // this function gets the current room id, embeds it into the post request, and then sends a post.
     // On success, it returns whether the booking was successful, or the error that occurred
@@ -18,7 +14,6 @@ function dibsRoomBookClick(roomID, time, element){
         $.ajax({
             url: "/bookroom",
             type: "POST",
-            // data: JSON.stringify([roomID, time]),
             data: JSON.stringify([roomID, time]),
             success: function (data) {
                 console.log("Header: " + data.HeaderMsg + " body: " + data.BookingStatusMsg + " data: " + data);
@@ -42,9 +37,9 @@ function doModal(heading, formContent, success) {
     html += '<div class="modal-content">';
     html += '<div class="modal-header">';
     html += '<h5 class="modal-title" id="exampleModalLabel">'+heading+'</h5>';
-    html += '<button type="button" class="close" data-dismiss="modal" aria-label="Close">';
-    html += '<span aria-hidden="true">&times;</span>';
-    html += '</button>';
+    html += '<button type="button" class="close" data-dismiss="modal" aria-label="Close">'
+    html += '<span aria-hidden="true">&times;</span>'
+    html += '</button>'
     html += '</div>';
     html += '<div class="modal-body">';
     html += formContent;

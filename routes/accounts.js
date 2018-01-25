@@ -3,6 +3,8 @@
 var express = require('express');
 var router = express.Router();
 var path = require('path');
+var roomFuncs = require('./roomDatabase');
+var accountFuncs = require('../models/userFunctions');
 
 router.get('/accounts', function (req, res, next) { //the request to render the page
     // var db = req.db;
@@ -13,9 +15,17 @@ router.get('/accounts', function (req, res, next) { //the request to render the 
     //     });
     // });
 
-    res.render('accountPage', {    // render the page with server side variables passed to the client
-        test: "test",
-        user: req.user,
+    var usrid = accountFuncs.getUserID(req);
+    if (usrid == -1)
+        res.redirect('/login');
+
+    roomFuncs.getListOfRoomsForUser(usrid).then(function(listBookings) {
+
+        res.render('accountPage', {    // render the page with server side variables passed to the client
+            test: "test",
+            user: req.user,
+        });
+
     });
 
 });

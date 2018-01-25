@@ -49,13 +49,16 @@ module.exports = function(app, passport) {
     // =====================================
     // we will want this protected so you have to be logged in to visit
     // we will use route middleware to verify this (the isLoggedIn function)
-    app.get('/accounts', isLoggedIn, function(req, res) {
-        console.log("User is logged in!");
 
-        res.render('accountPage',{
-            user: req.user
-        });
-    });
+    // app.get('/accounts', isLoggedIn, function(req, res) {    // commented out for now, since you must render the page inside
+    //                                                          // this function if you do things this way (AFAIK)
+    //     console.log("User is logged in!");
+    //     res.render('accountPage',{
+    //         user: req.user
+    //     });
+    // });
+
+    app.get('/accounts', accountPage);
 
     // =====================================
     // LOGOUT ==============================

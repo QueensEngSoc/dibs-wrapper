@@ -166,22 +166,68 @@ function getListOfRoomState(day, time, usrid) {
         var listFree = [];
         usrid = typeof usrid  !== 'undefined' ? usrid : -1;
 
+
         return roomDatabase.find({}).each(function(data, i) {
             var roomNum = data.Name.match(/\d+/)[0]; // get the number from the room
             var mapRoomName = "bmh" + roomNum;
 
-            listFree.push({
-                room: data.Name,
-                roomNum: mapRoomName,
-                isFree: data.Free[time - 7].free,
-                isMine: (data.Free[time - 7].owner == usrid)  // true if the user booked the room, false otherwise
-            })
+            if (!isValidTime(time))
+            {
+                listFree.push({
+                    room: data.Name,
+                    roomNum: mapRoomName,
+                    isFree: false,
+                })
+            }
+            else {
+                listFree.push({
+                    room: data.Name,
+                    roomNum: mapRoomName,
+                    isFree: data.Free[time - 7].free,
+                    isMine: (data.Free[time - 7].owner == usrid)  // true if the user booked the room, false otherwise
+                })
+            }
 
         }).then(function () {
             return resolve(listFree);
 
         });
     });
+}
+
+/**
+ * Gets a list of room bookings for a specific user
+ * @param day
+ * @param time
+ * @param usrid
+ * @returns {*}
+ */
+function getListOfRoomsForUser(usrid) {
+    return new Promise(function(resolve, reject) {
+        var listBookings = [];
+        usrid = typeof usrid  !== 'undefined' ? usrid : -1;
+
+        return roomDatabase.find({owner: userid}).each(function(data, i) {
+            var roomNum = data.Name.match(/\d+/)[0] // get the number from the room
+            var mapRoomName = "bmh" + roomNum;
+
+            listFree.push({
+                room: data.Name,
+                roomNum: mapRoomName,
+                bookingStart: data
+            })
+
+        }).then(function () {
+            return resolve(listBookings);
+
+        });
+    });
+}
+
+function isValidTime(time){
+     if (time < 7 || time > 23)
+         return false;
+     return true;
 }
 
 module.exports = {
@@ -191,5 +237,6 @@ module.exports = {
     getAllFree: getAllFree,
     getTimeFree: getTimeFree,
     getListOfRoomState: getListOfRoomState,
-    getInfoByName: getInfoByName
+    getInfoByName: getInfoByName,
+    getListOfRoomsForUser: getListOfRoomsForUser
 };
