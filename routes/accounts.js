@@ -16,17 +16,18 @@ router.get('/accounts', function (req, res, next) { //the request to render the 
     // });
 
     var usrid = accountFuncs.getUserID(req);
-    if (usrid == -1)
+    if (usrid == -1 || usrid == undefined)
         res.redirect('/login');
+    else {
+        roomFuncs.getListOfRoomsForUser(usrid).then(function (listBookings) {
 
-    roomFuncs.getListOfRoomsForUser(usrid).then(function(listBookings) {
+            res.render('accountPage', {    // render the page with server side variables passed to the client
+                user: req.user,
+                booking: listBookings
+            });
 
-        res.render('accountPage', {    // render the page with server side variables passed to the client
-            test: "test",
-            user: req.user,
         });
-
-    });
+    }
 
 });
 

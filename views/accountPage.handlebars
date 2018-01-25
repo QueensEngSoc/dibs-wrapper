@@ -12,7 +12,9 @@
         </div>
     </div>
     <style>
-        body        { padding-top:110px; }
+        body {
+            padding-top: 110px;
+        }
     </style>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
 
@@ -36,6 +38,24 @@
                     <strong>id</strong>: {{user._id}}<br>
                     <strong>email</strong>: {{user.local.email}}<br>
                     <strong>password</strong>: {{user.local.password}}
+                </p>
+
+            </div>
+        </div>
+
+        <div class="col-sm-12">
+            <div class="well">
+                <h3><span class="fa fa-user"></span> Booked Rooms</h3>
+
+                <p style="text-align: left;">
+                    {{#each booking}}
+                        {{#each free}}
+                                {{#if_eq owner ../../user._id}}
+                                    <strong>Booking</strong>: {{time}} - {{../room}}<br>
+                                {{/if_eq}}
+
+                        {{/each}}
+                    {{/each}}
                 </p>
 
             </div>
