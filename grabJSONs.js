@@ -2,7 +2,7 @@
 var isAlexDesktop = false;   // set to false if this is not my desktop
 var isAlexLaptop = false;   // set to false if this is not my surface
 var isDebug = true;        // set this to true if you are running the debugger on any other file, else this will stop
-                            // running when you click debug!!
+// running when you click debug!!
 
 var mongo = require('mongodb');
 var monk = require('monk');
@@ -14,13 +14,12 @@ var roomInfo = db.get('roomDatabase');
 // one on my desktop, and then switch to the right database collection, and start the process
 //--------------------------------------------------------------------------------------------------------------------//
 
-if (require.main.filename.toString().indexOf("D:\\Development\\Queens\\ESSDEV\\DibsMain") >=0)
+if (require.main.filename.toString().indexOf("D:\\Development\\Queens\\ESSDEV\\DibsMain") >= 0)
     isAlexDesktop = true;
 else if (require.main.filename.toString().indexOf("D:\\OneDrive\\Development\\Queens\\ESSDEV\\DibsMain\\MongoDB") >= 0)
     isAlexLaptop = true;
 
-if (!isDebug && (isAlexDesktop ||isAlexLaptop))
-{
+if (!isDebug && (isAlexDesktop || isAlexLaptop)) {
 
     //spawn the first process containing the mongod.exe process
     var spawn = require('child_process').spawn,
@@ -46,7 +45,7 @@ if (!isDebug && (isAlexDesktop ||isAlexLaptop))
             cp.stdin.write("cd H:\\Programs\\MongoDB\\bin \n");
             cp.stdin.write("mongod --dbpath D:\\Development\\Queens\\ESSDEV\\DibsMain\\MongoDB \n");
         }
-        else if (isAlexLaptop){
+        else if (isAlexLaptop) {
             cp.stdin.write("C: \n");
             cp.stdin.write("cd C:\\Program Files\\MongoDB\\Server\\3.6\\bin \n");
             cp.stdin.write("mongod --dbpath D:\\OneDrive\\Development\\Queens\\ESSDEV\\DibsMain\\MongoDB \n");
@@ -68,7 +67,7 @@ if (!isDebug && (isAlexDesktop ||isAlexLaptop))
         // new stdout listener
         mongo.stdout.on('data', function (data) {
             console.log('mongo: ' + data);
-            if (data.toString().indexOf("switched to db roomDatabase") >=0 || data.toString().indexOf("use roomDatabase") >= 0)
+            if (data.toString().indexOf("switched to db roomDatabase") >= 0 || data.toString().indexOf("use roomDatabase") >= 0)
                 setTimeout(function () { // after 1 sec
                     getAPIInfo();
                 }, 1);
@@ -79,8 +78,7 @@ if (!isDebug && (isAlexDesktop ||isAlexLaptop))
             mongo.stdin.write("H: \n");
             mongo.stdin.write("cd H:\\Programs\\MongoDB\\bin \n");
         }
-        else if (isAlexLaptop)
-        {
+        else if (isAlexLaptop) {
             mongo.stdin.write("C: \n");
             mongo.stdin.write("cd C:\\Program Files\\MongoDB\\Server\\3.6\\bin \n");
         }
@@ -92,9 +90,9 @@ if (!isDebug && (isAlexDesktop ||isAlexLaptop))
 
 
 }
-else
-    getAPIInfo();
-
+else {
+     getAPIInfo();
+}
 
 //--------------------------------------------------------------------------------------------------------------------//
 //                                      END OF AUTOMAGIC™ COOL SECTION                                                //
@@ -106,40 +104,43 @@ function getAPIInfo() {
     var str = "https://queensu.evanced.info/dibsAPI/rooms";
 
     request(str, function (err, res, body) {
-        for (var json in JSON.parse(body)) {
-            var data = JSON.parse(body)[json];
-            var description = data.Description;
-            if (description.indexOf("TV") > 0 || description.indexOf("Projector") > 0)
-                data.tv = true;
-            else
-                data.tv = false;
+            for (var json in JSON.parse(body)) {
+                var data = JSON.parse(body)[json];
+                if (data.Name.indexOf("BMH 111") >= 0)
+                    data.Name = "BMH 111";
 
-            if (description.indexOf("Small") >= 0 || description.indexOf("small") >= 0)
-                data.size = 0;  // set 0 as small
-            else if (description.indexOf("Medium") >= 0)
-                data.size = "1";    // set 1 as medium
-            else if (description.indexOf("Large") >= 0)
-                data.size = 2;  // set 2 as large
-            else {
-                data.size = 3 // this is room 111, or the "other" type room
-                data.special = true;
+                var description = data.Description;
+                if (description.indexOf("TV") > 0 || description.indexOf("Projector") > 0)
+                    data.tv = true;
+                else
+                    data.tv = false;
+
+                if (description.indexOf("Small") >= 0 || description.indexOf("small") >= 0)
+                    data.size = 0;  // set 0 as small
+                else if (description.indexOf("Medium") >= 0)
+                    data.size = "1";    // set 1 as medium
+                else if (description.indexOf("Large") >= 0)
+                    data.size = 2;  // set 2 as large
+                else {
+                    data.size = 3 // this is room 111, or the "other" type room
+                    data.special = true;
+                }
+
+                var roomNum = data.Name.match(/\d+/)[0] // get the number from the room
+                var roomPicName = "BMH" + roomNum + ".jpg";
+                if (fs.existsSync("public/IMG/" + roomPicName)) {
+                    data.Picture = "IMG/" + roomPicName;
+                }
+
+                if (description.indexOf("phone") >= 0 || description.indexOf("Phone") >= 0)
+                    data.phone = true;
+
+                data.Free = createArray(16, true);
+
+                roomInfo.insert(data);
+                console.log(data);
             }
-
-            var roomNum = data.Name.match(/\d+/)[0] // get the number from the room
-            var roomPicName = "BMH" + roomNum + ".jpg";
-            if (fs.existsSync("public/IMG/" + roomPicName)) {
-                data.Picture = "IMG/" + roomPicName;
-            }
-
-            if (description.indexOf("phone") >= 0 || description.indexOf("Phone") >= 0)
-                data.phone = true;
-
-            data.Free = createArray(16, true);
-
-            roomInfo.insert(data);
-            console.log(data);
         }
-    }
     );
 
 }
@@ -149,8 +150,8 @@ function createArray(len, val) {
     for (var i = 0; i < len; i++) {
         out[i] = {
             free: val,
-            time: ((7+i)>=10?(7+i):"0"+(7+i))  + ":30 - " + ((8+i)>=10?(8+i):"0"+(8+i)) + ":30",
-            startTime: 7+i,
+            time: ((7 + i) >= 10 ? (7 + i) : "0" + (7 + i)) + ":30 - " + ((8 + i) >= 10 ? (8 + i) : "0" + (8 + i)) + ":30",
+            startTime: 7 + i,
             owner: 0,
         };
     }
