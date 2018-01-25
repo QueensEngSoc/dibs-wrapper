@@ -29,6 +29,10 @@
         fill: rgba(255, 0, 28, 0.3);
     }
 
+    .mine{
+        fill: rgba(255, 152, 0, 0.3);
+    }
+
     .unbookable {
       fill: rgba(0, 0, 0, 0.1);
     }
@@ -38,7 +42,10 @@
         var isBooked = false;
         if (el.classList.contains("booked"))
             isBooked = true;
-        alert(el.id + "\nBooked: " + isBooked);
+
+      var nums = el.id.replace( /^\D+/g, '');
+      var letters = el.id.match(/[a-zA-Z]+/g);
+      window.top.location.href='/book/' + letters + '-' + nums;
       }
   </script>
   <g

@@ -18,15 +18,18 @@ router.get('/map', function (req, res, next) { //the request to render the page
                             // and we should therefore subtract 1 from the hour to get the right data (eg. if it is 7:10pm
                             // right now, then we really want the data from 6:30 - 7:30, not 7:30 - 8:30)
 
-    roomFuncs.getListOfRoomState(dateObj.getDate(), current_hour).then(function(listFree){
-        var testStatus = [];
+    var usrid = -1;
 
-        testStatus.push({
-            room: "Room 111",
-            roomNum: "bmh111",
-            isFree: true
-        });
+    if (req.isAuthenticated()) {
+        try {
+            var user = req.user;
+            usrid = user.id;
+        } catch (exception) {
 
+        }
+    }
+
+    roomFuncs.getListOfRoomState(dateObj.getDate(), current_hour, usrid).then(function(listFree){
         var jsonList = JSON.stringify(listFree);
 
         res.render('map', {    // render the page with server side variables passed to the client

@@ -68,6 +68,7 @@ router.get('/', function (req, res, next) { //the request to render the page
 
 router.get('/book/:roomName/', function (req, res, next) {
     var room = req.params.roomName;
+    room = room.toUpperCase();
     room = room.replace(/-/g, ' '); // strip out dashes
     roomDB.getInfoByName(room).then(function (out) {
         var roomID = out.roomid;

@@ -154,34 +154,17 @@ function getTimeFree(day, time, roomID) { //returns whether or not a room is boo
     return find;
 }
 
-// function getListOfRoomState(day, time) { //returns whether or not a room is booked at a certain time and day, for each room  (useful for map / home page)
-//     var out = false;
-//     // var listFree = {
-//     //     room: 0,
-//     //     isFree: false,
-//     // };
-//     var listFree = [];
-//
-//     var find = new Promise(function(resolve, reject) {
-//         roomDatabase.find({}).each(function(data, i) {
-//             var roomNum = data.Name.match(/\d+/)[0] // get the number from the room
-//             var mapRoomName = "bmh" + roomNum;
-//
-//             listFree.push({
-//                 room: data.Name,
-//                 roomNum: mapRoomName,
-//                 isFree: data.Free[time - 7].free
-//             })
-//         });
-//         resolve();
-//     });
-//
-//     return listFree;
-// }
-
-function getListOfRoomState(day, time) {
+/** Returns a list of each room, and if the room is currently free or not.  It also returns if the current user is the
+ *  person who booked the room if the user is logged in
+ *
+ * @param day
+ * @param time
+ * @returns {*}
+ */
+function getListOfRoomState(day, time, usrid) {
     return new Promise(function(resolve, reject) {
         var listFree = [];
+        usrid = typeof usrid  !== 'undefined' ? usrid : -1;
 
         return roomDatabase.find({}).each(function(data, i) {
             var roomNum = data.Name.match(/\d+/)[0] // get the number from the room
@@ -190,8 +173,10 @@ function getListOfRoomState(day, time) {
             listFree.push({
                 room: data.Name,
                 roomNum: mapRoomName,
-                isFree: data.Free[time - 7].free
+                isFree: data.Free[time - 7].free,
+                isMine: (data.Free[time - 7].owner == usrid)  // true if the user booked the room, false otherwise
             })
+
         }).then(function () {
             return resolve(listFree);
 
