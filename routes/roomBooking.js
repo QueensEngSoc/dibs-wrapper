@@ -5,6 +5,7 @@ var roomDatabase = db.get('roomDatabase');
 
 //use is same as roomDatabase
 
+
 /**
  *
  * @param day
@@ -42,6 +43,43 @@ function bookRoom(day, time, roomID, usrid) { //books a room at a certain time a
     });
 }
 
+/**
+ *
+ * @param day
+ * @param time
+ * @param roomID
+ * @param usrid
+ */
+function unbookRoom(day, time, roomID, usrid) {
+    return new Promise(function(resolve, reject) {
+        roomDatabase.find({RoomID: roomID}).each(function (data, val) {
+            var temp = data.Free;
+            var out = {
+                header: "Unbooking failed",
+                bookMsg: "Sorry, an error occured and the room was not unbooked.  Please try again later.",
+                success: false
+            };
+            if (temp[time - 7].free === false && temp[time - 7].owner === usrid) {
+                temp[time - 7].free = true;
+                temp[time - 7].owner = 0;
+
+                roomDatabase.update({RoomID: roomID}, {$set: {Free: temp}});
+                out.success = true;
+                out.bookMsg = "Unbooking successful for " + data.Name + " at " + time + ":30";
+                out.header = "Unbooking Success!";
+            }
+            else {
+                out.bookMsg = "Sorry, this room is unbooked.  Looks like someone beat you to it :(";
+                out.header = "Room Already Unbooked"
+            }
+
+            resolve(out);
+
+        });
+    });
+}
+
 module.exports = {
-    bookRoom: bookRoom
+    bookRoom: bookRoom,
+    unbookRoom: unbookRoom
 };
