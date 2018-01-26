@@ -7,7 +7,7 @@ var path = require('path');
 router.get('/login', function (req, res, next) { //the request to render the page
 
     if (req.isAuthenticated())
-        res.redirect('/accounts');
+        return res.redirect('/accounts');
 
     var msg = req.flash('loginMessage');
     var hasMsg = false;

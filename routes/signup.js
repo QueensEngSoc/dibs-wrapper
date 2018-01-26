@@ -8,6 +8,9 @@ var passport = require('passport');
 
 router.get('/signup', function (req, res, next) { //the request to render the page
 
+    if (req.isAuthenticated())
+        return res.redirect('/accounts');
+
     var msg = req.flash('signupMessage');
     var hasMsg = false;
     if (msg != undefined && msg.length > 0) {
