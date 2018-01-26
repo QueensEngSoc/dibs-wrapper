@@ -45,6 +45,8 @@ module.exports = function(app, passport) {
 
     app.post('/bookroom', index);
 
+    app.post('/accounts/unbook', accountPage);
+
     // =====================================
     // PROFILE SECTION =====================
     // =====================================

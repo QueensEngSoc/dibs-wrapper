@@ -1,8 +1,8 @@
-<div class="header">
+<div class="header" style="z-index: 500;">
     <title>Log In</title>
     <div class="container">
         <div class="logo">
-            <h1><img src="/IMG/logo.png" width="40" height="50"/>&nbspMine! - Room {{room}}</h1>
+            <h1><a href="/" style=""><img src="/IMG/logo.png" width="40" height="50"/></a>&nbspMine! - Room {{room}}</h1>
         </div>
         <div class="nav">
             <ul>
@@ -43,29 +43,43 @@
             </div>
         </div>
 
-        <div class="col-sm-12">
-            <div class="well">
-                <h3><span class="fa fa-user"></span> Booked Rooms</h3>
+    <div class="col-sm-12">
+    <!--<div class="well">-->
+        <h3><span class="fa fa-user"></span> Booked Rooms</h3>
 
-                <p style="text-align: left;">
-                    {{#each booking}}
-                        {{#each free}}
-                                {{#if_eq owner ../../user._id}}
-                                    <strong>Booking</strong>: {{time}} - {{../room}}<br>
-                                {{/if_eq}}
+    <p style="text-align: left;">
+    <div class="row">
 
-                        {{/each}}
-                    {{/each}}
-                </p>
+        {{#each booking}}
+            {{#each free}}
+                {{#if_eq owner ../../user._id}}
+                    <div class="col-sm-6">
+                    <div class="card" style="margin-bottom: 20px; padding-bottom: 15px;">
+                        <img class="card-img-top" src="{{../pic}}" alt="Card image cap">
+                        <div class="card-block" style="padding-left: 10px; padding-right: 10px;">
+                            <h4 class="card-title">{{../room}} - {{time}}</h4>
+                                <p class="card-text">{{../description}}</p>
+                            {{#if_time startTime }}
+                                    <button onclick='unbookRoomClick("{{../roomid}}", {{startTime}}, 0, "{{owner}}", this)' class="btn btn-danger" style="padding-bottom: 5px;">Cancel Booking</button>
+                            {{else}}
+                                    <button disabled onclick='unbookRoomClick("{{../roomid}}", {{startTime}}, 0, "{{owner}}", this)' class="btn btn-danger" style="padding-bottom: 5px;">Cancel Booking</button>
+                            {{/if_time}}
+                         </div>
+                    </div>
+                </div>
 
-                <a href="/" class="btn btn-default btn-sm">Unbook All</a>
+                {{/if_eq}}
 
-
-            </div>
-        </div>
+            {{/each}}
+        {{/each}}
+    </div>
+        </p>
 
     </div>
+</div>
+
+<!--</div>-->
 
 </div>
 
-<script src="/JS/accountFuncs.js"></script>
+<script src="/JS/accountPageFuncs.js"></script>

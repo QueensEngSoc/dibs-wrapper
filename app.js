@@ -29,6 +29,18 @@ var hbs = exphbs.create({
                 return opts.fn(this);
             else
                 return opts.inverse(this);
+        },
+        if_time: function(a, opts){
+            var date = new Date();
+            var current_hour = date.getHours();
+            var current_min = date.getMinutes();    // check if the time is less than the current hour, since there is no
+                                                    // point in unbooking a event from the past
+
+            if (a < current_hour - 1 || ( a < current_hour && current_min > 30 ))
+                return opts.inverse(this);
+            else
+                return opts.fn(this);
+
         }
     },
     defaultLayout: 'main',
