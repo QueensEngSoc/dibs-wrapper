@@ -1,6 +1,6 @@
 // this contains some JS functions that are used on the index and room pages
 
-function dibsRoomBookClick(roomID, time, element){
+function dibsRoomBookClick(roomID, time, element, roomName){
     // this function gets the current room id, embeds it into the post request, and then sends a post.
     // On success, it returns whether the booking was successful, or the error that occurred
 
@@ -14,11 +14,14 @@ function dibsRoomBookClick(roomID, time, element){
         $.ajax({
             url: "/bookroom",
             type: "POST",
-            data: JSON.stringify([roomID, time]),
+            data: JSON.stringify([roomID, time, roomName]),
             success: function (data) {
                 console.log("Header: " + data.HeaderMsg + " body: " + data.BookingStatusMsg + " data: " + data);
                 var header = data.HeaderMsg;
                 var content = data.BookingStatusMsg;
+                if (header.indexOf("You must login") >= 0){
+                    window.location.href = ('/login?book=' + content);
+                }
                 doModal(header, content, data.BookStatus);
                 element.classList.remove("ytime");
                 element.classList.add("mtime");

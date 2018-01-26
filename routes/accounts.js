@@ -13,14 +13,14 @@ router.post('/accounts/unbook', function (req, res) {
     roomToUnbook = roomToUnbook.substr(roomToUnbook.indexOf('[') + 1);
     var bookingTimeStart = roomToUnbook.substr(roomToUnbook.indexOf(',') + 1);
     roomToUnbook = roomToUnbook.substr(0, roomToUnbook.indexOf(','));
-    bookingTimeStart = bookingTimeStart.substr(0,bookingTimeStart.indexOf(','));
+    bookingTimeStart = bookingTimeStart.substr(0, bookingTimeStart.indexOf(','));
 
     var roomNum = roomToUnbook.trim().match(/\d+/)[0] // get the number from the room
     var roomid = parseInt(roomNum, 10);
     var usrid = accountFuncs.getUserID(req);
 
     if (usrid != -1) {
-        roomBook.unbookRoom(0, bookingTimeStart, roomid, usrid).then(function (data) {
+        roomBook.unbookRoom(0, bookingTimeStart, 1, roomid, usrid).then(function (data) { // day, time, length, roomID, usrid
             console.log("Request Body: " + JSON.stringify(req.body) + " room id: " + roomToUnbook + " Success" + data.success);
             res.send({HeaderMsg: data.header, BookingStatusMsg: data.bookMsg, BookStatus: data.success});
         });
@@ -29,20 +29,56 @@ router.post('/accounts/unbook', function (req, res) {
 
 router.get('/accounts', function (req, res, next) { //the request to render the page
 
+    // if (req.)
     var usrid = accountFuncs.getUserID(req);
+
+    var msg = req.flash('bookingMessage');
+    var hasMsg = false;
+
     if (usrid == -1 || usrid == undefined)
-        res.redirect('/login');
+        return res.redirect('/login');
     else {
-        roomFuncs.getListOfRoomsForUser(usrid).then(function (listBookings) {
+        var json = "";
 
-            res.render('accountPage', {    // render the page with server side variables passed to the client
-                user: req.user,
-                booking: listBookings
+        if (msg != undefined && msg.length > 0) {   // roomID + "-" + bookingTimeStart + "-" + length + "-" + day is the order of data
+            var msgTxt = msg[0];
+            var roomID = parseInt(msgTxt.trim().match(/\d+/)[0]);
+            msgTxt = msgTxt.substr(msgTxt.indexOf('-') + 1);
+            var query = msgTxt;
+            var bookingTimeStart = parseInt(query.substr(0, query.indexOf('-')), 10);
+            var length = query.substr(query.indexOf('-') + 1);
+            var day = parseInt(length.substr(length.indexOf('-') + 1));
+            length = parseInt(length.substr(0, length.indexOf('-')), 10);
+
+            roomBook.bookRoom(day, bookingTimeStart, roomID, length, usrid).then(function (data) {
+                console.log("Data! " + data);
+                json = JSON.stringify(data);
+                roomFuncs.getListOfRoomsForUser(usrid).then(function (listBookings) {
+                    res.render('accountPage', {    // render the page with server side variables passed to the client
+                        user: req.user,
+                        booking: listBookings,
+                        json: json,
+                        hasJson: true
+                    });
+
+                });
+
             });
+        }
+        else {
+            roomFuncs.getListOfRoomsForUser(usrid).then(function (listBookings) {
+                res.render('accountPage', {    // render the page with server side variables passed to the client
+                    user: req.user,
+                    booking: listBookings,
+                    json: json,
+                    hasJson: false
+                });
 
-        });
+            });
+        }
     }
 
-});
+})
+;
 
 module.exports = router;

@@ -1,6 +1,6 @@
 function showAlert(header, message, success){
     html = "";
-    if (success){
+    if (!success){
         html += '<div class="alert alert-danger alert-dismissible fade show" role="alert">';
     }
     else
@@ -69,9 +69,21 @@ function unbookRoomClick(roomID, time, day, owner, element){
                 // element.classList.remove("ytime");
                 // element.classList.add("mtime");
                 console.log("Done!");
+                el.value = "Unbooked";
             },
             error: function (data) {
                 console.log("Error: " + data)
             }
         });
 }
+
+document.addEventListener("DOMContentLoaded", function() {
+    var hasJson = document.getElementById("hasJson").value.trim();
+    if (hasJson.indexOf('true') >= 0 ){
+        var json = document.getElementById("json").value;
+        var obj = JSON.parse(json);
+
+        doModal(obj.header, obj.bookMsg, obj.success);
+
+    }
+}, false);

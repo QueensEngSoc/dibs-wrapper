@@ -142,12 +142,17 @@ function getAllFree(day) { //gets every free array on a certain day
  * @param roomID
  * @returns {promise}
  */
-function getTimeFree(day, time, roomID) { //returns whether or not a room is booked at a certain time and day
+function getTimeFree(day, time, roomID, length) { //returns whether or not a room is booked at a certain time and day
     var out = false;
 
     var find = new Promise(function(resolve, reject) {
         roomDatabase.find({RoomID: roomID}).each(function(data, i) {
-            resolve(data.Free[time].free);
+            if (isValidTime(time + length))
+                for (var i = 0; i < time + length; i++)
+                    if (data.Free[time].free == false)
+                        resolve(false);
+
+            resolve(true);
         });
     });
 

@@ -15,7 +15,7 @@ var roomDatabase = db.get('roomDatabase');
  * @returns {promise}
  */
 function bookRoom(day, time, roomID, length, usrid) { //books a room at a certain time and day and sets the owner to be the usrid
-    return new Promise(function(resolve, reject) {
+    return new Promise(function (resolve, reject) {
         roomDatabase.find({RoomID: roomID}).each(function (data, val) {
             var temp = data.Free;
             var out = {
@@ -24,24 +24,21 @@ function bookRoom(day, time, roomID, length, usrid) { //books a room at a certai
                 success: false
             };
             var end = length + parseInt(time, 10);
-            for (var i = time; i < end; i++){
-                if (temp[i - 7].free === true){
+            for (var i = time; i < end; i++) {
+                if (temp[i - 7].free === true) {
                     temp[time - 7].free = false;
                     temp[time - 7].owner = usrid;
                 }
-                else
-                {
+                else {
                     out.bookMsg = "Sorry, this room is booked.  Looks like someone beat you to it :(";
                     out.header = "Room Already Booked"
                     resolve(out);
                 }
-
-                roomDatabase.update({RoomID: roomID}, {$set: {Free: temp}});
-                out.success = true;
-                out.bookMsg = "Booking successful for " + data.Name + " at " + time + ":30";
-                out.header = "Booking Success!";
-
             }
+            roomDatabase.update({RoomID: roomID}, {$set: {Free: temp}});
+            out.success = true;
+            out.bookMsg = "Booking successful for " + data.Name + " at " + time + ":30";
+            out.header = "Booking Success!";
 
             resolve(out);
 
@@ -56,8 +53,8 @@ function bookRoom(day, time, roomID, length, usrid) { //books a room at a certai
  * @param roomID
  * @param usrid
  */
-function unbookRoom(day, time, roomID, usrid) {
-    return new Promise(function(resolve, reject) {
+function unbookRoom(day, time, length, roomID, usrid) {
+    return new Promise(function (resolve, reject) {
         roomDatabase.find({RoomID: roomID}).each(function (data, val) {
             var temp = data.Free;
             var out = {
@@ -65,19 +62,24 @@ function unbookRoom(day, time, roomID, usrid) {
                 bookMsg: "Sorry, an error occured and the room was not unbooked.  Please try again later.",
                 success: false
             };
-            if (temp[time - 7].free === false && temp[time - 7].owner === usrid) {
-                temp[time - 7].free = true;
-                temp[time - 7].owner = 0;
 
-                roomDatabase.update({RoomID: roomID}, {$set: {Free: temp}});
-                out.success = true;
-                out.bookMsg = "Unbooking successful for " + data.Name + " at " + time + ":30";
-                out.header = "Unbooking Success!";
+            var end = length + parseInt(time, 10);
+            for (var i = time; i < end; i++) {
+                if (temp[time - 7].free === false && temp[time - 7].owner === usrid) {
+                    temp[time - 7].free = false;
+                    temp[time - 7].owner = 0;
+                }
+                else {
+                    out.bookMsg = "Sorry, this room is unbooked.  Looks like someone beat you to it :(";
+                    out.header = "Room Already Unbooked"
+                    resolve(out);
+                }
             }
-            else {
-                out.bookMsg = "Sorry, this room is unbooked.  Looks like someone beat you to it :(";
-                out.header = "Room Already Unbooked"
-            }
+
+            roomDatabase.update({RoomID: roomID}, {$set: {Free: temp}});
+            out.success = true;
+            out.bookMsg = "Unbooking successful for " + data.Name + " at " + time + ":30";
+            out.header = "Unbooking Success!";
 
             resolve(out);
 
