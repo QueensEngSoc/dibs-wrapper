@@ -5,13 +5,7 @@ var router = express.Router();
 var path = require('path');
 
 router.get('/login', function (req, res, next) { //the request to render the page
-    // var db = req.db;
-    // var roomInfo = db.get('roomInfo');
-    // roomInfo.find({}, function(e, result) {
-    //     res.render('test', {
-    //         room: result
-    //     });
-    // });
+
     if (req.isAuthenticated())
         res.redirect('/accounts');
 

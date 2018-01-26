@@ -28,13 +28,6 @@ router.post('/accounts/unbook', function (req, res) {
 });
 
 router.get('/accounts', function (req, res, next) { //the request to render the page
-    // var db = req.db;
-    // var roomInfo = db.get('roomInfo');
-    // roomInfo.find({}, function(e, result) {
-    //     res.render('test', {
-    //         room: result
-    //     });
-    // });
 
     var usrid = accountFuncs.getUserID(req);
     if (usrid == -1 || usrid == undefined)

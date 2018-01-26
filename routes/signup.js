@@ -7,13 +7,6 @@ var passport = require('passport');
 
 
 router.get('/signup', function (req, res, next) { //the request to render the page
-    // var db = req.db;
-    // var roomInfo = db.get('roomInfo');
-    // roomInfo.find({}, function(e, result) {
-    //     res.render('test', {
-    //         room: result
-    //     });
-    // });
 
     var msg = req.flash('signupMessage');
     var hasMsg = false;

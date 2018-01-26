@@ -21,16 +21,13 @@ var hbs = exphbs.create({
         getStringifiedJson: function (value) {
             return JSON.stringify(value);
         },
-        getName: function() {
-            return getName();
-        },
         if_eq: function(a, b, opts) {
             if (a == b) // Or === depending on your needs
                 return opts.fn(this);
             else
                 return opts.inverse(this);
         },
-        if_time: function(a, opts){
+        if_time: function(a, opts){ // this function checks if the passed time (a) is less than the current time
             var date = new Date();
             var current_hour = date.getHours();
             var current_min = date.getMinutes();    // check if the time is less than the current hour, since there is no
@@ -46,10 +43,6 @@ var hbs = exphbs.create({
     defaultLayout: 'main',
     partialsDir: ['views/layouts']
 });
-
-function getName(){
-    return "Alex Ruffo";
-}
 
 // configuration ===============================================================
 mongoose.connect(configDB.accountURL); // connect to our database
@@ -68,7 +61,6 @@ server.set('view engine', 'handlebars');
 //server.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 server.use(bodyParser.json()); //need body parser to parse JSON objects
 server.use(bodyParser.urlencoded({ extended: false }));
-// server.use(cookieParser());
 
 // Authentication stuffs //
 server.use(cookieParser()); // read cookies (needed for auth)
