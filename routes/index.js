@@ -20,8 +20,13 @@ router.post('/bookroom', function (req, res) {
     var roomID = parseInt(roomNum, 10);
     var usrid = accountFuncs.getUserID(req);
 
-    if (usrid != -1) {
-        roomBook.bookRoom(0, bookingTimeStart, roomID, usrid).then(function (data) {
+    if (usrid == -1 || usrid == undefined){
+        // res.redirect('/login');
+        res.send({HeaderMsg: "You must login", BookingStatusMsg: "Log in to book a room", BookStatus: false});
+    }
+    else
+        {
+        roomBook.bookRoom(0, bookingTimeStart, roomID, 1, usrid).then(function (data) {
             console.log("Request Body: " + JSON.stringify(req.body) + " room id: " + roomToBook + " Success" + data.success);
             res.send({HeaderMsg: data.header, BookingStatusMsg: data.bookMsg, BookStatus: data.success});
         });
