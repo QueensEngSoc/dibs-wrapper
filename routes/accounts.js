@@ -17,13 +17,41 @@ router.post('/accounts/unbook', function (req, res) {
 
     var roomNum = roomToUnbook.trim().match(/\d+/)[0] // get the number from the room
     var roomid = parseInt(roomNum, 10);
+    if (roomToUnbook.trim() == "-1") {
+        roomid = -1;
+    }
     var usrid = accountFuncs.getUserID(req);
 
     if (usrid != -1) {
-        roomBook.unbookRoom(0, bookingTimeStart, 1, roomid, usrid).then(function (data) { // day, time, length, roomID, usrid
-            console.log("Request Body: " + JSON.stringify(req.body) + " room id: " + roomToUnbook + " Success" + data.success);
-            res.send({HeaderMsg: data.header, BookingStatusMsg: data.bookMsg, BookStatus: data.success});
-        });
+        if (roomid >= 0) {
+            roomBook.unbookRoom(0, bookingTimeStart, 1, roomid, usrid).then(function (data) { // day, time, length, roomID, usrid
+                console.log("Request Body: " + JSON.stringify(req.body) + " room id: " + roomToUnbook + " Success" + data.success);
+                res.send({HeaderMsg: data.header, BookingStatusMsg: data.bookMsg, BookStatus: data.success});
+            });
+        } else {
+            var unbookAll = new Promise(function(resolve, reject) {
+                roomFuncs.getListOfRoomsForUser(usrid).then(function(rooms) {
+                    for (var room of rooms) {
+                        roomBook.unbookAllForUser(0, room.roomid, usrid).then(function(success) {
+                            console.log(success);
+                        });
+                        // for (var j in room.free) {
+                        //     if (room.free[j].owner == usrid) {
+                        //         roomBook.unbookRoom(0, room.free[j].startTime, 1, room.roomid, usrid).then(function(success) {
+                        //             console.log(success);
+                        //         });
+                        //     }
+                        // }
+                    }
+                    resolve("Successful unbooking!");
+                });
+            });
+
+            unbookAll.then(function(data) {
+                console.log(data);
+                res.send({HeaderMsg: 'Unbooking Success!', BookingStatusMsg: 'Unbooking successful for all reservations', BookStatus: true});
+            });
+        }
     }
 });
 

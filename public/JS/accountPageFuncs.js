@@ -56,7 +56,7 @@ function unbookRoomClick(roomID, time, day, owner, element){
         var minutes = date.getMinutes();
         var hour = date.getHours();
 
-    if (day >= 0 && time >= hour)
+    if ((day >= 0 && time >= hour) || (roomID < 0))
         $.ajax({
             url: "/accounts/unbook",
             type: "POST",
