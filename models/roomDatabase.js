@@ -171,20 +171,17 @@ function getListOfRoomState(day, time, usrid) {
         var listFree = [];
         usrid = typeof usrid  !== 'undefined' ? usrid : -1;
 
-
         return roomDatabase.find({}).each(function(data, i) {
             var roomNum = data.Name.match(/\d+/)[0]; // get the number from the room
             var mapRoomName = "bmh" + roomNum;
 
-            if (!isValidTime(time))
-            {
+            if (!isValidTime(time)) {
                 listFree.push({
                     room: data.Name,
                     roomNum: mapRoomName,
                     isFree: false,
                 })
-            }
-            else {
+            } else {
                 listFree.push({
                     room: data.Name,
                     roomNum: mapRoomName,

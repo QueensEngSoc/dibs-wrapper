@@ -66,14 +66,6 @@ module.exports = function(app, passport) {
 
     app.get('/book/:roomID', index);
 
-    // =====================================
-    // Logout ==============================
-    // =====================================
-    app.get('/unbook', function(req, res) {
-        req.unbook();
-        res.redirect('/');
-    });
-
 };
 
 // route middleware to make sure a user is logged in
