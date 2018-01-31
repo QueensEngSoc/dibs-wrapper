@@ -88,7 +88,7 @@ function unbookRoom(day, time, length, roomID, usrid) {
     });
 }
 
-function unbookAllForUser(day, roomID, usrid) {
+function unbookAllForUser(day, startTime, roomID, usrid) {
     return new Promise(function (resolve, reject) {
         roomDatabase.find({RoomID: roomID}).each(function (data, val) {
             var temp = data.Free;
@@ -98,7 +98,7 @@ function unbookAllForUser(day, roomID, usrid) {
                 success: false
             };
 
-            for (var time = 7; time < 23; time++) {
+            for (var time = startTime; time < 23; time++) {
                 if (temp[time - 7].free === false && temp[time - 7].owner === usrid) {
                     temp[time - 7].free = true;
                     temp[time - 7].owner = 0;

@@ -29,19 +29,14 @@ router.post('/accounts/unbook', function (req, res) {
                 res.send({HeaderMsg: data.header, BookingStatusMsg: data.bookMsg, BookStatus: data.success});
             });
         } else {
+            var date = new Date();
+            var current_hour = date.getHours();
+
             var unbookAll = new Promise(function(resolve, reject) {
                 roomFuncs.getListOfRoomsForUser(usrid).then(function(rooms) {
                     for (var room of rooms) {
-                        roomBook.unbookAllForUser(0, room.roomid, usrid).then(function(success) {
-                            console.log(success);
+                        roomBook.unbookAllForUser(0, current_hour, room.roomid, usrid).then(function(success) {
                         });
-                        // for (var j in room.free) {
-                        //     if (room.free[j].owner == usrid) {
-                        //         roomBook.unbookRoom(0, room.free[j].startTime, 1, room.roomid, usrid).then(function(success) {
-                        //             console.log(success);
-                        //         });
-                        //     }
-                        // }
                     }
                     resolve("Successful unbooking!");
                 });
