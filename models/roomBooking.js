@@ -26,7 +26,7 @@ function bookRoom(day, time, roomID, length, usrid) { //books a room at a certai
             var end = length + parseInt(time, 10);
             for (var i = time; i < end; i++) {
                 if (temp[i - 7].free === true) {
-                    temp[time - 7].free = false;
+                    temp[time - 7].free = true;
                     temp[time - 7].owner = usrid;
                 }
                 else {
