@@ -1,0 +1,98 @@
+<div class="row">
+    <div class="form-group text-center">
+        <h3>
+            <strong>I want a room on:&nbsp</strong>
+            <input type='text' id="datepicker" readonly="readonly" />
+        </h3>
+    </div>
+    <script type="text/javascript">
+        $(function () {
+            $('#datepicker').datepicker({
+                minDate: 0,
+                maxDate: "+1M"
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $("#datepicker").val("Today");
+        });
+    </script>
+</div>
+<br>
+<div class="row">
+    <div class="form-group text-center">
+        <h4>
+            <strong>Room Size:&nbsp&nbsp</strong>
+            <label class="radio-inline"><input checked='checked' type="radio" name="optradio">Any</label>
+            <label class="radio-inline"><input type="radio" name="optradio">Small</label>
+            <label class="radio-inline"><input type="radio" name="optradio">Medium</label>
+            <label class="radio-inline"><input type="radio" name="optradio">Large</label>
+            <span class="multiselect-native-select">
+    <div class="btn-group" style="padding-left: 20px;">
+        <button class="multiselect dropdown-toggle btn btn-default" type="button" data-toggle="dropdown" title="">
+            <span class="multiselect-selected-text">Filters</span>
+
+        </button>
+        <ul class="multiselect-container dropdown-menu" style="padding-left: 15px;">
+            <li>
+                <a tabindex="0">
+                    <label class="checkbox">
+                        <input value="onlyFree" type="checkbox"> Hide unavailable rooms
+                    </label>
+                </a>
+            </li>
+            <li>
+                <a tabindex="0">
+                    <label class="checkbox">
+                        <input value="hasTV" type="checkbox"> Has a TV
+                    </label>
+              </a>
+            </li>
+            <li>
+                <a tabindex="0">
+                    <label class="checkbox">
+                        <input value="hasPhone" type="checkbox"> Has a phone
+                    </label>
+                </a>
+            </li>
+            <li>
+                <a tabindex="0">
+                    <label class="checkbox">
+                        <input value="test1" type="checkbox"> Placeholder 1
+                    </label>
+                </a>
+            </li>
+            <li>
+                <a tabindex="0">
+                    <label class="checkbox">
+                        <input value="test2" type="checkbox"> Placeholder 2
+                    </label>
+                </a>
+            </li>
+            <li>
+                <a tabindex="0">
+                    <label class="checkbox">
+                        <input value="test3" type="checkbox"> Placeholder 3
+                    </label>
+                </a>
+            </li>
+        </ul>
+    </div>
+</span>
+        </h4>
+
+    </div>
+</div>
+<br/>
+<div class="row text-center">
+    {{#each listFree}}
+        {{#if isFree}}
+            <a class="btn btn-lg yroom" role="button">test</a>
+        {{else}}
+            <a class="btn btn-lg nroom" role="button">{{roomNum}}</a>
+        {{/if}}
+    {{/each}}
+    <a class="btn btn-lg yroom" role="button">test</a>
+    <a class="btn btn-lg nroom" role="button">404</a>
+</div>

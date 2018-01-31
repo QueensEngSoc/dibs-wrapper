@@ -45,7 +45,7 @@ router.post('/bookroom', function (req, res) {
     }
 });
 
-
+/*
 router.get('/', function (req, res, next) { //the request to render the page
 
     var roomID = 1;
@@ -56,6 +56,21 @@ router.get('/', function (req, res, next) { //the request to render the page
         });
     });
 
+});*/
+router.get('/', function (req, res, next) { //the request to render the page
+
+    var dateObj = new Date();
+    var current_hour = dateObj.getHours();
+    var current_min = dateObj.getMinutes();
+
+    if (current_min < 30)
+        current_hour --;
+
+    var usrid = accountFuncs.getUserID(req);
+
+    roomDB.getListOfRoomState(dateObj.getDate(), current_hour, usrid).then(function (listFree) {
+        res.render('home', listFree);
+    });
 });
 
 router.get('/book/:roomName/', function (req, res, next) {

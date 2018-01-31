@@ -41,7 +41,6 @@ var hbs = exphbs.create({
         }
     },
     defaultLayout: 'main',
-    partialsDir: ['views/layouts']
 });
 
 // configuration ===============================================================
@@ -98,6 +97,11 @@ require('./config/routes.js')(server, passport); // load our routes and pass in 
 server.listen(8000, function () {
     console.log('Example app listening on port 8000!');
 });
+
+/*
+server.get('/home', function(req, res){
+    res.render('home');
+});*/
 
 module.exports = server;
 
