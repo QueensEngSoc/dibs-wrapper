@@ -69,7 +69,7 @@ router.get('/', function (req, res, next) { //the request to render the page
     var usrid = accountFuncs.getUserID(req);
 
     roomDB.getListOfRoomState(dateObj.getDate(), current_hour, usrid).then(function (listFree) {
-        res.render('home', listFree);
+        res.render('home', {'list': listFree});
     });
 });
 
