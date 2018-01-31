@@ -230,7 +230,10 @@ function getListOfRoomsForUser(usrid) {
 }
 
 function isValidTime(time){
-     if (time < 7 || time > 23)
+    var dateObj = new Date();
+    var current_min = dateObj.getMinutes();
+
+    if (time < 7 || time > 23 || (time == 23 && current_min > 30) || (time == 7 && current_min < 30) )
          return false;
      return true;
 }
