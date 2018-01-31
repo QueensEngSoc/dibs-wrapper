@@ -86,13 +86,11 @@
 </div>
 <br/>
 <div class="row text-center">
-    {{#each listFree}}
-        {{#if isFree}}
-            <a class="btn btn-lg yroom" role="button">test</a>
+    {{#each list}}
+        {{#if this.isFree}}
+            <a class="btn btn-lg yroom" role="button">{{this.roomNum}}</a>
         {{else}}
-            <a class="btn btn-lg nroom" role="button">{{roomNum}}</a>
+            <a class="btn btn-lg nroom" role="button">{{this.roomNum}}</a>
         {{/if}}
     {{/each}}
-    <a class="btn btn-lg yroom" role="button">test</a>
-    <a class="btn btn-lg nroom" role="button">404</a>
 </div>
