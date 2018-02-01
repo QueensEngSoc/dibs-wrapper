@@ -173,18 +173,21 @@ function getListOfRoomState(day, time, usrid) {
 
         return roomDatabase.find({}).each(function(data, i) {
             var roomNum = data.Name.match(/\d+/)[0]; // get the number from the room
-            var mapRoomName = "bmh" + roomNum;
+            var mapRoomName = "BMH" + roomNum;
+            var listRoomName = "bmh-" + roomNum;
 
             if (!isValidTime(time)) {
                 listFree.push({
                     room: data.Name,
                     roomNum: mapRoomName,
-                    isFree: false,
+                    roomID: listRoomName,
+                    isFree: false
                 })
             } else {
                 listFree.push({
                     room: data.Name,
                     roomNum: mapRoomName,
+                    roomID: listRoomName,
                     isFree: data.Free[time - 7].free,
                     isMine: (data.Free[time - 7].owner == usrid)  // true if the user booked the room, false otherwise
                 })

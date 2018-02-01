@@ -81,7 +81,9 @@ router.get('/accounts', function (req, res, next) { //the request to render the 
                         user: req.user,
                         booking: listBookings,
                         json: json,
-                        hasJson: true
+                        hasJson: true,
+                        navLink: '<a href="/" style="color: #fff;">GRID</a>',
+                        navPic: '<a href="/" style="padding-top: 5px;"><img src="/img/grid.png" height="30" width="30"></a>'
                     });
 
                 });
@@ -94,7 +96,9 @@ router.get('/accounts', function (req, res, next) { //the request to render the 
                     user: req.user,
                     booking: listBookings,
                     json: json,
-                    hasJson: false
+                    hasJson: false,
+                    navLink: '<a href="/" style="color: #fff;">GRID</a>',
+                    navPic: '<a href="/" style="padding-top: 5px;"><img src="/img/grid.png" height="30" width="30"></a>'
                 });
 
             });
