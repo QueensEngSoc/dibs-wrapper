@@ -97,6 +97,7 @@ button {
 
 .ytime {
     background-color: #C7FE74;
+    color: white;
     padding: 15px 22px;
     font-family: "Roboto Mono";
     border-radius: 12px;
@@ -115,6 +116,7 @@ button {
 
 .ntime {
     background-color: #FF8376;
+    color: white;
     padding: 15px 22px;
     font-family: "Roboto Mono";
     border-radius: 12px;
@@ -131,7 +133,7 @@ button {
 }
 
 .times {
-    padding-top: 100px;
+    padding-top: 10px;
     width: 450px;
     padding-left: 10%;
     float: left;
@@ -139,7 +141,7 @@ button {
 
 .desc {
     position: relative;
-    padding-top: 160px;
+    padding-top: 60px;
     padding-left: 45%;
     z-index: -10;
 }

@@ -45,18 +45,6 @@ router.post('/bookroom', function (req, res) {
     }
 });
 
-/*
-router.get('/', function (req, res, next) { //the request to render the page
-
-    var roomID = 1;
-    roomDB.getInfo(roomID).then(function (out) {
-        roomDB.getFree(0, roomID).then(function (out1) { //so this is the dumbest thing ever XD, we'll talk
-            out.free = out1;
-            res.render('roomInfo', out);
-        });
-    });
-
-});*/
 router.get('/', function (req, res, next) { //the request to render the page
 
     var dateObj = new Date();
@@ -88,6 +76,8 @@ router.get('/book/:roomName/', function (req, res, next) {
             var usrid = accountFuncs.getUserID(req);
             out.userid = usrid;
             out.free = out1;
+            out.navLink = '<a href="/" style="color: #fff;">GRID</a>';
+            out.navPic = '<a href="/" style="padding-top: 5px;"><img src="/img/grid.png" height="30" width="30"></a>';
 
             res.render('roomInfo', out);
         });
