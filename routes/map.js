@@ -28,7 +28,9 @@ router.get('/map', function (req, res, next) { //the request to render the page
             // vars go here, like if a room is booked or not
             title: "D!Bs Map View",
             roomStatus: jsonList,
-            currentHour: current_hour
+            currentHour: current_hour,
+            navLink: '<a href="/" style="color: #fff;">GRID</a>',
+            navPic: '<a href="/" style="padding-top: 5px;"><img src="/img/grid.png" height="30" width="30"></a>'
         });
 
     });

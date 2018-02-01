@@ -53,6 +53,7 @@ body {
 }
 .row{
     display: inherit !important;
+    margin: 0px !important;
 }
 .btn-xl {
     padding: 18px 28px;
