@@ -12,10 +12,11 @@
             <div class="alert alert-danger">{{message}}</div>
         {{/if}}
 
+        <div id="message_container"></div>
 
 
         <!-- LOGIN FORM -->
-        <form action="/signup" method="post">
+        <form action="/signup" id="signup_form" method="post">
             <div class="form-group">
                 <label>Email</label>
                 <input type="email" class="form-control" name="email" required pattern=".+@queensu.ca"
@@ -24,11 +25,15 @@
             </div>
             <div class="form-group">
                 <label>Password</label>
-                <input type="password" class="form-control" name="password" required>
+                <input type="password" id="pwd1" class="form-control" name="password" required pattern=".{6,}" maxlength="56"
+                       title="Passwords must be at least 6 characters long."
+                       onchange="this.setCustomValidity(this.validity.patternMismatch ? this.title : '');
+                       if(this.checkValidity()) form.passwordConf.pattern = RegExp.escape(this.value);" >
             </div>
             <div class="form-group">
                 <label>Confirm Password</label>
-                <input type="password" class="form-control" name="passwordConf" required>
+                <input type="password" id="pwd2" class="form-control" name="passwordConf" required
+                       onchange="this.setCustomValidity(this.validity.patternMismatch ? 'Passwords do not match' : '');">
             </div>
 
 
@@ -44,4 +49,4 @@
 
 </div>
 
-<script src="/JS/accountFuncs.js"></script>
+<script src="/JS/signUpFuncs.js"></script>
