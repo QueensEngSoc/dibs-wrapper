@@ -181,13 +181,15 @@ function getListOfRoomState(day, time, usrid) {
                     room: data.Name,
                     roomNum: mapRoomName,
                     roomID: listRoomName,
-                    isFree: false
+                    isFree: false,
+                    size: data.size
                 })
             } else {
                 listFree.push({
                     room: data.Name,
                     roomNum: mapRoomName,
                     roomID: listRoomName,
+                    size: data.size,
                     isFree: data.Free[time - 7].free,
                     isMine: (data.Free[time - 7].owner == usrid)  // true if the user booked the room, false otherwise
                 })

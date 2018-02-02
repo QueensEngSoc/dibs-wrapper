@@ -21,13 +21,13 @@
 </div>
 <br>
 <div class="row">
-    <div class="form-group text-center">
+    <div class="form-group text-center" id="selectionForm">
         <h4>
             <strong>Room Size:&nbsp&nbsp</strong>
             <label class="radio-inline"><input checked='checked' type="radio" name="optradio">Any</label>
-            <label class="radio-inline"><input type="radio" name="optradio">Small</label>
-            <label class="radio-inline"><input type="radio" name="optradio">Medium</label>
-            <label class="radio-inline"><input type="radio" name="optradio">Large</label>
+            <label class="radio-inline"><input type="radio" value="0" name="optradio">Small</label>
+            <label class="radio-inline"><input type="radio" value="1" name="optradio">Medium</label>
+            <label class="radio-inline"><input type="radio" value="2" name="optradio">Large</label>
             <span class="multiselect-native-select">
     <div class="btn-group" style="padding-left: 20px;">
         <button class="multiselect dropdown-toggle btn btn-default" type="button" data-toggle="dropdown" title="">
@@ -86,13 +86,17 @@
 </div>
 <br/>
 <div class="row text-center">
-    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-10 col-lg-offset-2 col-md-offset-2 col-sm-offset-2 col-xs-offset-1">
+    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-10 col-lg-offset-2 col-md-offset-2 col-sm-offset-2 col-xs-offset-1" id="roomButtons">
         {{#each list}}
             {{#if this.isFree}}
-                <a class="btn btn-lg yroom" href="/book/{{this.roomID}}" role="button">{{this.roomNum}}</a>
+                <a class="btn btn-lg yroom" href="/book/{{this.roomID}}" role="button" >{{this.roomNum}}
+                    <input type=hidden id="roomSize" name="roomSize" value={{this.size}}/>
+                </a>
             {{else}}
                 <a class="btn btn-lg nroom" href="/book/{{this.roomID}}" role="button">{{this.roomNum}}</a>
             {{/if}}
         {{/each}}
     </div>
 </div>
+
+<script src="/JS/indexJS.js"></script>

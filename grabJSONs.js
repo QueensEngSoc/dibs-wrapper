@@ -118,7 +118,7 @@ function getAPIInfo() {
                 if (description.indexOf("Small") >= 0 || description.indexOf("small") >= 0)
                     data.size = 0;  // set 0 as small
                 else if (description.indexOf("Medium") >= 0)
-                    data.size = "1";    // set 1 as medium
+                    data.size = 1;    // set 1 as medium
                 else if (description.indexOf("Large") >= 0)
                     data.size = 2;  // set 2 as large
                 else {
