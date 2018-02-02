@@ -1,22 +1,23 @@
-<div class="header" style="z-index: 500">
-    <link rel="stylesheet" href="../css/styles.css" title="pref" type="text/css"/>
-</div>
+<link rel="stylesheet" href="../CSS/styles.css" title="pref" type="text/css"/>
 
 <div class="times">
     <ul>
         {{#each free}}
             {{#if free}}
                 <li>
-                    <button class="ytime" style="font-size: 20px;" onclick='dibsRoomBookClick(document.getElementById("roomID").value, {{startTime}}, this, "{{../room}}")'>{{time}}</button>
+                    <button class="ytime" style="font-size: 20px;"
+                            onclick='dibsRoomBookClick(document.getElementById("roomID").value, {{startTime}}, this, "{{../room}}")'>{{time}}</button>
                 </li>
             {{else}}
                 {{#if_eq owner ../userid}}
                     <li>
-                        <button class="mtime" style="font-size: 20px;" onclick='dibsRoomBookClick(document.getElementById("roomID").value, {{startTime}}, this), "{{../room}}"'>{{time}}</button>
+                        <button class="mtime" style="font-size: 20px;"
+                                onclick='dibsRoomBookClick(document.getElementById("roomID").value, {{startTime}}, this), "{{../room}}"'>{{time}}</button>
                     </li>
                 {{else}}
                     <li>
-                        <button class="ntime" style="font-size: 20px;" onclick='dibsRoomBookClick(document.getElementById("roomID").value, {{startTime}}, this, "{{../room}}")'>{{time}}</button>
+                        <button class="ntime" style="font-size: 20px;"
+                                onclick='dibsRoomBookClick(document.getElementById("roomID").value, {{startTime}}, this, "{{../room}}")'>{{time}}</button>
                     </li>
                 {{/if_eq}}
             {{/if}}

@@ -61,11 +61,15 @@ function doModal(heading, formContent, success) {
     html += '</div>';  // footer
     html += '</div>';  // modalWindow
     $('body').append(html);
-    jQuery.noConflict();
+    // jQuery.noConflict();
+    // $('#dynamicModal').css({'position':'fixed;','top':'40%','left':'50%','transform': 'translate(-50%, -50%);'});
     $("#dynamicModal").modal();
     $("#dynamicModal").modal('show');
+
 
     $('#dynamicModal').on('hidden.bs.modal', function (e) {
         $(this).remove();
     });
+
+
 }

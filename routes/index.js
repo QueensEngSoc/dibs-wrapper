@@ -39,7 +39,7 @@ router.post('/bookroom', function (req, res) {
     }
     else {
         roomBook.bookRoom(day, bookingTimeStart, roomID, length, usrid).then(function (data) {
-            console.log("Request Body: " + JSON.stringify(req.body) + " room id: " + roomToBook + " Success" + data.success);
+            console.log("Request Body: " + JSON.stringify(req.body) + " room id: " + roomToBook + " Success: " + data.success);
             res.send({HeaderMsg: data.header, BookingStatusMsg: data.bookMsg, BookStatus: data.success});
         });
     }

@@ -38,7 +38,7 @@ function doModal(heading, formContent, success) {
     html += '</div>';  // footer
     html += '</div>';  // modalWindow
     $('body').append(html);
-    jQuery.noConflict();
+    // jQuery.noConflict();
     $("#dynamicModal").modal();
     $("#dynamicModal").modal('show');
 
@@ -56,7 +56,7 @@ function unbookRoomClick(roomID, time, day, owner, element){
         var minutes = date.getMinutes();
         var hour = date.getHours();
 
-    if ((day >= 0 && time >= hour) || (roomID < 0))
+    if ((day >= 0 && time >= hour) || (day >= 0 && time >= hour - 1 && minutes < 30) || (roomID < 0))
         $.ajax({
             url: "/accounts/unbook",
             type: "POST",
@@ -69,7 +69,8 @@ function unbookRoomClick(roomID, time, day, owner, element){
                 // element.classList.remove("ytime");
                 // element.classList.add("mtime");
                 console.log("Done!");
-                el.value = "Unbooked";
+                // element.value = "Unbooked";
+                element.remove();
             },
             error: function (data) {
                 console.log("Error: " + data)
