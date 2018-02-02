@@ -116,8 +116,32 @@ function unbookAllForUser(day, startTime, roomID, usrid) {
     });
 }
 
+function unbookAllForRoom(day, roomID) {
+    return new Promise(function (resolve, reject) {
+        roomDatabase.find({RoomID: roomID}).each(function (data, val) {
+            var temp = data.Free;
+            var out = {
+                success: false
+            };
+
+            for (var time = 7; time < 23; time++) {
+                    temp[time - 7].free = true;
+                    temp[time - 7].owner = 0;
+            }
+            out.success = true;
+
+            roomDatabase.update({RoomID: roomID}, {$set: {Free: temp}}, {multi: true});
+
+            resolve(out);
+
+        });
+    });
+}
+
+
 module.exports = {
     bookRoom: bookRoom,
     unbookRoom: unbookRoom,
-    unbookAllForUser: unbookAllForUser
+    unbookAllForUser: unbookAllForUser,
+    unbookAllForRoom: unbookAllForRoom
 };

@@ -70,7 +70,7 @@ function unbookRoomClick(roomID, time, day, owner, element){
                 // element.classList.add("mtime");
                 console.log("Done!");
                 // element.value = "Unbooked";
-                element.remove();
+                element.closest('.col-sm-6').remove();
             },
             error: function (data) {
                 console.log("Error: " + data)
