@@ -4,8 +4,6 @@ function dibsRoomBookClick(roomID, time, element, roomName){
     // this function gets the current room id, embeds it into the post request, and then sends a post.
     // On success, it returns whether the booking was successful, or the error that occurred
 
-    // console.log("Called my function!");
-
     if (element.classList.contains("mtime"))
     {
         doModal("Room Already Booked!", "You've already booked this room, you can't book it again!", false);

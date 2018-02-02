@@ -1,12 +1,11 @@
 var stdin = process.openStdin();
-var mongo = require('mongodb');
 var monk = require('monk');
 var db = monk('localhost:27017/roomDatabase');
 var roomDatabase = db.get('roomDatabase');
 var roomDB = require('./models/roomDatabase.js'); //the roomDatabase interface which provide 5 functions. Look in the file for how to use them
 
-//This no
-console.log("This .js file clears the booked times for the day, for a given roomID");
+//This no -- but terminal esque programs are soo much fun :)
+console.log("This .js file clears the booked times for the day, for a given room number");
 console.log("This is for debugging purposes, DO NOT DO THIS ON A PRODUCTION SERVER!!!!");
 console.log("IT WILL REMOVE BOOKINGS FOR THE ENTIRE DAY!\n\n");
 console.log("Do you still want to continue?\nType 'yes' to continue");
@@ -24,7 +23,7 @@ stdin.addListener("data", function (d) {
             var roomNum = parseInt(roomNumStr.match(/\d+/)[0]);
 
             roomDB.getInfoByName("BMH " + roomNum).then(function (out) {
-                roomID = out.roomid;
+                var roomID = out.roomid;
 
                 roomDatabase.find({RoomID: roomID}).each(function (data, val) {
                     var temp = data.Free;
@@ -41,8 +40,9 @@ stdin.addListener("data", function (d) {
                     roomDatabase.update({RoomID: roomID}, {$set: {Free: temp}});
                     console.log("Done!  Room " + roomID + " (" + data.Name + ") has been cleared!");
                     console.log("\n\nGoodbye!");
-                    setTimeout(killProcess, 2000);
-
+                    setTimeout(killProcess, 2000);  // the delay ensures that the DB has been fully written to prior to
+                                                    // ending the process, this was the reason as to why this function
+                                                    // was not working before :(
                 });
 
             });
