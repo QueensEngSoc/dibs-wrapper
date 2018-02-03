@@ -15,24 +15,6 @@ var roomDatabase = db.get('roomDatabase');
 /**
  *
  * @param day
- * @param time
- * @returns {promise}
- */
-function getSort(day, time) { //gets the list of rooms in the database sorted with currently free first *in progress*
-    var out = [];
-
-    var find = new Promise(function(resolve, reject) {
-        roomDatabase.find({}, {sort: {Free: 1}}).each(function(data) {
-            console.log(data);
-        });
-    });
-
-    return find;
-}
-
-/**
- *
- * @param day
  * @param roomID
  * @returns {promise}
  */
@@ -105,54 +87,6 @@ function getInfoByName(roomName) { //gets the info of the selected room (roomID)
             out.roomid = data.RoomID;
 
             resolve(out);
-        });
-    });
-
-    return find;
-}
-
-/**
- *
- * @param day
- * @returns {promise}
- */
-function getAllFree(day) { //gets every free array on a certain day
-    var out = [];
-
-    var find = new Promise(function(resolve, reject) {
-        roomDatabase.find({}, function(e, data) {
-            for (var i = 0; i < data.length; i++) {
-                out.push({
-                    roomID: data[i].RoomID,
-                    Free: data[i].Free
-                });
-            }
-
-            resolve(out);
-        });
-    });
-
-    return find;
-}
-
-/**
- *
- * @param day
- * @param time
- * @param roomID
- * @returns {promise}
- */
-function getTimeFree(day, time, roomID, length) { //returns whether or not a room is booked at a certain time and day
-    var out = false;
-
-    var find = new Promise(function(resolve, reject) {
-        roomDatabase.find({RoomID: roomID}).each(function(data, i) {
-            if (isValidTime(time + length))
-                for (var i = 0; i < time + length; i++)
-                    if (data.Free[time].free == false)
-                        resolve(false);
-
-            resolve(true);
         });
     });
 
@@ -244,11 +178,8 @@ function isValidTime(time){
 }
 
 module.exports = {
-    getSort: getSort,
     getFree: getFree,
     getInfo: getInfo,
-    getAllFree: getAllFree,
-    getTimeFree: getTimeFree,
     getListOfRoomState: getListOfRoomState,
     getInfoByName: getInfoByName,
     getListOfRoomsForUser: getListOfRoomsForUser
