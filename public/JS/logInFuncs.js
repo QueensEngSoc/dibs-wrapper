@@ -1,17 +1,18 @@
 function showAlert(header, message, success){
     html = "";
-    if (success){
+    if (!success){
         html += '<div class="alert alert-danger alert-dismissible fade show" role="alert">';
     }
     else
         html += '<div class="alert alert-success alert-dismissible fade show" role="alert">';
 
     html += '  <button type="button" class="close" data-dismiss="alert" aria-label="Close">\n' +
-            '    <span aria-hidden="true">&times;</span>\n' +
-            '  </button>';
+        '    <span aria-hidden="true">&times;</span>\n' +
+        '  </button>';
     html += '<h4 class="alert-heading">'+header+'</h4>';
     html += '<p>'+message+'</p>';
     html += '</div>'
+    $('#message_container').append(html);
 }
 
 function doModal(heading, formContent, success) {
