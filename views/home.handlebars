@@ -95,7 +95,9 @@
                     <input type=hidden id="roomSize" name="roomSize" value={{this.size}}/>
                 </a>
             {{else}}
-                <a class="btn btn-lg nroom" href="/book/{{this.roomID}}" role="button">{{this.roomNum}}</a>
+                <a class="btn btn-lg nroom" href="/book/{{this.roomID}}" role="button">{{this.roomNum}}
+                    <input type=hidden id="roomSize" name="roomSize" value={{this.size}}/>
+                </a>
             {{/if}}
         {{/each}}
     </div>
