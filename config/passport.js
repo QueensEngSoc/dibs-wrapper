@@ -73,6 +73,9 @@ module.exports = function (passport) {
                         newUser.local.email = email;
                         newUser.local.password = newUser.generateHash(password);
                         newUser.local.verified = false;
+                        newUser.local.booking_count = 0;
+                        newUser.local.favorite_room = "";
+                        newUser.local.favorite_color = "";
 
                         var verification_token = randomstring.generate({
                             length: 64

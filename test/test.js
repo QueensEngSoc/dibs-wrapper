@@ -48,7 +48,7 @@ describe('Room Info InterFace Tests', function() {
 describe('Room Booking Interface Test', function() {
     describe('Book Room', function() {
         it('Should return object', function(done) {
-            roomBook.bookRoom(0, 7, 1, 1, '5a6962245468391934e424a1').then(function(out) {
+            roomBook.bookRoom(0, 7, 1, 1, '5a6962245468391934e424a1', req).then(function(out) {
                 assert.typeOf(out, 'object');
                 done();
             });
@@ -56,7 +56,7 @@ describe('Room Booking Interface Test', function() {
     });
     describe('Unbook Room', function() {
         it('Should return object', function(done) {
-            roomBook.unbookRoom(0, 7, 1, 1, '5a6962245468391934e424a1').then(function(out) {
+            roomBook.unbookRoom(0, 7, 1, 1, '5a6962245468391934e424a1', req).then(function(out) {
                 assert.typeOf(out, 'object');
                 done();
             });
@@ -64,7 +64,7 @@ describe('Room Booking Interface Test', function() {
     });
     describe('Unbook All For User', function() {
         it('Should return object', function(done) {
-            roomBook.unbookAllForUser(0, 7, 1, '5a6962245468391934e424a1').then(function(out) {
+            roomBook.unbookAllForUser(0, 7, 1, '5a6962245468391934e424a1', req).then(function(out) {
                 assert.typeOf(out, 'object');
                 done();
             });

@@ -2,6 +2,8 @@ var mongo = require('mongodb');
 var monk = require('monk');
 var db = monk('localhost:27017/roomDatabase');
 var roomDatabase = db.get('roomDatabase');
+var userFuncs = require('../models/userFunctions');
+var consts = require('../config/config');
 
 //use is same as roomDatabase
 
@@ -14,8 +16,19 @@ var roomDatabase = db.get('roomDatabase');
  * @param usrid
  * @returns {promise}
  */
-function bookRoom(day, time, roomID, length, usrid) { //books a room at a certain time and day and sets the owner to be the usrid
+function bookRoom(day, time, roomID, length, usrid, req) { //books a room at a certain time and day and sets the owner to be the usrid
     return new Promise(function (resolve, reject) {
+
+        if (!userFuncs.canBookMoreRooms(req)) {
+            var out = {
+                header: "Booking failed",
+                bookMsg: "Sorry, You have booked too many rooms.  There are a max of " + consts.room_booking_limit + " room bookings allowed.",
+                success: false
+            };
+
+            resolve(out);
+            return;
+        }
         roomDatabase.find({RoomID: roomID}).each(function (data, val) {
             var temp = data.Free;
             var out = {
@@ -35,12 +48,23 @@ function bookRoom(day, time, roomID, length, usrid) { //books a room at a certai
                     resolve(out);
                 }
             }
-            roomDatabase.update({RoomID: roomID}, {$set: {Free: temp}});
-            out.success = true;
-            out.bookMsg = "Booking successful for " + data.Name + " at " + time + ":30";
-            out.header = "Booking Success!";
+            if (userFuncs.updateBookingCount(1, req)) {
 
+                roomDatabase.update({RoomID: roomID}, {$set: {Free: temp}});
+                out.success = true;
+                out.bookMsg = "Booking successful for " + data.Name + " at " + time + ":30";
+                out.header = "Booking Success!";
+
+            }
+            else {
+                out = {
+                    header: "Booking failed",
+                    bookMsg: "Sorry, an error occured and the room was not booked.  Please try again later.",
+                    success: false
+                };
+            }
             resolve(out);
+
 
         });
     });
@@ -53,7 +77,7 @@ function bookRoom(day, time, roomID, length, usrid) { //books a room at a certai
  * @param roomID
  * @param usrid
  */
-function unbookRoom(day, time, length, roomID, usrid) {
+function unbookRoom(day, time, length, roomID, usrid, req) {
     return new Promise(function (resolve, reject) {
         roomDatabase.find({RoomID: roomID}).each(function (data, val) {
             var temp = data.Free;
@@ -80,8 +104,9 @@ function unbookRoom(day, time, length, roomID, usrid) {
                 }
             }
 
-            roomDatabase.update({RoomID: roomID}, {$set: {Free: temp}});
-
+            if (userFuncs.updateBookingCount(-1, req)) {
+                roomDatabase.update({RoomID: roomID}, {$set: {Free: temp}});
+            }
             resolve(out);
 
         });
@@ -108,8 +133,9 @@ function unbookAllForUser(day, startTime, roomID, usrid) {
                 }
             }
 
-            roomDatabase.update({RoomID: roomID}, {$set: {Free: temp}});
-
+            if (userFuncs.resetBookingCount(req)) {
+                roomDatabase.update({RoomID: roomID}, {$set: {Free: temp}});
+            }
             resolve(out);
 
         });
@@ -125,8 +151,8 @@ function unbookAllForRoom(day, roomID) {
             };
 
             for (var time = 7; time < 23; time++) {
-                    temp[time - 7].free = true;
-                    temp[time - 7].owner = 0;
+                temp[time - 7].free = true;
+                temp[time - 7].owner = 0;
             }
             out.success = true;
 

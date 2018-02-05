@@ -69,6 +69,7 @@ server.use(cookieParser()); // read cookies (needed for auth)
 var mongo = require('mongodb');
 var monk = require('monk');
 var db = monk('localhost:27017/roomDatabase');
+
 server.use(function(req, res, next) { //making database accessible to the router
     req.db = db;
     next();

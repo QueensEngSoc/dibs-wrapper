@@ -21,8 +21,10 @@ function dibsRoomBookClick(roomID, time, element, roomName){
                     window.location.href = ('/login?book=' + content);
                 }
                 doModal(header, content, data.BookStatus);
-                element.classList.remove("ytime");
-                element.classList.add("mtime");
+                if (data.BookStatus) {
+                    element.classList.remove("ytime");
+                    element.classList.add("mtime");
+                }
                 console.log("Done!");
             },
             error: function (data) {

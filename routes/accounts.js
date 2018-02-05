@@ -6,6 +6,7 @@ var path = require('path');
 var roomFuncs = require('../models/roomDatabase');
 var accountFuncs = require('../models/userFunctions');
 var roomBook = require('../models/roomBooking');
+var consts = require('../config/config');
 
 
 router.post('/accounts/unbook', function (req, res) {
@@ -57,6 +58,7 @@ router.get('/accounts', function (req, res, next) { //the request to render the 
 
     var msg = req.flash('bookingMessage');
     var hasMsg = false;
+    var bookingLimit = consts.room_booking_limit;
 
     if (usrid == -1 || usrid == undefined)
         return res.redirect('/login');
@@ -73,14 +75,17 @@ router.get('/accounts', function (req, res, next) { //the request to render the 
             var day = parseInt(length.substr(length.indexOf('-') + 1));
             length = parseInt(length.substr(0, length.indexOf('-')), 10);
 
-            roomBook.bookRoom(day, bookingTimeStart, roomID, length, usrid).then(function (data) {
+            roomBook.bookRoom(day, bookingTimeStart, roomID, length, usrid, req).then(function (data) {
                 console.log("Data! " + data);
                 json = JSON.stringify(data);
                 roomFuncs.getListOfRoomsForUser(usrid).then(function (listBookings) {
+
                     res.render('accountPage', {    // render the page with server side variables passed to the client
                         user: req.user,
                         booking: listBookings,
                         json: json,
+                        bookingLimit: bookingLimit,
+                        bookingsLeft: bookingLimit - req.user.local.booking_count,
                         hasJson: true,
                         navLink: '<a href="/" style="color: #fff;">GRID</a>',
                         navPic: '<a href="/" style="padding-top: 5px;"><img src="/img/grid.png" height="30" width="30"></a>'
@@ -92,10 +97,13 @@ router.get('/accounts', function (req, res, next) { //the request to render the 
         }
         else {
             roomFuncs.getListOfRoomsForUser(usrid).then(function (listBookings) {
+
                 res.render('accountPage', {    // render the page with server side variables passed to the client
                     user: req.user,
                     booking: listBookings,
                     json: json,
+                    bookingLimit: bookingLimit,
+                    bookingsLeft: bookingLimit - req.user.local.booking_count,
                     hasJson: false,
                     navLink: '<a href="/" style="color: #fff;">GRID</a>',
                     navPic: '<a href="/" style="padding-top: 5px;"><img src="/img/grid.png" height="30" width="30"></a>'
