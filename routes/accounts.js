@@ -36,7 +36,7 @@ router.post('/accounts/unbook', function (req, res) {
             var unbookAll = new Promise(function(resolve, reject) {
                 roomFuncs.getListOfRoomsForUser(usrid).then(function(rooms) {
                     for (var room of rooms) {
-                        roomBook.unbookAllForUser(0, current_hour, room.roomid, usrid).then(function(success) {
+                        roomBook.unbookAllForUser(0, current_hour, room.roomid, usrid, req).then(function(success) {
                         });
                     }
                     resolve("Successful unbooking!");

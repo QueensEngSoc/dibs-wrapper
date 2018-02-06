@@ -1,4 +1,3 @@
-var mongo = require('mongodb');
 var monk = require('monk');
 var db = monk('localhost:27017/roomDatabase');
 var roomDatabase = db.get('roomDatabase');
@@ -113,7 +112,7 @@ function unbookRoom(day, time, length, roomID, usrid, req) {
     });
 }
 
-function unbookAllForUser(day, startTime, roomID, usrid) {
+function unbookAllForUser(day, startTime, roomID, usrid, req) {
     return new Promise(function (resolve, reject) {
         roomDatabase.find({RoomID: roomID}).each(function (data, val) {
             var temp = data.Free;

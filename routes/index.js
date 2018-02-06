@@ -57,7 +57,7 @@ router.get('/', function (req, res, next) { //the request to render the page
     var usrid = accountFuncs.getUserID(req);
 
     roomDB.getListOfRoomState(dateObj.getDate(), current_hour, usrid).then(function (listFree) {
-        res.render('home', {
+        res.render('index', {
             list: listFree,
             navLink: '<a href="/map" style="color: #fff;">MAP</a>',
             navPic: '<a href="/map" style="padding-top: 5px;"><img src="/img/mapfix.png" height="30" width="30"></a>'

@@ -1,11 +1,9 @@
 var express = require('express');
 var path = require('path');
 var exphbs = require('express-handlebars');
-// var favicon = require('serve-favicon');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var passport = require('passport');
-var LocalStrategy = require('passport-local').Strategy;
 var mongoose = require('mongoose');
 var flash    = require('connect-flash');
 var configDB = require('./config/database.js');
@@ -66,7 +64,6 @@ server.use(cookieParser()); // read cookies (needed for auth)
 ///
 
 //Database setup and initialization
-var mongo = require('mongodb');
 var monk = require('monk');
 var db = monk('localhost:27017/roomDatabase');
 
@@ -98,11 +95,6 @@ require('./config/routes.js')(server, passport); // load our routes and pass in 
 server.listen(8000, function () {
     console.log('Example app listening on port 8000!');
 });
-
-/*
-server.get('/home', function(req, res){
-    res.render('home');
-});*/
 
 module.exports = server;
 
