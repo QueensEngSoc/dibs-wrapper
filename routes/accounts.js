@@ -2,7 +2,6 @@
 // followed this tutorial for building the basics.
 var express = require('express');
 var router = express.Router();
-var path = require('path');
 var roomFuncs = require('../models/roomDatabase');
 var accountFuncs = require('../models/userFunctions');
 var roomBook = require('../models/roomBooking');
@@ -51,13 +50,10 @@ router.post('/accounts/unbook', function (req, res) {
     }
 });
 
-router.get('/accounts', function (req, res, next) { //the request to render the page
-
-    // if (req.)
+router.get('/accounts', function (req, res, next) {
     var usrid = accountFuncs.getUserID(req);
 
     var msg = req.flash('bookingMessage');
-    var hasMsg = false;
     var bookingLimit = consts.room_booking_limit;
 
     if (usrid == -1 || usrid == undefined)

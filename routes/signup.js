@@ -1,13 +1,8 @@
 // https://scotch.io/tutorials/easy-node-authentication-setup-and-local#toc-database-config-configdatabasejs
-
 var express = require('express');
 var router = express.Router();
-var path = require('path');
-var passport = require('passport');
-
 
 router.get('/signup', function (req, res, next) { //the request to render the page
-
     if (req.isAuthenticated())
         return res.redirect('/accounts');
 

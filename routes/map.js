@@ -2,12 +2,11 @@
 // followed this tutorial for building the basics.
 var express = require('express');
 var router = express.Router();
-var path = require('path');
 
 var roomFuncs = require('../models/roomDatabase');
 var accountFuncs = require('../models/userFunctions');
 
-router.get('/map', function (req, res, next) { //the request to render the page
+router.get('/map', function (req, res, next) {
 
 
     var dateObj = new Date();

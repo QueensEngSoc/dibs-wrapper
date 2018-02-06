@@ -2,9 +2,8 @@
 
 var express = require('express');
 var router = express.Router();
-var path = require('path');
 
-router.get('/login', function (req, res, next) { //the request to render the page
+router.get('/login', function (req, res, next) {
 
     if (req.isAuthenticated())
         return res.redirect('/accounts');

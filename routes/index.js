@@ -1,13 +1,8 @@
 var express = require('express');
 var router = express.Router();
-var path = require('path');
 var roomDB = require('../models/roomDatabase.js'); //the roomDatabase interface which provide 5 functions. Look in the file for how to use them
-// const $ = require('najax');
 var accountFuncs = require('../models/userFunctions');
 var roomBook = require('../models/roomBooking');
-
-// console.log(path.join(__dirname, '/../'));
-
 
 router.post('/bookroom', function (req, res) {
     var roomToBook = JSON.stringify(req.body);
@@ -18,9 +13,9 @@ router.post('/bookroom', function (req, res) {
 
     bookingTimeStart = bookingTimeStart.substr(0, bookingTimeStart.indexOf(','));
     roomName = roomName.substr(roomName.indexOf('"') + 1);
-    roomName = "BMH-" + roomName.trim().match(/\d+/)[0] // get the number from the room
+    roomName = "BMH-" + roomName.trim().match(/\d+/)[0]; // get the number from the room
 
-    var roomNum = roomToBook.trim().match(/\d+/)[0] // get the number from the room
+    var roomNum = roomToBook.trim().match(/\d+/)[0]; // get the number from the room
     var roomID = parseInt(roomNum, 10);
     var usrid = accountFuncs.getUserID(req);
     var day = 0;
@@ -45,7 +40,7 @@ router.post('/bookroom', function (req, res) {
     }
 });
 
-router.get('/', function (req, res, next) { //the request to render the page
+router.get('/', function (req, res, next) {
 
     var dateObj = new Date();
     var current_hour = dateObj.getHours();
