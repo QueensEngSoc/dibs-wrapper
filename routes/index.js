@@ -6,24 +6,13 @@ var roomBook = require('../models/roomBooking');
 
 router.post('/bookroom', function (req, res) {
     var roomToBook = JSON.stringify(req.body);
-    roomToBook = roomToBook.substr(roomToBook.indexOf('[') + 1);
-    var bookingTimeStart = roomToBook.substr(roomToBook.indexOf(',') + 1);
-    roomToBook = roomToBook.substr(0, roomToBook.indexOf(','));
-    var roomName = bookingTimeStart.substring(0, bookingTimeStart.indexOf(']'));
-
-    bookingTimeStart = bookingTimeStart.substr(0, bookingTimeStart.indexOf(','));
-    roomName = roomName.substr(roomName.indexOf('"') + 1);
-    roomName = "BMH-" + roomName.trim().match(/\d+/)[0]; // get the number from the room
-
     var obj = JSON.parse(roomToBook);
-    var length = obj.length;
 
-
-    var roomNum = roomToBook.trim().match(/\d+/)[0]; // get the number from the room
-    var roomID = parseInt(roomNum, 10);
+    var bookingTimeStart = parseInt(obj.time, 10);
+    var roomID = parseInt(obj.roomID, 10);
     var usrid = accountFuncs.getUserID(req);
     var day = 0;
-    var length = 1;
+    var length = parseInt(obj.length, 10);
 
     if (usrid == -1 || usrid == undefined) {
         // // res.redirect('/login');

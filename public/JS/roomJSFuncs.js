@@ -12,7 +12,8 @@ function dibsRoomBookClick(roomID, time, element, roomName, length){
         $.ajax({
             url: "/bookroom",
             type: "POST",
-            data: JSON.stringify([roomID, time, roomName, length]),
+            data: {roomID: roomID, time: time, length: length, roomName: roomName},
+            dataType: "json",
             success: function (data) {
                 console.log("Header: " + data.HeaderMsg + " body: " + data.BookingStatusMsg + " data: " + data);
                 var header = data.HeaderMsg;

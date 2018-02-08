@@ -28,6 +28,7 @@ function bookRoom(day, time, roomID, length, usrid, req) { //books a room at a c
             resolve(out);
             return;
         }
+
         roomDatabase.find({RoomID: roomID}).each(function (data, val) {
             var temp = data.Free;
             var out = {
@@ -35,25 +36,26 @@ function bookRoom(day, time, roomID, length, usrid, req) { //books a room at a c
                 bookMsg: "Sorry, an error occured and the room was not booked.  Please try again later.",
                 success: false
             };
+
             var end = length + parseInt(time, 10);
             for (var i = time; i < end; i++) {
                 if (temp[i - 7].free === true) {
-                    temp[time - 7].free = false;
-                    temp[time - 7].owner = usrid;
+                    temp[i - 7].free = false;
+                    temp[i - 7].owner = usrid;
                 }
                 else {
                     out.bookMsg = "Sorry, this room is booked.  Looks like someone beat you to it :(";
                     out.header = "Room Already Booked"
                     resolve(out);
+                    return;
                 }
             }
             if (userFuncs.updateBookingCount(1, req)) {
 
                 roomDatabase.update({RoomID: roomID}, {$set: {Free: temp}});
                 out.success = true;
-                out.bookMsg = "Booking successful for " + data.Name + " at " + time + ":30";
+                out.bookMsg = "Booking successful for " + data.Name + " from " + time + ":30 - " + (time + length) + ":30";
                 out.header = "Booking Success!";
-
             }
             else {
                 out = {
