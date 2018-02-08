@@ -15,6 +15,10 @@ router.post('/bookroom', function (req, res) {
     roomName = roomName.substr(roomName.indexOf('"') + 1);
     roomName = "BMH-" + roomName.trim().match(/\d+/)[0]; // get the number from the room
 
+    var obj = JSON.parse(roomToBook);
+    var length = obj.length;
+
+
     var roomNum = roomToBook.trim().match(/\d+/)[0]; // get the number from the room
     var roomID = parseInt(roomNum, 10);
     var usrid = accountFuncs.getUserID(req);

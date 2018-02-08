@@ -134,16 +134,16 @@ button {
 
 .times {
     padding-top: 10px;
-    width: 450px;
-    padding-left: 10%;
-    float: left;
+    /*width: 450px;*/
+    /*padding-left: 10%;*/
+    /*float: left;*/
 }
 
 .desc {
-    position: relative;
+    /*position: relative;*/
     padding-top: 60px;
-    padding-left: 45%;
-    z-index: -10;
+    /*padding-left: 45%;*/
+    /*z-index: -10;  !* This is kinda odd, use columns or something instead pls *!*/
 }
 
 

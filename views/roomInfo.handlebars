@@ -1,34 +1,44 @@
 <link rel="stylesheet" href="../CSS/styles.css" title="pref" type="text/css"/>
-
-<div class="times">
-    <ul>
-        {{#each free}}
-            {{#if free}}
-                <li>
-                    <button class="ytime" style="font-size: 20px;"
-                            onclick='dibsRoomBookClick(document.getElementById("roomID").value, {{startTime}}, this, "{{../room}}")'>{{time}}</button>
-                </li>
-            {{else}}
-                {{#if_eq owner ../userid}}
-                    <li>
-                        <button class="mtime" style="font-size: 20px;"
-                                onclick='dibsRoomBookClick(document.getElementById("roomID").value, {{startTime}}, this), "{{../room}}"'>{{time}}</button>
-                    </li>
-                {{else}}
-                    <li>
-                        <button class="ntime" style="font-size: 20px;"
-                                onclick='dibsRoomBookClick(document.getElementById("roomID").value, {{startTime}}, this, "{{../room}}")'>{{time}}</button>
-                    </li>
-                {{/if_eq}}
-            {{/if}}
-        {{/each}}
-    </ul>
-</div>
-<div class="desc">
-    <img alt="RoomPicture" src={{tempImgURL}}
-            height="400"> <br><br>
-    <p style="text-align: left;">{{size}} room.<br><br>{{#if tv}}There is{{else}}There is not{{/if}} a TV.<br><br>{{#if
-            special}}This is a special room{{/if}}</p>
+<div class="container">
+    <div class="row">
+        <div class="times col-md-4">
+            <ul>
+                {{#each free}}
+                    {{#if free}}
+                        <li>
+                            <button class="ytime" style="font-size: 20px;"
+                                    onclick='dibsRoomBookClick(document.getElementById("roomID").value, {{startTime}}, this, "{{../room}}", 1)'>{{time}}</button>
+                        </li>
+                    {{else}}
+                        {{#if_eq owner ../userid}}
+                            <li>
+                                <button class="mtime" style="font-size: 20px;"
+                                        onclick='dibsRoomBookClick(document.getElementById("roomID").value, {{startTime}}, this, "{{../room}}", 1)'>{{time}}</button>
+                            </li>
+                        {{else}}
+                            <li>
+                                <button class="ntime" style="font-size: 20px;"
+                                        onclick='dibsRoomBookClick(document.getElementById("roomID").value, {{startTime}}, this, "{{../room}}", 1)'>{{time}}</button>
+                            </li>
+                        {{/if_eq}}
+                    {{/if}}
+                {{/each}}
+            </ul>
+        </div>
+        <div class="desc col-md-8">
+            <img alt="RoomPicture" src={{tempImgURL}}
+                    height="400"> <br><br>
+            <p style="text-align: left;">{{size}} room.<br><br>{{#if tv}}
+                There is{{else}}There is not{{/if}} a TV.<br><br>{{#if
+                    special}}This is a special room{{/if}}</p>
+            <br>
+            <p>Test Booking 3 Hours (last 3 to facilitate unbooking) 8:30-11:30</p>
+            <button type="button" class="btn btn-primary" style="font-size: 20px;"
+                    onclick='dibsRoomBookClick(document.getElementById("roomID").value, 20, this, "{{room}}", 3)'>Book
+                8:30-11:30 pm
+            </button>
+        </div>
+    </div>
 </div>
 <input type=hidden id="roomID" name="roomID" value={{roomid}}/>
 
