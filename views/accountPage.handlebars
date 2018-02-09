@@ -44,9 +44,9 @@
                             <h4 class="card-title" name="bookingTime">{{../room}} - {{time}}</h4>
                                 <p class="card-text">{{../description}}</p>
                             {{#if_time startTime }}
-                                    <button onclick='unbookRoomClick({{../roomid}}, {{startTime}}, 0, "{{owner}}", this)' class="btn btn-danger" style="padding-bottom: 5px;">Cancel Booking</button>
+                                    <button onclick='unbookRoomClick({{../roomid}}, {{startTime}}, 0, "{{owner}}", this, 1)' class="btn btn-danger" style="padding-bottom: 5px;">Cancel Booking</button>
                             {{else}}
-                                    <button disabled onclick='unbookRoomClick({{../roomid}}, {{startTime}}, 0, "{{owner}}", this)' class="btn btn-danger" style="padding-bottom: 5px;">Cancel Booking</button>
+                                    <button disabled onclick='unbookRoomClick({{../roomid}}, {{startTime}}, 0, "{{owner}}", this, 1)' class="btn btn-danger" style="padding-bottom: 5px;">Cancel Booking</button>
                             {{/if_time}}
                         <input type=hidden name="bookingHash" value="{{bookingHash}}"/>
                     </div>
@@ -72,5 +72,6 @@
 </div>
 <input type=hidden id="hasJson" name="hasJson" value={{hasJson}}/>
 <input type=hidden id="json" name="json" value="{{json}}"/>
+<input type=hidden id="usrID" name="usrID" value="{{user._id}}"/>
 
 <script src="/JS/accountPageFuncs.js"></script>

@@ -47,7 +47,7 @@ function doModal(heading, formContent, success) {
     });
 }
 
-function unbookRoomClick(roomID, time, day, owner, element){
+function unbookRoomClick(roomID, time, day, owner, element, length){
     // this function gets the current room id, embeds it into the post request, and then sends a post.
     // On success, it returns whether the booking was successful, or the error that occurred
 
@@ -60,7 +60,8 @@ function unbookRoomClick(roomID, time, day, owner, element){
         $.ajax({
             url: "/accounts/unbook",
             type: "POST",
-            data: JSON.stringify([roomID, time, day, owner]),
+            data: {roomID: roomID, time: time,day: day,owner: owner, length: length},
+            dataType: "json",
             success: function (data) {
                 console.log("Header: " + data.HeaderMsg + " body: " + data.BookingStatusMsg + " data: " + data);
                 var header = data.HeaderMsg;
@@ -103,6 +104,20 @@ function mergeBookings(){   // this function merges the multi-hour bookings into
                 timeInt++;                                  // add one
                 time = time.substr(0, pos + 2) + timeInt + endStr.substr(colnPos);  // add everything back into a single string
                 baseCard.getElementsByTagName('h4')[0].innerText = time;            // set the card title to the revised time string
+
+                var btnFunc = baseCard.getElementsByTagName('button')[0].getAttribute('onclick');
+                var tempBtnFunc = btnFunc;
+                var usrID = document.getElementById("usrID").value.trim();
+                var pos = getPosition(tempBtnFunc, usrID, 1);
+                pos += usrID.length + 1;
+                tempBtnFunc = btnFunc.substr(pos);
+                var colnPos = getPosition(tempBtnFunc, ',', 2);
+                tempBtnFunc = tempBtnFunc.substr(colnPos + 1, getPosition(tempBtnFunc, ')', 1));
+                timeInt = parseInt(tempBtnFunc, 10);
+                timeInt ++;
+                btnFunc = btnFunc.substr(0, pos + colnPos + 1) + " " + timeInt + ")";
+                baseCard.getElementsByTagName('button')[0].onclick = btnFunc;
+
                 cards[i].closest('.col-sm-6').remove();     // remove the card with the duplicate hash
                 i--;                                        // deincrement i by one since we deleted a card (else we would not get all cards in the list)
             }
