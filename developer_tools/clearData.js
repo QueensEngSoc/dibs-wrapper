@@ -26,7 +26,7 @@ stdin.addListener("data", function (d) {
                 var roomID = out.roomid;
 
                 roomDatabase.find({RoomID: roomID}).each(function (data, val) {
-                    var temp = data.Free;
+                    var temp = data.Free[day];
                     var out = {
                         success: false
                     };

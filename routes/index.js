@@ -38,13 +38,14 @@ router.get('/', function (req, res, next) {
     var dateObj = new Date();
     var current_hour = dateObj.getHours();
     var current_min = dateObj.getMinutes();
+    var day = 0;
 
     if (current_min < 30)
         current_hour --;
 
     var usrid = accountFuncs.getUserID(req);
 
-    roomDB.getListOfRoomState(dateObj.getDate(), current_hour, usrid).then(function (listFree) {
+    roomDB.getListOfRoomState(day, current_hour, usrid).then(function (listFree) {
         res.render('index', {
             list: listFree,
             navLink: '<a href="/map" style="color: #fff;">MAP</a>',

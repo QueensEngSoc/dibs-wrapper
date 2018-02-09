@@ -1,10 +1,9 @@
-//code to grab JSONs from dibs API and insert into MongoDB
+//code to grab JSONs from dibs API and insert into MongoDB (not anymore, thanks Alex)
 var isAlexDesktop = false;   // set to false if this is not my desktop
 var isAlexLaptop = false;   // set to false if this is not my surface
 var isDebug = true;        // set this to true if you are running the debugger on any other file, else this will stop
 // running when you click debug!!
 
-var mongo = require('mongodb');
 var monk = require('monk');
 var db = monk('localhost:27017/roomDatabase');
 var roomInfo = db.get('roomDatabase');

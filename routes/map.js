@@ -12,6 +12,7 @@ router.get('/map', function (req, res, next) {
     var dateObj = new Date();
     var current_hour = dateObj.getHours();
     var current_min = dateObj.getMinutes();
+    var day = 0;
 
     if (current_min < 30)   // logic here is that we are returning the status based on the start hour.  Since the min booking time is
         current_hour --;    // 1 hour, if the current minute is less than 30, we are still within the previous booking slot
@@ -20,7 +21,7 @@ router.get('/map', function (req, res, next) {
 
     var usrid = accountFuncs.getUserID(req);
 
-    roomFuncs.getListOfRoomState(dateObj.getDate(), current_hour, usrid).then(function(listFree){
+    roomFuncs.getListOfRoomState(day, current_hour, usrid).then(function(listFree){
         var jsonList = JSON.stringify(listFree);
 
         res.render('map', {    // render the page with server side variables passed to the client

@@ -22,7 +22,7 @@ function getFree(day, roomID) { //gets the free array of the roomID on the day g
 
     var find = new Promise(function (resolve, reject) {
         roomDatabase.find({RoomID: roomID}).each(function (data, i) {
-            out = data.Free;
+            out = data.Free[day];
 
             resolve(out);
         });
@@ -123,8 +123,8 @@ function getListOfRoomState(day, time, usrid) {
                     roomNum: mapRoomName,
                     roomID: listRoomName,
                     size: data.size,
-                    isFree: data.Free[time - 7].free,
-                    isMine: (data.Free[time - 7].owner == usrid)  // true if the user booked the room, false otherwise
+                    isFree: data.Free[day][time - 7].free,
+                    isMine: (data.Free[day][time - 7].owner == usrid)  // true if the user booked the room, false otherwise
                 })
             }
 
@@ -147,18 +147,24 @@ function getListOfRoomsForUser(usrid) {
         var listBookings = [];
         usrid = typeof usrid  !== 'undefined' ? usrid : -1;
 
-        return roomDatabase.find({"Free": { $elemMatch: {owner: usrid}}}).each(function(data, i) {
-            var roomNum = data.Name.match(/\d+/)[0] // get the number from the room
-            var mapRoomName = "bmh" + roomNum;
+        //return roomDatabase.find({"Free": { $elemMatch: {owner: usrid}}}).each(function(data, i) {
+        return roomDatabase.find().each(function(data, i) {
+            for (var i = 0; i < data.Free[0].length; i++) {
+                if (data.Free[0][i].owner === usrid) {
+                    var roomNum = data.Name.match(/\d+/)[0]; // get the number from the room
+                    var mapRoomName = "bmh" + roomNum;
 
-            listBookings.push({
-                room: data.Name,
-                roomNum: mapRoomName,
-                free: data.Free,
-                pic: data.Picture,
-                roomid: data.RoomID,
-                description: data.Description
-            })
+                    listBookings.push({
+                        room: data.Name,
+                        roomNum: mapRoomName,
+                        free: data.Free[0],
+                        pic: data.Picture,
+                        roomid: data.RoomID,
+                        description: data.Description
+                    });
+                    break;
+                }
+            }
 
         }).then(function () {
             return resolve(listBookings);

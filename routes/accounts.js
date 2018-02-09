@@ -43,7 +43,6 @@ router.post('/accounts/unbook', function (req, res) {
             });
 
             unbookAll.then(function(data) {
-                console.log(data);
                 res.send({HeaderMsg: 'Unbooking Success!', BookingStatusMsg: 'Unbooking successful for all reservations', BookStatus: true});
             });
         }
@@ -68,17 +67,17 @@ router.get('/accounts', function (req, res, next) {
             var query = msgTxt;
             var bookingTimeStart = parseInt(query.substr(0, query.indexOf('-')), 10);
             var length = query.substr(query.indexOf('-') + 1);
-            var day = parseInt(length.substr(length.indexOf('-') + 1));
+            var day = 0;//var day = parseInt(length.substr(length.indexOf('-') + 1));
             length = parseInt(length.substr(0, length.indexOf('-')), 10);
 
             roomBook.bookRoom(day, bookingTimeStart, roomID, length, usrid, req).then(function (data) {
                 console.log("Data! " + data);
                 json = JSON.stringify(data);
                 roomFuncs.getListOfRoomsForUser(usrid).then(function (listBookings) {
-                    var free = listBookings;
+                    var free = listBookings[day];
 
                     for (var i = 7; i < 23; i++){
-                        if (free.free[i].owner == req.user.id){
+                        if (free.free[day][i].owner == req.user.id){
 
                         }
 

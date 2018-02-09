@@ -44,10 +44,10 @@ function bookRoom(day, time, roomID, length, usrid, req) { //books a room at a c
             });
 
             for (var i = time; i < end; i++) {
-                if (temp[i - 7].free === true) {
-                    temp[i - 7].free = false;
-                    temp[i - 7].owner = usrid;
-                    temp[i - 7].bookingHash = bookingHash;
+                if (temp[day][i - 7].free === true) {
+                    temp[day][i - 7].free = false;
+                    temp[day][i - 7].owner = usrid;
+                    temp[day][i - 7].bookingHash = bookingHash;
                 }
                 else {
                     out.bookMsg = "Sorry, this room is booked.  Looks like someone beat you to it :(";
@@ -57,7 +57,6 @@ function bookRoom(day, time, roomID, length, usrid, req) { //books a room at a c
                 }
             }
             if (userFuncs.updateBookingCount(1, req)) {
-
                 roomDatabase.update({RoomID: roomID}, {$set: {Free: temp}});
                 out.success = true;
                 out.bookMsg = "Booking successful for " + data.Name + " from " + time + ":30 - " + (time + length) + ":30";
@@ -96,9 +95,9 @@ function unbookRoom(day, time, length, roomID, usrid, req) {
 
             var end = length + parseInt(time, 10);
             for (var i = time; i < end; i++) {
-                if (temp[time - 7].free === false && temp[time - 7].owner === usrid) {
-                    temp[time - 7].free = true;
-                    temp[time - 7].owner = 0;
+                if (temp[day][time - 7].free === false && temp[day][time - 7].owner === usrid) {
+                    temp[day][time - 7].free = true;
+                    temp[day][time - 7].owner = 0;
                     out.success = true;
                     out.bookMsg = "Unbooking successful for " + data.Name + " at " + time + ":30";
                     out.header = "Unbooking Success!";
@@ -131,9 +130,9 @@ function unbookAllForUser(day, startTime, roomID, usrid, req) {
             };
 
             for (var time = startTime; time < 23; time++) {
-                if (temp[time - 7].free === false && temp[time - 7].owner === usrid) {
-                    temp[time - 7].free = true;
-                    temp[time - 7].owner = 0;
+                if (temp[day][time - 7].free === false && temp[day][time - 7].owner === usrid) {
+                    temp[day][time - 7].free = true;
+                    temp[day][time - 7].owner = 0;
                     out.success = true;
                     out.bookMsg = "Unbooking successful for " + data.Name + " at " + time + ":30";
                     out.header = "Unbooking Success!";
@@ -158,8 +157,8 @@ function unbookAllForRoom(day, roomID) {
             };
 
             for (var time = 7; time < 23; time++) {
-                temp[time - 7].free = true;
-                temp[time - 7].owner = 0;
+                temp[day][time - 7].free = true;
+                temp[day][time - 7].owner = 0;
             }
             out.success = true;
 
