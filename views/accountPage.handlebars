@@ -31,7 +31,8 @@
         <h3><span class="fa fa-user"></span> Booked Rooms</h3>
 
     <p style="text-align: left;">
-    <div class="row">
+<div class="container">
+    <div class="row" id="bookedRow">
 
         {{#each booking}}
             {{#each free}}
@@ -40,14 +41,15 @@
                     <div class="card" style="margin-bottom: 20px; padding-bottom: 15px;">
                         <img class="card-img-top" src="{{../pic}}" alt="Card image cap" style="width: 100%; height: 25vw; object-fit: cover;">
                         <div class="card-block" style="padding-left: 10px; padding-right: 10px;">
-                            <h4 class="card-title">{{../room}} - {{time}}</h4>
+                            <h4 class="card-title" name="bookingTime">{{../room}} - {{time}}</h4>
                                 <p class="card-text">{{../description}}</p>
                             {{#if_time startTime }}
                                     <button onclick='unbookRoomClick({{../roomid}}, {{startTime}}, 0, "{{owner}}", this)' class="btn btn-danger" style="padding-bottom: 5px;">Cancel Booking</button>
                             {{else}}
                                     <button disabled onclick='unbookRoomClick({{../roomid}}, {{startTime}}, 0, "{{owner}}", this)' class="btn btn-danger" style="padding-bottom: 5px;">Cancel Booking</button>
                             {{/if_time}}
-                         </div>
+                        <input type=hidden name="bookingHash" value="{{bookingHash}}"/>
+                    </div>
                     </div>
                 </div>
 
@@ -58,10 +60,11 @@
     </div>
 
     <button onclick='unbookRoomClick(-1, 7, 0, "{{owner}}", this)' class="btn btn-danger" style="padding-bottom: 5px;">Unbook All Active</button>
+</div>
 
         </p>
 
-    </div>
+</div>
 </div>
 
 <!--</div>-->

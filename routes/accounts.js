@@ -75,6 +75,14 @@ router.get('/accounts', function (req, res, next) {
                 console.log("Data! " + data);
                 json = JSON.stringify(data);
                 roomFuncs.getListOfRoomsForUser(usrid).then(function (listBookings) {
+                    var free = listBookings;
+
+                    for (var i = 7; i < 23; i++){
+                        if (free.free[i].owner == req.user.id){
+
+                        }
+
+                    }
 
                     res.render('accountPage', {    // render the page with server side variables passed to the client
                         user: req.user,

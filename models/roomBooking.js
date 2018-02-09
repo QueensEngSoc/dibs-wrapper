@@ -3,6 +3,7 @@ var db = monk('localhost:27017/roomDatabase');
 var roomDatabase = db.get('roomDatabase');
 var userFuncs = require('../models/userFunctions');
 var consts = require('../config/config');
+var randomstring = require("randomstring"); // used to generate the random hash to see if the room is part of the same booking
 
 //use is same as roomDatabase
 
@@ -38,10 +39,15 @@ function bookRoom(day, time, roomID, length, usrid, req) { //books a room at a c
             };
 
             var end = length + parseInt(time, 10);
+            var bookingHash = randomstring.generate({
+                length: 5
+            });
+
             for (var i = time; i < end; i++) {
                 if (temp[i - 7].free === true) {
                     temp[i - 7].free = false;
                     temp[i - 7].owner = usrid;
+                    temp[i - 7].bookingHash = bookingHash;
                 }
                 else {
                     out.bookMsg = "Sorry, this room is booked.  Looks like someone beat you to it :(";

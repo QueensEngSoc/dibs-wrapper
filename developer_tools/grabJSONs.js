@@ -154,6 +154,7 @@ function createArray(len, val) {
             time: ((7 + i) >= 10 ? (7 + i) : "0" + (7 + i)) + ":30 - " + ((8 + i) >= 10 ? (8 + i) : "0" + (8 + i)) + ":30",
             startTime: 7 + i,
             owner: 0,
+            bookingHash: ""
         };
     }
     return out;
