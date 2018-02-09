@@ -4,6 +4,8 @@ var loginPage = require('../routes/login');
 var accountPage = require('../routes/accounts');
 var signupPage = require('../routes/signup');
 var map = require('../routes/map');
+var book = require('../routes/book');
+var bookRoom = require('../routes/bookRoom');
 
 // app/routes.js
 module.exports = function(app, passport) {
@@ -12,6 +14,12 @@ module.exports = function(app, passport) {
     // HOME PAGE (with login links) ========
     // =====================================
     app.get('/', index);
+
+    // =============================================
+    // BOOK AND BOOKROOM PAGE (with login links) ===
+    // =============================================
+    app.post('/bookroom', bookRoom);
+    app.get('/book/:roomID', book);
 
     // =====================================
     // LOGIN ===============================
@@ -41,8 +49,6 @@ module.exports = function(app, passport) {
         failureFlash : true // allow flash messages
     }));
 
-    app.post('/bookroom', index);
-
     app.post('/accounts/unbook', accountPage);
 
     // =====================================
@@ -63,8 +69,6 @@ module.exports = function(app, passport) {
     });
 
     app.get('/map', map);
-
-    app.get('/book/:roomID', index);
 
 };
 
