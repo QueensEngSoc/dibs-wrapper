@@ -29,7 +29,7 @@ router.get('/map', function (req, res, next) {
             title: "D!Bs Map View",
             roomStatus: jsonList,
             currentHour: current_hour,
-            navLink: '<a href="/" style="color: #fff;">GRID</a>',
+            navLink: '<a href="/" class="white">GRID<img src="/img/grid.png" class="li-spacing" height="30" width="40"></a>',
             navPic: '<a href="/" style="padding-top: 5px;"><img src="/img/grid.png" height="30" width="30"></a>'
         });
 

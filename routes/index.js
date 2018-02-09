@@ -17,7 +17,7 @@ router.get('/', function (req, res, next) {
     roomDB.getListOfRoomState(day, current_hour, usrid).then(function (listFree) {
         res.render('index', {
             list: listFree,
-            navLink: '<a href="/map" style="color: #fff;">MAP</a>',
+            navLink: '<a href="/map" class="white">MAP<img src="/img/mapfix.png" class="li-spacing" height="30" width="40"></a>',
             navPic: '<a href="/map" style="padding-top: 5px;"><img src="/img/mapfix.png" height="30" width="30"></a>'
         });
     });

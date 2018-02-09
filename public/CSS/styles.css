@@ -12,6 +12,14 @@ body {
     /*position: relative;*/
 /*}*/
 
+.white {
+    color: #fff;
+}
+
+.li-spacing {
+    padding-left: 10px;
+}
+
 .yroom {
     background-color: #C7FE74;
     padding: 15px 32px;
