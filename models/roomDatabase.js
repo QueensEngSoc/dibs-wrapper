@@ -58,7 +58,7 @@ function getInfo(roomID) { //gets the info of the selected room (roomID)
             out.roomid = roomID;
 
             resolve(out);
-        }).catch(function(data, i) { 
+        }).catch(function(data, i) {
             console.log("error: room not found!");
             reject(new Error('No Room Found!'));
         });

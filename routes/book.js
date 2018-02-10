@@ -21,7 +21,11 @@ router.get('/book/:roomName/', function (req, res, next) {
             res.render('roomInfo', out);
         });
     }).catch(function(data, i) {
-        return res.redirect('/404');
+        res.render("404", {
+            message: "<p>That room does not exist!</p>" +
+            "<p><a href='/'>Go back to the homepage</a> or <a href='/quick'>QuickBook a room</a>!</p>",
+            image: "trail.jpg"
+        });
     });
 });
 
