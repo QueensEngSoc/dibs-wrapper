@@ -1,0 +1,103 @@
+.color-swatch {
+    width: 50px;
+    height: 50px;
+    border: 1px solid black;
+    border-radius: 2px;
+}
+
+.hidden {
+    display: none;
+}
+
+.mission-control {
+    text-align: center;
+    border: 1px solid #000;
+    border-radius: 25px;
+    margin: 15px;
+    padding: 15px;
+    background-color: #eeeeee;
+}
+
+.available {
+    background-color: #C7FE74;
+}
+
+.unavailable {
+    background-color: #FF8376;
+}
+
+.you-booked-it {
+    background-color: #FFC107;
+}
+
+.bg {
+    background-color: white;
+}
+
+.available.monokai {
+    background-color: #a4e405;
+}
+
+.unavailable.monokai {
+    background-color: #ed1f6a;
+}
+
+.you-booked-it.monokai {
+    background-color: #60d9f1;
+}
+
+.available.darcula {
+    background-color: greenyellow;
+}
+
+.unavailable.darcula {
+    background-color: red;
+}
+
+.you-booked-it.darcula {
+    background-color: orange;
+}
+
+.bg.monokai,
+.bg.darcula {
+    background-color: #272822;
+}
+
+.available.rg-cb {
+    background-color: #898a0e !important;
+}
+
+.unavailable.rg-cb {
+    background-color: #727994 !important;
+}
+
+.you-booked-it.rg-cb {
+    background-color: #6e96ff !important;
+}
+
+input[type=color] {
+    -webkit-appearance: none;
+    height: 50px;
+    width: 50px;
+    padding: 0;
+    border: 1px solid black;
+    border-radius: 2px;
+}
+
+input[type="color"]::-webkit-color-swatch-wrapper {
+    padding: 0;
+}
+input[type="color"]::-webkit-color-swatch {
+    border: none;
+}
+
+h4 {
+    display: inline-block;
+    padding-right: 12.5px;
+}
+
+.q {
+    border-radius: 10000px;
+    color: #000;
+    margin-left: 12.5px;
+}

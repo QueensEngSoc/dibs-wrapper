@@ -1,0 +1,15 @@
+<link rel="stylesheet" type="text/css" href="/CSS/preferences.css">
+<div class="centered mission-control">
+    <h2>Something's gone wrong!</h2>
+    {{#if image}}
+        <img src="/img/{{image}}" style="padding-bottom: 15px;">
+    {{else}}
+        <img src="/img/logo.png" style="padding-bottom: 15px;">
+    {{/if}}
+    <br>
+    {{#if message}}
+        {{{message}}}
+    {{else}}
+        <p>We're really sorry about that, you can try <a href="javascript: location.reload();">reloading this page</a> or <a href="/">go back to the homepage</a> to make another selection.</p>
+    {{/if}}
+</div>

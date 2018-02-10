@@ -192,3 +192,7 @@ body {
     color: #ebb8ff;
     background-color: #c771e9;
 }
+
+.centered {
+    text-align: center;
+}

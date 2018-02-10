@@ -3,6 +3,8 @@ var index = require('../routes/index');
 var loginPage = require('../routes/login');
 var accountPage = require('../routes/accounts');
 var signupPage = require('../routes/signup');
+var adminPage = require('../routes/admin');
+var prefPage = require('../routes/preferences');
 var map = require('../routes/map');
 var book = require('../routes/book');
 var bookRoom = require('../routes/bookRoom');
@@ -41,6 +43,8 @@ module.exports = function(app, passport) {
     // =====================================
     // show the signup form
     app.get('/signup', signupPage);
+    app.get('/admin', adminPage);
+    app.get('/preferences', prefPage);
 
     // process the signup form
     app.post('/signup', passport.authenticate('local-signup', {
@@ -70,6 +74,25 @@ module.exports = function(app, passport) {
 
     app.get('/map', map);
 
+    app.use(function (req, res, next) {
+        res.render("404", {
+            message: "<p>You seem to have wandered off the beaten path!</p>" +
+                "<p><a href='/'>Go back to the homepage</a> or <a href='/quick'>QuickBook a room</a>!</p>",
+            image: "trail.jpg"
+        });
+    });
+
+    app.use(function (err, req, res, next) { // catches URL errors
+        log.error(err.stack);
+        res.statusCode = 500;
+        res.render('404', {
+            message: "<p>Sooooo about that... it's not you... it's us</p>" +
+                "<p>Seems like something on our end has gone wrong, you can try " +
+                "<a href=\"javascript: location.reload();\">reloading this page</a> or " +
+                "<a href=\"/\">go back to the homepage</a> to make another selection.</p>",
+            img: "bail.png"
+        });
+    });
 };
 
 // route middleware to make sure a user is logged in
