@@ -10,6 +10,7 @@ router.get('/book/:roomName/', function (req, res, next) {
 
     roomDB.getInfoByName(room).then(function (out) {
         var roomID = out.roomid;
+
         roomDB.getFree(0, roomID).then(function (out1) { //so this is the dumbest thing ever XD, we'll talk
             var usrid = accountFuncs.getUserID(req);
             out.userid = usrid;
@@ -19,6 +20,8 @@ router.get('/book/:roomName/', function (req, res, next) {
 
             res.render('roomInfo', out);
         });
+    }).catch(function(data, i) {
+        return res.redirect('/404');
     });
 });
 

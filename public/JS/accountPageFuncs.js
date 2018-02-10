@@ -105,7 +105,7 @@ function mergeBookings(){   // this function merges the multi-hour bookings into
                 time = time.substr(0, pos + 2) + timeInt + endStr.substr(colnPos);  // add everything back into a single string
                 baseCard.getElementsByTagName('h4')[0].innerText = time;            // set the card title to the revised time string
 
-                var btnFunc = baseCard.getElementsByTagName('button')[0].getAttribute('onclick');
+                var btnFunc = baseCard.getElementsByTagName('button')[0].getAttribute('onclick');   // now we have to do the same with the hours in the onclick function :/
                 var tempBtnFunc = btnFunc;
                 var usrID = document.getElementById("usrID").value.trim();
                 var pos = getPosition(tempBtnFunc, usrID, 1);
@@ -116,7 +116,7 @@ function mergeBookings(){   // this function merges the multi-hour bookings into
                 timeInt = parseInt(tempBtnFunc, 10);
                 timeInt ++;
                 btnFunc = btnFunc.substr(0, pos + colnPos + 1) + " " + timeInt + ")";
-                baseCard.getElementsByTagName('button')[0].onclick = btnFunc;
+                baseCard.getElementsByTagName('button')[0].onclick = 'btnFunc';
 
                 cards[i].closest('.col-sm-6').remove();     // remove the card with the duplicate hash
                 i--;                                        // deincrement i by one since we deleted a card (else we would not get all cards in the list)

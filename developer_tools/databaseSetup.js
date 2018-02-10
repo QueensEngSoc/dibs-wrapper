@@ -46,6 +46,8 @@ function getAPIInfo() {
                 roomInfo.insert(data);
                 console.log(data);
             }
+
+            console.log("-------------------------------------------\n       DONE           \n---------------------------------------")
         }
     );
 }

@@ -3,8 +3,8 @@ var index = require('../routes/index');
 var loginPage = require('../routes/login');
 var accountPage = require('../routes/accounts');
 var signupPage = require('../routes/signup');
-var adminPage = require('../routes/admin');
-var prefPage = require('../routes/preferences');
+// var adminPage = require('../routes/admin');
+// var prefPage = require('../routes/preferences');
 var map = require('../routes/map');
 var book = require('../routes/book');
 var bookRoom = require('../routes/bookRoom');
@@ -43,8 +43,8 @@ module.exports = function(app, passport) {
     // =====================================
     // show the signup form
     app.get('/signup', signupPage);
-    app.get('/admin', adminPage);
-    app.get('/preferences', prefPage);
+    // app.get('/admin', adminPage);
+    // app.get('/preferences', prefPage);
 
     // process the signup form
     app.post('/signup', passport.authenticate('local-signup', {

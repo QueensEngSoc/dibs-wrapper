@@ -48,7 +48,7 @@ function getInfo(roomID) { //gets the info of the selected room (roomID)
     };
 
     var find = new Promise(function(resolve, reject) {
-        roomDatabase.find({RoomID: roomID}).each(function(data, i) {
+        roomDatabase.findOne({RoomID: roomID}).then(function(data, i) {
             out.room = data.Name;
             out.size = data.Description;
             out.tempImgURL =  "/" + data.Picture;
@@ -58,6 +58,9 @@ function getInfo(roomID) { //gets the info of the selected room (roomID)
             out.roomid = roomID;
 
             resolve(out);
+        }).catch(function(data, i) { 
+            console.log("error: room not found!");
+            reject(new Error('No Room Found!'));
         });
     });
 
@@ -76,7 +79,7 @@ function getInfoByName(roomName) { //gets the info of the selected room (roomID)
     };
 
     var find = new Promise(function(resolve, reject) {
-        roomDatabase.find({Name: roomName}).each(function(data, i) {
+        roomDatabase.findOne({Name: roomName}).then(function(data, i) {
             out.room = data.Name;
             out.size = data.Description;
             out.tempImgURL =  "/" + data.Picture;
@@ -84,8 +87,11 @@ function getInfoByName(roomName) { //gets the info of the selected room (roomID)
             out.phone = data.phone;
             out.special = data.special;
             out.roomid = data.RoomID;
-
             resolve(out);
+
+        }).catch(function(data, i) {    // the room was not found!
+            console.log("error: room not found!");
+            reject(new Error('No Room Found!'));
         });
     });
 
@@ -115,7 +121,9 @@ function getListOfRoomState(day, time, usrid) {
                     roomNum: mapRoomName,
                     roomID: listRoomName,
                     isFree: false,
-                    size: data.size
+                    size: data.size,
+                    hasTV: data.tv,
+                    hasPhone: data.phone
                 })
             } else {
                 listFree.push({
@@ -123,6 +131,8 @@ function getListOfRoomState(day, time, usrid) {
                     roomNum: mapRoomName,
                     roomID: listRoomName,
                     size: data.size,
+                    hasTV: data.tv,
+                    hasPhone: data.phone,
                     isFree: data.Free[day][time - 7].free,
                     isMine: (data.Free[day][time - 7].owner == usrid)  // true if the user booked the room, false otherwise
                 })
