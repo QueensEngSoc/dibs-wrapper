@@ -39,21 +39,21 @@
 
         </button>
         <ul class="multiselect-container dropdown-menu" id="filterSelect" style="padding-left: 15px;">
-            <li>
+            <li data-value="onlyFree">
                 <a tabindex="0">
                     <label class="checkbox">
-                        <input value="onlyFree" type="checkbox"> Hide unavailable rooms
+                        <input value="onlyFree"  type="checkbox"> Hide unavailable rooms
                     </label>
                 </a>
             </li>
-            <li>
+            <li data-value="hasTV">
                 <a tabindex="0">
                     <label class="checkbox">
-                        <input value="hasTV" type="checkbox"> Has a TV
+                        <input value="hasTV"  type="checkbox"> Has a TV
                     </label>
               </a>
             </li>
-            <li>
+            <li  data-value="hasPhone">
                 <a tabindex="0">
                     <label class="checkbox">
                         <input value="hasPhone" type="checkbox"> Has a phone
@@ -96,10 +96,14 @@
             {{#if this.isFree}}
                 <a class="btn btn-lg yroom" href="/book/{{this.roomID}}" role="button" >{{this.roomNum}}
                     <input type=hidden id="roomSize" name="roomSize" value={{this.size}}/>
+                    <input type=hidden id="hasTV" name="hasTV" value={{this.hasTV}}/>
+                    <input type=hidden id="hasPhone" name="hasPhone" value={{this.hasPhone}}/>
                 </a>
             {{else}}
                 <a class="btn btn-lg nroom" href="/book/{{this.roomID}}" role="button">{{this.roomNum}}
                     <input type=hidden id="roomSize" name="roomSize" value={{this.size}}/>
+                    <input type=hidden id="hasTV" name="hasTV" value={{this.hasTV}}/>
+                    <input type=hidden id="hasPhone" name="hasPhone" value={{this.hasPhone}}/>
                 </a>
             {{/if}}
         {{/each}}

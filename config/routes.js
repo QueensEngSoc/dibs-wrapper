@@ -74,13 +74,13 @@ module.exports = function(app, passport) {
 
     app.get('/map', map);
 
-    app.use(function (req, res, next) {
-        res.render("404", {
-            message: "<p>You seem to have wandered off the beaten path!</p>" +
-                "<p><a href='/'>Go back to the homepage</a> or <a href='/quick'>QuickBook a room</a>!</p>",
-            image: "trail.jpg"
-        });
-    });
+    // app.use(function (req, res, next) {
+    //     res.render("404", {
+    //         message: "<p>You seem to have wandered off the beaten path!</p>" +
+    //             "<p><a href='/'>Go back to the homepage</a> or <a href='/quick'>QuickBook a room</a>!</p>",
+    //         image: "trail.jpg"
+    //     });
+    // });
 
     app.use(function (err, req, res, next) { // catches URL errors
         log.error(err.stack);
