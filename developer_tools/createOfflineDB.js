@@ -15,7 +15,7 @@ function getAPIInfo() {
 
             var json = JSON.parse(body);
             var jsonStr = JSON.stringify(json);
-            fs.writeFile('offlineDBSetupFile.json', jsonStr, (err) = > {
+            fs.writeFile('offlineDBSetupFile.json', jsonStr, (err) => {
                 // throws an error, you could also catch it here
                 if(err) throw err;
 
@@ -24,7 +24,8 @@ function getAPIInfo() {
         })
             ;
         }
-        else {
+        else
+        {
             var obj = JSON.parse(fs.readFileSync('offlineDBSetupFile.json', 'utf8'));
 
             for (var json in obj) {
