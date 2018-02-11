@@ -13,7 +13,7 @@ router.get('/book/:roomName/', function (req, res, next) {
 
         roomDB.getFree(0, roomID).then(function (out1) { //so this is the dumbest thing ever XD, we'll talk
             var usrid = accountFuncs.getUserID(req);
-            var imgID = room.replace(/\s+/g, '');
+            var imgID = room.replace(/\s+/g, '') + '.jpg';
             out.userid = usrid;
             out.free = out1;
             out.navLink = '<a href="/" style="color: #fff;">GRID</a>';
