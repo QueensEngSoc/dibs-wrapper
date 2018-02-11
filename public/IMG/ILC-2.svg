@@ -58,6 +58,7 @@
        class="bookable"
        tabindex="0"
        onclick="alertEl(this)"
+       role="link"
         />
     <path
        style="stroke:#000000;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
@@ -66,6 +67,7 @@
        class="bookable"
        tabindex="0"
        onclick="alertEl(this)"
+       role="link"
         />
     <path
        style="stroke:#000000;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
@@ -74,6 +76,7 @@
        class="bookable"
        tabindex="0"
        onclick="alertEl(this)"
+       role="link"
         />
     <path
        style="stroke:#000000;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
@@ -82,6 +85,7 @@
        class="bookable"
        tabindex="0"
        onclick="alertEl(this)"
+       role="link"
         />
     <path
        style="stroke:#000000;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
@@ -90,6 +94,7 @@
        class="bookable"
        tabindex="0"
        onclick="alertEl(this)"
+       role="link"
         />
     <path
        style="stroke:#000000;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
@@ -98,6 +103,7 @@
        class="bookable"
        tabindex="0"
        onclick="alertEl(this)"
+       role="link"
         />
     <path
        style="stroke:#000000;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
@@ -106,6 +112,7 @@
        class="bookable"
        tabindex="0"
        onclick="alertEl(this)"
+       role="link"
         />
     <path
        style="stroke:#000000;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
@@ -114,6 +121,7 @@
        class="bookable"
        tabindex="0"
        onclick="alertEl(this)"
+       role="link"
         />
     <path
        style="stroke:#000000;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
@@ -122,6 +130,7 @@
        class="bookable"
        tabindex="0"
        onclick="alertEl(this)"
+       role="link"
         />
     <path
        style="stroke:#000000;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
@@ -130,6 +139,7 @@
        class="bookable"
        tabindex="0"
        onclick="alertEl(this)"
+       role="link"
         />
     <path
        style="stroke:#000000;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
@@ -138,6 +148,7 @@
        class="bookable"
        tabindex="0"
        onclick="alertEl(this)"
+       role="link"
         />
     <path
        style="stroke:#000000;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
@@ -145,6 +156,7 @@
        class="unbookable"
        id="bmh212"
        onclick="alertEl(this)"
+       role="link"
         />
     <path
        style="stroke:#000000;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
@@ -153,6 +165,7 @@
        tabindex="0"
        id="bmh229"
        onclick="alertEl(this)"
+       role="link"
         />
     <path
        style="stroke:#000000;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
@@ -161,6 +174,7 @@
        tabindex="0"
        id="bmh230"
        onclick="alertEl(this)"
+       role="link"
         />
     <path
        style="stroke:#000000;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
@@ -169,6 +183,7 @@
        tabindex="0"
        id="bmh231"
        onclick="alertEl(this)"
+       role="link"
         />
     <path
        style="stroke:#000000;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
@@ -176,6 +191,7 @@
        class="unbookable"
        id="bmh214"
        onclick="alertEl(this)"
+       role="link"
         />
     <path
        style="stroke:#000000;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
@@ -183,6 +199,7 @@
        class="unbookable"
        id="bmh225"
        onclick="alertEl(this)"
+       role="link"
         />
     <path
        style="stroke:#000000;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
@@ -190,6 +207,7 @@
        class="unbookable"
        id="bmh202"
        onclick="alertEl(this)"
+       role="link"
         />
     <path
        style="stroke:#000000;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
@@ -197,6 +215,7 @@
        class="unbookable"
        id="bmh203"
        onclick="alertEl(this)"
+       role="link"
         />
     <path
        style="stroke:#000000;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
@@ -204,6 +223,7 @@
        class="unbookable"
        id="bmh204"
        onclick="alertEl(this)"
+       role="link"
         />
     <path
        style="stroke:#000000;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
@@ -211,6 +231,7 @@
        class="unbookable"
        id="bmh205"
        onclick="alertEl(this)"
+       role="link"
         />
     <path
        style="stroke:#000000;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
@@ -218,6 +239,7 @@
        class="unbookable"
        id="bmh206"
        onclick="alertEl(this)"
+       role="link"
         />
     <path
        style="stroke:#000000;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
@@ -225,6 +247,7 @@
        class="unbookable"
        id="bmh207"
        onclick="alertEl(this)"
+       role="link"
         />
     <path
        style="stroke:#000000;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
@@ -232,6 +255,7 @@
        class="unbookable"
        id="bmh208"
        onclick="alertEl(this)"
+       role="link"
         />
     <path
        style="stroke:#000000;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
@@ -239,6 +263,7 @@
        class="unbookable"
        id="bmh209"
        onclick="alertEl(this)"
+       role="link"
         />
     <path
        style="stroke:#000000;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
@@ -246,6 +271,7 @@
        class="unbookable"
        id="bmh201"
        onclick="alertEl(this)"
+       role="link"
         />
     <path
        style="stroke:#000000;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
@@ -253,6 +279,7 @@
        id="bmh200"
        class="unbookable"
        onclick="alertEl(this)"
+       role="link"
         />
     <path
        style="stroke:#000000;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
@@ -260,6 +287,7 @@
        id="bmh211"
        class="unbookable"
        onclick="alertEl(this)"
+       role="link"
         />
     <path
        style="stroke:#000000;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
@@ -267,6 +295,7 @@
        id="bmh213"
        class="unbookable"
        onclick="alertEl(this)"
+       role="link"
         />
   </g>
 </svg>
