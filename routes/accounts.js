@@ -9,17 +9,11 @@ var consts = require('../config/config');
 
 
 router.post('/accounts/unbook', function (req, res) {
-    var roomToUnbook = JSON.stringify(req.body);
-    roomToUnbook = roomToUnbook.substr(roomToUnbook.indexOf('[') + 1);
-    var bookingTimeStart = roomToUnbook.substr(roomToUnbook.indexOf(',') + 1);
-    roomToUnbook = roomToUnbook.substr(0, roomToUnbook.indexOf(','));
-    bookingTimeStart = bookingTimeStart.substr(0, bookingTimeStart.indexOf(','));
+    var roomToBook = JSON.stringify(req.body);
+    var obj = JSON.parse(roomToBook);
+    var bookingTimeStart = parseInt(obj.time);
 
-    var roomNum = roomToUnbook.trim().match(/\d+/)[0] // get the number from the room
-    var roomid = parseInt(roomNum, 10);
-    if (roomToUnbook.trim() == "-1") {
-        roomid = -1;
-    }
+    var roomid = parseInt(obj.roomID, 10);
     var usrid = accountFuncs.getUserID(req);
 
     if (usrid != -1) {
@@ -35,7 +29,7 @@ router.post('/accounts/unbook', function (req, res) {
             var unbookAll = new Promise(function(resolve, reject) {
                 roomFuncs.getListOfRoomsForUser(usrid).then(function(rooms) {
                     for (var room of rooms) {
-                        roomBook.unbookAllForUser(0, current_hour, room.roomid, usrid, req).then(function(success) {
+                        roomBook.unbookAllForUser(0, room.roomid, usrid, req).then(function(success) {
                         });
                     }
                     resolve("Successful unbooking!");
@@ -75,12 +69,13 @@ router.get('/accounts', function (req, res, next) {
                 json = JSON.stringify(data);
                 roomFuncs.getListOfRoomsForUser(usrid).then(function (listBookings) {
                     var free = listBookings[day];
+                    if (free != undefined) {
+                        for (var i = 7; i < 23; i++) {
+                            if (free.free[day][i].owner == req.user.id) {
 
-                    for (var i = 7; i < 23; i++){
-                        if (free.free[day][i].owner == req.user.id){
+                            }
 
                         }
-
                     }
 
                     res.render('accountPage', {    // render the page with server side variables passed to the client

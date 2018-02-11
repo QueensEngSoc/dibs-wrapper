@@ -1,6 +1,7 @@
 // Stores the functions used for account based access
 var consts = require('../config/config');
 var User = require('../models/user');
+var ObjectId = require('mongodb').ObjectId;
 
 function getUserID(req) {
     var usrid = -1;
@@ -63,6 +64,22 @@ function updateBookingCount(toAdd, req) {
     }
 }
 
+function endOfDayBookingCountReset(toAdd, usrid) {
+        try {
+            var usrID = new ObjectId(usrid);
+            User.findOne({"_id" : usrID}, function (err, user) {
+                user.local.booking_count += toAdd;
+                User.findOneAndUpdate({'_id': user.local.email}, {'local.booking_count': user.local.booking_count}, function (err, resp) {
+                    console.log("Updated booked rooms count");
+                });
+                return true;
+
+            });
+        }catch (exception) {
+            return false;
+        }
+}
+
 function resetBookingCount(req) {
     if (req.isAuthenticated()) {
         try {
@@ -84,5 +101,6 @@ module.exports = {
     getBookingCount: getBookingCount,
     canBookMoreRooms: canBookMoreRooms,
     updateBookingCount: updateBookingCount,
-    resetBookingCount: resetBookingCount
+    resetBookingCount: resetBookingCount,
+    endOfDayBookingCountReset: endOfDayBookingCountReset
 };

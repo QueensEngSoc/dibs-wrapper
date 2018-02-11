@@ -64,7 +64,7 @@ describe('Room Booking Interface Test', function() {
     });
     describe('Unbook All For User', function() {
         it('Should return object', function(done) {
-            roomBook.unbookAllForUser(0, 7, 1, '5a6962245468391934e424a1', req).then(function(out) {
+            roomBook.unbookAllForUser(0, 1, '5a6962245468391934e424a1', req).then(function(out) {
                 assert.typeOf(out, 'object');
                 done();
             });

@@ -7,6 +7,7 @@ var passport = require('passport');
 var mongoose = require('mongoose');
 var flash    = require('connect-flash');
 var configDB = require('./config/database.js');
+var dbFuncs = require('./models/dbFunctions');
 
 var server = express(); //initialize the server
 
@@ -97,6 +98,7 @@ server.listen(8000, function () {
     console.log('Example app listening on port 8000!');
 });
 
+dbFuncs.setupEndOfDayScript();
 module.exports = server;
 
 
