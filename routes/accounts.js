@@ -17,12 +17,12 @@ router.post('/accounts/unbook', function (req, res) {
 
     var roomNum = roomToUnbook.trim().match(/\d+/)[0] // get the number from the room
     var roomid = parseInt(roomNum, 10);
-    if (roomToUnbook.trim() == "-1") {
+    if (roomToUnbook.trim() === "-1") {
         roomid = -1;
     }
     var usrid = accountFuncs.getUserID(req);
 
-    if (usrid != -1) {
+    if (usrid !== -1) {
         if (roomid >= 0) {
             roomBook.unbookRoom(0, bookingTimeStart, 1, roomid, usrid, req).then(function (data) { // day, time, length, roomID, usrid
                 console.log("Request Body: " + JSON.stringify(req.body) + " room id: " + roomToUnbook + " Success" + data.success);
@@ -55,12 +55,12 @@ router.get('/accounts', function (req, res, next) {
     var msg = req.flash('bookingMessage');
     var bookingLimit = consts.room_booking_limit;
 
-    if (usrid == -1 || usrid == undefined)
+    if (usrid === -1 || usrid === undefined)
         return res.redirect('/login');
     else {
         var json = "";
 
-        if (msg != undefined && msg.length > 0) {   // roomID + "-" + bookingTimeStart + "-" + length + "-" + day is the order of data
+        if (msg !== undefined && msg.length > 0) {   // roomID + "-" + bookingTimeStart + "-" + length + "-" + day is the order of data
             var msgTxt = msg[0];
             var roomID = parseInt(msgTxt.trim().match(/\d+/)[0]);
             msgTxt = msgTxt.substr(msgTxt.indexOf('-') + 1);
@@ -77,7 +77,7 @@ router.get('/accounts', function (req, res, next) {
                     var free = listBookings[day];
 
                     for (var i = 7; i < 23; i++){
-                        if (free.free[day][i].owner == req.user.id){
+                        if (free.free[day][i].owner === req.user.id){
 
                         }
 
