@@ -111,7 +111,6 @@ router.get('/accounts', function (req, res, next) {
         }
     }
 
-})
-;
+});
 
 module.exports = router;
