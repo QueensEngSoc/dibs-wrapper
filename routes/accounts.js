@@ -32,6 +32,9 @@ router.post('/accounts/unbook', function (req, res) {
                         roomBook.unbookAllForUser(0, room.roomid, usrid, req).then(function(success) {
                         });
                     }
+                    if (rooms.length == 0)  // something went wrong, so let's reset the booking count to 0, since the user has no rooms booked at the moment
+                        accountFuncs.resetBookingCount(req);
+
                     resolve("Successful unbooking!");
                 });
             });
@@ -84,9 +87,7 @@ router.get('/accounts', function (req, res, next) {
                         json: json,
                         bookingLimit: bookingLimit,
                         bookingsLeft: bookingLimit - req.user.local.booking_count,
-                        hasJson: true,
-                        navLink: '<a href="/" class="white">GRID<img src="/img/grid.png" class="li-spacing" height="30" width="40"></a>',
-                        navPic: '<a href="/" style="padding-top: 5px;"><img src="/img/grid.png" height="30" width="30"></a>'
+                        hasJson: true
                     });
 
                 });
@@ -102,9 +103,7 @@ router.get('/accounts', function (req, res, next) {
                     json: json,
                     bookingLimit: bookingLimit,
                     bookingsLeft: bookingLimit - req.user.local.booking_count,
-                    hasJson: false,
-                    navLink: '<a href="/" class="white">GRID<img src="/img/grid.png" class="li-spacing" height="30" width="40"></a>',
-                    navPic: '<a href="/" style="padding-top: 5px;"><img src="/img/grid.png" height="30" width="30"></a>'
+                    hasJson: false
                 });
 
             });

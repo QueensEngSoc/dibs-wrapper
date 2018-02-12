@@ -45,11 +45,9 @@ var hbs = exphbs.create({
 // configuration ===============================================================
 mongoose.connect("mongodb://" + configDB.accountURL, { useMongoClient: true }); // connect to our database ->: fixed depreciation warning (it was a bug :P  https://github.com/Automattic/mongoose/issues/5399)
 
-// comment out passport auth system for now
 require('./config/passport')(passport); // pass passport for configuration
-// enable this when ready for auth
 
-//Routes - moved to config/routes.js
+// Routes - moved to config/routes.js //
 
 //View Engine
 // server.engine('handlebars', exphbs({defaultLayout: 'main'}));

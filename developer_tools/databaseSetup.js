@@ -48,6 +48,10 @@ function getAPIInfo() {
             }
 
             console.log("-------------------------------------------\n       DONE           \n-------------------------------------------")
+            setTimeout(killProcess, 2000);  // the delay ensures that the DB has been fully written to prior to
+            // ending the process, this was the reason as to why this function
+            // was not working before :(
+
         }
     );
 }
@@ -68,4 +72,8 @@ function createFreeArray(val, len, weeks) {
         out[j] = curDay;
     }
     return out;
+}
+
+function killProcess() {
+    process.exit(0);
 }

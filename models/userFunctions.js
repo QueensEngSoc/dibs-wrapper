@@ -2,6 +2,8 @@
 var consts = require('../config/config');
 var User = require('../models/user');
 var ObjectId = require('mongodb').ObjectId;
+var monk = require('monk');
+var db = monk('localhost:27017/usrAccountsDatabase');
 
 function getUserID(req) {
     var usrid = -1;
@@ -67,6 +69,12 @@ function updateBookingCount(toAdd, req) {
 function endOfDayBookingCountReset(toAdd, usrid) {
         try {
             var usrID = new ObjectId(usrid);
+
+            var ObjectId = new User.ObjectId(usrid);
+            db.users.findOne({ _id: ObjectId }, function (err, info) {
+                console.log(info)
+            });
+
             User.findOne({"_id" : usrID}, function (err, user) {
                 user.local.booking_count += toAdd;
                 User.findOneAndUpdate({'_id': user.local.email}, {'local.booking_count': user.local.booking_count}, function (err, resp) {

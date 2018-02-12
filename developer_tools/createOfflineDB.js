@@ -21,8 +21,7 @@ function getAPIInfo() {
 
             // success case, the file was saved
             console.log('JSON API Info saved!');
-        })
-            ;
+        });
         }
         else
         {
