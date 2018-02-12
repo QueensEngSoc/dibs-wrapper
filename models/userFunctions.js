@@ -1,9 +1,7 @@
 // Stores the functions used for account based access
 var consts = require('../config/config');
 var User = require('../models/user');
-var ObjectId = require('mongodb').ObjectId;
-var monk = require('monk');
-var db = monk('localhost:27017/usrAccountsDatabase');
+var passport = require('passport');
 
 function getUserID(req) {
     var usrid = -1;
@@ -52,6 +50,7 @@ function getBookingCount(req) {
 
 function updateBookingCount(toAdd, req) {
     if (req.isAuthenticated()) {
+
         try {
             var user = req.user;
             user.local.booking_count += toAdd;
@@ -67,25 +66,23 @@ function updateBookingCount(toAdd, req) {
 }
 
 function endOfDayBookingCountReset(toAdd, usrid) {
-        try {
-            var usrID = new ObjectId(usrid);
+    try {
+        User.findById(usrid, function (err, user) {
+            console.log("Found user!");
+            user.local.booking_count += toAdd;
 
-            var ObjectId = new User.ObjectId(usrid);
-            db.users.findOne({ _id: ObjectId }, function (err, info) {
-                console.log(info)
-            });
-
-            User.findOne({"_id" : usrID}, function (err, user) {
-                user.local.booking_count += toAdd;
-                User.findOneAndUpdate({'_id': user.local.email}, {'local.booking_count': user.local.booking_count}, function (err, resp) {
-                    console.log("Updated booked rooms count");
-                });
+            if (user.local.booking_count < 0)   // booking count can't be negative
+                user.local.booking_count = 0;
+            User.findOneAndUpdate({'local.email': user.local.email}, {'local.booking_count': user.local.booking_count}, function (err, resp) {
+                console.log("Updated booked rooms count by " + toAdd + " -> now " + user.local.booking_count + " of " + consts.room_booking_limit);
                 return true;
-
             });
-        }catch (exception) {
-            return false;
-        }
+
+        });
+
+    } catch (exception) {
+        return false;
+    }
 }
 
 function resetBookingCount(req) {

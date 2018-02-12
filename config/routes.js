@@ -67,7 +67,7 @@ module.exports = function(app, passport) {
     // LOGOUT ==============================
     // =====================================
     app.get('/logout', function(req, res) {
-        console.log(req);
+        console.log("User has logged out");
         req.logout();
         res.redirect('/');
     });

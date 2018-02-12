@@ -11,16 +11,34 @@ function endOfDayShift(){
             var free = data.Free;
             var dayToRemove = free[0];
             var hash = "";
+            var numToRemove = [];
+
             for (var i = 0; i < 16; i++){
                 // if (dayToRemove)
                 var hour = dayToRemove[i];
                 if (hour.owner != 0){
                     if (hash == "" || hash != hour.bookingHash) {
                         hash = hour.bookingHash;
-                        accountFuncs.endOfDayBookingCountReset(-1,hour.owner);
+                        // accountFuncs.endOfDayBookingCountReset(-1,hour.owner);   // this no worky, causes a critical section that may break if you are unlucky :(
+                        numToRemove.push({
+                            userid: hour.owner
+                        });
                     }
                 }
             }
+
+            // this section gets all unique ids that booked a room for the previous day, then goes through the array to add one
+            // to the count, and finally it calls the reset booking amount function to give the user the correct amount of room booking slots back
+            var unique = [...new Set(numToRemove.map(item => item.userid))];    // this ugly mess is needed, as critical sections are a thing :(
+            for (var i = 0; i < unique.length; i++){
+                var count = 0;
+                for(var j = 0; j < numToRemove.length; ++j){
+                    if(numToRemove[j].userid == unique[i])
+                        count++;
+                }
+                accountFuncs.endOfDayBookingCountReset(-count, unique[i]);
+            }
+
             free.shift();
             var newDay = createNewDayArray(16, true);
             free.push(newDay);
@@ -38,7 +56,7 @@ function endOfDayShift(){
 function setupEndOfDayScript(){
     console.log("Setting up day shifting code...");
 
-    schedule.scheduleJob({hour: 0, minute: 40}, function() {
+    schedule.scheduleJob({hour: 0, minute: 00}, function() {
         console.log("Shifting day now...")
         endOfDayShift();
     }); // run everyday at midnight
@@ -61,7 +79,7 @@ function createNewDayArray(len, val) {
     return out;
 }
 
-endOfDayShift();
+// endOfDayShift(); // uncomment out this line to cause the day shifting to run when app.js starts, irrespective of what time it is
 
 module.exports = {
     endOfDayShift: endOfDayShift,

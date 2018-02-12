@@ -43,7 +43,7 @@ var hbs = exphbs.create({
 });
 
 // configuration ===============================================================
-mongoose.connect("mongodb://" + configDB.accountURL, { useMongoClient: true }); // connect to our database ->: fixed depreciation warning (it was a bug :P  https://github.com/Automattic/mongoose/issues/5399)
+mongoose.connect(configDB.accountURL); // connect to our database ->: fixed depreciation warning (it was a bug :P  https://github.com/Automattic/mongoose/issues/5399)
 
 require('./config/passport')(passport); // pass passport for configuration
 
