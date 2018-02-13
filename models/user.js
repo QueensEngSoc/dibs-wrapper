@@ -13,8 +13,8 @@ var userSchema = mongoose.Schema({
         password     : String,
         verified     : Boolean,
         verify_token : String,
-        favorite_room: String,
-        favorite_color: String,
+        preferences  : String,
+        version      : Number,
         booking_count: Number
     }
     // uncomment below section  if we eventually ever want to use other forms of authentication

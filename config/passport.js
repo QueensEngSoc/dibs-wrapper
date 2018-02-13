@@ -8,6 +8,7 @@ var LocalStrategy = require('passport-local').Strategy;
 // load up the user model
 var User = require('../models/user');
 var randomstring = require("randomstring");
+var consts = require('./config');
 
 // expose this function to our app using module.exports
 module.exports = function (passport) {
@@ -74,8 +75,13 @@ module.exports = function (passport) {
                         newUser.local.password = newUser.generateHash(password);
                         newUser.local.verified = false;
                         newUser.local.booking_count = 0;
-                        newUser.local.favorite_room = "";
-                        newUser.local.favorite_color = "";
+
+                        var prefs = {
+                            useTheme: "default",
+                            customColors: {}
+                        };
+                        newUser.local.preferences = JSON.stringify(prefs);
+                        // newUser.local.version = consts.userVersion;
 
                         var verification_token = randomstring.generate({
                             length: 64
@@ -136,6 +142,38 @@ module.exports = function (passport) {
                     });
 
                     return done(null, false, req.flash('loginMessage', 'Please verify your email to continue.  As a bypass for now, try again and it should work')); // create the loginMessage and save it to session as flashdata
+                }
+
+                if (user.local.version != consts.userVersion) {
+
+                    var usr = user.local;
+                    usr.email = user.local.email;
+                    usr.password = user.local.password;
+                    usr.verified = user.local.verified;
+
+                    if (user.local.booking_count != undefined)
+                        usr.booking_count = user.local.booking_count;
+                    else
+                        usr.booking_count = 0;
+
+
+                    if (user.preferences == undefined){
+                        var prefs = {
+                            useTheme: "default",
+                            customColors: {}
+                        };
+                        usr.preferences = JSON.stringify(prefs);
+                    }
+                    else
+                        usr.preferences = user.local.preferences;
+
+                    usr.version = consts.userVersion;
+                    usr.verify_token = user.local.verify_token;
+
+                    User.findOneAndUpdate({'local.email': email}, {'local': usr}, function (err, resp) {
+                        console.log('The user has been updated to the latest schema! Now on version ' + usr.version + " from " + user.local.version);
+                    });
+
                 }
                 // all is well, return successful user
                 return done(null, user);
