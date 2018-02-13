@@ -38,3 +38,8 @@ function updatePrefsObj(req, data){
         }
     });
 }
+
+module.exports = {
+    getPrefsObj: getPrefsObj,
+    updatePrefsObj: updatePrefsObj
+};
