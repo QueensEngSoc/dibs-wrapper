@@ -16,8 +16,6 @@ router.get('/book/:roomName/', function (req, res, next) {
             var imgID = room.replace(/\s+/g, '') + '.jpg';
             out.userid = usrid;
             out.free = out1;
-            out.navLink = '<a href="/" class="white">GRID<img src="/img/grid.png" class="li-spacing" height="30" width="40"></a>';
-            out.navPic = '<a href="/" style="padding-top: 5px;"><img src="/img/grid.png" height="30" width="30"></a>';
             out.imgURL = '../img/' + imgID;
 
             res.render('roomInfo', out);
