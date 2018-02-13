@@ -15,18 +15,7 @@ function dibsRoomBookClick(roomID, time, element, roomName, length){
             data: {roomID: roomID, time: time, length: length, roomName: roomName},
             dataType: "json",
             success: function (data) {
-                console.log("Header: " + data.HeaderMsg + " body: " + data.BookingStatusMsg + " data: " + data);
-                var header = data.HeaderMsg;
-                var content = data.BookingStatusMsg;
-                if (header.indexOf("You must login") >= 0){
-                    window.location.href = ('/login?book=' + content);
-                }
-                doModal(header, content, data.BookStatus);
-                if (data.BookStatus) {
-                    element.classList.remove("ytime");
-                    element.classList.add("mtime");
-                }
-                console.log("Done!");
+                successfulBooking(data)
             },
             error: function (data) {
                 console.log("Error: " + data)
@@ -71,6 +60,19 @@ function doModal(heading, formContent, success) {
     $('#dynamicModal').on('hidden.bs.modal', function (e) {
         $(this).remove();
     });
+}
 
-
+function successfulBooking(data) {
+    console.log("Header: " + data.HeaderMsg + " body: " + data.BookingStatusMsg + " data: " + data);
+    var header = data.HeaderMsg;
+    var content = data.BookingStatusMsg;
+    if (header.indexOf("You must login") >= 0){
+        window.location.href = ('/login?book=' + content);
+    }
+    doModal(header, content, data.BookStatus);
+    if (data.BookStatus) {
+        element.classList.remove("ytime");
+        element.classList.add("mtime");
+    }
+    console.log("Done!");
 }

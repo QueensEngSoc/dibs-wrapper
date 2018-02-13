@@ -42,4 +42,29 @@ describe('Room Info InterFace Tests', function() {
             });
         })
     });
+
+    describe('Get the next valid hour', function() {
+        var nextHour;
+        before(function() {
+            var d = new Date();
+            nextHour = d.getHours();
+            var nextMin = d.getMinutes();
+            if (nextMin > 30)
+                nextHour++;
+
+            if (nextHour > 23 || nextHour < 7)
+                nextHour = 7;
+        });
+
+        it('should return the next valid hour formatted to the DB\'s time representation', function() {
+            var time = roomInfo.getNextValidHalfHour(true);
+
+            assert.equal(nextHour + ":30-" + (nextHour + 1) + ":30", time)
+        });
+
+        it('should return the next valid half hour', function() {
+            var time = roomInfo.getNextValidHalfHour();
+            assert.equal(nextHour + ":30", time)
+        });
+    })
 });

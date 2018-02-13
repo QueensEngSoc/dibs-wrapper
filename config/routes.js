@@ -5,6 +5,7 @@ var accountPage = require('../routes/accounts');
 var signupPage = require('../routes/signup');
 // var adminPage = require('../routes/admin');
 // var prefPage = require('../routes/preferences');
+var quick = require('../routes/quick');
 var map = require('../routes/map');
 var book = require('../routes/book');
 var bookRoom = require('../routes/bookRoom');
@@ -38,6 +39,12 @@ module.exports = function(app, passport) {
         successFlash : true
     }));
 
+    // =====================================
+    // =====================================
+    // QuickBook ==============================
+    // =====================================
+    app.get('/quicky', quick);
+    app.post('/quicky', quick);
     // =====================================
     // SIGNUP ==============================
     // =====================================
@@ -75,6 +82,7 @@ module.exports = function(app, passport) {
     app.get('/map', map);
 
     app.use(function (req, res, next) {
+        res.statusCode = 404;
         res.render("404", {
             message: "<p>You seem to have wandered off the beaten path!</p>" +
                 "<p><a href='/'>Go back to the homepage</a> or <a href='/quick'>QuickBook a room</a>!</p>",
@@ -83,7 +91,7 @@ module.exports = function(app, passport) {
     });
 
     app.use(function (err, req, res, next) { // catches URL errors
-        log.error(err.stack);
+        console.error(err.stack);
         res.statusCode = 500;
         res.render('404', {
             message: "<p>Sooooo about that... it's not you... it's us</p>" +

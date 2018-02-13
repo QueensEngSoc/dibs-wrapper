@@ -32,6 +32,48 @@ function getFree(day, roomID) { //gets the free array of the roomID on the day g
 }
 
 /**
+ * Returns an object full of rooms free in the next hour with the size of the room appended
+ */
+function getAllFreeNow() {
+    return new Promise(function(resolve) {
+        var time = getNextValidHalfHour(false, true);
+        var out = {};
+        roomDatabase.find({}).each(function (data, i) {
+            if (!data.Free[0][time].free)
+                return;
+
+            out[data.Name] = {};
+            out[data.Name].isSmall = data.size === 0 ? true : false; // allows us to favor picking small rooms
+            out[data.Name].id = data.RoomID;
+        }).then(function() {
+            resolve(out)
+        })
+    })
+}
+
+/**
+ *
+ * @return {*}: the id of the free room
+ */
+function getNextFree() {
+    return new Promise(function(resolve) {
+        getAllFreeNow().then(function(rooms) {
+            if (rooms === {})
+                return resolve({});
+
+            // try to find a small room first
+            for (var i in rooms) {
+                if (rooms.hasOwnProperty(i) && rooms[i].free && rooms[i].isSmall === true)
+                    return resolve(rooms[i].id) // return available roomID
+            }
+
+            // otherwise just return the id of the last element (it really doesn't matter which room it is)
+            resolve(rooms[i].id);
+        })
+    })
+}
+
+/**
  *
  * @param roomID
  * @returns {promise}
@@ -192,10 +234,36 @@ function isValidTime(time){
      return true;
 }
 
+/**
+ * @param formatAsInterval {boolean} whether to format the string as a time interval
+ * @param formatAsDBTime {boolean} whether to format the string in the DB format (0-15)
+ */
+function getNextValidHalfHour(formatAsInterval, formatAsDBTime) {
+    var d = new Date();
+    var nextHour = d.getHours();
+    var nextMin = d.getMinutes();
+
+    if (nextMin > 30)
+        nextHour++;
+
+    if (nextHour > 23 || nextHour < 7)
+        nextHour = 7;
+
+    if (formatAsInterval)
+        return nextHour + ":30-" + (++nextHour) + ":30";
+    else if (formatAsDBTime)
+        return nextHour-7;
+    else
+        return nextHour + ":30";
+}
+
 module.exports = {
     getFree: getFree,
     getInfo: getInfo,
     getListOfRoomState: getListOfRoomState,
     getInfoByName: getInfoByName,
-    getListOfRoomsForUser: getListOfRoomsForUser
+    getListOfRoomsForUser: getListOfRoomsForUser,
+    getAllFreeNow : getAllFreeNow,
+    getNextFree: getNextFree,
+    getNextValidHalfHour: getNextValidHalfHour
 };
