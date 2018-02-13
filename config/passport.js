@@ -80,8 +80,15 @@ module.exports = function (passport) {
                             useTheme: "default",
                             customColors: {}
                         };
+
                         newUser.local.preferences = JSON.stringify(prefs);
-                        // newUser.local.version = consts.userVersion;
+                        newUser.local.version = consts.userVersion;
+
+                        // var lastBooked = {
+                        //     room: -1,
+                        //     customColors: {}
+                        // };
+                        newUser.local.lastBookedRooms = "";
 
                         var verification_token = randomstring.generate({
                             length: 64
@@ -157,7 +164,7 @@ module.exports = function (passport) {
                         usr.booking_count = 0;
 
 
-                    if (user.preferences == undefined){
+                    if (user.local.preferences == undefined){
                         var prefs = {
                             useTheme: "default",
                             customColors: {}
@@ -166,6 +173,11 @@ module.exports = function (passport) {
                     }
                     else
                         usr.preferences = user.local.preferences;
+
+                    if (user.local.lastBookedRooms == undefined)
+                        usr.lastBookedRooms = "";
+                    else
+                        usr.lastBookedRooms = user.local.lastBookedRooms;
 
                     usr.version = consts.userVersion;
                     usr.verify_token = user.local.verify_token;

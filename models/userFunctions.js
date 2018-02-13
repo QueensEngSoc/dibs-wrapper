@@ -101,11 +101,54 @@ function resetBookingCount(req) {
     }
 }
 
+function setLastBookedRooms(req, roomid, day, time, length, building){
+    if (req.isAuthenticated()) {
+        try {
+            var user = req.user;
+            var json = JSON.parse(user.local.lastBookedRooms);
+            var booking = ({
+               roomid: roomid,
+               day: day,
+               time: time,
+               length: length,
+               building: building
+            });
+
+            json.push(booking);
+            if (json.length > 4)
+                json.shift();
+
+            User.findOneAndUpdate({'local.email': user.local.email}, {'local.booking_count': user.local.json}, function (err, resp) {
+                console.log("Updated previously booked rooms for the user");
+            });
+            return true;
+
+        } catch (exception) {
+            return false;
+        }
+    }
+}
+
+function getLastBookedRooms(req){
+    if (req.isAuthenticated()) {
+        try {
+            var user = req.user;
+            return JSON.parse(user.local.lastBookedRooms);
+
+        } catch (exception) {
+            return ({});
+        }
+    }
+}
+
+
 module.exports = {
     getUserID: getUserID,
     getBookingCount: getBookingCount,
     canBookMoreRooms: canBookMoreRooms,
     updateBookingCount: updateBookingCount,
     resetBookingCount: resetBookingCount,
-    endOfDayBookingCountReset: endOfDayBookingCountReset
+    endOfDayBookingCountReset: endOfDayBookingCountReset,
+    setLastBookedRooms: setLastBookedRooms,
+    getLastBookedRooms: getLastBookedRooms
 };
