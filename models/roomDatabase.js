@@ -210,7 +210,7 @@ function getListOfRoomsForUser(usrid) {
                         listBookings.push({
                             room: data.Name,
                             roomNum: mapRoomName,
-                            free: data.Free[0],
+                            free: data.Free[day],
                             pic: data.Picture,
                             roomid: data.RoomID,
                             intDay: day,
@@ -230,7 +230,9 @@ function getListOfRoomsForUser(usrid) {
 }
 
 function getPrettyDay(intDay){
-    if (intDay == 1)
+    if (intDay == 0)
+        return "Today";
+    else if (intDay == 1)
         return "Tomorrow";
     else if (intDay == -1)
         return "Yesterday";
