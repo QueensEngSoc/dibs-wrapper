@@ -1,6 +1,6 @@
 // this contains some JS functions that are used on the index and room pages
 
-function dibsRoomBookClick(roomID, time, element, roomName, length){
+function dibsRoomBookClick(roomID, time, element, roomName, length, day){
     // this function gets the current room id, embeds it into the post request, and then sends a post.
     // On success, it returns whether the booking was successful, or the error that occurred
 
@@ -12,13 +12,14 @@ function dibsRoomBookClick(roomID, time, element, roomName, length){
         $.ajax({
             url: "/bookroom",
             type: "POST",
-            data: {roomID: roomID, time: time, length: length, roomName: roomName},
+            data: {roomID: roomID, time: time, length: length, roomName: roomName, day: day},
             dataType: "json",
             success: function (data) {
-                successfulBooking(data)
+                successfulBooking(data, element)
             },
             error: function (data) {
-                console.log("Error: " + data)
+                console.log("Error: " + data);
+                doModal("Oops, something went wrong :(", "Try again, and if the issue persists, please contact the ESSDEV Team", false)
             }
         });
     }
@@ -62,7 +63,7 @@ function doModal(heading, formContent, success) {
     });
 }
 
-function successfulBooking(data) {
+function successfulBooking(data, element) {
     console.log("Header: " + data.HeaderMsg + " body: " + data.BookingStatusMsg + " data: " + data);
     var header = data.HeaderMsg;
     var content = data.BookingStatusMsg;

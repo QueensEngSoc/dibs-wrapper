@@ -23,6 +23,7 @@ module.exports = function(app, passport) {
     // =============================================
     app.post('/bookroom', bookRoom);
     app.get('/book/:roomID', book);
+    app.get('/book/:roomID/:date', book);
 
     // =====================================
     // LOGIN ===============================

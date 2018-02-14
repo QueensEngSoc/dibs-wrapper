@@ -7,18 +7,18 @@
                     {{#if free}}
                         <li>
                             <button class="ytime" style="font-size: 20px;"
-                                    onclick='dibsRoomBookClick(document.getElementById("roomID").value, {{startTime}}, this, "{{../room}}", 1)'>{{time}}</button>
+                                    onclick='dibsRoomBookClick(document.getElementById("roomID").value, {{startTime}}, this, "{{../room}}", 1, {{../day}})'>{{time}}</button>
                         </li>
                     {{else}}
                         {{#if_eq owner ../userid}}
                             <li>
                                 <button class="mtime" style="font-size: 20px;"
-                                        onclick='dibsRoomBookClick(document.getElementById("roomID").value, {{startTime}}, this, "{{../room}}", 1)'>{{time}}</button>
+                                        onclick='dibsRoomBookClick(document.getElementById("roomID").value, {{startTime}}, this, "{{../room}}", 1, {{../day}})'>{{time}}</button>
                             </li>
                         {{else}}
                             <li>
                                 <button class="ntime" style="font-size: 20px;"
-                                        onclick='dibsRoomBookClick(document.getElementById("roomID").value, {{startTime}}, this, "{{../room}}", 1)'>{{time}}</button>
+                                        onclick='dibsRoomBookClick(document.getElementById("roomID").value, {{startTime}}, this, "{{../room}}", 1, {{../day}})'>{{time}}</button>
                             </li>
                         {{/if_eq}}
                     {{/if}}

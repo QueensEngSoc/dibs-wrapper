@@ -10,7 +10,7 @@ router.post('/bookroom', function (req, res) {
     var bookingTimeStart = parseInt(obj.time, 10);
     var roomID = parseInt(obj.roomID, 10);
     var usrid = accountFuncs.getUserID(req);
-    var day = 0;
+    var day = parseInt(obj.day, 10);
     var length = parseInt(obj.length, 10);
 
     if (usrid == -1 || usrid == undefined) {

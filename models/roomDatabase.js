@@ -201,20 +201,24 @@ function getListOfRoomsForUser(usrid) {
 
         //return roomDatabase.find({"Free": { $elemMatch: {owner: usrid}}}).each(function(data, i) {
         return roomDatabase.find().each(function(data, i) {
-            for (var i = 0; i < data.Free[0].length; i++) {
-                if (data.Free[0][i].owner === usrid) {
-                    var roomNum = data.Name.match(/\d+/)[0]; // get the number from the room
-                    var mapRoomName = "bmh" + roomNum;
-
-                    listBookings.push({
-                        room: data.Name,
-                        roomNum: mapRoomName,
-                        free: data.Free[0],
-                        pic: data.Picture,
-                        roomid: data.RoomID,
-                        description: data.Description
-                    });
-                    break;
+            for (var day = 0; day < data.Free.length; day++) {
+                for (var i = 0; i < data.Free[day].length; i++) {
+                    if (data.Free[day][i].owner === usrid) {
+                        var roomNum = data.Name.match(/\d+/)[0]; // get the number from the room
+                        var mapRoomName = "bmh" + roomNum;
+                        var prettyDay = getPrettyDay(day);
+                        listBookings.push({
+                            room: data.Name,
+                            roomNum: mapRoomName,
+                            free: data.Free[0],
+                            pic: data.Picture,
+                            roomid: data.RoomID,
+                            intDay: day,
+                            prettyDay: prettyDay,
+                            description: data.Description
+                        });
+                        break;
+                    }
                 }
             }
 
@@ -223,6 +227,23 @@ function getListOfRoomsForUser(usrid) {
 
         });
     });
+}
+
+function getPrettyDay(intDay){
+    if (intDay == 1)
+        return "Tomorrow";
+    else if (intDay == -1)
+        return "Yesterday";
+
+    var today = new Date();
+    today.addDays(intDay);
+    return today.toDateString();
+}
+
+Date.prototype.addDays = function(days) {
+    var dat = new Date(this.valueOf());
+    dat.setDate(dat.getDate() + days);
+    return dat;
 }
 
 function isValidTime(time){
