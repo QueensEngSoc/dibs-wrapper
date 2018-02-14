@@ -50,8 +50,10 @@ router.get('/book/:roomName/:date', function (req, res, next) {
         roomDB.getFree(diff, roomID).then(function (out1) { //so this is the dumbest thing ever XD, we'll talk
             if (out1 == undefined) {
                 var max = new Date(today.getDate() + 14);
+                var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+
                 res.render("404", {
-                    message: "<p>You cannot book that far ahead!  The limit is " + max.toDateString() + "</p>" + "<p>Pick a different time, " +
+                    message: "<p>You cannot book that far ahead!  The limit is " + max.toLocaleDateString('en-CA', options) + "</p>" + "<p>Pick a different time, " +
                     "<a href='/'>Go back to the homepage</a> or <a href='/quick'>QuickBook a room</a>!</p>",
                     image: "trail.jpg"
                 });
