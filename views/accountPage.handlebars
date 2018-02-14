@@ -45,12 +45,12 @@
                                 <p class="card-text">{{../description}}</p>
                             {{#if_eq ../intDay 0}}
                                 {{#if_time startTime }}
-                                        <button onclick='unbookRoomClick({{../roomid}}, {{startTime}}, {{../intDay}}, "{{owner}}", this, 1)' class="btn btn-danger" style="padding-bottom: 5px;">Cancel Booking</button>
+                                        <button onclick='unbookRoomClick({{../roomid}}, {{startTime}}, {{../intDay}}, "{{owner}}", this, {{length}})' class="btn btn-danger" style="padding-bottom: 5px;">Cancel Booking</button>
                                 {{else}}
-                                        <button disabled onclick='unbookRoomClick({{../roomid}}, {{startTime}}, {{../intDay}}, "{{owner}}", this, 1)' class="btn btn-danger" style="padding-bottom: 5px;">Cancel Booking</button>
+                                        <button disabled onclick='unbookRoomClick({{../roomid}}, {{startTime}}, {{../intDay}}, "{{owner}}", this, {{length}})' class="btn btn-danger" style="padding-bottom: 5px;">Cancel Booking</button>
                                 {{/if_time}}
                             {{else}}
-                                    <button onclick='unbookRoomClick({{../roomid}}, {{startTime}}, {{../intDay}}, "{{owner}}", this, 1)' class="btn btn-danger" style="padding-bottom: 5px;">Cancel Booking</button>
+                                    <button onclick='unbookRoomClick({{../roomid}}, {{startTime}}, {{../intDay}}, "{{owner}}", this, {{length}})' class="btn btn-danger" style="padding-bottom: 5px;">Cancel Booking</button>
                             {{/if_eq}}
                         <input type=hidden name="bookingHash" value="{{bookingHash}}"/>
                     </div>
