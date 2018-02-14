@@ -48,13 +48,23 @@ router.get('/book/:roomName/:date', function (req, res, next) {
         var roomID = out.roomid;
 
         roomDB.getFree(diff, roomID).then(function (out1) { //so this is the dumbest thing ever XD, we'll talk
-            var usrid = accountFuncs.getUserID(req);
-            var imgID = room.replace(/\s+/g, '') + '.jpg';
-            out.userid = usrid;
-            out.free = out1;
-            out.imgURL = '../../img/' + imgID;
-            out.day = diff;
-            res.render('roomInfo', out);
+            if (out1 == undefined) {
+                var max = new Date(today.getDate() + 14);
+                res.render("404", {
+                    message: "<p>You cannot book that far ahead!  The limit is " + max.toDateString() + "</p>" + "<p>Pick a different time, " +
+                    "<a href='/'>Go back to the homepage</a> or <a href='/quick'>QuickBook a room</a>!</p>",
+                    image: "trail.jpg"
+                });
+            }
+            else {
+                var usrid = accountFuncs.getUserID(req);
+                var imgID = room.replace(/\s+/g, '') + '.jpg';
+                out.userid = usrid;
+                out.free = out1;
+                out.imgURL = '../../img/' + imgID;
+                out.day = diff;
+                res.render('roomInfo', out);
+            }
         });
     }).catch(function () {
         res.render("404", {

@@ -22,8 +22,10 @@ function getFree(day, roomID) { //gets the free array of the roomID on the day g
 
     var find = new Promise(function (resolve, reject) {
         roomDatabase.find({RoomID: roomID}).each(function (data, i) {
-            out = data.Free[day];
-
+            if (day < data.Free.length)
+                out = data.Free[day];
+            else
+                out = undefined;
             resolve(out);
         });
     });
@@ -35,7 +37,7 @@ function getFree(day, roomID) { //gets the free array of the roomID on the day g
  * Returns an object full of rooms free in the next hour with the size of the room appended
  */
 function getAllFreeNow() {
-    return new Promise(function(resolve) {
+    return new Promise(function (resolve) {
         var time = getNextValidHalfHour(false, true);
         var out = {};
         roomDatabase.find({}).each(function (data, i) {
@@ -45,7 +47,7 @@ function getAllFreeNow() {
             out[data.Name] = {};
             out[data.Name].isSmall = data.size === 0 ? true : false; // allows us to favor picking small rooms
             out[data.Name].id = data.RoomID;
-        }).then(function() {
+        }).then(function () {
             resolve(out)
         })
     })
@@ -56,8 +58,8 @@ function getAllFreeNow() {
  * @return {*}: the id of the free room
  */
 function getNextFree() {
-    return new Promise(function(resolve) {
-        getAllFreeNow().then(function(rooms) {
+    return new Promise(function (resolve) {
+        getAllFreeNow().then(function (rooms) {
             if (rooms === {})
                 return resolve({});
 
@@ -89,18 +91,18 @@ function getInfo(roomID) { //gets the info of the selected room (roomID)
         roomid: roomID,
     };
 
-    var find = new Promise(function(resolve, reject) {
-        roomDatabase.findOne({RoomID: roomID}).then(function(data, i) {
+    var find = new Promise(function (resolve, reject) {
+        roomDatabase.findOne({RoomID: roomID}).then(function (data, i) {
             out.room = data.Name;
             out.size = data.Description;
-            out.tempImgURL =  "/" + data.Picture;
+            out.tempImgURL = "/" + data.Picture;
             out.tv = data.tv;
             out.phone = data.phone;
             out.special = data.special;
             out.roomid = roomID;
 
             resolve(out);
-        }).catch(function(data, i) {
+        }).catch(function (data, i) {
             console.log("error: room not found!");
             reject(new Error('No Room Found!'));
         });
@@ -120,18 +122,18 @@ function getInfoByName(roomName) { //gets the info of the selected room (roomID)
         roomid: "Error",
     };
 
-    var find = new Promise(function(resolve, reject) {
-        roomDatabase.findOne({Name: roomName}).then(function(data, i) {
+    var find = new Promise(function (resolve, reject) {
+        roomDatabase.findOne({Name: roomName}).then(function (data, i) {
             out.room = data.Name;
             out.size = data.Description;
-            out.tempImgURL =  "/" + data.Picture;
+            out.tempImgURL = "/" + data.Picture;
             out.tv = data.tv;
             out.phone = data.phone;
             out.special = data.special;
             out.roomid = data.RoomID;
             resolve(out);
 
-        }).catch(function(data, i) {    // the room was not found!
+        }).catch(function (data, i) {    // the room was not found!
             console.log("error: room not found!");
             reject(new Error('No Room Found!'));
         });
@@ -148,11 +150,11 @@ function getInfoByName(roomName) { //gets the info of the selected room (roomID)
  * @returns {*}
  */
 function getListOfRoomState(day, time, usrid) {
-    return new Promise(function(resolve, reject) {
+    return new Promise(function (resolve, reject) {
         var listFree = [];
-        usrid = typeof usrid  !== 'undefined' ? usrid : -1;
+        usrid = typeof usrid !== 'undefined' ? usrid : -1;
 
-        return roomDatabase.find({}).each(function(data, i) {
+        return roomDatabase.find({}).each(function (data, i) {
             var roomNum = data.Name.match(/\d+/)[0]; // get the number from the room
             var mapRoomName = "BMH" + roomNum;
             var listRoomName = "bmh-" + roomNum;
@@ -195,12 +197,12 @@ function getListOfRoomState(day, time, usrid) {
  * @returns {*}
  */
 function getListOfRoomsForUser(usrid) {
-    return new Promise(function(resolve, reject) {
+    return new Promise(function (resolve, reject) {
         var listBookings = [];
-        usrid = typeof usrid  !== 'undefined' ? usrid : -1;
+        usrid = typeof usrid !== 'undefined' ? usrid : -1;
 
         //return roomDatabase.find({"Free": { $elemMatch: {owner: usrid}}}).each(function(data, i) {
-        return roomDatabase.find().each(function(data, i) {
+        return roomDatabase.find().each(function (data, i) {
             for (var day = 0; day < data.Free.length; day++) {
                 for (var i = 0; i < data.Free[day].length; i++) {
                     if (data.Free[day][i].owner === usrid) {
@@ -229,7 +231,7 @@ function getListOfRoomsForUser(usrid) {
     });
 }
 
-function getPrettyDay(intDay){
+function getPrettyDay(intDay) {
     if (intDay == 0)
         return "Today";
     else if (intDay == 1)
@@ -242,19 +244,19 @@ function getPrettyDay(intDay){
     return today.toDateString();
 }
 
-Date.prototype.addDays = function(days) {
+Date.prototype.addDays = function (days) {
     var dat = new Date(this.valueOf());
     dat.setDate(dat.getDate() + days);
     return dat;
 }
 
-function isValidTime(time){
+function isValidTime(time) {
     var dateObj = new Date();
     var current_min = dateObj.getMinutes();
 
-    if (time < 7 || time > 23 || (time == 23 && current_min > 30) || (time == 7 && current_min < 30) )
-         return false;
-     return true;
+    if (time < 7 || time > 23 || (time == 23 && current_min > 30) || (time == 7 && current_min < 30))
+        return false;
+    return true;
 }
 
 /**
@@ -275,7 +277,7 @@ function getNextValidHalfHour(formatAsInterval, formatAsDBTime) {
     if (formatAsInterval)
         return nextHour + ":30-" + (++nextHour) + ":30";
     else if (formatAsDBTime)
-        return nextHour-7;
+        return nextHour - 7;
     else
         return nextHour + ":30";
 }
@@ -286,7 +288,7 @@ module.exports = {
     getListOfRoomState: getListOfRoomState,
     getInfoByName: getInfoByName,
     getListOfRoomsForUser: getListOfRoomsForUser,
-    getAllFreeNow : getAllFreeNow,
+    getAllFreeNow: getAllFreeNow,
     getNextFree: getNextFree,
     getNextValidHalfHour: getNextValidHalfHour
 };
