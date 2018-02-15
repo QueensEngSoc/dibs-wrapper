@@ -45,9 +45,9 @@ function getAllFreeNow() {
                 return;
 
             out[data.Name] = {};
-            out[data.Name].isSmall = data.size === 0 ? true : false; // allows us to favor picking small rooms
+            out[data.Name].isSmall = data.size === 0; // allows us to favor picking small rooms
             out[data.Name].id = data.RoomID;
-        }).then(function () {
+        }).then(function() {
             resolve(out)
         })
     })
@@ -59,7 +59,8 @@ function getAllFreeNow() {
  */
 function getNextFree() {
     return new Promise(function (resolve) {
-        getAllFreeNow().then(function (rooms) {
+        var time = getNextValidHalfHour(false, true);
+        getListOfRoomState(0, time).then(function (rooms) {
             if (rooms === {})
                 return resolve({});
 

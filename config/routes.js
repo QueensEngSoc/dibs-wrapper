@@ -3,8 +3,7 @@ var index = require('../routes/index');
 var loginPage = require('../routes/login');
 var accountPage = require('../routes/accounts');
 var signupPage = require('../routes/signup');
-// var adminPage = require('../routes/admin');
-// var prefPage = require('../routes/preferences');
+var prefPage = require('../routes/preferences');
 var quick = require('../routes/quick');
 var map = require('../routes/map');
 var book = require('../routes/book');
@@ -41,6 +40,11 @@ module.exports = function(app, passport) {
     }));
 
     // =====================================
+    // Preferences ==============================
+    // =====================================
+    app.get('/preferences', prefPage);
+    app.put('/preferences', prefPage);
+
     // =====================================
     // QuickBook ==============================
     // =====================================

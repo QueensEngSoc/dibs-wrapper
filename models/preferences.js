@@ -1,6 +1,6 @@
 var consts = require('../config/config');
 var User = require('../models/user');
-var userFuncs = require('userFunctions');
+var userFuncs = require('./userFunctions');
 
 function getPrefsObj(req) {
     return new Promise(function (resolve, reject) {
