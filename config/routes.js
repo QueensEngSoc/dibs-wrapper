@@ -86,7 +86,7 @@ module.exports = function(app, passport) {
         res.statusCode = 404;
         res.render("404", {
             message: "<p>You seem to have wandered off the beaten path!</p>" +
-                "<p><a href='/'>Go back to the homepage</a> or <a href='/quick'>QuickBook a room</a>!</p>",
+                "<p><a href='/'>Go back to the homepage</a> or <a href='/quicky'>QuickBook a room</a>!</p>",
             image: "trail.jpg"
         });
     });
