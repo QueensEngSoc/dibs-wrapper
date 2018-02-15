@@ -16,6 +16,7 @@ module.exports = function(app, passport) {
     // HOME PAGE (with login links) ========
     // =====================================
     app.get('/', index);
+    app.post('/index', index);
 
     // =============================================
     // BOOK AND BOOKROOM PAGE (with login links) ===
