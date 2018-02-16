@@ -21,6 +21,11 @@ body {
     background-color: #992CC4 !important;
 }
 
-.mission-control {
+.mission-control, .modal,
+.btn-default, .list-group li {
     color: #000 !important;
+}
+
+object {
+    background-color: whitesmoke;
 }
