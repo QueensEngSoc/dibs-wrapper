@@ -18,13 +18,17 @@ router.get('/book/:roomName/', function (req, res, next) {
             out.free = out1;
             out.imgURL = '../img/' + imgID;
             out.day = 0;
+            out.theme = req.theme === "custom" ? false : req.theme;
+            out.colors = req.colors;
             res.render('roomInfo', out);
         });
     }).catch(function () {
         res.render("404", {
             message: "<p>That room does not exist!</p>" +
             "<p><a href='/'>Go back to the homepage</a> or <a href='/quick'>QuickBook a room</a>!</p>",
-            image: "trail.jpg"
+            image: "trail.jpg",
+            theme: req.theme === "custom" ? false : req.theme,
+            colors: req.colors
         });
     });
 });
@@ -55,7 +59,9 @@ router.get('/book/:roomName/:date', function (req, res, next) {
                 res.render("404", {
                     message: "<p>You cannot book that far ahead!  The limit is " + max.toLocaleDateString('en-CA', options) + "</p>" + "<p>Pick a different time, " +
                     "<a href='/'>Go back to the homepage</a> or <a href='/quick'>QuickBook a room</a>!</p>",
-                    image: "trail.jpg"
+                    image: "trail.jpg",
+                    theme: req.theme === "custom" ? false : req.theme,
+                    colors: req.colors
                 });
             }
             else {
@@ -65,6 +71,8 @@ router.get('/book/:roomName/:date', function (req, res, next) {
                 out.free = out1;
                 out.imgURL = '../../img/' + imgID;
                 out.day = diff;
+                out.theme = req.theme === "custom" ? false : req.theme;
+                out.colors = req.colors;
                 res.render('roomInfo', out);
             }
         });
@@ -72,7 +80,9 @@ router.get('/book/:roomName/:date', function (req, res, next) {
         res.render("404", {
             message: "<p>That room does not exist!</p>" +
             "<p><a href='/'>Go back to the homepage</a> or <a href='/quick'>QuickBook a room</a>!</p>",
-            image: "trail.jpg"
+            image: "trail.jpg",
+            theme: req.theme === "custom" ? false : req.theme,
+            colors: req.colors
         });
     });
 });

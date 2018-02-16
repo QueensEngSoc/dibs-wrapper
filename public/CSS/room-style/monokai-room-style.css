@@ -1,0 +1,26 @@
+.yroom,
+.ytime {
+    background-color: #a4e405;
+}
+
+.nroom,
+.ntime {
+    background-color: #ed1f6a;
+}
+
+.mtime {
+    background-color: #60d9f1;
+}
+
+body {
+    background-color: #272822 !important;
+    color: whitesmoke !important;
+}
+
+.navbar {
+    background-color: #992CC4 !important;
+}
+
+.mission-control {
+    color: #000 !important;
+}

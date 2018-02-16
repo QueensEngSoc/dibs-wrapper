@@ -28,7 +28,9 @@ router.get('/map', function (req, res, next) {
             // vars go here, like if a room is booked or not
             title: "D!Bs Map View",
             roomStatus: jsonList,
-            currentHour: current_hour
+            currentHour: current_hour,
+            theme: req.theme === "custom" ? false : req.theme,
+            colors: req.colors
         });
 
     });

@@ -8,9 +8,14 @@ var quick = require('../routes/quick');
 var map = require('../routes/map');
 var book = require('../routes/book');
 var bookRoom = require('../routes/bookRoom');
+var getTheme = require('../middleware/getThemePref');
 
 // app/routes.js
 module.exports = function(app, passport) {
+    // =====================================
+    // MIDDLEWARE                   ========
+    // =====================================
+    app.use(getTheme.getThemePref);
 
     // =====================================
     // HOME PAGE (with login links) ========

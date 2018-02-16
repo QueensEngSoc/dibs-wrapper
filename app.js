@@ -15,7 +15,7 @@ var server = express(); //initialize the server
 //and you can also define stuff like `defaultLayout` and `partialsDir`
 var hbs = exphbs.create({
     helpers: {      // These are right now just in here for fun / testing, realistically we probably won't need to use 
-                    //handlers for anything, since AJAX and JQuerry are much easier to use, and much more powerful.  That being said,
+                    //handlers for anything, since AJAX and JQuery are much easier to use, and much more powerful.  That being said,
                     // having a few examples is probably fairly useful, so I will leave these in for now.
         getStringifiedJson: function (value) {
             return JSON.stringify(value);
@@ -39,7 +39,7 @@ var hbs = exphbs.create({
 
         }
     },
-    defaultLayout: 'main',
+    defaultLayout: 'main'
 });
 
 // configuration ===============================================================

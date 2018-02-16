@@ -88,6 +88,8 @@ router.get('/accounts', function (req, res, next) {
                         bookingLimit: bookingLimit,
                         bookingsLeft: bookingLimit - req.user.local.booking_count,
                         hasJson: true,
+                        theme: req.theme === "custom" ? false : req.theme,
+                        colors: req.colors
                     });
 
                 });
@@ -132,7 +134,9 @@ router.get('/accounts', function (req, res, next) {
                     bookingsLeft: bookingLimit - req.user.local.booking_count,
                     hasJson: false,
                     navLink: '<a href="/" class="white">GRID<img src="/img/grid.png" class="li-spacing" height="30" width="40"></a>',
-                    navPic: '<a href="/" style="padding-top: 5px;"><img src="/img/grid.png" height="30" width="30"></a>'
+                    navPic: '<a href="/" style="padding-top: 5px;"><img src="/img/grid.png" height="30" width="30"></a>',
+                    theme: req.theme === "custom" ? false : req.theme,
+                    colors: req.colors
                 });
 
             });

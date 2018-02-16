@@ -41,7 +41,6 @@ li {
     padding-top: 15px !important;
 }
 .yroom {
-    background-color: #C7FE74;
     padding: 15px 32px;
     font-family: "Roboto Mono", Courier, monospace;
     border-radius: 12px;
@@ -52,7 +51,6 @@ li {
     text-decoration: none;
 }
 .nroom {
-    background-color: #FF8376;
     padding: 15px 32px;
     font-family: "Roboto Mono", Courier, monospace !important;
     border-radius: 12px;
@@ -63,24 +61,21 @@ li {
     text-decoration: none;
 }
 .ytime {
-    background-color: #C7FE74;
     color: white;
     padding: 15px 22px;
-    font-family: "Roboto Mono";
+    font-family: "Roboto Mono", Courier, monospace;;
     border-radius: 12px;
     display: inline-flex;
     font-size: 50px;
 }
 .mtime {
-    background-color: #FFC107;
     padding: 15px 22px;
-    font-family: "Roboto Mono";
+    font-family: "Roboto Mono", Courier, monospace;;
     border-radius: 12px;
     display: inline-flex;
     font-size: 50px;
 }
 .ntime {
-    background-color: #FF8376;
     color: white;
     padding: 15px 22px;
     font-family: "Roboto Mono";
@@ -118,7 +113,6 @@ li {
     width: 100%;
     margin: 0;
 }
-
 
 .navbar .navbar-brand {
     color: #ecf0f1;
