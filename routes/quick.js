@@ -11,7 +11,9 @@ router.get('/quicky', function (req, res, next) { //the request to render the pa
 
     res.render('quick', {
         navLink: '<a href="/map" class="white">MAP<img src="/img/mapfix.png" class="li-spacing" height="30" width="40"></a>',
-        navPic: '<a href="/map" style="padding-top: 5px;"><img src="/img/mapfix.png" height="30" width="30"></a>'
+        navPic: '<a href="/map" style="padding-top: 5px;"><img src="/img/mapfix.png" height="30" width="30"></a>',
+        theme: req.theme === "custom" ? false : req.theme,
+        colors: req.colors
     });
 });
 
