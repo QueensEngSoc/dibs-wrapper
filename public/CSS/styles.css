@@ -234,3 +234,7 @@ li {
 .centered {
     text-align: center;
 }
+
+.row {
+    margin: 0;
+}
