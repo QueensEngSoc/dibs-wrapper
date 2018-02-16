@@ -170,3 +170,14 @@ function updateButtons(data){
         }
     }
 }
+
+var shown = false;
+function showHideFilters(el) {
+    $('#filters').fadeToggle(400, 'swing');
+    if (shown)
+        el.innerText = 'Show More Filters';
+    else
+        el.innerText = 'Hide Filters';
+
+    shown = !shown;
+}

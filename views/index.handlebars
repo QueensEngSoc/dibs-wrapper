@@ -13,47 +13,29 @@
 <br>
 <div class="row justify-content-center">
     <div class="col-8">
-    <div class="form-group text-center" id="selectionForm">
-        <h4>
-            <strong>Room Size:&nbsp&nbsp</strong>
-            <label class="radio-inline"><input checked='checked' type="radio" name="optradio">Any</label>
-            <label class="radio-inline"><input type="radio" value="0" name="optradio">Small</label>
-            <label class="radio-inline"><input type="radio" value="1" name="optradio">Medium</label>
-            <label class="radio-inline"><input type="radio" value="2" name="optradio">Large</label>
-            <span class="multiselect-native-select">
-    <div class="btn-group" style="padding-left: 20px;">
-        <button class="multiselect dropdown-toggle btn btn-default" type="button" data-toggle="dropdown" title="">
-            <span class="multiselect-selected-text">Filters</span>
-
-        </button>
-        <ul class="multiselect-container dropdown-menu" id="filterSelect" style="padding-left: 15px;">
-            <li data-value="onlyFree">
-                <a tabindex="0">
-                    <label class="checkbox black">
-                        <input value="onlyFree"  type="checkbox"> Hide unavailable rooms
+        <div class="form-group text-center" id="selectionForm">
+            <h4>
+                <strong>Room Size:&nbsp&nbsp</strong>
+                <label class="radio-inline"><input checked='checked' type="radio" name="optradio">Any</label>
+                <label class="radio-inline"><input type="radio" value="0" name="optradio">Small</label>
+                <label class="radio-inline"><input type="radio" value="1" name="optradio">Medium</label>
+                <label class="radio-inline"><input type="radio" value="2" name="optradio">Large</label>
+            </h4>
+            <button onclick="showHideFilters(this)" class="btn btn-default">Show More Filters</button>
+            <div id="filters" style="display: none; padding-top: 15px;">
+                <div class="btn-group" data-toggle="buttons">
+                    <label class="btn btn-primary active">
+                        <input type="checkbox" autocomplete="off"> Hide Unavailable
                     </label>
-                </a>
-            </li>
-            <li data-value="hasTV">
-                <a tabindex="0">
-                    <label class="checkbox black">
-                        <input value="hasTV"  type="checkbox"> Has a TV
+                    <label class="btn btn-primary">
+                        <input type="checkbox" autocomplete="off"> Has a TV
                     </label>
-              </a>
-            </li>
-            <li  data-value="hasPhone">
-                <a tabindex="0">
-                    <label class="checkbox black">
-                        <input value="hasPhone" type="checkbox"> Has a phone
+                    <label class="btn btn-primary">
+                        <input type="checkbox" autocomplete="off"> Has a Phone
                     </label>
-                </a>
-            </li>
-        </ul>
-    </div>
-</span>
-        </h4>
-
-    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <br/>
