@@ -12,6 +12,7 @@
     "express-handlebars": "^3.0.0",
     "express-session": "^1.15.6",
     "handlebars": "^4.0.11",
+    "jsonfile": "^4.0.0",
     "mocha": "^5.0.0",
     "mongoose": "^4.13.11",
     "monk": "^6.0.5",

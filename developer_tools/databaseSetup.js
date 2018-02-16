@@ -40,6 +40,8 @@ function getAPIInfo() {
 
                 if (description.indexOf("phone") >= 0 || description.indexOf("Phone") >= 0)
                     data.phone = true;
+                else
+                    data.phone = false;
 
                 data.Free = createFreeArray(true, 16, 2);
 

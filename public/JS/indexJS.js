@@ -96,3 +96,77 @@ $('.dropdown-menu a').on( 'click', function( event ) {
     filterSelect(sel);
     return false;
 });
+
+//////////////////////////////////// Datepicker stuff ////////////////////////////////////////////
+
+jQuery(function($) {
+
+    $("#datepicker").datepicker({
+        minDate: 0,
+        maxDate: "+1M",
+        onSelect: function(d,i){
+            if(d !== i.lastVal){
+                $(this).change();
+            }
+        }
+    });
+});
+
+$(document).ready(function() {
+    $("#datepicker").val("Today");
+});
+
+$('#datepicker').change(function(){
+    display("Value Changed! Selected date: " + " input's current value: " + this.value);
+    getNewDayData(this.value);
+});
+
+function display(msg) {
+    console.log(msg);
+}
+
+function getNewDayData(day)
+{
+    $.ajax({
+        url: "/index",
+        type: "POST",
+        data: {day: day},
+        dataType: "json",
+        success: function (data) {
+            updateButtons(data);
+        },
+        error: function (data) {
+            console.log("Error: " + data);
+            doModal("Oops, something went wrong :(", "Try again, and if the issue persists, please contact the ESSDEV Team", false)
+        }
+    });
+}
+
+function updateButtons(data){
+    for (var d = 0; d < data.list.length; d++){
+        var room = data.list[d];
+
+        var matchingElement = document.getElementById(room.roomNum);
+        matchingElement.href = "/book/" + room.roomID + "/" + data.prettyDate;
+
+        if (room.isFree){
+            matchingElement.classList.remove("mroom");
+            matchingElement.classList.remove("nroom");
+            matchingElement.classList.add("yroom");
+        }
+        else
+        {
+            if (room.isMine){
+                matchingElement.classList.remove("nroom");
+                matchingElement.classList.remove("yroom");
+                matchingElement.classList.add("mroom");
+            }
+            else
+            {
+                matchingElement.classList.remove("mroom");
+                matchingElement.classList.remove("yroom");
+                matchingElement.classList.add("nroom");
+            }
+        }
+    }
+}
