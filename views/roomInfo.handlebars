@@ -1,23 +1,23 @@
 <link rel="stylesheet" href="../CSS/styles.css" title="pref" type="text/css"/>
 <div class="container">
     <div class="row">
-        <div class="times col-md-4">
+        <div class="times col-md-5">
             <ul>
                 {{#each free}}
                     {{#if free}}
                         <li>
-                            <button class="ytime" style="font-size: 20px;"
+                            <button class="ytime"
                                     onclick='dibsRoomBookClick(document.getElementById("roomID").value, {{startTime}}, this, "{{../room}}", 1, {{../day}})'>{{time}}</button>
                         </li>
                     {{else}}
                         {{#if_eq owner ../userid}}
                             <li>
-                                <button class="mtime" style="font-size: 20px;"
+                                <button class="mtime"
                                         onclick='dibsRoomBookClick(document.getElementById("roomID").value, {{startTime}}, this, "{{../room}}", 1, {{../day}})'>{{time}}</button>
                             </li>
                         {{else}}
                             <li>
-                                <button class="ntime" style="font-size: 20px;"
+                                <button class="ntime"
                                         onclick='dibsRoomBookClick(document.getElementById("roomID").value, {{startTime}}, this, "{{../room}}", 1, {{../day}})'>{{time}}</button>
                             </li>
                         {{/if_eq}}
@@ -25,10 +25,11 @@
                 {{/each}}
             </ul>
         </div>
-        <div class="desc col-md-8">
+        <div class="col-md-1"></div>
+        <div class="desc col-md-6">
             <img alt="RoomPicture" src={{imgURL}}
                     height="400"> <br><br>
-            <p style="text-align: left;">{{size}} room.<br><br>{{#if tv}}
+            <p style="text-align: left;">{{size}}.<br><br>{{#if tv}}
                 There is{{else}}There is not{{/if}} a TV.<br><br>{{#if
                     special}}This is a special room{{/if}}</p>
             <br>

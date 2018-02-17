@@ -66,14 +66,14 @@ li {
     font-family: "Roboto Mono", Courier, monospace;;
     border-radius: 12px;
     display: inline-flex;
-    font-size: 50px;
+    font-size: 17px;
 }
 .mtime {
     padding: 15px 22px;
     font-family: "Roboto Mono", Courier, monospace;;
     border-radius: 12px;
     display: inline-flex;
-    font-size: 50px;
+    font-size: 17px;
 }
 .ntime {
     color: white;
@@ -81,7 +81,7 @@ li {
     font-family: "Roboto Mono";
     border-radius: 12px;
     display: inline-flex;
-    font-size: 50px;
+    font-size: 17px;
 }
 .navbar-brand{
     font-size: 30px !important;
