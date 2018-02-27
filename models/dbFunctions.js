@@ -43,7 +43,7 @@ function endOfDayShift(){
             var newDay = createNewDayArray(16, true);
             free.push(newDay);
             var roomID = data.RoomID;
-            roomDatabase.update({RoomID: roomID}, {$set: {Free: free}});
+            // roomDatabase.update({RoomID: roomID}, {$set: {Free: free}});
 
         }).then(function () {
             return resolve();
