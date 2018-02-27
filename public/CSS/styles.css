@@ -238,3 +238,70 @@ li {
 .row {
     margin: 0;
 }
+
+/* The container */
+.chk-container {
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+    font-size: 22px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    margin-bottom: 0;
+    width: 10em;
+    color: black;
+    background-color: white;
+}
+.checkmark {
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: #eee;
+    text-align: cente
+}
+
+.chk-container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.chk-container:hover input ~ .checkmark,
+input:focus ~ .checkmark,
+input:active ~ .checkmark {
+    background-color: #ccc;
+    outline: 1px solid #2196F3;
+}
+
+.chk-container input:checked ~ .checkmark {
+    background-color: black;
+    color: white;
+}
+
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+/* Show the indicator (dot/circle) when checked */
+.chk-container input:checked ~ .checkmark:after {
+    display: block;
+    color: white;
+}
+
+/* Style the indicator (dot/circle) */
+.chk-container .checkmark:after {
+    top: 0;
+    left: 0;
+    height: 25px;
+    z-index: -2;
+}
+
+.chk-container input {
+    opacity: 0;
+}

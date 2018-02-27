@@ -17,6 +17,14 @@ body {
     color: whitesmoke !important;
 }
 
+.card-block {
+    color: black;
+}
+
+.page-header .btn-default {
+    color: whitesmoke !important;
+}
+
 .navbar {
     background-color: #992CC4 !important;
 }

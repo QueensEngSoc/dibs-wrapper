@@ -23,17 +23,18 @@
             </h4>
             <button onclick="showHideFilters(this)" class="btn btn-default">Show More Filters</button>
             <div id="filters" style="display: none; padding-top: 15px;">
-                <div class="btn-group" data-toggle="buttons">
-                    <label class="btn btn-primary active">
-                        <input type="checkbox" autocomplete="off"> Hide Unavailable
-                    </label>
-                    <label class="btn btn-primary">
-                        <input type="checkbox" autocomplete="off"> Has a TV
-                    </label>
-                    <label class="btn btn-primary">
-                        <input type="checkbox" autocomplete="off"> Has a Phone
-                    </label>
-                </div>
+                <label class="chk-container">
+                    <input type="checkbox">
+                    <span class="checkmark">Hide Unavailable</span>
+                </label>
+                <label class="chk-container">
+                    <input type="checkbox">
+                    <span class="checkmark">Has a Phone</span>
+                </label>
+                <label class="chk-container">
+                    <input type="checkbox">
+                    <span class="checkmark">Has a TV</span>
+                </label>
             </div>
         </div>
     </div>
