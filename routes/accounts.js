@@ -50,7 +50,8 @@ router.get('/accounts', function (req, res, next) {
     var usrid = accountFuncs.getUserID(req);
 
     var msg = req.flash('bookingMessage');
-    var bookingLimit = consts.room_booking_limit;
+    // var bookingLimit = consts.room_booking_limit;    // by room bookings
+    var bookingLimit = consts.room_hour_limit;          // by hour bookings
 
     if (usrid == -1 || usrid == undefined)
         return res.redirect('/login');
