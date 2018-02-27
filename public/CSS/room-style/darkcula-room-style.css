@@ -1,15 +1,15 @@
 .yroom,
 .ytime {
-    background-color: #a4e405;
+    background-color: #a5c25c;
 }
 
 .nroom,
 .ntime {
-    background-color: #ed1f6a;
+    background-color: #cc7832;
 }
 
 .mtime {
-    background-color: #60d9f1;
+    background-color: #769aa5;
 }
 
 body {
@@ -23,7 +23,7 @@ body {
 
 .mission-control, .modal,
 .btn-default, .list-group li {
-    color: #000 !important;
+    color: #000;
 }
 
 object {

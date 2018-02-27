@@ -47,20 +47,20 @@
     background-color: #60d9f1;
 }
 
-.available.darcula {
-    background-color: greenyellow;
+.available.darkcula {
+    background-color: #a5c25c;
 }
 
-.unavailable.darcula {
-    background-color: red;
+.unavailable.darkcula {
+    background-color: #cc7832;
 }
 
-.you-booked-it.darcula {
-    background-color: orange;
+.you-booked-it.darkcula {
+    background-color: #769aa5;
 }
 
 .bg.monokai,
-.bg.darcula {
+.bg.darkcula {
     background-color: #272822;
 }
 
