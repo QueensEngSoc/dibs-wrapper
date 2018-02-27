@@ -24,7 +24,7 @@ function canBookMoreRooms(req) {
         try {
             var user = req.user;
             var bookingCount = user.local.booking_count;
-            if (bookingCount >= consts.room_booking_limit)
+            if (bookingCount >= consts.room_hour_limit)
                 return false;
         } catch (exception) {
             return false;
@@ -54,6 +54,8 @@ function updateBookingCount(toAdd, req) {
         try {
             var user = req.user;
             user.local.booking_count += toAdd;
+            if (user.local.booking_count > consts.room_hour_limit)
+                user.local.booking_count = consts.room_hour_limit;  // if something messed up and the user booked more than they should have, set the booked amount to the max
             User.findOneAndUpdate({'local.email': user.local.email}, {'local.booking_count': user.local.booking_count}, function (err, resp) {
                 console.log("Updated booked rooms count");
             });

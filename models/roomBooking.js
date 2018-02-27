@@ -55,7 +55,7 @@ function bookRoom(day, time, roomID, length, usrid, req) { //books a room at a c
                     resolve(out);
                 }
             }
-            if (userFuncs.updateBookingCount(1, req)) {
+            if (userFuncs.updateBookingCount(length, req)) {
                 roomDatabase.update({RoomID: roomID}, {$set: {Free: temp}});
                 out.success = true;
                 out.bookMsg = "Booking successful for " + data.Name + " from " + time + ":30 - " + (time + length) + ":30";
@@ -113,7 +113,7 @@ function unbookRoom(day, time, length, roomID, usrid, req) {
                 }
             }
 
-            if (userFuncs.updateBookingCount(-1, req)) {
+            if (userFuncs.updateBookingCount(-length, req)) {
                 roomDatabase.update({RoomID: roomID}, {$set: {Free: temp}});
             }
             resolve(out);

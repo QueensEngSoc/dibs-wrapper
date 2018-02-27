@@ -29,7 +29,7 @@ router.post('/accounts/unbook', function (req, res) {
             var unbookAll = new Promise(function(resolve, reject) {
                 roomFuncs.getListOfRoomsForUser(usrid).then(function(rooms) {
                     for (var room of rooms) {
-                        roomBook.unbookAllForUser(0, room.roomid, usrid, req).then(function(success) {
+                        roomBook.unbookAllForUser(room.intDay, room.roomid, usrid, req).then(function(success) {
                         });
                     }
                     if (rooms.length == 0)  // something went wrong, so let's reset the booking count to 0, since the user has no rooms booked at the moment
@@ -50,7 +50,8 @@ router.get('/accounts', function (req, res, next) {
     var usrid = accountFuncs.getUserID(req);
 
     var msg = req.flash('bookingMessage');
-    var bookingLimit = consts.room_booking_limit;
+    // var bookingLimit = consts.room_booking_limit;    // by room bookings
+    var bookingLimit = consts.room_hour_limit;          // by hour bookings
 
     if (usrid == -1 || usrid == undefined)
         return res.redirect('/login');
