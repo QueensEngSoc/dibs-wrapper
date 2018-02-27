@@ -1,14 +1,14 @@
 # dibs-wrapper
 
+<pre>
 This project is a simple Node.js wrapper around the Dibs room booking API, with the ability to quickly find free rooms,
 display room information and book rooms in a local database.  Currently there is basic support for single hour bookings,
 however multi-hour bookings will be added in the future.
 
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                              HOW TO USE THIS APP                                                   //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//
+//                                                                                                                    //
 // to get this app to work, create a directory somewhere where you want MongoDB to hold the database.
 // Open a CMD window, and navigate to the MongoDB/bin folder (Where you installed MongoDB)
 // You then have to type the following command within CMD:
@@ -31,8 +31,9 @@ however multi-hour bookings will be added in the future.
 //
 //  if it returns true in the console, it worked!  You then have to re-run the grabJSON.js file, and the
 //  app should now work without issues
-//
+//                                                                                                
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+</pre>
 
 2018 ESSDEV Dibs Team
 
