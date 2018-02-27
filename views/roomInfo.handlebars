@@ -4,24 +4,26 @@
         <div class="times col-md-5">
             <ul>
                 {{#each free}}
-                    {{#if free}}
-                        <li>
-                            <button class="ytime"
-                                    onclick='dibsRoomBookClick(document.getElementById("roomID").value, {{startTime}}, this, "{{../room}}", 1, {{../day}})'>{{time}}</button>
-                        </li>
-                    {{else}}
-                        {{#if_eq owner ../userid}}
+                    {{#if_time startTime}}
+                        {{#if free}}
                             <li>
-                                <button class="mtime"
+                                <button class="ytime"
                                         onclick='dibsRoomBookClick(document.getElementById("roomID").value, {{startTime}}, this, "{{../room}}", 1, {{../day}})'>{{time}}</button>
                             </li>
                         {{else}}
-                            <li>
-                                <button class="ntime"
-                                        onclick='dibsRoomBookClick(document.getElementById("roomID").value, {{startTime}}, this, "{{../room}}", 1, {{../day}})'>{{time}}</button>
-                            </li>
-                        {{/if_eq}}
-                    {{/if}}
+                            {{#if_eq owner ../userid}}
+                                <li>
+                                    <button class="mtime"
+                                            onclick='dibsRoomBookClick(document.getElementById("roomID").value, {{startTime}}, this, "{{../room}}", 1, {{../day}})'>{{time}}</button>
+                                </li>
+                            {{else}}
+                                <li>
+                                    <button class="ntime"
+                                            onclick='dibsRoomBookClick(document.getElementById("roomID").value, {{startTime}}, this, "{{../room}}", 1, {{../day}})'>{{time}}</button>
+                                </li>
+                            {{/if_eq}}
+                        {{/if}}
+                    {{/if_time}}
                 {{/each}}
             </ul>
         </div>
