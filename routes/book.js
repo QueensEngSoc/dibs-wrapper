@@ -3,6 +3,12 @@ var router = express.Router();
 var roomDB = require('../models/roomDatabase.js'); //the roomDatabase interface which provide 5 functions. Look in the file for how to use them
 var accountFuncs = require('../models/userFunctions');
 
+function addDays(date, days) {
+    var result = new Date(date);
+    result.setDate(result.getDate() + days);
+    return result;
+}
+
 router.get('/book/:roomName/', function (req, res, next) {
     var room = req.params.roomName;
     room = room.toUpperCase();
@@ -47,46 +53,60 @@ router.get('/book/:roomName/:date', function (req, res, next) {
     //one_minute means 1000*60
     //one_second means 1000
 
-    room = room.toUpperCase();
-    room = room.replace(/-/g, ' '); // strip out dashes
-
-    roomDB.getInfoByName(room).then(function (out) {
-        var roomID = out.roomid;
-
-        roomDB.getFree(diff, roomID).then(function (out1) { //so this is the dumbest thing ever XD, we'll talk
-            if (out1 == undefined) {
-                var max = new Date(today.getDate() + 14);
-                var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-
-                res.render("404", {
-                    message: "<p>You cannot book that far ahead!  The limit is " + max.toLocaleDateString('en-CA', options) + "</p>" + "<p>Pick a different time, " +
-                    "<a href='/'>Go back to the homepage</a> or <a href='/quicky'>QuickBook a room</a>!</p>",
-                    image: "trail.jpg",
-                    theme: req.theme === "custom" ? false : req.theme,
-                    colors: req.colors
-                });
-            }
-            else {
-                var usrid = accountFuncs.getUserID(req);
-                var imgID = room.replace(/\s+/g, '') + '.jpg';
-                out.userid = usrid;
-                out.free = out1;
-                out.imgURL = '../../img/' + imgID;
-                out.day = diff;
-                out.theme = req.theme === "custom" ? false : req.theme;
-                out.colors = req.colors;
-                res.render('roomInfo', out);
-            }
-        });
-    }).catch(function () {
+    if (diff < 0)
+    {
         res.render("404", {
-            message: "<p>That room does not exist!</p>" +
-            "<p><a href='/'>Go back to the homepage</a> or <a href='/quicky'>QuickBook a room</a>!</p>",
+            message: "<p>You cannot book in the past! Stop being dumb :P </p>" + "<p>Pick a different time, " +
+            "<a href='/'>Go back to the homepage</a> or <a href='/quicky'>QuickBook a room</a>!</p>",
             image: "trail.jpg",
             theme: req.theme === "custom" ? false : req.theme,
             colors: req.colors
         });
-    });
+
+    }
+    else {
+        room = room.toUpperCase();
+        room = room.replace(/-/g, ' '); // strip out dashes
+
+        roomDB.getInfoByName(room).then(function (out) {
+            var roomID = out.roomid;
+
+            roomDB.getFree(diff, roomID).then(function (out1) { //so this is the dumbest thing ever XD, we'll talk
+                if (out1 == undefined) {
+                    var max = new Date();
+                    max = addDays(today, 14);
+
+                    var options = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
+                    res.render("404", {
+                        message: "<p>You cannot book that far ahead!  The limit is " + max.toLocaleDateString('en-CA', options) + "</p>" + "<p>Pick a different time, " +
+                        "<a href='/'>Go back to the homepage</a> or <a href='/quicky'>QuickBook a room</a>!</p>",
+                        image: "trail.jpg",
+                        theme: req.theme === "custom" ? false : req.theme,
+                        colors: req.colors
+                    });
+                }
+                else {
+                    var usrid = accountFuncs.getUserID(req);
+                    var imgID = room.replace(/\s+/g, '') + '.jpg';
+                    out.userid = usrid;
+                    out.free = out1;
+                    out.imgURL = '../../img/' + imgID;
+                    out.day = diff;
+                    out.theme = req.theme === "custom" ? false : req.theme;
+                    out.colors = req.colors;
+                    res.render('roomInfo', out);
+                }
+            });
+        }).catch(function () {
+            res.render("404", {
+                message: "<p>That room does not exist!</p>" +
+                "<p><a href='/'>Go back to the homepage</a> or <a href='/quicky'>QuickBook a room</a>!</p>",
+                image: "trail.jpg",
+                theme: req.theme === "custom" ? false : req.theme,
+                colors: req.colors
+            });
+        });
+    }
 });
 
 module.exports = router;
