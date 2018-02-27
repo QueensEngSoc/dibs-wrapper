@@ -62,6 +62,7 @@ router.get('/book/:roomName/:date', function (req, res, next) {
             theme: req.theme === "custom" ? false : req.theme,
             colors: req.colors
         });
+
     }
     else {
         room = room.toUpperCase();
