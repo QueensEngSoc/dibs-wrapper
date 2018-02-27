@@ -23,17 +23,17 @@
             </h4>
             <button onclick="showHideFilters(this)" class="btn btn-default">Show More Filters</button>
             <div id="filters" style="display: none; padding-top: 15px;">
-                <label class="chk-container">
-                    <input type="checkbox">
-                    <span class="checkmark">Hide Unavailable</span>
-                </label>
-                <label class="chk-container">
-                    <input type="checkbox">
+                <label class="chk-container">&nbsp;
+                    <input type="checkbox" data-value="hasPhone">
                     <span class="checkmark">Has a Phone</span>
                 </label>
-                <label class="chk-container">
-                    <input type="checkbox">
+                <label class="chk-container">&nbsp;
+                    <input type="checkbox" data-value="hasTV">
                     <span class="checkmark">Has a TV</span>
+                </label><br>
+                <label class="chk-container">&nbsp;
+                    <input type="checkbox" data-value="onlyFree">
+                    <span class="checkmark">Hide Unavailable</span>
                 </label>
             </div>
         </div>

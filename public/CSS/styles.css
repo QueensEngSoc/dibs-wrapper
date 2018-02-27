@@ -98,7 +98,7 @@ li {
 .navbar-nav > li {
     float: none;
     display: inline-block;
-    padding-top: 0px;
+    padding-top: 0;
 }
 .btn-xl {
     padding: 18px 28px;
@@ -239,69 +239,68 @@ li {
     margin: 0;
 }
 
-/* The container */
 .chk-container {
     display: inline-block;
     position: relative;
+    margin-bottom: 12px;
+    width: 10em;
     cursor: pointer;
     font-size: 22px;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-    margin-bottom: 0;
-    width: 10em;
-    color: black;
-    background-color: white;
-}
-.checkmark {
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-    background-color: #eee;
-    text-align: cente
+    text-align: center;
 }
 
+/* Hide the browser's default checkbox */
 .chk-container input {
     position: absolute;
     opacity: 0;
     cursor: pointer;
 }
 
-.chk-container:hover input ~ .checkmark,
-input:focus ~ .checkmark,
-input:active ~ .checkmark {
-    background-color: #ccc;
-    outline: 1px solid #2196F3;
+/* Create a custom checkbox */
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 30px;
+    background-color: #eee;
+    width: 100%;
+    border-radius: 2em;
+    color: black;
 }
 
+/* On mouse-over, add a grey background color */
+.chk-container:hover input ~ .checkmark {
+    background-color: #ccc;
+}
+
+/* When the checkbox is checked, add a blue background */
 .chk-container input:checked ~ .checkmark {
-    background-color: black;
+    background-color: #2196F3;
     color: white;
 }
 
-/* Create the indicator (the dot/circle - hidden when not checked) */
+/* Create the checkmark/indicator (hidden when not checked) */
 .checkmark:after {
     content: "";
     position: absolute;
     display: none;
 }
 
-/* Show the indicator (dot/circle) when checked */
+/* Show the checkmark when checked */
 .chk-container input:checked ~ .checkmark:after {
     display: block;
-    color: white;
 }
 
-/* Style the indicator (dot/circle) */
+/* Style the checkmark/indicator */
 .chk-container .checkmark:after {
-    top: 0;
-    left: 0;
-    height: 25px;
-    z-index: -2;
+    width: 100%;
+    height: 100%;
 }
 
-.chk-container input {
-    opacity: 0;
+.hidden {
+    display: none;
 }

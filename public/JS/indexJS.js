@@ -1,101 +1,54 @@
 // this contains some JS functions that are used on the index page
 
-function roomSizeSelect(size){
+$(document).on("change","input[type=radio]", filterList);
 
-    var buttonDiv = document.getElementById('roomButtons');
-    var buttons = buttonDiv.getElementsByClassName('btn btn-lg');
+$('.chk-container').on('change', filterList);
 
-    for(var i = 0; i < buttons.length; i++){
-        var a = buttons[i];
-        var btnSize = a.querySelector("#roomSize").value;
-        var sizeNum = btnSize.match(/\d+/)[0];
+function filterList() {
+    var checkedAttrs = [];
 
-        if (sizeNum != size && size != "on")
-            a.style.display = 'none';
-        else
-            a.style.display = 'inline-block';
+    $('#roomButtons').children().removeClass('hidden');
 
-        if (sizeNum == 3 && size == 2)  // temp code to show 111 in the large section, we can figure out the better way to do this later
-            a.style.display = 'inline-block';
-    }
-}
-
-$(document).on("change","input[type=radio]",function(){ // initializes the radio button group listener, so we can track any selections
     var btnSel=$('[name="optradio"]:checked').val();
-    roomSizeSelect(btnSel)
-});
+    roomSizeSelect(btnSel);
 
-function filterSelect(filtersSelected){
-
-    var buttonDiv = document.getElementById('roomButtons');
-    var buttons = buttonDiv.getElementsByClassName('btn btn-lg');
-
-    for(var i = 0; i < buttons.length; i++) {
-        var a = buttons[i];
-
-        if (filtersSelected == undefined) {
-            a.style.display = 'inline-block';
-        }
-        else {
-            if (filtersSelected.indexOf("hasTV") >= 0) {
-                var hasTV = a.querySelector("#hasTV").value;
-
-                if (hasTV.indexOf("true") < 0)
-                    a.style.display = 'none';
-                else
-                    a.style.display = 'inline-block';
-            }
-            if (filtersSelected.indexOf("onlyFree") >= 0) {
-                if (a.style.display != 'none') {
-                    if (a.classList.contains('nroom'))
-                        a.style.display = 'none';
-                    else
-                        a.style.display = 'inline-block';
-                }
-            }
-            if (filtersSelected.indexOf("hasPhone") >= 0) {
-                if (a.style.display != 'none') {
-                    var hasPhone = a.querySelector("#hasPhone").value;
-
-                    if (hasPhone.indexOf("true") < 0)
-                        a.style.display = 'none';
-                    else
-                        a.style.display = 'inline-block';
-                }
-            }
-        }
-    }
-
+    $('.chk-container input').each(function(idx, el) {
+        if (el.checked === true)
+            checkedAttrs.push($(el).attr('data-value'))
+    });
+    filterSelect(checkedAttrs);
 }
 
-var options = [];
+function filterSelect(filtersSelected) {
+    $('#roomButtons').children().each(function(idx, el) {
+        for (var i in filtersSelected) {
+            var $el = $(el);
+            if (filtersSelected.hasOwnProperty(i)) {
+                if (filtersSelected[i] !== 'onlyFree') {
+                    if (!$el.children('input[name=' + filtersSelected[i] + ']')[0].value.includes('true'))
+                        $el.addClass('hidden');
+                }
+                else {
+                    if ($el.hasClass('mroom') || $el.hasClass('nroom'))
+                        $el.addClass('hidden');
+                }
+            }
+        }
+    });
+}
 
-$('.dropdown-menu a').on( 'click', function( event ) {
+function roomSizeSelect(size) {
+    $('#roomButtons').children().each(function (idx, el) {
+        var $el = $(el);
+        var sizeNum = $el.children('[name=roomSize]')[0].value.match(/\d+/)[0];
 
-    var $target = $( event.currentTarget ),
-        val = $target.attr( 'data-value' ),
-        $inp = $target.find( 'input' ),
-        idx;
+        if (sizeNum !== size && size !== "on")
+            $el.addClass('hidden');
 
-        var sel = undefined;
-        if ($inp[0].checked == true)
-            sel = $inp[0].value;
-        // if (@inp[0].isSelected())
-
-    if ( ( idx = options.indexOf( val ) ) > -1 ) {
-        options.splice( idx, 1 );
-        setTimeout( function() { $inp.prop( 'checked', false ) }, 0);
-    } else {
-        options.push( val );
-        setTimeout( function() { $inp.prop( 'checked', true ) }, 0);
-    }
-
-    $( event.target ).blur();
-
-    console.log( options + " Selected: " + sel );
-    filterSelect(sel);
-    return false;
-});
+        if (sizeNum === "3" && size === "2")  // temp code to show 111 in the large section, we can figure out the better way to do this later
+            $el.removeClass('hidden');
+    });
+}
 
 //////////////////////////////////// Datepicker stuff ////////////////////////////////////////////
 
