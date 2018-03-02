@@ -19,6 +19,14 @@
     background-color: #eeeeee;
 }
 
+.no-margin {
+    margin-bottom: 0;
+}
+
+.blue {
+    color: #007bff;
+}
+
 .available {
     background-color: #C7FE74;
 }

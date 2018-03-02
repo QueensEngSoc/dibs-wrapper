@@ -1,21 +1,145 @@
 <div class="header" style="z-index: 500;">
     <title>Log In</title>
+    <link rel="stylesheet" href="../css/preferences.css" title="pref" type="text/css"/>
+    <script src="../js/preferences.js" type="text/javascript"></script>
 </div>
 
 <div class="container" style="padding-top: 50px;">
-
     <div class="page-header text-center">
         <h1><span class="fa fa-anchor"></span> Profile Page</h1>
         <a href="/logout" class="btn btn-default btn-sm">Logout</a>
-        <a href="/preferences" class="btn btn-default btn-sm">Preferences</a>
+        <a class="btn btn-default btn-sm" id="prefbut">
+            <p class="no-margin blue" id="books">Bookings</p>
+            <p class="no-margin blue" id="prefs">Preferences</p>
+        </a>
     </div>
+<br><br>
+    <div class="row justify-content-center" id="preferences" align="center">
+    <div class="mission-control">
+        <h4><label for="ocb">One Click Booking</label></h4>
+        {{#if ocb}}
+            <input title="ocb" type="checkbox" checked="checked">
+        {{else}}
+            <input title="ocb" type="checkbox">
+        {{/if}}
+        <button class="q" onclick="launchModal('setting')">?</button>
+        <br>
+        <h4>Another Setting</h4>
+        {{#if other}}
+            <input title="other" type="checkbox" checked="checked">
+        {{else}}
+            <input title="other" type="checkbox">
+        {{/if}}
+        <button class="q" onclick="launchModal('setting')">?</button>
+        <br><br>
+        <button class="caret btn btn-primary" onclick="$('#theme-detail').fadeToggle(400, 'swing')">v Show Theme Options v</button>
+        <br>
+        <div class="container hidden" id="theme-detail">
+            <br><br>
+            <div class="row">
+                <div class="col-sm">
+                    <h3>Free Rooms</h3>
+                    {{#if useTheme}}
+                        <div class="color-swatch available {{theme}}" style="display: inline-block;"></div>
+                        <div class="hidden" data-colorinput="true">
+                            <label for="av-picker">Select a color:</label>
+                            <input type="color" class="hidden-picker" title="av-picker" value="{{customColors.av}}">
+                        </div>
+                    {{else}}
+                        <div class="color-swatch available hidden {{theme}}" style="display: inline-block;"></div>
+                        <div data-colorinput="true">
+                            <label for="av-picker">Select a color:</label>
+                            <input type="color" class="hidden-picker" title="av-picker" value="{{customColors.av}}">
+                        </div>
+                    {{/if}}
+                </div>
+                <div class="col-sm">
+                    <h3>Booked Rooms</h3>
+                    {{#if useTheme}}
+                        <div class="color-swatch unavailable {{theme}}" style="display: inline-block;"></div>
+                        <div class="hidden" data-colorinput="true">
+                            <label for="ua-picker">Select a color:</label>
+                            <input type="color" class="hidden-picker" title="ua-picker" value="{{customColors.ua}}">
+                        </div>
+                    {{else}}
+                        <div class="color-swatch unavailable hidden {{theme}}" style="display: inline-block;"></div>
+                        <div data-colorinput="true">
+                            <label for="ua-picker">Select a color:</label>
+                            <input type="color" class="hidden-picker" title="ua-picker" value="{{customColors.ua}}">
+                        </div>
+                    {{/if}}
+                </div>
+                <div class="col-sm">
+                    <h3>Your Rooms</h3>
+                    {{#if useTheme}}
+                        <div class="color-swatch you-booked-it {{theme}}" style="display: inline-block;"></div>
+                        <div class="hidden" data-colorinput="true">
+                            <label for="ybi-picker">Select a color:</label>
+                            <input type="color" class="hidden-picker" title="ybi-picker" value="{{customColors.ybi}}">
+                        </div>
+                    {{else}}
+                        <div class="color-swatch you-booked-it hidden {{theme}}" style="display: inline-block;"></div>
+                        <div data-colorinput="true">
+                            <label for="ybi-picker">Select a color:</label>
+                            <input type="color" class="hidden-picker" title="ybi-picker" value="{{customColors.ybi}}">
+                        </div>
+                    {{/if}}
+                </div>
+                <div class="col-sm">
+                    <h3>Background</h3>
+                    {{#if useTheme}}
+                        <div class="color-swatch bg {{theme}}" style="display: inline-block;"></div>
+                        <div class="hidden" data-colorinput="true">
+                            <div class="color-swatch-ue bg white-bg"></div>
+                        </div>
+                    {{else}}
+                        <div class="color-swatch bg hidden {{theme}}" style="display: inline-block;"></div>
+                        <div data-colorinput="true">
+                            <div class="color-swatch-ue bg white-bg"></div>
+                        </div>
+                    {{/if}}
+                </div>
+            </div>
+            <br><br>
+            <label for="color">Color Scheme</label>
+            <select title="color">
+                {{#if df}}
+                    <option value="default" selected>Daytime (Default)</option>
+                {{else}}
+                    <option value="default">Daytime (Default)</option>
+                {{/if}}
+                {{#if rg}}
+                    <option value="rg-cb" selected>Red-Green Colorblind</option>
+                {{else}}
+                    <option value="rg-cb">Red-Green Colorblind</option>
+                {{/if}}
+                {{#if mnk}}
+                    <option value="monokai" selected>Monokai</option>
+                {{else}}
+                    <option value="monokai">Monokai</option>
+                {{/if}}
+                {{#if drk}}
+                    <option value="darkcula" selected>Darkula</option>
+                {{else}}
+                    <option value="darkcula">Darkula</option>
+                {{/if}}
+                {{#if cst}}
+                    <option value="custom" selected>Custom</option>
+                {{else}}
+                    <option value="custom">Custom</option>
+                {{/if}}
+            </select>
+        </div>
+        <br><br>
+        <button class="btn btn-success" onclick="submitChanges()" disabled>Save Changes</button>
+    </div>
+    </div>
+<div class="row" id="bookings">
 
-    <div class="row">
-
-        <!-- LOCAL INFORMATION -->
-        <div class="col-sm-12">
-            <div class="well">
-                <h3><span class="fa fa-user"></span> Local</h3>
+    <!-- LOCAL INFORMATION -->
+    <div class="col-sm-12">
+        <div class="well">
+            <h3><span class="fa fa-user"></span> Local</h3>
 
                 <p style="text-align: left;">
                     <strong>id</strong>: {{user._id}}<br>
@@ -29,12 +153,11 @@
             </div>
         </div>
 
-
-    <div class="col-sm-12">
+<div class="col-sm-12">
     <!--<div class="well">-->
-        <h3><span class="fa fa-user"></span> Booked Rooms</h3>
+    <h3><span class="fa fa-user"></span> Booked Rooms</h3>
 
-    <p style="text-align: left;">
+<p style="text-align: left;">
 <div class="container">
     <div class="row" id="bookedRow">
 
@@ -83,3 +206,15 @@
 <input type=hidden id="usrID" name="usrID" value="{{user._id}}"/>
 
 <script src="/JS/accountPageFuncs.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#preferences").hide();
+        $("#books").hide();
+    });
+    $("#prefbut").click(function(){
+        $("#bookings").toggle("fast");
+        $("#preferences").toggle("fast");
+        $("#books").toggle("fast");
+        $("#prefs").toggle("fast");
+    });
+</script>
