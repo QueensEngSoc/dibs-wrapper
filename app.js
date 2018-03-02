@@ -37,6 +37,22 @@ var hbs = exphbs.create({
             else
                 return opts.fn(this);
 
+        },
+        getTimes: function(free, owner, day, room) {
+            var times = [];
+            for (slot of free) {
+                console.log(slot);
+                if (slot.owner == owner) {
+                    times.push(slot.time);
+                }
+            }
+
+            var msg = "";
+            for (i in times) {
+                var time = times[i];
+                msg += time + (i == times.length-1 ? "" : ", ");
+            }
+            return "<h4 class='card-title' name='bookingTime'>" + day + ": " + room + " - " + msg + "</h4>";
         }
     },
     defaultLayout: 'main'

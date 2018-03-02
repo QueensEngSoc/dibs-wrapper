@@ -109,19 +109,30 @@ router.get('/accounts', function (req, res, next) {
                         var end = 16;
                         for (var i = 0; i < end; i++) {
                             if (free[day].free[i].owner == req.user.id) {
-                                if (hash != free[day].free[i].bookingHash){
-                                    hash = free[day].free[i].bookingHash;
-                                    start = i;
-                                }
-                                else{
-                                    free[day].free.splice(i, 1);
+                                var length = 0;
+                                var index = i + 1;
+                                while (index < end && free[day].free[index++].owner == req.user.id) {
                                     length++;
-                                    var time = free[day].free[start].time;
-                                    free[day].free[start].time = updateTime(time);
-                                    free[day].free[start].length = length;
-                                    i--;
-                                    end--;
                                 }
+                                if (i + 1 < end)
+                                    free[day].free.splice(i + 1, length);
+                                end -= length;
+                                var time = free[day].free[i].time;
+                                free[day].free[i].time = updateTime(time, length);
+
+
+                                // if (hash != free[day].free[i].bookingHash){
+                                //     hash = free[day].free[i].bookingHash;
+                                //     start = i;
+                                // } else {
+                                //     free[day].free.splice(i, 1);
+                                //     length++;
+                                //     var time = free[day].free[start].time;
+                                //     free[day].free[start].time = updateTime(time);
+                                //     free[day].free[start].length = length;
+                                //     i--;
+                                //     end--;
+                                // }
                             }
                         }
                     }
@@ -147,14 +158,14 @@ router.get('/accounts', function (req, res, next) {
 })
 ;
 
-function updateTime(time){
+function updateTime(time, length){
     var pos = getPosition(time, '-', 1);        // get the position of the second - in the string
     var tempStr = time.substr(pos + 2);         // get the substring of the pos + 2 (the start of the ending hour)
     var colnPos = getPosition(tempStr, ':', 1); // get the pos of the colon (to determine if the time is 1 or 2 digits long
     var endStr = tempStr;                       // save this ending string, we need it for later
     tempStr = tempStr.substr(0, colnPos);       // cut the substring to the colon posistion, leaving the time
     var timeInt = parseInt(tempStr, 10);        // turn the time to an int
-    timeInt++;                                  // add one
+    timeInt += length;                                  // add one
     time = time.substr(0, pos + 2) + timeInt + endStr.substr(colnPos);  // add everything back into a single string
     return time;
 }
