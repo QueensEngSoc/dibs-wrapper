@@ -9,6 +9,7 @@ var LocalStrategy = require('passport-local').Strategy;
 var User = require('../models/user');
 var randomstring = require("randomstring");
 var consts = require('./config');
+var emailFuncs = require('../models/sendEmail');
 
 // expose this function to our app using module.exports
 module.exports = function (passport) {
@@ -101,6 +102,7 @@ module.exports = function (passport) {
                             if (err)
                                 throw err;
 
+                            emailFuncs.sendVerificationEmail(newUser.local.email, consts.fromEmail, newUser.local.verify_token, req);
                             return done(null, newUser);
                         });
                     }
@@ -143,12 +145,20 @@ module.exports = function (passport) {
                     return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.')); // create the loginMessage and save it to session as flashdata
 
                 if (!user.local.verified) {
-                    // user has not gotten verified yet, redirect to login page and complain!
-                    User.findOneAndUpdate({'local.email': email}, {'local.verified': true}, function (err, resp) {
-                        console.log('The user has been verified!');
-                    });
+                    var msg = req.flash('verificationCode');
 
-                    return done(null, false, req.flash('loginMessage', 'Please verify your email to continue.  As a bypass for now, try again and it should work')); // create the loginMessage and save it to session as flashdata
+                    if (msg == user.local.verify_token){
+                        User.findOneAndUpdate({'local.email': email}, {'local.verified': true}, function (err, resp) {
+                            console.log('The user has been verified!');
+                        });
+
+                    }
+                    else {
+                        emailFuncs.sendVerificationMail(user.local.email, consts.fromEmail, user.local.verify_token, req);
+                        return done(null, false, req.flash('loginMessage', 'Verification code incorrect!  A email was resent to your inbox, please try again')); // create the loginMessage and save it to session as flashdata
+                    }
+                    // user has not gotten verified yet, redirect to login page and complain!
+
                 }
 
                 if (user.local.version != consts.userVersion) {
@@ -156,7 +166,11 @@ module.exports = function (passport) {
                     var usr = user.local;
                     usr.email = user.local.email;
                     usr.password = user.local.password;
-                    usr.verified = user.local.verified;
+                    // usr.verified = user.local.verified;
+                    if (user.local.version < 3)
+                        usr.verified = false;
+                    else
+                        usr.verified = user.local.verified;
 
                     if (user.local.booking_count != undefined)
                         usr.booking_count = user.local.booking_count;
@@ -185,6 +199,8 @@ module.exports = function (passport) {
                     User.findOneAndUpdate({'local.email': email}, {'local': usr}, function (err, resp) {
                         console.log('The user has been updated to the latest schema! Now on version ' + usr.version + " from " + user.local.version);
                     });
+
+                    return done(null, false, req.flash('loginMessage', 'User updated and is no longer verified!  A email was sent to your inbox, please verify your account!')); // create the loginMessage and save it to session as flashdata
 
                 }
                 // all is well, return successful user

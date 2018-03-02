@@ -27,7 +27,6 @@ function endOfDayShift(){
                     }
                 }
             }
-
             // this section gets all unique ids that booked a room for the previous day, then goes through the array to add one
             // to the count, and finally it calls the reset booking amount function to give the user the correct amount of room booking slots back
             var unique = [...new Set(numToRemove.map(item => item.userid))];    // this ugly mess is needed, as critical sections are a thing :(

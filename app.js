@@ -8,6 +8,7 @@ var mongoose = require('mongoose');
 var flash    = require('connect-flash');
 var configDB = require('./config/database.js');
 var dbFuncs = require('./models/dbFunctions');
+var email   = require('./models/sendEmail');
 
 var server = express(); //initialize the server
 
@@ -106,6 +107,8 @@ server.use(express.static(path.join(__dirname, 'public')));
 // routes ======================================================================
 require('./config/routes.js')(server, passport); // load our routes and pass in our app and fully configured passport
 // end for auth section //
+
+email.setupMailSender();
 
 //Run server
 server.listen(8000, function () {

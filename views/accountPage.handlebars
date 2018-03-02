@@ -21,11 +21,14 @@
                     <strong>id</strong>: {{user._id}}<br>
                     <strong>email</strong>: {{user.local.email}}<br>
                     <strong>password</strong>: {{user.local.password}}<br>
+                    <strong>Verification Status</strong>: {{user.local.verified}}<br>
                     <strong>Bookings Left</strong>: {{bookingsLeft}} of {{bookingLimit}}
-                </p>
 
+                </p>
+                <p><button onclick='sendVerificationEmail()' class="btn btn-danger">Send Verification Email</button> </p>
             </div>
         </div>
+
 
     <div class="col-sm-12">
     <!--<div class="well">-->

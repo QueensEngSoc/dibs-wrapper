@@ -75,6 +75,8 @@ module.exports = function(app, passport) {
     }));
 
     app.post('/accounts/unbook', accountPage);
+    app.post('/accounts/sendverification', accountPage);
+    app.get('/accounts/verify', loginPage);
 
     // =====================================
     // PROFILE SECTION =====================

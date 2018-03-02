@@ -6,7 +6,7 @@ var roomFuncs = require('../models/roomDatabase');
 var accountFuncs = require('../models/userFunctions');
 var roomBook = require('../models/roomBooking');
 var consts = require('../config/config');
-
+var email = require('../models/sendEmail');
 
 router.post('/accounts/unbook', function (req, res) {
     var roomToBook = JSON.stringify(req.body);
@@ -26,10 +26,10 @@ router.post('/accounts/unbook', function (req, res) {
             var date = new Date();
             var current_hour = date.getHours();
 
-            var unbookAll = new Promise(function(resolve, reject) {
-                roomFuncs.getListOfRoomsForUser(usrid).then(function(rooms) {
+            var unbookAll = new Promise(function (resolve, reject) {
+                roomFuncs.getListOfRoomsForUser(usrid).then(function (rooms) {
                     for (var room of rooms) {
-                        roomBook.unbookAllForUser(room.intDay, room.roomid, usrid, req).then(function(success) {
+                        roomBook.unbookAllForUser(room.intDay, room.roomid, usrid, req).then(function (success) {
                         });
                     }
                     if (rooms.length == 0)  // something went wrong, so let's reset the booking count to 0, since the user has no rooms booked at the moment
@@ -39,9 +39,24 @@ router.post('/accounts/unbook', function (req, res) {
                 });
             });
 
-            unbookAll.then(function(data) {
-                res.send({HeaderMsg: 'Unbooking Success!', BookingStatusMsg: 'Unbooking successful for all reservations', BookStatus: true});
+            unbookAll.then(function (data) {
+                res.send({
+                    HeaderMsg: 'Unbooking Success!',
+                    BookingStatusMsg: 'Unbooking successful for all reservations',
+                    BookStatus: true
+                });
             });
+        }
+    }
+});
+
+router.get('accounts/sendverification', function (req, res, next) {
+    var usrid = accountFuncs.getUserID(req);
+    if (usrid == -1 || usrid == undefined)
+        return res.redirect('/login');
+    else {
+        if (!req.user.local.verified) {
+            email.sendVerificationMail(req.user.local.email, consts.fromEmail, req.user.local.verify_token, req);
         }
     }
 });
@@ -158,7 +173,7 @@ router.get('/accounts', function (req, res, next) {
 })
 ;
 
-function updateTime(time, length){
+function updateTime(time, length) {
     var pos = getPosition(time, '-', 1);        // get the position of the second - in the string
     var tempStr = time.substr(pos + 2);         // get the substring of the pos + 2 (the start of the ending hour)
     var colnPos = getPosition(tempStr, ':', 1); // get the pos of the colon (to determine if the time is 1 or 2 digits long
