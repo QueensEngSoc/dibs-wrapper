@@ -4,9 +4,10 @@ function dibsRoomBookClick(roomID, time, element, roomName, length, day){
     // this function gets the current room id, embeds it into the post request, and then sends a post.
     // On success, it returns whether the booking was successful, or the error that occurred
 
-    if (element.classList.contains("mtime"))
-    {
+    if (element.classList.contains("mtime")) {
         doModal("Room Already Booked!", "You've already booked this room, you can't book it again!", false);
+    } else if (element.classList.contains("ntime")) {
+        doModal("Room Already Booked!", "Someone has already booked the room, try a different time.", false);
     }
     else {
         $.ajax({

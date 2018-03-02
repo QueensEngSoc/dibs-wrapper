@@ -28,19 +28,14 @@ router.post('/bookcheckout', function (req, res) {
             BookStatus: false
         });
     } else {
-        book(day, times, roomID, usrid, req, res, 0);
+        book(day, times, roomID, usrid, req, res);
     }
 });
 
-function book(day, times, roomID, usrid, req, res, i) { //a nice little recursive function for the boys
-    console.log(times);
-    roomBook.bookRoom(day, times[i], roomID, 1, usrid, req).then(function (data) {
-        if (i === times.length - 1) {
-            console.log("Request Body: " + JSON.stringify(req.body) + " room id: " + roomID + " Success: " + data.success);
-            res.send({HeaderMsg: data.header, BookingStatusMsg: data.bookMsg, BookStatus: data.success});
-        } else if (i < times.length - 1) {
-            book(day, times, roomID, usrid, req, res, i + 1);
-        }
+function book(day, times, roomID, usrid, req, res) {
+    roomBook.bookMultiple(day, times, roomID, usrid, req).then(function (data) {
+        console.log("Request Body: " + JSON.stringify(req.body) + " room id: " + roomID + " Success: " + data.success);
+        res.send({HeaderMsg: data.header, BookingStatusMsg: data.bookMsg, BookStatus: data.success});
     });
 }
 

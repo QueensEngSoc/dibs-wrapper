@@ -3,14 +3,22 @@
 
 var selected = [];
 
-function select(startTime, element) {
+function select(time, element) {
     if (element.classList.contains("mtime")) {
         doModal("Room Already Booked!", "You've already booked this room at this time, you can't book it again!", false);
     } else if (element.classList.contains("ntime")) {
         doModal("Room Already Booked!", "Someone else has already booked the room for this time, try another time.", false);
     } else {
-        selected.push(startTime);
-        element.setAttribute("class", "ctime");
+        var i = selected.findIndex(function(element) {
+            return element == time;
+        });
+        if (i == -1) {
+            selected.push(time);
+            element.setAttribute("class", "ctime");
+        } else {
+            element.setAttribute("class", "ytime");
+            selected.splice(i, 1);
+        }
     }
 }
 

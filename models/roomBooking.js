@@ -79,6 +79,73 @@ function bookRoom(day, time, roomID, length, usrid, req) { //books a room at a c
     });
 }
 
+function bookMultiple(day, times, roomID, usrid, req) {
+    return new Promise(function (resolve, reject) {
+
+        if (!userFuncs.canBookMoreRooms(req)) {
+            var out = {
+                header: "Booking failed",
+                bookMsg: "Sorry, You have booked too many rooms.  There are a max of " + consts.room_booking_limit + " room bookings allowed.",
+                success: false
+            };
+
+            resolve(out);
+            return;
+        }
+
+        roomDatabase.find({RoomID: roomID}).each(function (data, val) {
+            var temp = data.Free;
+            var out = {
+                header: "Booking failed",
+                bookMsg: "Sorry, an error occured and the room was not booked.  Please try again later.",
+                success: false
+            };
+
+            var bookingHash = randomstring.generate({
+                length: 5
+            });
+
+            for (var time of times) {
+                if (temp[day][time - 7].free === true) {
+                    temp[day][time - 7].free = false;
+                    temp[day][time - 7].owner = usrid;
+                    temp[day][time - 7].bookingHash = bookingHash;
+                }
+                else {
+                    out.bookMsg = "Sorry, this room is booked.  Looks like someone beat you to it :(";
+                    out.header = "Room Already Booked"
+                    resolve(out);
+                }
+            }
+            if (userFuncs.updateBookingCount(1, req)) {
+                roomDatabase.update({RoomID: roomID}, {$set: {Free: temp}});
+                out.success = true;
+                var msg = "Booking successful for ";
+                for (i in times) {
+                    time = times[i];
+                    msg += time + ":30 - " + (time + 1) + (i == times.length-1 ? ":30." : ":30, ");
+                }
+                out.bookMsg = msg;
+                out.header = "Booking Success!";
+                resolve(out);
+
+            }
+            else {
+                out = {
+                    header: "Booking failed",
+                    bookMsg: "Sorry, an error occured and the room was not booked.  Please try again later.",
+                    success: false
+                };
+                resolve(out);
+
+            }
+            resolve(out);
+
+
+        });
+    });
+}
+
 /**
  *
  * @param day
@@ -178,5 +245,6 @@ module.exports = {
     bookRoom: bookRoom,
     unbookRoom: unbookRoom,
     unbookAllForUser: unbookAllForUser,
-    unbookAllForRoom: unbookAllForRoom
+    unbookAllForRoom: unbookAllForRoom,
+    bookMultiple: bookMultiple
 };
