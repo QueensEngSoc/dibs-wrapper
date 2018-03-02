@@ -83,6 +83,14 @@ li {
     display: inline-flex;
     font-size: 17px;
 }
+.ctime {
+    color: white;
+    padding: 15px 22px;
+    font-family: "Roboto Mono";
+    border-radius: 12px;
+    display: inline-flex;
+    font-size: 17px;
+}
 .navbar-brand{
     font-size: 30px !important;
 }

@@ -4,6 +4,14 @@ var adminDB = db.get('adminDatabase');
 
 // addSchedule(createSchedule(new Date(2018, 2, 1), 2, [1]));
 
+function getAll() {
+    return new Promise(function(resolve, reject) {
+        adminDB.find({}, function(err, data) {
+            resolve(data);
+        });
+    });
+}
+
 /**
  *
  * @param schedule
@@ -24,17 +32,19 @@ function addSchedule(schedule) {
 
 /**
  *
- * @param start - a date object for the start of the schedule
- * @param length - number of days the event lasts (0 for ending on the current day, 1 for ending on the next day etc)
- * @param affectedRooms - an array of rooms affected by ID
- * @returns {{roomsAffected: *, rules: {startDate: *, endDate: *}}}
+ * @param start
+ * @param dayLength
+ * @param hours
+ * @param affectedRooms
+ * @returns {{roomsAffected: *, rules: {startDate: *, dayLength: *, hours: *}}}
  */
-function createSchedule(start, length, affectedRooms) {
+function createSchedule(start, dayLength, hours, affectedRooms) {
     return {
         roomsAffected: affectedRooms,
         rules: {
             startDate: start,
-            endDate: length
+            dayLength: dayLength,
+            hours: hours
         }
     };
 }
@@ -58,12 +68,13 @@ function getInRange(room) {
             var rules = data[0].futureRules;
             for (i in rules) {
                 var rule = rules[i];
-                var daysWitihin = getDaysWithinFortnight(rule.start); //gets number of days the date is inside the next 2 weeks
-                if (daysWitihin >= 0) { //if its within the next 2 weeks...
-                    var validLength = daysWitihin - rule.length;
+                var daysWithin = getDaysWithinFortnight(rule.start); //gets number of days the date is inside the next 2 weeks
+                if (daysWithin >= 0) { //if its within the next 2 weeks...
+                    var validLength = daysWithin - rule.dayLength;
                     out.push({
-                        index: i,
-                        length: validLength
+                        start: 14 - daysWithin,
+                        dayLength: validLength,
+                        hours: rule.hours
                     });
                 }
             }
@@ -92,5 +103,6 @@ function getDaysWithinFortnight(date) {
 module.exports = {
     addSchedule: addSchedule,
     createSchedule: createSchedule,
-    getInRange: getInRange
+    getInRange: getInRange,
+    getAll: getAll
 };

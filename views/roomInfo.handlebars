@@ -9,18 +9,18 @@
                             {{#if free}}
                                 <li>
                                     <button class="ytime"
-                                            onclick='dibsRoomBookClick(document.getElementById("roomID").value, {{startTime}}, this, "{{../room}}", 1, {{../day}})'>{{time}}</button>
+                                            onclick='select({{startTime}}, this)' id={{startTime}}>{{time}}</button>
                                 </li>
                             {{else}}
                                 {{#if_eq owner ../userid}}
                                     <li>
                                         <button class="mtime"
-                                                onclick='dibsRoomBookClick(document.getElementById("roomID").value, {{startTime}}, this, "{{../room}}", 1, {{../day}})'>{{time}}</button>
+                                                onclick='dibsRoomBookClick(document.getElementById("roomID").value, {{startTime}}, this, "{{../room}}", 1, {{../day}})' id={{startTime}}>{{time}}</button>
                                     </li>
                                 {{else}}
                                     <li>
                                         <button class="ntime"
-                                                onclick='dibsRoomBookClick(document.getElementById("roomID").value, {{startTime}}, this, "{{../room}}", 1, {{../day}})'>{{time}}</button>
+                                                onclick='dibsRoomBookClick(document.getElementById("roomID").value, {{startTime}}, this, "{{../room}}", 1, {{../day}})' id={{startTime}}>{{time}}</button>
                                     </li>
                                 {{/if_eq}}
                             {{/if}}
@@ -29,18 +29,18 @@
                         {{#if free}}
                             <li>
                                 <button class="ytime"
-                                        onclick='dibsRoomBookClick(document.getElementById("roomID").value, {{startTime}}, this, "{{../room}}", 1, {{../day}})'>{{time}}</button>
+                                        onclick='dibsRoomBookClick(document.getElementById("roomID").value, {{startTime}}, this, "{{../room}}", 1, {{../day}})' id={{startTime}}>{{time}}</button>
                             </li>
                         {{else}}
                             {{#if_eq owner ../userid}}
                                 <li>
                                     <button class="mtime"
-                                            onclick='dibsRoomBookClick(document.getElementById("roomID").value, {{startTime}}, this, "{{../room}}", 1, {{../day}})'>{{time}}</button>
+                                            onclick='dibsRoomBookClick(document.getElementById("roomID").value, {{startTime}}, this, "{{../room}}", 1, {{../day}})' id={{startTime}}>{{time}}</button>
                                 </li>
                             {{else}}
                                 <li>
                                     <button class="ntime"
-                                            onclick='dibsRoomBookClick(document.getElementById("roomID").value, {{startTime}}, this, "{{../room}}", 1, {{../day}})'>{{time}}</button>
+                                            onclick='dibsRoomBookClick(document.getElementById("roomID").value, {{startTime}}, this, "{{../room}}", 1, {{../day}})' id={{startTime}}>{{time}}</button>
                                 </li>
                             {{/if_eq}}
                         {{/if}}
@@ -69,3 +69,4 @@
 <input type=hidden id="roomID" name="roomID" value="{{roomid}}"/>
 
 <script src="/JS/roomJSFuncs.js"></script>
+<script src="/JS/checkout.js"></script>

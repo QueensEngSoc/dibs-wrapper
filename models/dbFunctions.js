@@ -3,6 +3,7 @@ var db = monk('localhost:27017/roomDatabase');
 var roomDatabase = db.get('roomDatabase');
 var schedule = require('node-schedule');
 var accountFuncs = require('./userFunctions');
+var adminFuncs = require('./adminDatabase');
 
 function endOfDayShift(){
     return new Promise(function(resolve, reject) {
@@ -53,13 +54,27 @@ function endOfDayShift(){
 
 }
 
+function checkAdminDB() {
+    adminFuncs.getAll().then(function (rooms) {
+        for (room of rooms) {
+            adminFuncs.getInRange(room.RoomID).then(function(ranges) {
+                for (range of ranges) {
+                    //GET WORKING
+                }
+            });
+        }
+    });
+}
+
 function setupEndOfDayScript(){
     console.log("Setting up day shifting code...");
 
     schedule.scheduleJob({hour: 0, minute: 00}, function() {
         console.log("Shifting day now...")
         endOfDayShift();
-    }); // run everyday at midnight
+        console.log("Checking admin database...")
+        checkAdminDB();
+    }); // runs everyday at midnight
 
     console.log("Done setup!  Free table should automagically™ remove the previous day, and add a new day at midnight");
 

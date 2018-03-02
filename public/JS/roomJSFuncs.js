@@ -77,3 +77,21 @@ function successfulBooking(data, element) {
     }
     console.log("Done!");
 }
+
+function successfulBookingMulti(data, ids) {
+    console.log("Header: " + data.HeaderMsg + " body: " + data.BookingStatusMsg + " data: " + data);
+    var header = data.HeaderMsg;
+    var content = data.BookingStatusMsg;
+    if (header.indexOf("You must login") >= 0){
+        window.location.href = ('/login?book=' + content);
+    }
+    doModal(header, content, data.BookStatus);
+    if (data.BookStatus) {
+        console.log(ids);
+        for (id of ids) {
+            document.getElementById(id).classList.remove("ytime");
+            document.getElementById(id).classList.add("mtime");
+        }
+    }
+    console.log("Done!");
+}

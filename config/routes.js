@@ -8,6 +8,7 @@ var quick = require('../routes/quick');
 var map = require('../routes/map');
 var book = require('../routes/book');
 var bookRoom = require('../routes/bookRoom');
+var bookCheckout = require('../routes/bookCheckout');
 var getTheme = require('../middleware/getThemePref');
 
 // app/routes.js
@@ -29,6 +30,8 @@ module.exports = function(app, passport) {
     app.post('/bookroom', bookRoom);
     app.get('/book/:roomID', book);
     app.get('/book/:roomID/:date', book);
+
+    app.post('/bookcheckout', bookCheckout);
 
     // =====================================
     // LOGIN ===============================
