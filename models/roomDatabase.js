@@ -241,14 +241,8 @@ function getPrettyDay(intDay) {
         return "Yesterday";
 
     var today = new Date();
-    today.addDays(intDay);
+    today.setTime(today.getTime() + intDay * 24 * 60 * 60 * 1000);
     return today.toDateString();
-}
-
-Date.prototype.addDays = function (days) {
-    var dat = new Date(this.valueOf());
-    dat.setDate(dat.getDate() + days);
-    return dat;
 }
 
 function isValidTime(time) {

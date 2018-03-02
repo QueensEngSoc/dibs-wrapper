@@ -29,7 +29,7 @@
                         {{#if free}}
                             <li>
                                 <button class="ytime"
-                                        onclick='dibsRoomBookClick(document.getElementById("roomID").value, {{startTime}}, this, "{{../room}}", 1, {{../day}})' id={{startTime}}>{{time}}</button>
+                                        onclick='select({{startTime}}, this)' id={{startTime}}>{{time}}</button>
                             </li>
                         {{else}}
                             {{#if_eq owner ../userid}}

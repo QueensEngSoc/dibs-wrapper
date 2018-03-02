@@ -16,7 +16,7 @@ router.post('/accounts/unbook', function (req, res) {
     var roomid = parseInt(obj.roomID, 10);
     var usrid = accountFuncs.getUserID(req);
 
-    if (usrid != -1) {
+    if (usrid !== -1) {
         if (roomid >= 0) {
             roomBook.unbookRoom(0, bookingTimeStart, 1, roomid, usrid, req).then(function (data) { // day, time, length, roomID, usrid
                 console.log("Request Body: " + JSON.stringify(req.body) + " room id: " + roomid + " Success" + data.success);

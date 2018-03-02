@@ -105,7 +105,7 @@ function bookMultiple(day, times, roomID, usrid, req) {
                 length: 5
             });
 
-            for (var time of times) {
+            for (var time of times) { //iterate over an array of times instead of a sequence of numbers
                 if (temp[day][time - 7].free === true) {
                     temp[day][time - 7].free = false;
                     temp[day][time - 7].owner = usrid;
@@ -117,10 +117,10 @@ function bookMultiple(day, times, roomID, usrid, req) {
                     resolve(out);
                 }
             }
-            if (userFuncs.updateBookingCount(1, req)) {
+            if (userFuncs.updateBookingCount(times.length, req)) {
                 roomDatabase.update({RoomID: roomID}, {$set: {Free: temp}});
                 out.success = true;
-                var msg = "Booking successful for ";
+                var msg = "Booking successful for "; //setting up the message to include multiple times
                 for (i in times) {
                     time = times[i];
                     msg += time + ":30 - " + (time + 1) + (i == times.length-1 ? ":30." : ":30, ");
