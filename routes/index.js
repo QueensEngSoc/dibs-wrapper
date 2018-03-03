@@ -31,6 +31,8 @@ router.post('/index', function (req, res) {
 });
 
 router.get('/', function (req, res, next) {
+    console.log("hit the page request!" );
+
     var dateObj = new Date();
     var current_hour = dateObj.getHours();
     var current_min = dateObj.getMinutes();
@@ -40,6 +42,7 @@ router.get('/', function (req, res, next) {
         current_hour--;
 
     var usrid = accountFuncs.getUserID(req);
+    console.log("Grabbed the userID!" );
 
     roomDB.getListOfRoomState(day, current_hour, usrid).then(function (listFree) {
         console.log("got all of the info to render the page!  " );
