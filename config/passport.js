@@ -102,7 +102,7 @@ module.exports = function (passport) {
                             if (err)
                                 throw err;
 
-                            emailFuncs.sendVerificationEmail(newUser.local.email, consts.fromEmail, newUser.local.verify_token, req);
+                            emailFuncs.sendVerificationMail(newUser.local.email, consts.fromEmail, newUser.local.verify_token, req);
                             return done(null, newUser);
                         });
                     }

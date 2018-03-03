@@ -31,8 +31,6 @@ router.post('/index', function (req, res) {
 });
 
 router.get('/', function (req, res, next) {
-    console.log("hit the page request!" );
-
     var dateObj = new Date();
     var current_hour = dateObj.getHours();
     var current_min = dateObj.getMinutes();
@@ -42,12 +40,8 @@ router.get('/', function (req, res, next) {
         current_hour--;
 
     var usrid = accountFuncs.getUserID(req);
-    console.log("Grabbed the userID!" );
 
     roomDB.getListOfRoomState(day, current_hour, usrid).then(function (listFree) {
-        console.log("got all of the info to render the page!  " );
-        console.log("Listfree: " + listFree);
-        console.log("Req.theme and colors: " + req.theme + " coors: " + req.colors);
         res.render('index', {
             list: listFree,
             navLink: '<a href="/map" class="white">Map<img src="/img/map.png" class="li-spacing" height="30" width="70"></a>',
