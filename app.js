@@ -5,10 +5,10 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var passport = require('passport');
 var mongoose = require('mongoose');
-var flash    = require('connect-flash');
+var flash = require('connect-flash');
 var configDB = require('./config/database.js');
 var dbFuncs = require('./models/dbFunctions');
-var email   = require('./models/sendEmail');
+var email = require('./models/sendEmail');
 
 var server = express(); //initialize the server
 
@@ -16,42 +16,42 @@ var server = express(); //initialize the server
 //and you can also define stuff like `defaultLayout` and `partialsDir`
 var hbs = exphbs.create({
     helpers: {      // These are right now just in here for fun / testing, realistically we probably won't need to use 
-                    //handlers for anything, since AJAX and JQuery are much easier to use, and much more powerful.  That being said,
-                    // having a few examples is probably fairly useful, so I will leave these in for now.
+        //handlers for anything, since AJAX and JQuery are much easier to use, and much more powerful.  That being said,
+        // having a few examples is probably fairly useful, so I will leave these in for now.
         getStringifiedJson: function (value) {
             return JSON.stringify(value);
         },
-        if_eq: function(a, b, opts) {
+        if_eq: function (a, b, opts) {
             if (a == b) // Or === depending on your needs
                 return opts.fn(this);
             else
                 return opts.inverse(this);
         },
-        if_time: function(a, opts){ // this function checks if the passed time (a) is less than the current time
+        if_time: function (a, opts) { // this function checks if the passed time (a) is less than the current time
             var date = new Date();
             var current_hour = date.getHours();
             var current_min = date.getMinutes();    // check if the time is less than the current hour, since there is no
                                                     // point in unbooking a event from the past
 
-            if (a < current_hour - 1 || ( a < current_hour && current_min > 30 ))
+            if (a < current_hour - 1 || (a < current_hour && current_min > 30))
                 return opts.inverse(this);
             else
                 return opts.fn(this);
 
         },
-        if_time_plus_len: function(a, b, opts){ // this function checks if the passed time (a) is less than the current time
+        if_time_plus_len: function (a, b, opts) { // this function checks if the passed time (a) is less than the current time
             var date = new Date();
             var current_hour = date.getHours();
             var current_min = date.getMinutes();    // check if the time is less than the current hour, since there is no
                                                     // point in unbooking a event from the past
 
-            if (a + b - 1 < current_hour - 1 || ( a + b - 1 < current_hour && current_min > 30 ))
+            if (a + b - 1 < current_hour - 1 || (a + b - 1 < current_hour && current_min > 30))
                 return opts.inverse(this);
             else
                 return opts.fn(this);
 
         },
-        getTimes: function(free, owner, day, room) {
+        getTimes: function (free, owner, day, room) {
             var times = [];
             for (slot of free) {
                 console.log(slot);
@@ -63,7 +63,7 @@ var hbs = exphbs.create({
             var msg = "";
             for (i in times) {
                 var time = times[i];
-                msg += time + (i == times.length-1 ? "" : ", ");
+                msg += time + (i == times.length - 1 ? "" : ", ");
             }
             return "<h4 class='card-title' name='bookingTime'>" + day + ": " + room + " - " + msg + "</h4>";
         }
@@ -72,7 +72,11 @@ var hbs = exphbs.create({
 });
 
 // configuration ===============================================================
-mongoose.connect(configDB.accountURL); // connect to our database ->: fixed depreciation warning (it was a bug :P  https://github.com/Automattic/mongoose/issues/5399)
+var env = process.env.NODE_ENV || 'dev';
+if (env == 'dev')
+    mongoose.connect(configDB.accountURL); // connect to our database ->: fixed depreciation warning (it was a bug :P  https://github.com/Automattic/mongoose/issues/5399)
+else
+    mongoose.connect('mongodb://heroku_5h907111:qiobas1eprl1uddidasas235mt@ds253918.mlab.com:53918/heroku_5h907111');
 
 require('./config/passport')(passport); // pass passport for configuration
 
@@ -86,7 +90,7 @@ server.set('view engine', 'handlebars');
 // uncomment after placing your favicon in /public
 //server.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 server.use(bodyParser.json()); //need body parser to parse JSON objects
-server.use(bodyParser.urlencoded({ extended: false }));
+server.use(bodyParser.urlencoded({extended: false}));
 
 // Authentication stuffs //
 server.use(cookieParser()); // read cookies (needed for auth)
@@ -94,9 +98,12 @@ server.use(cookieParser()); // read cookies (needed for auth)
 
 //Database setup and initialization
 var monk = require('monk');
-var db = monk('localhost:27017/roomDatabase');
+if (end == 'dev')
+    var db = monk('localhost:27017/roomDatabase');
+else
+    var db = monk('mongodb://heroku_08d6gg04:tbjjetli24bdv2nqrpiu6gdlta@ds153978.mlab.com:53978/heroku_08d6gg04');
 
-server.use(function(req, res, next) { //making database accessible to the router
+server.use(function (req, res, next) { //making database accessible to the router
     req.db = db;
     next();
 });

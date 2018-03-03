@@ -28,7 +28,8 @@
   },
   "devDependencies": {},
   "scripts": {
-    "test": "mocha --recursive"
+    "test": "mocha --recursive",
+    "start": "node app.js"
   },
   "repository": {
     "type": "git",
