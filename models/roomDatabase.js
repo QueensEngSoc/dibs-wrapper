@@ -1,5 +1,9 @@
 var monk = require('monk');
-var db = monk('localhost:27017/roomDatabase');
+
+if (env == 'dev')
+    var db = monk('localhost:27017/roomDatabase');
+else
+    var db = monk('mongodb://heroku_08d6gg04:tbjjetli24bdv2nqrpiu6gdlta@ds153978.mlab.com:53978/heroku_08d6gg04');
 var roomDatabase = db.get('roomDatabase');
 
 //All functions return promises, don't know if this is the best way to do this.
