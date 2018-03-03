@@ -98,6 +98,8 @@ server.use(cookieParser()); // read cookies (needed for auth)
 
 //Database setup and initialization
 var monk = require('monk');
+var env = process.env.NODE_ENV || 'dev';
+
 if (env == 'dev')
     var db = monk('localhost:27017/roomDatabase');
 else

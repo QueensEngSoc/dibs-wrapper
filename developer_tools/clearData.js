@@ -1,5 +1,6 @@
 var stdin = process.openStdin();
-var monk = require('monk');
+var monk = require('monk');var env = process.env.NODE_ENV || 'dev';
+
 if (env == 'dev')
     var db = monk('localhost:27017/roomDatabase');
 else
