@@ -6,7 +6,8 @@
 
 <div class="container" style="padding-top: 50px;">
     <div class="page-header text-center">
-        <h1><span class="fa fa-anchor"></span> Profile Page</h1>
+        <h1>Profile Page</h1>
+        <hr>
         <a href="/logout" class="btn btn-default btn-sm">Logout</a>
         <a class="btn btn-default btn-sm" id="prefbut">
             <p class="no-margin blue" id="books">Bookings</p>
@@ -147,9 +148,9 @@
             <h3><span class="fa fa-user"></span> Local</h3>
 
             <p style="text-align: left;">
-                <strong>id</strong>: {{user._id}}<br>
-                <strong>email</strong>: {{user.local.email}}<br>
-                <strong>password</strong>: {{user.local.password}}<br>
+                <!--<strong>id</strong>: {{user._id}}<br> I think this can go? -->
+                <strong>Email</strong>: {{user.local.email}}<br>
+                <!--<strong>password</strong>: {{user.local.password}}<br> Same with this field -->
                 <strong>Verification Status</strong>: {{user.local.verified}}<br>
                 <strong>Bookings Left</strong>: {{bookingsLeft}} of {{bookingLimit}}
 
