@@ -130,7 +130,7 @@ require('./config/routes.js')(server, passport); // load our routes and pass in 
 email.setupMailSender();
 
 //Run server
-server.listen(8000, function () {
+server.listen(8000 || process.env.PORT, function () {
     console.log('Example app listening on port 8000!');
 });
 
