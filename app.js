@@ -98,7 +98,7 @@ server.use(cookieParser()); // read cookies (needed for auth)
 
 //Database setup and initialization
 var monk = require('monk');
-if (end == 'dev')
+if (env == 'dev')
     var db = monk('localhost:27017/roomDatabase');
 else
     var db = monk('mongodb://heroku_08d6gg04:tbjjetli24bdv2nqrpiu6gdlta@ds153978.mlab.com:53978/heroku_08d6gg04');
