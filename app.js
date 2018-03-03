@@ -39,6 +39,18 @@ var hbs = exphbs.create({
                 return opts.fn(this);
 
         },
+        if_time_plus_len: function(a, b, opts){ // this function checks if the passed time (a) is less than the current time
+            var date = new Date();
+            var current_hour = date.getHours();
+            var current_min = date.getMinutes();    // check if the time is less than the current hour, since there is no
+                                                    // point in unbooking a event from the past
+
+            if (a + b < current_hour - 1 || ( a + b < current_hour && current_min > 30 ))
+                return opts.inverse(this);
+            else
+                return opts.fn(this);
+
+        },
         getTimes: function(free, owner, day, room) {
             var times = [];
             for (slot of free) {

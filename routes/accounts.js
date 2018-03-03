@@ -7,6 +7,7 @@ var accountFuncs = require('../models/userFunctions');
 var roomBook = require('../models/roomBooking');
 var consts = require('../config/config');
 var email = require('../models/sendEmail');
+var prefGetter = require('../models/preferences');
 
 router.post('/accounts/unbook', function (req, res) {
     var roomToBook = JSON.stringify(req.body);
@@ -134,20 +135,7 @@ router.get('/accounts', function (req, res, next) {
                                 end -= length;
                                 var time = free[day].free[i].time;
                                 free[day].free[i].time = updateTime(time, length);
-
-
-                                // if (hash != free[day].free[i].bookingHash){
-                                //     hash = free[day].free[i].bookingHash;
-                                //     start = i;
-                                // } else {
-                                //     free[day].free.splice(i, 1);
-                                //     length++;
-                                //     var time = free[day].free[start].time;
-                                //     free[day].free[start].time = updateTime(time);
-                                //     free[day].free[start].length = length;
-                                //     i--;
-                                //     end--;
-                                // }
+                                free[day].free[i].length = length + 1;
                             }
                         }
                     }

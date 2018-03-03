@@ -92,3 +92,21 @@ function sendVerificationEmail(){
         }
     });
 }
+
+document.addEventListener("DOMContentLoaded", function() {
+    var cardsDiv = document.getElementById('bookedRow');
+    var cards = cardsDiv.getElementsByClassName('col-sm-6');
+
+    for(var i = 0; i < cards.length; i++) {
+        var a = cards[i];
+        var btn = a.getElementsByClassName('btn btn-danger');
+        if (btn[0].disabled){
+            document.getElementById('prevBookedRow').appendChild(
+                a
+            );
+            i--;
+        }
+    }
+
+
+}, false);
