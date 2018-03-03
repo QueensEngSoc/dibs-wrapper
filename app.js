@@ -45,7 +45,7 @@ var hbs = exphbs.create({
             var current_min = date.getMinutes();    // check if the time is less than the current hour, since there is no
                                                     // point in unbooking a event from the past
 
-            if (a + b < current_hour - 1 || ( a + b < current_hour && current_min > 30 ))
+            if (a + b - 1 < current_hour - 1 || ( a + b - 1 < current_hour && current_min > 30 ))
                 return opts.inverse(this);
             else
                 return opts.fn(this);
