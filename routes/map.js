@@ -6,6 +6,32 @@ var router = express.Router();
 var roomFuncs = require('../models/roomDatabase');
 var accountFuncs = require('../models/userFunctions');
 
+router.post('/map', function (req, res) {
+    var data = JSON.stringify(req.body);
+    var obj = JSON.parse(data);
+    var dateStr = obj.day;
+    var date = new Date(dateStr);
+
+    var dateObj = new Date();
+    var current_hour = dateObj.getHours();
+    var current_min = dateObj.getMinutes();
+    var day = date - dateObj;
+    day = Math.ceil(day / (1000 * 3600 * 24));
+
+    if (current_min < 30)
+        current_hour--;
+
+    var usrid = accountFuncs.getUserID(req);
+    var prettyDate = formatDate(date);
+
+    roomDB.getListOfRoomState(day, current_hour, usrid).then(function (listFree) {
+        res.send({
+            list: listFree,
+            prettyDate: prettyDate
+        });
+    });
+});
+
 router.get('/map', function (req, res, next) {
 
 

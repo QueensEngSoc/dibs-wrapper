@@ -1,6 +1,6 @@
-<link href="http://code.jquery.com/ui/1.9.2/themes/smoothness/jquery-ui.css" rel="stylesheet" />
-<link rel='stylesheet' type='text/css' href='css/timepicker.css'/>
-<script type='text/javascript' src='js/timepicker.js'></script>
+<link href="https://code.jquery.com/ui/1.9.2/themes/smoothness/jquery-ui.css" rel="stylesheet" />
+<link rel='stylesheet' type='text/css' href='CSS/timepicker.css'/>
+<script type='text/javascript' src='JS/timepicker.js'></script>
 <style type="text/css">
     .hidden {
         display: none;
@@ -129,18 +129,18 @@
     </div>
     <div class="col-md-10">
         <div id="first">
-            <object data="IMG/ILC-1.svg" id="floor1" type="image/svg+xml" class="half">
-                <img src="IMG/ILC-1.svg"/>
+            <object data="img/ILC-1.svg" id="floor1" type="image/svg+xml" class="half">
+                <img src="img/ILC-1.svg"/>
             </object>
         </div>
         <div id="second" class="hidden">
-            <object data="IMG/ILC-2.svg" id="floor2" type="image/svg+xml" class="half">
-                <img src="IMG/ILC-2.svg"/>
+            <object data="img/ILC-2.svg" id="floor2" type="image/svg+xml" class="half">
+                <img src="img/ILC-2.svg"/>
             </object>
         </div>
         <div id="third" class="hidden">
-            <object data="IMG/ILC-3.svg" id="floor3" type="image/svg+xml" class="half">
-                <img src="IMG/ILC-3.svg"/>
+            <object data="img/ILC-3.svg" id="floor3" type="image/svg+xml" class="half">
+                <img src="img/ILC-3.svg"/>
             </object>
         </div>
     </div>
@@ -164,7 +164,7 @@
         <!--var roomStatus = {{roomStatus}};-->
         roomStatus.forEach(function (room) {
             if (!room.isFree) {
-                var svgRoom = svgDoc.getElementById(room.roomNum);
+                var svgRoom = svgDoc.getElementById(room.roomNum.toLowerCase());
                 if (svgRoom != null) {
                     if (room.isMine)
                         svgRoom.classList.add('mine');
@@ -193,7 +193,7 @@
         <!--var roomStatus = {{roomStatus}};-->
         roomStatus.forEach(function (room) {
             if (!room.isFree) {
-                var svgRoom = svgDoc.getElementById(room.roomNum);
+                var svgRoom = svgDoc.getElementById(room.roomNum.toLowerCase());
                 if (svgRoom != null) {
                     if (room.isMine)
                         svgRoom.classList.add('mine');
@@ -222,7 +222,7 @@
         <!--var roomStatus = {{roomStatus}};-->
         roomStatus.forEach(function (room) {
             if (!room.isFree) {
-                var svgRoom = svgDoc.getElementById(room.roomNum);
+                var svgRoom = svgDoc.getElementById(room.roomNum.toLowerCase());
                 if (svgRoom != null) {
                     if (room.isMine)
                         svgRoom.classList.add('mine');

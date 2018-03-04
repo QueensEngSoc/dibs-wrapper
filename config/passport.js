@@ -103,7 +103,7 @@ module.exports = function (passport) {
                                 throw err;
 
                             emailFuncs.sendVerificationMail(newUser.local.email, consts.fromEmail, newUser.local.verify_token, req);
-                            return done(null, newUser);
+                            return done(null, newUser, req.flash('signupMessage', 'signup_successful!'));
                         });
                     }
 

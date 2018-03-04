@@ -1,0 +1,10 @@
+<link rel="stylesheet" type="text/css" href="/CSS/preferences.css">
+<div class="centered mission-control">
+    <h2>Welcome to QBook!</h2>
+    <br>
+    {{#if message}}
+        {{{message}}}
+    {{else}}
+        <p>Please verify your email to continue.  Click <a href='"/account/verify?' + {{vCode}} + '"'> here </a> to resend the verification email</p>
+    {{/if}}
+</div>
