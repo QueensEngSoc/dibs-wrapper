@@ -1,255 +1,78 @@
 <div class="header" style="z-index: 500;">
     <title>Log In</title>
-    <link rel="stylesheet" href="../css/preferences.css" title="pref" type="text/css"/>
-    <script src="../js/preferences.js" type="text/javascript"></script>
 </div>
 
 <div class="container" style="padding-top: 50px;">
+
     <div class="page-header text-center">
-        <h1>Profile Page</h1>
-        <hr>
+        <h1><span class="fa fa-anchor"></span> Profile Page</h1>
         <a href="/logout" class="btn btn-default btn-sm">Logout</a>
-        <a class="btn btn-default btn-sm" id="prefbut">
-            <p class="no-margin blue" id="books">Bookings</p>
-            <p class="no-margin blue" id="prefs">Preferences</p>
-        </a>
+        <a href="/preferences" class="btn btn-default btn-sm">Preferences</a>
     </div>
-    <br><br>
-    <div class="row justify-content-center" id="preferences" align="center">
-        <div class="mission-control">
-            <h4><label for="ocb">One Click Booking</label></h4>
-            {{#if ocb}}
-                <input title="ocb" type="checkbox" checked="checked">
-            {{else}}
-                <input title="ocb" type="checkbox">
-            {{/if}}
-            <button class="q" onclick="launchModal('setting')">?</button>
-            <br>
-            <h4>Another Setting</h4>
-            {{#if other}}
-                <input title="other" type="checkbox" checked="checked">
-            {{else}}
-                <input title="other" type="checkbox">
-            {{/if}}
-            <button class="q" onclick="launchModal('setting')">?</button>
-            <br><br>
-            <button class="caret btn btn-primary" onclick="$('#theme-detail').fadeToggle(400, 'swing')">v Show Theme
-                Options v
-            </button>
-            <br>
-            <div class="container hidden" id="theme-detail">
-                <br><br>
-                <div class="row">
-                    <div class="col-sm">
-                        <h3>Free Rooms</h3>
-                        {{#if useTheme}}
-                            <div class="color-swatch available {{theme}}" style="display: inline-block;"></div>
-                            <div class="hidden" data-colorinput="true">
-                                <label for="av-picker">Select a color:</label>
-                                <input type="color" class="hidden-picker" title="av-picker" value="{{customColors.av}}">
-                            </div>
-                        {{else}}
-                            <div class="color-swatch available hidden {{theme}}" style="display: inline-block;"></div>
-                            <div data-colorinput="true">
-                                <label for="av-picker">Select a color:</label>
-                                <input type="color" class="hidden-picker" title="av-picker" value="{{customColors.av}}">
-                            </div>
-                        {{/if}}
-                    </div>
-                    <div class="col-sm">
-                        <h3>Booked Rooms</h3>
-                        {{#if useTheme}}
-                            <div class="color-swatch unavailable {{theme}}" style="display: inline-block;"></div>
-                            <div class="hidden" data-colorinput="true">
-                                <label for="ua-picker">Select a color:</label>
-                                <input type="color" class="hidden-picker" title="ua-picker" value="{{customColors.ua}}">
-                            </div>
-                        {{else}}
-                            <div class="color-swatch unavailable hidden {{theme}}" style="display: inline-block;"></div>
-                            <div data-colorinput="true">
-                                <label for="ua-picker">Select a color:</label>
-                                <input type="color" class="hidden-picker" title="ua-picker" value="{{customColors.ua}}">
-                            </div>
-                        {{/if}}
-                    </div>
-                    <div class="col-sm">
-                        <h3>Your Rooms</h3>
-                        {{#if useTheme}}
-                            <div class="color-swatch you-booked-it {{theme}}" style="display: inline-block;"></div>
-                            <div class="hidden" data-colorinput="true">
-                                <label for="ybi-picker">Select a color:</label>
-                                <input type="color" class="hidden-picker" title="ybi-picker"
-                                       value="{{customColors.ybi}}">
-                            </div>
-                        {{else}}
-                            <div class="color-swatch you-booked-it hidden {{theme}}"
-                                 style="display: inline-block;"></div>
-                            <div data-colorinput="true">
-                                <label for="ybi-picker">Select a color:</label>
-                                <input type="color" class="hidden-picker" title="ybi-picker"
-                                       value="{{customColors.ybi}}">
-                            </div>
-                        {{/if}}
-                    </div>
-                    <div class="col-sm">
-                        <h3>Background</h3>
-                        {{#if useTheme}}
-                            <div class="color-swatch bg {{theme}}" style="display: inline-block;"></div>
-                            <div class="hidden" data-colorinput="true">
-                                <div class="color-swatch-ue bg white-bg"></div>
-                            </div>
-                        {{else}}
-                            <div class="color-swatch bg hidden {{theme}}" style="display: inline-block;"></div>
-                            <div data-colorinput="true">
-                                <div class="color-swatch-ue bg white-bg"></div>
-                            </div>
-                        {{/if}}
-                    </div>
-                </div>
-                <br><br>
-                <label for="color">Color Scheme</label>
-                <select title="color">
-                    {{#if df}}
-                        <option value="default" selected>Daytime (Default)</option>
-                    {{else}}
-                        <option value="default">Daytime (Default)</option>
-                    {{/if}}
-                    {{#if rg}}
-                        <option value="rg-cb" selected>Red-Green Colorblind</option>
-                    {{else}}
-                        <option value="rg-cb">Red-Green Colorblind</option>
-                    {{/if}}
-                    {{#if mnk}}
-                        <option value="monokai" selected>Monokai</option>
-                    {{else}}
-                        <option value="monokai">Monokai</option>
-                    {{/if}}
-                    {{#if drk}}
-                        <option value="darkcula" selected>Darkula</option>
-                    {{else}}
-                        <option value="darkcula">Darkula</option>
-                    {{/if}}
-                    {{#if cst}}
-                        <option value="custom" selected>Custom</option>
-                    {{else}}
-                        <option value="custom">Custom</option>
-                    {{/if}}
-                </select>
+
+    <div class="row">
+
+        <!-- LOCAL INFORMATION -->
+        <div class="col-sm-12">
+            <div class="well">
+                <h3><span class="fa fa-user"></span> Local</h3>
+
+                <p style="text-align: left;">
+                    <strong>id</strong>: {{user._id}}<br>
+                    <strong>email</strong>: {{user.local.email}}<br>
+                    <strong>password</strong>: {{user.local.password}}<br>
+                    <strong>Bookings Left</strong>: {{bookingsLeft}} of {{bookingLimit}}
+                </p>
+
             </div>
-            <br><br>
-            <button class="btn btn-success" onclick="submitChanges()" disabled>Save Changes</button>
         </div>
-    </div>
-<div class="row" id="bookings">
 
-    <!-- LOCAL INFORMATION -->
     <div class="col-sm-12">
-        <div class="well">
-            <h3><span class="fa fa-user"></span> Local</h3>
-
-            <p style="text-align: left;">
-                <!--<strong>id</strong>: {{user._id}}<br> I think this can go? -->
-                <strong>Email</strong>: {{user.local.email}}<br>
-                <!--<strong>password</strong>: {{user.local.password}}<br> Same with this field -->
-                <strong>Verification Status</strong>: {{user.local.verified}}<br>
-                <strong>Bookings Left</strong>: {{bookingsLeft}} of {{bookingLimit}}
-
-            </p>
-            <p>
-                <button onclick='sendVerificationEmail()' class="btn btn-danger">Send Verification Email</button>
-            </p>
-        </div>
-    </div>
-
-<div class="col-sm-12">
     <!--<div class="well">-->
-    <h3><span class="fa fa-user"></span> Booked Rooms</h3>
+        <h3><span class="fa fa-user"></span> Booked Rooms</h3>
 
-<p style="text-align: left;">
+    <p style="text-align: left;">
 <div class="container">
-<div class="col-sm-12">
-<div class="well">
+    <div class="row" id="bookedRow">
 
-<div class="bd-example bd-example-tabs">
-    <nav class="nav nav-tabs" id="nav-tab" role="tablist">
-        <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab"
-           href="#nav-home" role="tab"
-           aria-controls="home" aria-expanded="true">Upcoming Bookings</a>
-        <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab"
-           href="#nav-profile" role="tab"
-           aria-controls="profile" aria-expanded="false">Previous Bookings</a>
-    </nav>
-<div class="tab-content" id="nav-tabContent">
-<div class="tab-pane fade active show" id="nav-home" role="tabpanel"
-     aria-labelledby="nav-home-tab"
-     aria-expanded="true">
-<br>
-<div class="row" id="bookedRow">
-
-{{#each booking}}
-    {{#each free}}
-        {{#if_eq owner ../../user._id}}
-
-
-                <div class="col-sm-6">
+        {{#each booking}}
+            {{#each free}}
+                {{#if_eq owner ../../user._id}}
+                    <div class="col-sm-6">
                     <div class="card" style="margin-bottom: 20px; padding-bottom: 15px;">
-                        <img class="card-img-top" src="{{../pic}}" alt="Card image cap"
-                             style="width: 100%; height: 25vw; object-fit: cover;">
+                        <img class="card-img-top" src="{{../pic}}" alt="Card image cap" style="width: 100%; height: 25vw; object-fit: cover;">
                         <div class="card-block" style="padding-left: 10px; padding-right: 10px;">
                             <h4 class='card-title' name='bookingTime'>{{../prettyDay}}: {{../room}} - {{time}}</h4>
-                <p class="card-text">{{../description}}</p>
-            {{#if_eq ../intDay 0}}
-                {{#if_time_plus_len startTime length}}
-                        <button name="unbookBtn" onclick='unbookRoomClick({{../roomid}}, {{startTime}}, {{../intDay}}, "{{owner}}", this, {{length}})'
-                                class="btn btn-danger" style="padding-bottom: 5px;">Cancel Booking
-                        </button>
-                {{else}}
-                        <button disabled name="unbookBtn"
-                                onclick='unbookRoomClick({{../roomid}}, {{startTime}}, {{../intDay}}, "{{owner}}", this, {{length}})'
-                                class="btn btn-danger" style="padding-bottom: 5px;">Cancel Booking
-                        </button>
-                {{/if_time_plus_len}}
-            {{else}}
-                    <button name="unbookBtn" onclick='unbookRoomClick({{../roomid}}, {{startTime}}, {{../intDay}}, "{{owner}}", this, {{length}})'
-                            class="btn btn-danger" style="padding-bottom: 5px;">Cancel Booking
-                    </button>
-            {{/if_eq}}
-                <input type=hidden name="bookingHash" value="{{bookingHash}}"/>
-            </div>
-            </div>
-            </div>
+                                <p class="card-text">{{../description}}</p>
+                            {{#if_eq ../intDay 0}}
+                                {{#if_time startTime }}
+                                        <button onclick='unbookRoomClick({{../roomid}}, {{startTime}}, {{../intDay}}, "{{owner}}", this, {{length}})' class="btn btn-danger" style="padding-bottom: 5px;">Cancel Booking</button>
+                                {{else}}
+                                        <button disabled onclick='unbookRoomClick({{../roomid}}, {{startTime}}, {{../intDay}}, "{{owner}}", this, {{length}})' class="btn btn-danger" style="padding-bottom: 5px;">Cancel Booking</button>
+                                {{/if_time}}
+                            {{else}}
+                                    <button onclick='unbookRoomClick({{../roomid}}, {{startTime}}, {{../intDay}}, "{{owner}}", this, {{length}})' class="btn btn-danger" style="padding-bottom: 5px;">Cancel Booking</button>
+                            {{/if_eq}}
+                        <input type=hidden name="bookingHash" value="{{bookingHash}}"/>
+                    </div>
+                    </div>
+                </div>
 
-        {{/if_eq}}
+                {{/if_eq}}
 
-    {{/each}}
-{{/each}}
-</div>
-</div>
-<div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab"
-     aria-expanded="false">
-    <br>
-    <div class="row" id="prevBookedRow">
-
+            {{/each}}
+        {{/each}}
     </div>
-</div>
-</div>
-</div>
-</div>
+
+    <button onclick='unbookRoomClick(-1, 7, -1, "{{owner}}", this)' class="btn btn-danger" style="padding-bottom: 5px;">Unbook All</button>
 </div>
 
-
-<button onclick='unbookRoomClick(-1, 7, -1, "{{owner}}", this)' class="btn btn-danger" style="padding-bottom: 5px;">
-    Unbook All Active
-</button>
-</div>
-
-</p>
+        </p>
 
 </div>
 </div>
 
 <!--</div>-->
-
 
 </div>
 <input type=hidden id="hasJson" name="hasJson" value={{hasJson}}/>
@@ -257,16 +80,3 @@
 <input type=hidden id="usrID" name="usrID" value="{{user._id}}"/>
 
 <script src="/JS/accountPageFuncs.js"></script>
-<script type="text/javascript">
-    $(document).ready(function () {
-        $("#preferences").hide();
-        $("#books").hide();
-    });
-    $("#prefbut").click(function () {
-        $("#bookings").toggle("fast");
-        $("#preferences").toggle("fast");
-        $("#books").toggle("fast");
-        $("#prefs").toggle("fast");
-    });
-</script>
-
