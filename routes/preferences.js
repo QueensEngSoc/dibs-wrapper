@@ -15,6 +15,7 @@ router.get('/preferences', function (req, res) {
             rg: theme.useTheme === 'rg-cb',
             mnk: theme.useTheme === 'monokai',
             drk: theme.useTheme === 'darkcula',
+            mrn: theme.useTheme === 'modern',
             cst: theme.customColors.useCustom,
             ocb: theme.ocb,
             other: theme.other

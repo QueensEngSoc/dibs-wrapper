@@ -1,4 +1,3 @@
-
 var selected = [];
 
 function select(time, element) {
@@ -7,7 +6,7 @@ function select(time, element) {
     } else if (element.classList.contains("ntime")) {
         doModal("Room Already Booked!", "Someone else has already booked the room for this time, try another time.", false);
     } else {
-        var i = selected.findIndex(function(element) {
+        var i = selected.findIndex(function (element) {
             return element == time;
         });
         if (i == -1) {
@@ -33,6 +32,11 @@ function checkout(roomID, day) {
             error: function (data) {
                 console.log("Error: " + data);
                 doModal("Oops, something went wrong :(", "Try again, and if the issue persists, please contact the ESSDEV Team", false)
+                for (id of selected) {
+                    document.getElementById(id).classList.remove("ctime");
+                    document.getElementById(id).classList.remove("mtime");
+                    document.getElementById(id).classList.add("ytime");
+                }
             }
         });
     }

@@ -1,0 +1,21 @@
+.yroom,
+.ytime {
+    background-color: #4CAF50;
+}
+.nroom,
+.ntime {
+    background-color: #F44336;
+}
+
+.mtime {
+    background-color: #FF9800;
+}
+
+.ctime {
+    background-color: #00BCD4;
+}
+
+body {
+    background-color: white !important;
+    color: black !important;
+}

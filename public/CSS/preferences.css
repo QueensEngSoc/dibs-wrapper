@@ -43,6 +43,18 @@
     background-color: white;
 }
 
+.available.modern {
+    background-color: #10ac84;
+}
+
+.unavailable.modern {
+    background-color: #ee5253;
+}
+
+.you-booked-it.modern {
+    background-color: #ff9f43;
+}
+
 .available.monokai {
     background-color: #a4e405;
 }

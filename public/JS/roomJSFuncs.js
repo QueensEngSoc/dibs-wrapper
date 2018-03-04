@@ -91,6 +91,7 @@ function successfulBookingMulti(data, ids) {
         console.log(ids);
         for (id of ids) {
             document.getElementById(id).classList.remove("ytime");
+            document.getElementById(id).classList.remove("ctime");
             document.getElementById(id).classList.add("mtime");
         }
     }
