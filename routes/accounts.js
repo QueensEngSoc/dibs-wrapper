@@ -103,6 +103,11 @@ router.get('/accounts', function (req, res, next) {
     if (usrid == -1 || usrid == undefined)
         return res.redirect('/login');
     else {
+        if (!req.user.local.verified) {
+            req.logout();
+            return res.redirect('/login');
+        }
+
         var json = "";
 
         if (msg != undefined && msg.length > 0) {   // roomID + "-" + bookingTimeStart + "-" + length + "-" + day is the order of data
