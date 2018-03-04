@@ -2,98 +2,38 @@
 // followed this tutorial for building the basics.
 var express = require('express');
 var router = express.Router();
-var roomFuncs = require('../models/roomDatabase');
 var accountFuncs = require('../models/userFunctions');
-var roomBook = require('../models/roomBooking');
 var consts = require('../config/config');
 var email = require('../models/sendEmail');
 var prefGetter = require('../models/preferences');
 
-router.post('/accounts/unbook', function (req, res) {
-    var roomToBook = JSON.stringify(req.body);
-    var obj = JSON.parse(roomToBook);
-    var bookingTimeStart = parseInt(obj.time);
+router.get('/welcome', function (req, res) {
 
-    var roomid = parseInt(obj.roomID, 10);
     var usrid = accountFuncs.getUserID(req);
-    var length = parseInt(obj.length, 10);
+    if (usrid == -1) {
+        res.render('welcome', {    // render the page with server side variables passed to the client
+            message: ' <p>Welcome to QBook!  We are now on version ' + consts.dibsVersion + '!</p><p>We have some new features for you!</p><p>New features:</p><p>Please <a href="/login">login</a> to book rooms and use other features</p>'
+        });
 
-    if (usrid !== -1) {
-        if (roomid >= 0) {
-            roomBook.unbookRoom(0, bookingTimeStart, length, roomid, usrid, req).then(function (data) { // day, time, length, roomID, usrid
-                console.log("Request Body: " + JSON.stringify(req.body) + " room id: " + roomid + " Success" + data.success);
-                res.send({HeaderMsg: data.header, BookingStatusMsg: data.bookMsg, BookStatus: data.success});
+    } else {
+
+        if (req.user.local.verified)
+            return res.redirect('/accounts');
+        else
+            res.render('welcome', {    // render the page with server side variables passed to the client
+                message: ' <p>Please verify your email to continue.  Click <a href="/account/verify?' + req.user.local.verify_token + '"> here </a> to resend the verification email</p>'
             });
-        } else {
-            var date = new Date();
-            var current_hour = date.getHours();
-
-            var unbookAll = new Promise(function (resolve, reject) {
-                roomFuncs.getListOfRoomsForUser(usrid).then(function (rooms) {
-                    for (var room of rooms) {
-                        roomBook.unbookAllForUser(room.intDay, room.roomid, usrid, req).then(function (success) {
-                        });
-                    }
-                    if (rooms.length == 0)  // something went wrong, so let's reset the booking count to 0, since the user has no rooms booked at the moment
-                        accountFuncs.resetBookingCount(req);
-
-                    resolve("Successful unbooking!");
-                });
-            });
-
-            unbookAll.then(function (data) {
-                res.send({
-                    HeaderMsg: 'Unbooking Success!',
-                    BookingStatusMsg: 'Unbooking successful for all reservations',
-                    BookStatus: true
-                });
-            });
-        }
-    }
-});
-
-router.get('/account/verify', function (req, res, next) {
-
-    if (req.isAuthenticated())
-        return res.redirect('/accounts');
-
-    if (req.query.verificationCode != undefined && req.query.verificationCode != "") {
-        var code = req.query.verificationCode;
-        if (code == user.local.verify_token){
-            User.findOneAndUpdate({'local.email': email}, {'local.verified': true}, function (err, resp) {
-                console.log('The user has been verified!');
-            });
-
-            res.render('/accounts');
-        }
-    }
-    else
-    {
-        req.flash('loginMessage', 'Verification code incorrect!  A email was resent to your inbox, please try again');
-        res.render('login');
     }
 
-
-});
-
-router.get('accounts/sendverification', function (req, res, next) {
-    var usrid = accountFuncs.getUserID(req);
-    if (usrid == -1 || usrid == undefined)
-        return res.redirect('/login');
-    else {
-        if (!req.user.local.verified) {
-            email.sendVerificationMail(req.user.local.email, consts.fromEmail, req.user.local.verify_token, req);
-        }
-    }
 });
 
 router.get('/accounts', function (req, res, next) {
     var usrid = accountFuncs.getUserID(req);
 
     var msg = req.flash('bookingMessage')
-    var testmsg = req.flash('signupMessage');
-    if (testmsg != undefined && testmsg.length > 0){
-        if (testmsg.indexOf('signup_successful!') >= 0){
+    var testmsg = req.flah('signupMessage');
+    if (testmsg != undefined && testmsg.length > 0) {
+        if (testmsg.indexOf('signup_successful!') >= 0) {
             return res.redirect('/welcome');
         }
     }

@@ -164,7 +164,7 @@
         <!--var roomStatus = {{roomStatus}};-->
         roomStatus.forEach(function (room) {
             if (!room.isFree) {
-                var svgRoom = svgDoc.getElementById(room.roomNum);
+                var svgRoom = svgDoc.getElementById(room.roomNum.toLowerCase());
                 if (svgRoom != null) {
                     if (room.isMine)
                         svgRoom.classList.add('mine');
@@ -193,7 +193,7 @@
         <!--var roomStatus = {{roomStatus}};-->
         roomStatus.forEach(function (room) {
             if (!room.isFree) {
-                var svgRoom = svgDoc.getElementById(room.roomNum);
+                var svgRoom = svgDoc.getElementById(room.roomNum.toLowerCase());
                 if (svgRoom != null) {
                     if (room.isMine)
                         svgRoom.classList.add('mine');
@@ -222,7 +222,7 @@
         <!--var roomStatus = {{roomStatus}};-->
         roomStatus.forEach(function (room) {
             if (!room.isFree) {
-                var svgRoom = svgDoc.getElementById(room.roomNum);
+                var svgRoom = svgDoc.getElementById(room.roomNum.toLowerCase());
                 if (svgRoom != null) {
                     if (room.isMine)
                         svgRoom.classList.add('mine');

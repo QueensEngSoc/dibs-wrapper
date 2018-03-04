@@ -9,6 +9,7 @@ var map = require('../routes/map');
 var book = require('../routes/book');
 var bookRoom = require('../routes/bookRoom');
 var bookCheckout = require('../routes/bookCheckout');
+var welcome = require('../routes/welcome');
 var getTheme = require('../middleware/getThemePref');
 
 // app/routes.js
@@ -77,6 +78,7 @@ module.exports = function(app, passport) {
     app.post('/accounts/unbook', accountPage);
     app.post('/accounts/sendverification', accountPage);
     app.get('/accounts/verify', loginPage);
+    app.get('/account/verify', accountPage);
 
     // =====================================
     // PROFILE SECTION =====================
@@ -85,6 +87,7 @@ module.exports = function(app, passport) {
     // we will use route middleware to verify this (the isLoggedIn function)
 
     app.get('/accounts', accountPage);
+    app.get('/welcome', welcome);
 
     // =====================================
     // LOGOUT ==============================
