@@ -1,5 +1,3 @@
-//old onclick string:
-//var click = 'dibsRoomBookClick(document.getElementById("roomID").value, {{startTime}}, this, "{{../room}}", 1, {{../day}})';
 
 var selected = [];
 
@@ -23,17 +21,19 @@ function select(time, element) {
 }
 
 function checkout(roomID, day) {
-    $.ajax({
-        url: "/bookcheckout",
-        type: "POST",
-        data: {roomID: roomID, times: selected, day: day},
-        dataType: "json",
-        success: function(data) {
-            successfulBookingMulti(data, selected);
-        },
-        error: function(data){
-            console.log("Error: " + data);
-            doModal("Oops, something went wrong :(", "Try again, and if the issue persists, please contact the ESSDEV Team", false)
-        }
-    });
+    if (selected.length > 0) {
+        $.ajax({
+            url: "/bookcheckout",
+            type: "POST",
+            data: {roomID: roomID, times: selected, day: day},
+            dataType: "json",
+            success: function (data) {
+                successfulBookingMulti(data, selected);
+            },
+            error: function (data) {
+                console.log("Error: " + data);
+                doModal("Oops, something went wrong :(", "Try again, and if the issue persists, please contact the ESSDEV Team", false)
+            }
+        });
+    }
 }
