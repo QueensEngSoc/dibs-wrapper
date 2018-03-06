@@ -112,15 +112,10 @@ router.get('/accounts', function (req, res, next) {
 
         if (msg != undefined && msg.length > 0) {   // roomID + "-" + bookingTimeStart + "-" + length + "-" + day is the order of data
             var msgTxt = msg[0];
-            var roomID = parseInt(msgTxt.trim().match(/\d+/)[0]);
-            msgTxt = msgTxt.substr(msgTxt.indexOf('-') + 1);
-            var query = msgTxt;
-            var bookingTimeStart = parseInt(query.substr(0, query.indexOf('-')), 10);
-            var length = query.substr(query.indexOf('-') + 1);
-            var day = 0;//var day = parseInt(length.substr(length.indexOf('-') + 1));
-            length = parseInt(length.substr(0, length.indexOf('-')), 10);
+            var data = JSON.parse(msgTxt);
+            var times = data['times[]'];
 
-            roomBook.bookRoom(day, bookingTimeStart, roomID, length, usrid, req).then(function (data) {
+            roomBook.bookMultiple(data.day, times, parseInt(data.roomID, 10), usrid, req).then(function (data) {
                 console.log("Data! " + data);
                 json = JSON.stringify(data);
                 roomFuncs.getListOfRoomsForUser(usrid).then(function (listBookings) {
@@ -131,6 +126,31 @@ router.get('/accounts', function (req, res, next) {
 
                             }
 
+                        }
+                    }
+
+                    var free = listBookings;
+                    if (free != undefined) {
+                        for (var day = 0; day < listBookings.length; day++) {
+                            var hash = "";
+                            var length = 1;
+                            var start = 0;
+                            var end = 16;
+                            for (var i = 0; i < end; i++) {
+                                if (free[day].free[i].owner == req.user.id) {
+                                    var length = 0;
+                                    var index = i + 1;
+                                    while (index < end && free[day].free[index++].owner == req.user.id) {
+                                        length++;
+                                    }
+                                    if (i + 1 < end)
+                                        free[day].free.splice(i + 1, length);
+                                    end -= length;
+                                    var time = free[day].free[i].time;
+                                    free[day].free[i].time = updateTime(time, length);
+                                    free[day].free[i].length = length + 1;
+                                }
+                            }
                         }
                     }
 

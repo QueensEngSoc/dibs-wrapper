@@ -16,7 +16,7 @@ router.post('/bookroom', function (req, res) {
     if (usrid == -1 || usrid == undefined) {
         res.send({
             HeaderMsg: "You must login",
-            BookingStatusMsg: roomID + "-" + bookingTimeStart + "-" + length + "-" + day,
+            BookingStatusMsg: ' ',
             BookStatus: false
         });
     }

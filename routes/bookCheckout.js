@@ -22,6 +22,7 @@ router.post('/bookcheckout', function (req, res) { //similar to the book functio
     }
 
     if (usrid === -1 || usrid === undefined) {
+        req.flash('bookingMessage', roomToBook);
         res.send({
             HeaderMsg: "You must login",
             BookingStatusMsg: roomID + "-" + times[0] + "-" + 1 + "-" + day,

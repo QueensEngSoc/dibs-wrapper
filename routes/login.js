@@ -14,8 +14,6 @@ router.get('/login', function (req, res, next) {
         var msgTxt = msg[0];
         hasMsg = (msgTxt.length > 0) ? true : false;
     }
-    if (req.query.book != undefined && req.query.book != "")
-        req.flash('bookingMessage', req.query.book);
 
     res.render('login', {    // render the page with server side variables passed to the client
         message: msg[0],
