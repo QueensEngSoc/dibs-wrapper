@@ -56,7 +56,7 @@ function unbookRoomClick(roomID, time, day, owner, element, length){
         var minutes = date.getMinutes();
         var hour = date.getHours();
 
-    if ((day >= 0 && time >= hour) || (day >= 0 && time >= hour - 1 && minutes < 30) || (roomID < 0))
+    if ((day == 0 && time >= hour) || (day == 0 && time >= hour - 1 && minutes < 30) || day > 0 || (roomID < 0))
         $.ajax({
             url: "/accounts/unbook",
             type: "POST",
@@ -66,12 +66,20 @@ function unbookRoomClick(roomID, time, day, owner, element, length){
                 console.log("Header: " + data.HeaderMsg + " body: " + data.BookingStatusMsg + " data: " + data);
                 var header = data.HeaderMsg;
                 var content = data.BookingStatusMsg;
+                var hours = data.HoursNow;
+                var limit = data.maxHours;
+
                 doModal(header, content, data.BookStatus);
                 // element.classList.remove("ytime");
                 // element.classList.add("mtime");
                 console.log("Done!");
                 // element.value = "Unbooked";
                 element.closest('.col-sm-6').remove();
+
+                if (data.BookStatus) {
+                    var hoursLeft = document.getElementById('hoursLeft');
+                    hoursLeft.innerText = ": " + hours + " of " + limit;
+                }
             },
             error: function (data) {
                 console.log("Error: " + data)

@@ -170,9 +170,9 @@ function unbookRoom(day, time, length, roomID, usrid, req) {
 
             var end = length + parseInt(time, 10);
             for (var i = time; i < end; i++) {
-                if (temp[day][time - 7].free === false && temp[day][time - 7].owner === usrid) {
-                    temp[day][time - 7].free = true;
-                    temp[day][time - 7].owner = 0;
+                if (temp[day][i - 7].free === false && temp[day][i - 7].owner === usrid) {
+                    temp[day][i - 7].free = true;
+                    temp[day][i - 7].owner = 0;
                     out.success = true;
                     out.bookMsg = "Unbooking successful for " + data.Name + " at " + time + ":30";
                     out.header = "Unbooking Success!";

@@ -17,12 +17,14 @@ router.post('/accounts/unbook', function (req, res) {
     var roomid = parseInt(obj.roomID, 10);
     var usrid = accountFuncs.getUserID(req);
     var length = parseInt(obj.length, 10);
+    var day = parseInt(obj.day, 10);
 
     if (usrid !== -1) {
         if (roomid >= 0) {
-            roomBook.unbookRoom(0, bookingTimeStart, length, roomid, usrid, req).then(function (data) { // day, time, length, roomID, usrid
+            roomBook.unbookRoom(day, bookingTimeStart, length, roomid, usrid, req).then(function (data) { // day, time, length, roomID, usrid
                 console.log("Request Body: " + JSON.stringify(req.body) + " room id: " + roomid + " Success" + data.success);
-                res.send({HeaderMsg: data.header, BookingStatusMsg: data.bookMsg, BookStatus: data.success});
+                var left = consts.room_hour_limit - req.user.local.booking_count;
+                res.send({HeaderMsg: data.header, BookingStatusMsg: data.bookMsg, BookStatus: data.success, HoursNow: left, maxHours: consts.room_hour_limit});
             });
         } else {
             var date = new Date();
