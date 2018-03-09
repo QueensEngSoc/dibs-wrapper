@@ -39,9 +39,13 @@ function getAPIInfo() {
 
                 var roomNum = data.Name.match(/\d+/)[0]; // get the number from the room
                 var roomPicName = "BMH" + roomNum + ".jpg";
-                if (fs.existsSync("../public/img/" + roomPicName)) {
-                    data.Picture = "img/" + roomPicName;
-                }
+                data.Picture = "img/" + roomPicName;
+
+                // if (fs.existsSync("../public/img/" + roomPicName)) {
+                //     data.Picture = "img/" + roomPicName;
+                // }
+                // else
+                //     console.log("No FS found, or FS error!!");
 
                 if (description.indexOf("phone") >= 0 || description.indexOf("Phone") >= 0)
                     data.phone = true;
