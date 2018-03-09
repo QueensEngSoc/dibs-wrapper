@@ -1,15 +1,16 @@
 'use strict';
 const nodemailer = require('nodemailer');
+var emailInfo = require('../config/emailConfig');
 
 // Generate test SMTP service account from ethereal.email
 // Only needed if you don't have a real mail account for testing
 let transporter = nodemailer.createTransport({
-    host: 'in-v3.mailjet.com',
+    host: 'smtp.office365.com',
     port: 587,
-    secure: false, // true for 465, false for other ports
+    secure: false, // true for 465, false for other ports    // use TLS in this case
     auth: {
-        user: 'a5736ddaa133bdaa05ff42b9f55fc96b', // generated ethereal user
-        pass: '6c074d54d1551f412771a6dce792355f' // generated ethereal password
+        user: emailInfo.emailUsername, // generated ethereal user
+        pass: emailInfo.emailPassword // generated ethereal password
     }
 });
 
@@ -34,7 +35,7 @@ function setupMailSender() {
             console.log("");
             console.log(error);
         } else {
-            console.log('Server is ready to take our messages');
+            console.log('Email account connected! -> Server is ready to send our messages!');
         }
     });
 

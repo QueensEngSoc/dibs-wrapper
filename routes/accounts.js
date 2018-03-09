@@ -76,7 +76,7 @@ router.get('/account/verify', function (req, res, next) {
 
 });
 
-router.get('accounts/sendverification', function (req, res, next) {
+router.post('/accounts/sendverification', function (req, res, next) {
     var usrid = accountFuncs.getUserID(req);
     if (usrid == -1 || usrid == undefined)
         return res.redirect('/login');
