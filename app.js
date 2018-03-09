@@ -138,6 +138,15 @@ server.listen(port, function () {
     console.log('Example app listening on port ' + port + "!");
 });
 
+if (env != 'dev'){
+    var http = require("http");
+    console.log("Setting up ping service to keep the Heroku site awake (fixing the lag and dayShifting code breaking)");
+    setInterval(function() {
+        http.get("https://dibs-beta.herokuapp.com.herokuapp.com");
+        console.log("Ping......");
+    }, 300000); // every 5 minutes (300000)
+}
+
 dbFuncs.setupEndOfDayScript();
 module.exports = server;
 
