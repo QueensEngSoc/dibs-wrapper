@@ -1,7 +1,20 @@
 'use strict';
 const nodemailer = require('nodemailer');
-var emailInfo = require('../config/emailConfig');
 
+var user = "";
+var pass = "";
+var env = process.env.NODE_ENV || 'dev';
+
+if (env == 'dev'){
+    var emailInfo = require('../config/emailConfig');
+    user = emailInfo.emailUsername;
+    pass = emailInfo.emailPassword;
+}
+else
+{
+    pass = process.env.emailUsername;
+    pass = process.env.emailPassword;
+}
 // Generate test SMTP service account from ethereal.email
 // Only needed if you don't have a real mail account for testing
 let transporter = nodemailer.createTransport({
@@ -9,8 +22,8 @@ let transporter = nodemailer.createTransport({
     port: 587,
     secure: false, // true for 465, false for other ports    // use TLS in this case
     auth: {
-        user: emailInfo.emailUsername, // generated ethereal user
-        pass: emailInfo.emailPassword // generated ethereal password
+        user: user, // generated ethereal user
+        pass: pass // generated ethereal password
     }
 });
 
