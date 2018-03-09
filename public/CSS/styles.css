@@ -63,6 +63,18 @@ li {
     color: white !important;
     text-decoration: none;
 }
+
+.mroom {
+    padding: 15px 32px;
+    font-family: "Roboto Mono", Courier, monospace !important;
+    border-radius: 12px;
+    display: inline-flex;
+    font-size: 30px !important;
+    margin: 10px 10px;
+    color: white !important;
+    text-decoration: none;
+}
+
 .ytime {
     color: white;
     padding: 15px 22px;
