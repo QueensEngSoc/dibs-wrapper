@@ -79,19 +79,6 @@ function unbookRoomClick(roomID, time, day, owner, element, length){
         });
 }
 
-function sendVerificationEmail(){
-    $.ajax({
-        url: "/accounts/sendverification",
-        type: "POST",
-        dataType: "json",
-        success: function (data) {
-            console.log("Done!");
-        },
-        error: function (data) {
-            console.log("Error: " + data)
-        }
-    });
-}
 
 document.addEventListener("DOMContentLoaded", function() {
     var cardsDiv = document.getElementById('bookedRow');
