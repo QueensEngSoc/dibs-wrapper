@@ -12,7 +12,7 @@ if (env == 'dev'){
 }
 else
 {
-    pass = process.env.emailUsername;
+    user = process.env.emailUsername;
     pass = process.env.emailPassword;
 }
 // Generate test SMTP service account from ethereal.email
