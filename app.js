@@ -138,7 +138,7 @@ server.listen(port, function () {
     console.log('Example app listening on port ' + port + "!");
 });
 
-if (env == 'dev'){
+if (env != 'dev'){
     var http = require("http");
     console.log("Setting up ping service to keep the Heroku site awake (fixing the lag and dayShifting code breaking)");
     setInterval(function() {
