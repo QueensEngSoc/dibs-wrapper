@@ -33,6 +33,7 @@ module.exports = function(app, passport) {
     app.get('/book/:roomID/:date', book);
 
     app.post('/bookcheckout', bookCheckout);
+    app.post('/testDayShift', accountPage);
 
     // =====================================
     // LOGIN ===============================
@@ -99,6 +100,7 @@ module.exports = function(app, passport) {
     });
 
     app.get('/map', map);
+    app.post('/map', map);
 
     app.use(function (req, res, next) {
         res.statusCode = 404;

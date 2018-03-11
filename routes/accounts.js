@@ -8,6 +8,12 @@ var roomBook = require('../models/roomBooking');
 var consts = require('../config/config');
 var email = require('../models/sendEmail');
 var prefGetter = require('../models/preferences');
+var shiftingFuncs = require('../models/dbFunctions');
+
+router.post('/testDayShift', function (req, res) {
+    console.log("Shifting Starting...")
+    shiftingFuncs.endOfDayShift();
+});
 
 router.post('/accounts/unbook', function (req, res) {
     var roomToBook = JSON.stringify(req.body);

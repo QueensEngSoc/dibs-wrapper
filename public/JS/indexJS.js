@@ -56,7 +56,7 @@ jQuery(function($) {
 
     $("#datepicker").datepicker({
         minDate: 0,
-        maxDate: "+1M",
+        maxDate: "+13D",
         onSelect: function(d,i){
             if(d !== i.lastVal){
                 $(this).change();

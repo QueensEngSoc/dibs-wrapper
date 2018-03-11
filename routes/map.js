@@ -22,12 +22,14 @@ router.post('/map', function (req, res) {
         current_hour--;
 
     var usrid = accountFuncs.getUserID(req);
-    var prettyDate = formatDate(date);
 
-    roomDB.getListOfRoomState(day, current_hour, usrid).then(function (listFree) {
+    roomFuncs.getListOfRoomState(day, current_hour, usrid).then(function (listFree) {
+        var jsonList = JSON.stringify(listFree);
+
         res.send({
             list: listFree,
-            prettyDate: prettyDate
+            roomStatus: jsonList,
+            currentHour: current_hour
         });
     });
 });

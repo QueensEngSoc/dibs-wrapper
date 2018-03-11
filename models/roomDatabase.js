@@ -282,6 +282,24 @@ function getNextValidHalfHour(formatAsInterval, formatAsDBTime) {
         return nextHour + ":30";
 }
 
+function getValidDate(date){
+    var today = new Date();
+    var max = addDays(today, 14);
+
+    var day = date - today;
+    day = Math.ceil(day / (1000 * 3600 * 24));
+    if (day > 0 && day < 14)
+        return true;
+    else
+        return false;
+}
+
+function addDays(date, days) {
+    var result = new Date(date);
+    result.setDate(result.getDate() + days);
+    return result;
+}
+
 module.exports = {
     getFree: getFree,
     getInfo: getInfo,
@@ -290,5 +308,6 @@ module.exports = {
     getListOfRoomsForUser: getListOfRoomsForUser,
     getAllFreeNow: getAllFreeNow,
     getNextFree: getNextFree,
-    getNextValidHalfHour: getNextValidHalfHour
+    getNextValidHalfHour: getNextValidHalfHour,
+    getValidDate: getValidDate
 };

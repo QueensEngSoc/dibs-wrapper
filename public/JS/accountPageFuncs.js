@@ -105,3 +105,18 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 }, false);
+
+function testDayShift(){
+    $.ajax({
+        url: "/testDayShift",
+        type: "POST",
+        data: {},
+        dataType: "json",
+        success: function (data) {
+
+        },
+        error: function (data) {
+            console.log("Error: " + data)
+        }
+    });
+}

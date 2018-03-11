@@ -15,19 +15,27 @@ router.post('/index', function (req, res) {
     var day = date - dateObj;
     day = Math.ceil(day / (1000 * 3600 * 24));
 
-    if (current_min < 30)
-        current_hour--;
-
-    var usrid = accountFuncs.getUserID(req);
-
-    var prettyDate = formatDate(date);
-
-    roomDB.getListOfRoomState(day, current_hour, usrid).then(function (listFree) {
-        res.send({
-            list: listFree,
-            prettyDate: prettyDate
+    if (day < 0 || day > 13)
+        res.send("404", {
+            list: "",
+            prettyDate: ""
         });
-    });
+
+    else {
+        if (current_min < 30)
+            current_hour--;
+
+        var usrid = accountFuncs.getUserID(req);
+
+        var prettyDate = formatDate(date);
+
+        roomDB.getListOfRoomState(day, current_hour, usrid).then(function (listFree) {
+            res.send({
+                list: listFree,
+                prettyDate: prettyDate
+            });
+        });
+    }
 });
 
 router.get('/', function (req, res, next) {

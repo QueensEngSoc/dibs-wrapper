@@ -1,6 +1,11 @@
 <link href="https://code.jquery.com/ui/1.9.2/themes/smoothness/jquery-ui.css" rel="stylesheet" />
 <link rel='stylesheet' type='text/css' href='CSS/timepicker.css'/>
 <script type='text/javascript' src='JS/timepicker.js'></script>
+<!--<script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.21.0/moment.min.js'></script>-->
+<script type='text/javascript' src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.21.0/moment-with-locales.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/js/tempusdominus-bootstrap-4.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/css/tempusdominus-bootstrap-4.min.css" />
+
 <style type="text/css">
     .hidden {
         display: none;
@@ -48,36 +53,30 @@
             </h3>
         </div>
     </div>
+    <!--<div class="col-md-3">-->
+        <!--<div class="form-group text-center">-->
+            <!--<h3>-->
+                <!--<strong>At:&nbsp</strong>-->
+                <!--<input style="width: 180px;" id='timepicker' type='text' name='timepicker'/>-->
+            <!--</h3>-->
+        <!--</div>-->
+    <!--</div>-->
     <div class="col-md-3">
         <div class="form-group text-center">
             <h3>
                 <strong>At:&nbsp</strong>
-                <input style="width: 180px;" id='timepicker' type='text' name='timepicker'/>
+                <div class="input-group date" id="timepicker1" data-target-input="nearest">
+                    <input type="text" class="form-control datetimepicker-input" data-target="#timepicker1"/>
+                    <div class="input-group-append" data-target="#timepicker1" data-toggle="datetimepicker">
+                        <div class="input-group-text"><i class="fa fa-clock-o"></i></div>
+                    </div>
+                </div>
             </h3>
         </div>
     </div>
+
 </div>
 <script type='text/javascript'>
-    var dateObj = new Date();
-    var current_hour = dateObj.getHours();
-    var current_min = dateObj.getMinutes();
-    var day = 0;
-
-    if (current_min < 30)
-        current_hour--;
-
-    $('#timepicker').timepicki({show_meridian: false,
-        min_hour_value: current_hour,
-        max_hour_value:22,
-        step_size_minutes:0,
-        start_time: [current_hour, "30"],
-        overflow_minutes:true,
-        increase_direction:'up',
-        disable_keyboard_mobile: true});
-
-    $(document).ready(function() {
-        $("#timepicker").val("Now");
-    });
 </script>
 <br><br>
 <div style="text-align: center;">
@@ -236,4 +235,4 @@
 
 
 </script>
-<script src="/JS/indexJS.js"></script>
+<script src="/JS/mapJS.js"></script>

@@ -164,6 +164,11 @@
             <!--<p>-->
                 <!--<button onclick='sendVerificationEmail()' class="btn btn-danger">Send Verification Email</button>-->
             <!--</p>-->
+            {{#if_eq user.local.email "14ar75@queensu.ca"}}
+                <p>
+                <button onclick='testDayShift()' class="btn btn-danger">Test out day shifting code</button>
+                </p>
+            {{/if_eq}}
             <br/>
         </div>
     </div>

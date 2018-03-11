@@ -48,7 +48,7 @@ function endOfDayShift(){
             var newDay = createNewDayArray(16, true);
             free.push(newDay);
             var roomID = data.RoomID;
-            // roomDatabase.update({RoomID: roomID}, {$set: {Free: free}});
+            roomDatabase.update({RoomID: roomID}, {$set: {Free: free}});
 
         }).then(function () {
             return resolve();
@@ -73,7 +73,7 @@ function checkAdminDB() {
 function setupEndOfDayScript(){
     console.log("Setting up day shifting code...");
 
-    schedule.scheduleJob({hour: 0, minute: 00}, function() {
+    schedule.scheduleJob({hour: 0, minute: 0}, function() {
         console.log("Shifting day now...")
         endOfDayShift();
         console.log("Checking admin database...")
