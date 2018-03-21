@@ -8,7 +8,7 @@ QBook is programmed entirely in Javascript, running Node.js on the backend and s
 
 ### Dependancies
 
-This program requires that you have Node.js version X.X or greter and npm version X.X or greater. If you are unsure, make sure you have Node.js and npm installed and in command prompt run: `node -v` for Node version and `npm -v` for npm version.
+This program requires that you have Node.js version 8.10.0 or greater and npm version 5.6.0 or greater. If you are unsure, make sure you have Node.js and npm installed and in command prompt run: `node -v` for Node version and `npm -v` for npm version.
 
 Numerous Node.js modules are needed for this project. Go to the main directory in command prompt and run `npm install`.
 
