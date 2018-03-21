@@ -3,7 +3,10 @@ var monk = require('monk'); var env = process.env.NODE_ENV || 'dev';
 var db = monk('localhost:27017/adminDatabase');
 var adminDB = db.get('adminDatabase');
 
-// addSchedule(createSchedule(new Date(2018, 2, 1), 2, [1]));
+// addSchedule(createSchedule(new Date(2018, 3, 1), 2, [7], [1]));
+// getInRange(1).then(function (data) {
+//     console.log(data);
+// });
 
 function getAll() {
     return new Promise(function(resolve, reject) {
@@ -59,7 +62,7 @@ function getInRange(room) {
     var fortNight = new Date(); //getting the date 2 weeks away
     fortNight.setTime(fortNight.getTime() + 1209600000);
 
-    return new promise(function (resolve, reject) {
+    return new Promise(function (resolve, reject) {
         adminDB.find({RoomID: room}, function (err, data) {
             if (err)
                 console.log(err);
@@ -69,13 +72,14 @@ function getInRange(room) {
             var rules = data[0].futureRules;
             for (i in rules) {
                 var rule = rules[i];
-                var daysWithin = getDaysWithinFortnight(rule.start); //gets number of days the date is inside the next 2 weeks
+                var daysWithin = getDaysWithinFortnight(rule.startDate); //gets number of days the date is inside the next 2 weeks
                 if (daysWithin >= 0) { //if its within the next 2 weeks...
-                    var validLength = daysWithin - rule.dayLength;
+                    var validLength = daysWithin - rule.dayLength + 1;
                     out.push({
                         start: 14 - daysWithin,
-                        dayLength: validLength,
-                        hours: rule.hours
+                        dayLength: Math.min(rule.dayLength, validLength),
+                        hours: rule.hours,
+                        roomID: room
                     });
                 }
             }

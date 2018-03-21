@@ -21,6 +21,7 @@ var randomstring = require("randomstring"); // used to generate the random hash 
  * @param usrid
  * @returns {promise}
  */
+//OUT OF DATE, DO NOT USE!!!! USE bookMultiple
 function bookRoom(day, time, roomID, length, usrid, req) { //books a room at a certain time and day and sets the owner to be the usrid
     return new Promise(function (resolve, reject) {
 
@@ -87,15 +88,17 @@ function bookRoom(day, time, roomID, length, usrid, req) { //books a room at a c
 function bookMultiple(day, times, roomID, usrid, req) {
     return new Promise(function (resolve, reject) {
 
-        if (!userFuncs.canBookMoreRooms(req)) {
-            var out = {
-                header: "Booking failed",
-                bookMsg: "Sorry, You have booked too many hours.  There are a max of " + consts.room_hour_limit + " hours allowed.",
-                success: false
-            };
+        if (usrid !== "admin") {
+            if (!userFuncs.canBookMoreRooms(req)) {
+                var out = {
+                    header: "Booking failed",
+                    bookMsg: "Sorry, You have booked too many hours.  There are a max of " + consts.room_hour_limit + " hours allowed.",
+                    success: false
+                };
 
-            resolve(out);
-            return;
+                resolve(out);
+                return;
+            }
         }
 
         roomDatabase.find({RoomID: roomID}).each(function (data, val) {
@@ -111,31 +114,46 @@ function bookMultiple(day, times, roomID, usrid, req) {
             });
 
             for (var time of times) { //iterate over an array of times instead of a sequence of numbers
-                if (temp[day][time - 7].free === true) {
+                if (usrid !== "admin") {
+                    if (temp[day][time - 7].free === true) {
+                        temp[day][time - 7].free = false;
+                        temp[day][time - 7].owner = usrid;
+                        temp[day][time - 7].bookingHash = bookingHash;
+                    } else {
+                        out.bookMsg = "Sorry, this room is booked.  Looks like someone beat you to it :(";
+                        out.header = "Room Already Booked"
+                        resolve(out);
+                    }
+                } else {
                     temp[day][time - 7].free = false;
                     temp[day][time - 7].owner = usrid;
                     temp[day][time - 7].bookingHash = bookingHash;
                 }
-                else {
-                    out.bookMsg = "Sorry, this room is booked.  Looks like someone beat you to it :(";
-                    out.header = "Room Already Booked"
-                    resolve(out);
-                }
             }
-            if (userFuncs.updateBookingCount(times.length, req)) {
+            if (usrid === "admin") {
                 roomDatabase.update({RoomID: roomID}, {$set: {Free: temp}});
                 out.success = true;
                 var msg = "Booking successful for "; //setting up the message to include multiple times
                 for (i in times) {
                     time = times[i];
-                    msg += time + ":30 - " + (time + 1) + (i == times.length-1 ? ":30." : ":30, ");
+                    msg += time + ":30 - " + (time + 1) + (i == times.length - 1 ? ":30." : ":30, ");
+                }
+                out.bookMsg = msg;
+                out.header = "Booking Success!";
+                resolve(out);
+            } else if (userFuncs.updateBookingCount(times.length, req)) {
+                roomDatabase.update({RoomID: roomID}, {$set: {Free: temp}});
+                out.success = true;
+                var msg = "Booking successful for "; //setting up the message to include multiple times
+                for (i in times) {
+                    time = times[i];
+                    msg += time + ":30 - " + (time + 1) + (i == times.length - 1 ? ":30." : ":30, ");
                 }
                 out.bookMsg = msg;
                 out.header = "Booking Success!";
                 resolve(out);
 
-            }
-            else {
+            } else {
                 out = {
                     header: "Booking failed",
                     bookMsg: "Sorry, an error occured and the room was not booked.  Please try again later.",
