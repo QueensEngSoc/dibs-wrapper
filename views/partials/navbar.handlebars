@@ -1,41 +1,47 @@
  <nav class="navbar navbar-custom navbar-expand-md">
      <ul class="nav navbar-nav d-none d-md-block" style="padding-left: 15%; padding-right: 15%;">
          <li class="float-left nav-item">
-             <a style="padding-top: 10px; padding-bottom: 0;" href="/" class="nav-link">
+             <a href="/" class="nav-link no-vert-padding">
                  <img src="/img/qlogo.png" height="40" width="60" style="padding-right: 10px;">
              </a>
          </li>
-         <li class="float-left nav-item"><a href="/" style="color: #fff; font-size: 30px;" class="nav-link">QBook</a></li>
-         <li class="float-right nav-item nav-top-spacing">
-             <a href="/accounts" class="nav-link no-top-space">Account
+         <li class="float-left nav-item no-vert-padding">
+             <a class="no-vert-padding" href="/" style="color: #fff; font-size: 30px;" class="nav-link">QBook</a>
+         </li>
+         <li class="float-right nav-item no-vert-padding">
+             <a href="/accounts" class="nav-link">Account
                  <img src="/img/user.png" class="li-spacing" height="30" width="40">
              </a>
          </li>
          {{#if navLink}}
-             <li class="float-right nav-item nav-top-spacing">{{{navLink}}}</li>
+             <li class="float-right nav-item no-vert-padding">{{{navLink}}}</li>
          {{else}}
-         <li class="float-right nav-item nav-top-spacing">
-             <a href="/" class="white">Grid
+         <li class="float-right nav-item no-vert-padding">
+             <a href="/" class="nav-link white">Grid
                  <img src="/img/grid.png" class="li-spacing" height="30" width="40">
              </a>
          </li>
          {{/if}}
      </ul>
      <ul class="nav navbar-nav d-md-none">
-         <li class="float-left nav-item">
-             <a class="float-left nav-link" style="padding-top: 5px;" href="/">
-                 <img src="/img/qlogo.png" height="40" width="60" style="padding-right: 10px;">
+         <li class="float-left nav-item no-vert-padding">
+             <a class="float-left nav-link no-vert-padding" href="/">
+                 <img src="/img/qlogo.png" height="40" width="53">
              </a>
          </li>
-         <li class="float-right nav-item nav-top-spacing">
-             <a href="/accounts" class="nav-link no-top-space">
-                 <img src="/img/user.png" height="30" width="30">
+         <li class="float-right nav-item no-vert-padding">
+             <a href="/accounts" class="nav-link no-vert-padding">
+                 <img src="/img/user.png" height="35" width="35">
              </a>
          </li>
          {{#if navPic}}
-             <li class="float-right nav-item nav-top-spacing">{{{navPic}}}</li>
+             <li class="float-right nav-item no-vert-padding">{{{navPic}}}</li>
          {{else}}
-             <li class="float-right nav-item nav-top-spacing"><a href="/" style="padding-top: 5px;"><img src="/img/grid.png" height="30" width="30"></a></li>
+             <li class="float-right nav-item no-vert-padding">
+                 <a href="/">
+                     <img src="/img/grid.png" height="35" width="35">
+                 </a>
+             </li>
          {{/if}}
      </ul>
  </nav>

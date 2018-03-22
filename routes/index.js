@@ -52,8 +52,8 @@ router.get('/', function (req, res, next) {
     roomDB.getListOfRoomState(day, current_hour, usrid).then(function (listFree) {
         res.render('index', {
             list: listFree,
-            navLink: '<a href="/map" class="white">Map<img src="/img/map.png" class="li-spacing" height="30" width="70"></a>',
-            navPic: '<a href="/map" style="padding-top: 5px;"><img src="/img/map.png" height="30" width="60"></a>',
+            navLink: '<a href="/map" class="nav-link white">Map<img src="/img/map.png" class="li-spacing" height="30" width="70"></a>',
+            navPic: '<a href="/map"><img src="/img/map.png" height="35" width="60"></a>',
             theme: req.theme === "custom" ? false : req.theme,
             colors: req.colors
         });

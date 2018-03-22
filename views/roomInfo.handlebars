@@ -1,7 +1,7 @@
-<link rel="stylesheet" href="../CSS/styles.css" title="pref" type="text/css"/>
+<link rel="stylesheet" href="../../../CSS/styles.css" title="pref" type="text/css"/>
 <div class="container">
-    <div class="row">
-        <div class="times col-md-5">
+    <div class="row justify-content-center">
+        <div class="times col-12 col-md-5">
             <ul>
                 {{#each free}}
                     {{#if_eq ../day 0}}
@@ -50,9 +50,9 @@
             </ul>
         </div>
         <div class="col-md-1"></div>
-        <div class="desc col-md-6">
-            <img alt="RoomPicture" src={{imgURL}}
-                    height="400"> <br><br>
+        <div class="desc col-12 col-md-6">
+            <img class="img-fluid" alt="RoomPicture" src={{imgURL}}>
+            <br><br>
             <p style="text-align: left;">{{size}}.<br><br>{{#if tv}}
                 There is{{else}}There is not{{/if}} a TV.<br><br>{{#if
                     special}}This is a special room{{/if}}</p>
