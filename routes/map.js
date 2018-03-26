@@ -24,13 +24,43 @@ router.post('/map', function (req, res) {
 
     var usrid = accountFuncs.getUserID(req);
 
-    roomFuncs.getListOfRoomState(day, hour, usrid).then(function (listFree) {
+    roomFuncs.getListOfRoomState(day, -1, usrid).then(function (listFree) {
+        var timecount = [];
+
+        for (var i = 0; i < listFree[i].isFree.length; i++){
+            timecount.push({
+                hourCount: 0,
+                totalCount: 0
+            });
+        }
+
+        for(var i = 0; i < listFree.length; i++){
+            var count = 0;
+            var mine = 0;
+            for(var j = 0; j < listFree[i].isFree.length; j++){
+                if (!listFree[i].isFree[j].free) {
+                    count++;
+                    timecount[j].hourCount++;
+                }
+                if (listFree[i].isFree[j].owner == usrid) {
+                    mine++;
+                    listFree[i].isFree[j].isMine = true;
+                }
+                else
+                    listFree[i].isFree[j].isMine = false;
+
+                timecount[j].totalCount++;
+            }
+        }
+
+        var jsonTimeCount = JSON.stringify(timecount);
         var jsonList = JSON.stringify(listFree);
 
         res.send({
             list: listFree,
             roomStatus: jsonList,
-            currentHour: hour
+            currentHour: hour,
+            timeCount: jsonTimeCount
         });
     });
 });
@@ -50,7 +80,36 @@ router.get('/map', function (req, res, next) {
 
     var usrid = accountFuncs.getUserID(req);
 
-    roomFuncs.getListOfRoomState(day, current_hour, usrid).then(function (listFree) {
+    roomFuncs.getListOfRoomState(day, -1, usrid).then(function (listFree) {
+        var timecount = [];
+
+        for (var i = 0; i < listFree[i].isFree.length; i++){
+            timecount.push({
+                hourCount: 0,
+                totalCount: 0
+            });
+        }
+
+        for(var i = 0; i < listFree.length; i++){
+            var count = 0;
+            var mine = 0;
+            for(var j = 0; j < listFree[i].isFree.length; j++){
+                if (!listFree[i].isFree[j].free) {
+                    count++;
+                    timecount[j].hourCount++;
+                }
+                if (listFree[i].isFree[j].owner == usrid) {
+                    mine++;
+                    listFree[i].isFree[j].isMine = true;
+                }
+                else
+                    listFree[i].isFree[j].isMine = false;
+
+                timecount[j].totalCount++;
+            }
+        }
+
+        var jsonTimeCount = JSON.stringify(timecount);
         var jsonList = JSON.stringify(listFree);
 
         res.render('map', {    // render the page with server side variables passed to the client
@@ -59,7 +118,8 @@ router.get('/map', function (req, res, next) {
             roomStatus: jsonList,
             currentHour: current_hour,
             theme: req.theme === "custom" ? false : req.theme,
-            colors: req.colors
+            colors: req.colors,
+            timeCount: jsonTimeCount
         });
 
     });

@@ -1,17 +1,17 @@
-jQuery(function($) {
+jQuery(function ($) {
 
     $("#datepicker").datepicker({
         minDate: 0,
         maxDate: "+13D",
-        onSelect: function(d,i){
-            if(d !== i.lastVal){
+        onSelect: function (d, i) {
+            if (d !== i.lastVal) {
                 $(this).change();
             }
         }
     });
 });
 
-$(document).ready(function() {
+$(document).ready(function () {
     $("#datepicker").val("Today");
 });
 
@@ -21,7 +21,7 @@ var current_hour = dateObj.getHours();
 var current_min = dateObj.getMinutes();
 var oldTime = current_hour;
 
-$('#datepicker').change(function(){
+$('#datepicker').change(function () {
     var time = $('#timepicker').val;
     display("Value Changed! Selected date: " + this.value + " at time: " + time);
     dateObj = new Date(this.value);
@@ -78,7 +78,7 @@ var date = dateObj;
 date.setHours(current_hour);
 date.setMinutes(30);
 console.log(date.toLocaleTimeString());
-var minHour = (today.getDay() != date.getDay()) ? 7 : current_hour - 1 ;
+var minHour = (today.getDay() != date.getDay()) ? 7 : current_hour;
 
 $(function () { // using Tempus Dominus Boostrap 4 dateTimePicker
     $('input.timepicker').timepicker({
@@ -90,15 +90,14 @@ $(function () { // using Tempus Dominus Boostrap 4 dateTimePicker
         startTime: date, // 3:00:00 PM - noon
         interval: 60, // 15 minutes
 
-        change: function(time) {
+        change: function (time) {
             timepickerChange(time);
         }
     });
 });
 
 function timepickerChange(time) {
-    if (time != oldTime)
-    {
+    if (time != oldTime) {
         oldTime = time.getHours();
         var pick = $('#datepicker');
         var dateStr = pick[0].value;
@@ -116,9 +115,10 @@ function display(msg) {
 }
 
 var mapData;
+var specificTimeData;
+var timeCount;
 
-function getNewDayData(day, time)
-{
+function getNewDayData(day, time) {
     $.ajax({
         url: "/map",
         type: "POST",
@@ -126,9 +126,13 @@ function getNewDayData(day, time)
         dataType: "json",
         success: function (data) {
             mapData = data.roomStatus;
+            mapData = mapData.replace(/&quot;/g, '"');
+            mapData = JSON.parse(mapData);
+
+            timeCount = data.timeCount;
             updateMap();
-            if (data.currentHour != oldTime)
-            {
+            updateSidebar(false);
+            if (data.currentHour != oldTime) {
                 var dateTime = new Date();
                 dateTime.setHours(data.currentHour);
                 dateTime.setMinutes(30);
@@ -161,7 +165,7 @@ function switchVisible(from, to) {
     $('#' + to + '-button').addClass('active');
 }
 
-function updateMap(){
+function updateMap() {
 
     var element = document.getElementById("floor1");
 
@@ -190,7 +194,73 @@ function updateMap(){
 
 }
 
-var f1 = document.getElementById("floor1");
+var side = document.getElementById("sidebar");
+
+function updateSidebar() {
+    var count = timeCount;
+    count = count.replace(/&quot;/g, '"');
+    var data = JSON.parse(count);
+    for (var i = 0; i < data.length; i++) {
+        var timeElement = side.querySelectorAll("button[value=\"" + i + "\"]")[0];
+        if (i < minHour - 7 - 1) {
+            timeElement.setAttribute("style", "display:none!important;");
+        } else {
+            // if (setActive){
+            //     if (i == minHour - 7 - 1)
+            //         timeElement.classList.add("active");
+            // }
+            var span = timeElement.getElementsByTagName('span')[0];
+            span.innerText = data[i].totalCount - data[i].hourCount;
+            timeElement.style.display = 'block';
+        }
+    }
+}
+
+$(document).ready(function () {
+    // parse map data
+    mapData = mapData.replace(/&quot;/g, '"');
+    mapData = JSON.parse(mapData);
+
+    updateSidebar(true);
+    changeSidebarTime(minHour - 7 - 1, 16);
+});
+
+
+/////////////////////////////////// MAP UPDATING FROM TIME CHANGE //////////////////////////////////////////////////////
+
+function changeSidebarTime(value, length) {
+    if (length == undefined)
+        length = 16;
+
+    for (var i = 0; i < length; i++) {
+
+        var timeElement = side.querySelectorAll("button[value=\"" + i + "\"]")[0];
+        if (i == value)
+            timeElement.classList.add("active");
+        else
+            timeElement.classList.remove("active");
+    }
+
+    specificTimeData = [];
+
+    for (var i = 0; i < mapData.length; i++){
+        var room = mapData[i];
+        specificTimeData.push({
+            hasPhone: room.hasPhone,
+            isFree: room.isFree[value].free,
+            isMine: room.isFree[value].isMine,
+            room: room.room,
+            roomID: room.roomID,
+            roomNum: room.roomNum,
+            size: room.size
+        });
+    }
+
+    updateMap();
+}
+
+/////////////////////////////////// SVG STUFF //////////////////////////////////////////////////////////////////////////
+var f1 = document.getElementById("floor1"); // does the initial load for the SVG, and goes through and flips the class for any room that is booked
 
 // It's important to add an load event listener to the object,
 // as it will load the svg doc asynchronously
@@ -200,10 +270,8 @@ f1.addEventListener("load", function () {
     var svgDoc = f1.contentDocument;
     // get the inner element by id
 
-    var roomStat = mapData;
-    roomStat = roomStat.replace(/&quot;/g, '"');
+    var roomStatus = specificTimeData;
 
-    var roomStatus = JSON.parse(roomStat);
     <!--var roomStatus = {{roomStatus}};-->
     roomStatus.forEach(function (room) {
         var svgRoom = svgDoc.getElementById(room.roomNum.toLowerCase());
@@ -232,10 +300,8 @@ f2.addEventListener("load", function () {
     var svgDoc = f2.contentDocument;
     // get the inner element by id
 
-    var roomStat = mapData;
-    roomStat = roomStat.replace(/&quot;/g, '"');
+    var roomStatus = specificTimeData;
 
-    var roomStatus = JSON.parse(roomStat);
     <!--var roomStatus = {{roomStatus}};-->
     roomStatus.forEach(function (room) {
         var svgRoom = svgDoc.getElementById(room.roomNum.toLowerCase());
@@ -260,31 +326,25 @@ var f3 = document.getElementById("floor3");
 // It's important to add an load event listener to the object,
 // as it will load the svg doc asynchronously
 f3.addEventListener("load", function () {
-
+    console.log("loaded floor 3!");
     // get the inner DOM of alpha.svg
     var svgDoc = f3.contentDocument;
     // get the inner element by id
 
-    var roomStat = mapData;
-    roomStat = roomStat.replace(/&quot;/g, '"');
+    var roomStatus = specificTimeData;
 
-    var roomStatus = JSON.parse(roomStat);
-    <!--var roomStatus = {{roomStatus}};-->
     roomStatus.forEach(function (room) {
-        if (!room.isFree) {
-            var svgRoom = svgDoc.getElementById(room.roomNum.toLowerCase());
-            var svgRoom = svgDoc.getElementById(room.roomNum.toLowerCase());
-            if (svgRoom != null) {
-                if (!room.isFree) {
-                    if (room.isMine)
-                        svgRoom.classList.add('mine');
-                    else
-                        svgRoom.classList.add('booked');
-                }
-                else {
-                    svgRoom.classList.remove('mine');
-                    svgRoom.classList.remove('booked');
-                }
+        var svgRoom = svgDoc.getElementById(room.roomNum.toLowerCase());
+        if (svgRoom != null) {
+            if (!room.isFree) {
+                if (room.isMine)
+                    svgRoom.classList.add('mine');
+                else
+                    svgRoom.classList.add('booked');
+            }
+            else {
+                svgRoom.classList.remove('mine');
+                svgRoom.classList.remove('booked');
             }
         }
     });

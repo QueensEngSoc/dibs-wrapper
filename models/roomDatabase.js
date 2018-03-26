@@ -150,7 +150,7 @@ function getInfoByName(roomName) { //gets the info of the selected room (roomID)
 
 /** Returns a list of each room, and if the room is currently free or not.  It also returns if the current user is the
  *  person who booked the room if the user is logged in
- *
+ *  Set time as -1 to get the list for the entire selected day
  * @param day
  * @param time
  * @returns {*}
@@ -165,17 +165,7 @@ function getListOfRoomState(day, time, usrid) {
             var mapRoomName = "BMH" + roomNum;
             var listRoomName = "bmh-" + roomNum;
 
-            if (!isValidTime(time)) {
-                listFree.push({
-                    room: data.Name,
-                    roomNum: mapRoomName,
-                    roomID: listRoomName,
-                    isFree: false,
-                    size: data.size,
-                    hasTV: data.tv,
-                    hasPhone: data.phone
-                })
-            } else {
+            if (time == -1){
                 listFree.push({
                     room: data.Name,
                     roomNum: mapRoomName,
@@ -183,9 +173,32 @@ function getListOfRoomState(day, time, usrid) {
                     size: data.size,
                     hasTV: data.tv,
                     hasPhone: data.phone,
-                    isFree: data.Free[day][time - 7].free,
-                    isMine: (data.Free[day][time - 7].owner == usrid)  // true if the user booked the room, false otherwise
+                    isFree: data.Free[day]
                 })
+            }
+            else {
+                if (!isValidTime(time)) {
+                    listFree.push({
+                        room: data.Name,
+                        roomNum: mapRoomName,
+                        roomID: listRoomName,
+                        isFree: false,
+                        size: data.size,
+                        hasTV: data.tv,
+                        hasPhone: data.phone
+                    })
+                } else {
+                    listFree.push({
+                        room: data.Name,
+                        roomNum: mapRoomName,
+                        roomID: listRoomName,
+                        size: data.size,
+                        hasTV: data.tv,
+                        hasPhone: data.phone,
+                        isFree: data.Free[day][time - 7].free,
+                        isMine: (data.Free[day][time - 7].owner == usrid)  // true if the user booked the room, false otherwise
+                    })
+                }
             }
 
         }).then(function () {

@@ -24,33 +24,32 @@
        window.top.location.href='/book/' + letters + '-' + nums;
        }
   </script>
-  <style
-     id="style2">
-    path {
-      fill: rgba(0, 0, 0, 0.1);
-      cursor: pointer;
-    }
+    <style>
+        path {
+        fill: rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+        }
 
-    path:hover {
-      fill: rgba(0, 0, 255, 0.2);
-    }
+        path:hover, path:focus {
+        fill: rgba(0, 0, 255, 0.2);
+        }
 
-      .booked{
-      fill: rgba(255, 0, 28, 0.3);
-      }
+        .bookable {
+        fill: rgba(0, 255, 0, 0.2);
+        }
 
-      .bookable {
-      fill: rgba(0, 255, 0, 0.2);
-    }
+        .booked{
+        fill: rgba(255, 0, 28, 0.3);
+        }
 
-      .mine{
-      fill: rgba(255, 152, 0, 0.3);
-      }
+        .mine{
+        fill: rgba(255, 152, 0, 0.3);
+        }
 
-      .unbookable {
-      fill: rgba(0, 0, 0, 0.1);
-    }
-  </style>
+        .unbookable {
+        fill: rgba(0, 0, 0, 0.1);
+        }
+    </style>
   <g
      id="layer1"
      transform="translate(0,-87)">
