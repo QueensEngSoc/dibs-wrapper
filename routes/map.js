@@ -55,12 +55,14 @@ router.post('/map', function (req, res) {
 
         var jsonTimeCount = JSON.stringify(timecount);
         var jsonList = JSON.stringify(listFree);
+        var prettyDate = formatDate(date);
 
         res.send({
             list: listFree,
             roomStatus: jsonList,
             currentHour: hour,
-            timeCount: jsonTimeCount
+            timeCount: jsonTimeCount,
+            prettyDate: prettyDate
         });
     });
 });
@@ -111,6 +113,7 @@ router.get('/map', function (req, res, next) {
 
         var jsonTimeCount = JSON.stringify(timecount);
         var jsonList = JSON.stringify(listFree);
+        // var prettyDate = formatDate(date);
 
         res.render('map', {    // render the page with server side variables passed to the client
             // vars go here, like if a room is booked or not
@@ -126,5 +129,17 @@ router.get('/map', function (req, res, next) {
 
 
 });
+
+function formatDate(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+
+    return [year, month, day].join('-');
+}
 
 module.exports = router;
