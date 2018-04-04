@@ -74,6 +74,7 @@
 <br/>
 <div class="row justify-content-center">
     <div class="col-8" id="roomButtons" align="center">
+        <!-- handlebars loops through each room array -->
         {{#each list}}
             {{#if this.isFree}}
                 <a class="btn btn-lg yroom" href="/book/{{this.roomID}}" role="button" id="{{this.roomNum}}">{{this.roomNum}}
@@ -99,5 +100,9 @@
         {{/each}}
     </div>
 </div>
+
+<footer style="margin-top: 10px;">
+    {{>footer}}
+</footer>
 
 <script src="/JS/indexJS.js"></script>
