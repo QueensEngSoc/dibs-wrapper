@@ -170,6 +170,7 @@ router.get('/accounts', function (req, res, next) {
                         bookingsLeft: bookingLimit - req.user.local.booking_count,
                         hasJson: true,
                         theme: req.theme === "custom" ? false : req.theme,
+                        useTheme: req.theme === "custom" ? false : true,
                         colors: req.colors
                     });
 
@@ -212,6 +213,7 @@ router.get('/accounts', function (req, res, next) {
                     bookingLimit: bookingLimit,
                     bookingsLeft: bookingLimit - req.user.local.booking_count,
                     hasJson: false,
+                    useTheme: req.theme === "custom" ? false : true,
                     theme: req.theme === "custom" ? false : req.theme,
                     colors: req.colors
                 });

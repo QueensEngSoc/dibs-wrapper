@@ -28,6 +28,9 @@ function submitChanges() {
 }
 
 $(document).ready(function() {
+    lastTheme = document.getElementById('currentTheme').value;
+    intialSetup();  // set the colors and select to the user selected theme
+
     $('select[title=color]').on('change', function(val) {
         changeAll(val);
         checkDiff();
@@ -60,6 +63,11 @@ function changeAll() {
     }
 
     lastTheme = newTheme;
+}
+
+function intialSetup() {
+   $('select[title=color]')[0].value = lastTheme;
+
 }
 
 function showColorInputs(showIt) {
