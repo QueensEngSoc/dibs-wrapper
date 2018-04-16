@@ -18,12 +18,9 @@ $(document).ready(function () {
 var today = new Date();
 var dateObj = new Date();
 var current_hour = dateObj.getHours();
-var current_min = dateObj.getMinutes();
 var oldTime = current_hour;
 
 $('#datepicker').change(function () {
-    var time = $('#timepicker').val;
-    display("Value Changed! Selected date: " + this.value + " at time: " + time);
     dateObj = new Date(this.value);
     date = dateObj;
     date.setHours(current_hour);
@@ -31,11 +28,6 @@ $('#datepicker').change(function () {
     console.log(date.toLocaleTimeString());
 
     minHour = (date.getDay() != today.getDay()) ? 7 : current_hour;
-
-    $('input.timepicker').data('TimePicker').options.minHour = minHour;
-    $('input.timepicker').data('TimePicker').items = null;
-    $('input.timepicker').data('TimePicker').widget.instance = null;
-
     getNewDayData(this.value, oldTime);
 });
 
@@ -80,40 +72,6 @@ date.setMinutes(30);
 console.log(date.toLocaleTimeString());
 var minHour = (today.getDay() != date.getDay()) ? 7 : current_hour;
 
-$(function () { // using Tempus Dominus Boostrap 4 dateTimePicker
-    $('input.timepicker').timepicker({
-        timeFormat: 'h:mm p',
-        //minTime: date2, // 11:45:00 AM,
-        minHour: minHour,
-        minMinutes: 30,
-        maxHour: 23,
-        startTime: date, // 3:00:00 PM - noon
-        interval: 60, // 15 minutes
-
-        change: function (time) {
-            timepickerChange(time);
-        }
-    });
-});
-
-function timepickerChange(time) {
-    if (time != oldTime) {
-        oldTime = time.getHours();
-        var pick = $('#datepicker');
-        var dateStr = pick[0].value;
-        var dateTime = new Date(dateStr);
-        if (dateStr == 'Today')
-            var dateTime = new Date();
-
-        console.log("Time: " + time.getHours() + " Date: " + dateTime);
-        getNewDayData(dateTime, time.getHours());
-    }
-}
-
-function display(msg) {
-    console.log(msg);
-}
-
 var mapData;
 var specificTimeData;
 var timeCount;
@@ -132,14 +90,6 @@ function getNewDayData(day, time) {
             timeCount = data.timeCount;
             updateMap();
             updateSidebar(false);
-            if (data.currentHour != oldTime) {
-                var dateTime = new Date();
-                dateTime.setHours(data.currentHour);
-                dateTime.setMinutes(30);
-                $('input.timepicker').data('TimePicker').options.defaultTime = dateTime;
-                $('input.timepicker').data('TimePicker').items = null;
-                $('input.timepicker').data('TimePicker').widget.instance = null;
-            }
         },
         error: function (data) {
             console.log("Error: " + data);
