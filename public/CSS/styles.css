@@ -5,6 +5,17 @@
 body {
     font-family: "Nunito", Helvitica, sans-serif !important;
 }
+
+html,
+body,
+body, wrapper {
+    min-height:100vh;
+}
+
+main {
+    flex:1;
+}
+
 button {
     color: white;
     text-align: center;

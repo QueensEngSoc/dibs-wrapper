@@ -36,8 +36,14 @@
         {{>head}}
     </head>
     <body>
-        {{>navbar}}
-        {{{body}}}
+        <wrapper class="d-flex flex-column">
+            {{>navbar}}
+            {{{body}}}
+
+            <footer style="margin-top: 10px;">
+                {{>footer}}
+            </footer>
+        </wrapper>
     </body>
 
 </html>
