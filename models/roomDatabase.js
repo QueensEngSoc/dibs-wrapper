@@ -109,7 +109,7 @@ function getInfo(roomID) { //gets the info of the selected room (roomID)
 
             resolve(out);
         }).catch(function (data, i) {
-            console.log("error: room not found!");
+            console.log("error: room id " + roomID + " not found!");
             reject(new Error('No Room Found!'));
         });
     });
@@ -140,7 +140,7 @@ function getInfoByName(roomName) { //gets the info of the selected room (roomID)
             resolve(out);
 
         }).catch(function (data, i) {    // the room was not found!
-            console.log("error: room not found!");
+            console.log("error: room " + roomName + " not found!");
             reject(new Error('No Room Found!'));
         });
     });
@@ -188,6 +188,13 @@ function getListOfRoomState(day, time, usrid) {
                         hasPhone: data.phone
                     })
                 } else {
+                    if (data.Free[day][time - 7] == undefined)
+                    {
+                        console.log("Error: something really bad happened!");
+                        console.log("Value of data.Free table for day " + day + ":");
+                        console.log(data.Free[day]);
+
+                    }
                     listFree.push({
                         room: data.Name,
                         roomNum: mapRoomName,

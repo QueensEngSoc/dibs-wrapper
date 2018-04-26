@@ -12,7 +12,7 @@ router.get('/welcome', function (req, res) {
     var usrid = accountFuncs.getUserID(req);
     if (usrid == -1) {
         res.render('welcome', {    // render the page with server side variables passed to the client
-            message: ' <p>Welcome to QBook!  We are now on version ' + consts.dibsVersion + '!</p><p>We have some new features for you!</p><p>New features:</p><p>Please <a href="/login">login</a> to book rooms and use other features</p>'
+            message: ' <p>Welcome to QBook!  We are now on version ' + consts.dibsVersion + '!</p><p>We have some new features for you!</p><p>New features: ' + consts.newFeatures + '</p><p>Please <a href="/login">login</a> to book rooms and use other features</p>'
         });
 
     } else {
