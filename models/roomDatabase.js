@@ -191,7 +191,7 @@ function getListOfRoomState(day, time, usrid) {
                     if (data.Free[day][time - 7] == undefined)
                     {
                         console.log("Error: something really bad happened!");
-                        console.log("Value of data.Free table for day " + day + ":");
+                        console.log("Value of data.Free table for day " + day + ": (broke accessing time " + time + ")");
                         console.log(data.Free[day]);
 
                     }
