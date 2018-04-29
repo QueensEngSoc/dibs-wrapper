@@ -273,8 +273,8 @@ function getPrettyDay(intDay) {
 function isValidTime(time, day) {
     var dateObj = new Date();
     var current_min = dateObj.getMinutes();
-
-    if (time < 7 || time > 23 || (time == 23 && current_min > 30) && day == 0 || (time == 7 && current_min < 30) && day == 0 || time <= 23 && time >= 7 && day > 0 )
+    var current_hour = dateObj.getHours();
+    if (time < 7 || time > 23 || (time == 23 && current_min > 30)  || (time == 7 && current_min < 30) )
         return false;
     return true;
 }
