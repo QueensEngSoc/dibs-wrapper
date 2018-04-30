@@ -195,16 +195,18 @@ function getListOfRoomState(day, time, usrid) {
                         console.log(data.Free[day]);
 
                     }
-                    listFree.push({
-                        room: data.Name,
-                        roomNum: mapRoomName,
-                        roomID: listRoomName,
-                        size: data.size,
-                        hasTV: data.tv,
-                        hasPhone: data.phone,
-                        isFree: data.Free[day][time - 7].free,
-                        isMine: (data.Free[day][time - 7].owner == usrid)  // true if the user booked the room, false otherwise
-                    })
+                    else {  // error should be caught above, and this should no longer error out.  ToDo: Make this a proper try/catch logic block later
+                        listFree.push({
+                            room: data.Name,
+                            roomNum: mapRoomName,
+                            roomID: listRoomName,
+                            size: data.size,
+                            hasTV: data.tv,
+                            hasPhone: data.phone,
+                            isFree: data.Free[day][time - 7].free,
+                            isMine: (data.Free[day][time - 7].owner == usrid)  // true if the user booked the room, false otherwise
+                        })
+                    }
                 }
             }
 

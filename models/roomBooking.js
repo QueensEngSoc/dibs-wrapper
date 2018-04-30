@@ -290,7 +290,15 @@ function unbookAllForRoom(day, roomID) {
     });
 }
 
-
+/**
+ * This functions gets the total number of hours a user has booked for the given room's free table, per day.
+ * This is to allow for limiting them so that other people can use the room, and to prevent monopolizing
+ * The number of hours allowed is defined in the consts file.
+ * @param totalBooked
+ * @param temp
+ * @param usrid
+ * @returns {totalBooked} (the amount of hours booked by the user for the given room, on that day)
+ */
 function getTotalBookedHoursPerRoom(totalBooked, temp, usrid) {
 
     for (var i = 7; i < 23; i++) {
