@@ -211,7 +211,7 @@ function unbookRoom(day, time, length, roomID, usrid, req) {
                 bookMsg: "Sorry, an error occured and the room was not unbooked.  Please try again later.",
                 success: false
             };
-
+            var numUnbooked = 0;
             var end = length + parseInt(time, 10);
             for (var i = time; i < end; i++) {
                 if (temp[day][i - 7].free === false && temp[day][i - 7].owner === usrid) {
@@ -220,6 +220,7 @@ function unbookRoom(day, time, length, roomID, usrid, req) {
                     out.success = true;
                     out.bookMsg = "Unbooking successful for " + data.Name + " at " + time + ":30";
                     out.header = "Unbooking Success!";
+                    numUnbooked++;
                 }
                 else {
                     out.success = false;
@@ -229,7 +230,7 @@ function unbookRoom(day, time, length, roomID, usrid, req) {
                 }
             }
 
-            if (userFuncs.updateBookingCount(-1, req)) {
+            if (userFuncs.updateBookingCount(-numUnbooked, req)) {
                 roomDatabase.update({RoomID: roomID}, {$set: {Free: temp}});
             }
             resolve(out);
