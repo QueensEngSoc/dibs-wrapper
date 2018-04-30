@@ -93,7 +93,8 @@ function bookMultiple(day, times, roomID, usrid, req) {
                 var out = {
                     header: "Booking failed",
                     bookMsg: "Sorry, You have booked too many hours.  There are a max of " + consts.room_hour_limit + " hours allowed.",
-                    success: false
+                    success: false,
+                    day: day
                 };
 
                 resolve(out);
@@ -106,7 +107,8 @@ function bookMultiple(day, times, roomID, usrid, req) {
             var out = {
                 header: "Booking failed",
                 bookMsg: "Sorry, an error occured and the room was not booked.  Please try again later.",
-                success: false
+                success: false,
+                day: day
             };
 
             var bookingHash = randomstring.generate({

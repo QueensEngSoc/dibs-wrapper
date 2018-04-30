@@ -99,9 +99,9 @@ router.get('/accounts', function (req, res, next) {
     var usrid = accountFuncs.getUserID(req);
 
     var msg = req.flash('bookingMessage')
-    var testmsg = req.flash('signupMessage');
-    if (testmsg != undefined && testmsg.length > 0){
-        if (testmsg.indexOf('signup_successful!') >= 0){
+    var newSignupMsg = req.flash('signupMessage');
+    if (newSignupMsg != undefined && newSignupMsg.length > 0){
+        if (newSignupMsg.indexOf('signup_successful!') >= 0){
             return res.redirect('/welcome');
         }
     }
@@ -122,23 +122,30 @@ router.get('/accounts', function (req, res, next) {
             var msgTxt = msg[0];
             var data = JSON.parse(msgTxt);
             var times = data['times[]'];
+            var timeArr = JSON.parse("[" + times + "]");    // have to do this to make the JSON object an array of ints, instead of strings (which crashes :/)
+            var day = parseInt(data.day, 10);
 
-            roomBook.bookMultiple(data.day, times, parseInt(data.roomID, 10), usrid, req).then(function (data) {
+            roomBook.bookMultiple(day, timeArr, parseInt(data.roomID, 10), usrid, req).then(function (data) {
                 console.log("Data! " + data);
                 json = JSON.stringify(data);
                 roomFuncs.getListOfRoomsForUser(usrid).then(function (listBookings) {
-                    var free = listBookings[day];
-                    if (free != undefined) {
-                        for (var i = 7; i < 23; i++) {
-                            if (free.free[day][i].owner == req.user.id) {
-
-                            }
-
-                        }
-                    }
 
                     var free = listBookings;
                     if (free != undefined) {
+                        if (data.header == "Booking Success!")
+                        {
+                            if (listBookings.length == 0){
+                                //free = roomFuncs.getFree(day, parseInt(data.roomID, 10));
+                            }
+                            else {
+                                var day = parseInt(data.day,10);
+                                for (var time of timeArr) {
+                                    free[day].free[time - 7].free = false;
+                                    free[day].free[time - 7].owner = req.user.id;
+                                }
+                            }
+                        }
+
                         for (var day = 0; day < listBookings.length; day++) {
                             var hash = "";
                             var length = 1;
