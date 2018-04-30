@@ -112,16 +112,31 @@ function bookMultiple(day, times, roomID, usrid, req) {
             var bookingHash = randomstring.generate({
                 length: 5
             });
+            var numBooked = 0;
+            var totalBooked = 0;
+            var dayData = data.Free[day];
+            totalBooked = getTotalBookedHoursPerRoom(totalBooked, dayData, usrid);
+            if (consts.per_room_limit - totalBooked <= 0) {
+                out.bookMsg = "Sorry, you can only book " + consts.per_room_limit + " hours per day in a single room";
+                out.header = "Max of " + consts.per_room_limit + " hours per room";
+                resolve(out);
+                return;
+            }
 
             for (var time of times) { //iterate over an array of times instead of a sequence of numbers
                 if (usrid !== "admin") {
                     if (temp[day][time - 7].free === true) {
+                        if (consts.per_room_limit - totalBooked - numBooked <= 0) {
+                            break;
+                        }
                         temp[day][time - 7].free = false;
                         temp[day][time - 7].owner = usrid;
                         temp[day][time - 7].bookingHash = bookingHash;
+                        numBooked++;
                     } else {
+
                         out.bookMsg = "Sorry, this room is booked.  Looks like someone beat you to it :(";
-                        out.header = "Room Already Booked"
+                        out.header = "Room Already Booked";
                         resolve(out);
                     }
                 } else {
@@ -141,16 +156,25 @@ function bookMultiple(day, times, roomID, usrid, req) {
                 out.bookMsg = msg;
                 out.header = "Booking Success!";
                 resolve(out);
-            } else if (userFuncs.updateBookingCount(times.length, req)) {
+            } else if (userFuncs.updateBookingCount(numBooked, req)) {  // times.length -> if you increment by the number in the array, then if the user books more than once without refreshing, it double counts the hours
                 roomDatabase.update({RoomID: roomID}, {$set: {Free: temp}});
+
                 out.success = true;
                 var msg = "Booking successful for "; //setting up the message to include multiple times
                 for (i in times) {
                     time = times[i];
-                    msg += time + ":30 - " + (time + 1) + (i == times.length - 1 ? ":30." : ":30, ");
+                    if (temp[day][time - 7].bookingHash == bookingHash)
+                        msg += time + ":30 - " + (time + 1) + (i == times.length - 1 ? ":30." : ":30, ");
                 }
+                if (msg.substr(msg.length -1) == ",")
+                    msg = msg.substr(0, msg.length - 2);
                 out.bookMsg = msg;
                 out.header = "Booking Success!";
+
+                if (consts.per_room_limit - totalBooked - numBooked < 0){
+                    out.bookMsg = "Sorry, you can only book " + consts.per_room_limit + " hours per day in a single room.  " + msg;
+                    out.header = "Max of " + consts.per_room_limit + " hours per room";
+                }
                 resolve(out);
 
             } else {
@@ -263,6 +287,16 @@ function unbookAllForRoom(day, roomID) {
     });
 }
 
+
+function getTotalBookedHoursPerRoom(totalBooked, temp, usrid) {
+
+    for (var i = 7; i < 23; i++) {
+        if (temp[i - 7].owner == usrid)
+            totalBooked++;
+    }
+    return totalBooked;
+
+}
 
 module.exports = {
     bookRoom: bookRoom,

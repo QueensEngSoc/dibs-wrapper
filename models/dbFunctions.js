@@ -24,13 +24,13 @@ function endOfDayShift(){
                 // if (dayToRemove)
                 var hour = dayToRemove[i];
                 if (hour.owner != 0){
-                    if (hash == "" || hash != hour.bookingHash) {
+                    // if (hash == "" || hash != hour.bookingHash) {
                         hash = hour.bookingHash;
                         // accountFuncs.endOfDayBookingCountReset(-1,hour.owner);   // this no worky, causes a critical section that may break if you are unlucky :(
                         numToRemove.push({
                             userid: hour.owner
                         });
-                    }
+                    // }
                 }
             }
             // this section gets all unique ids that booked a room for the previous day, then goes through the array to add one

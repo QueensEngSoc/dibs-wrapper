@@ -76,7 +76,7 @@ function endOfDayBookingCountReset(toAdd, usrid) {
             if (user.local.booking_count < 0)   // booking count can't be negative
                 user.local.booking_count = 0;
             User.findOneAndUpdate({'local.email': user.local.email}, {'local.booking_count': user.local.booking_count}, function (err, resp) {
-                console.log("Updated booked rooms count by " + toAdd + " -> now " + user.local.booking_count + " of " + consts.room_booking_limit);
+                console.log("Updated booked hour count by " + toAdd + " -> now " + user.local.booking_count + " of " + consts.room_hour_limit);
                 return true;
             });
 
