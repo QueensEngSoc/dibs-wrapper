@@ -6,6 +6,7 @@ const fromEmail = "no-reply@engsoc.queensu.ca";
 const dibsVersion = "1.1.23";
 // const hostName = "localhost:8080"
 const newFeatures =
+    '<p>Improvements Included in Version 1.1.25 (5/3/2018):  General system stability improvements to enhance the user\'s experience, plus added new QuickBook™ feature to Automagically™ book a open room</p>\n' +
     '<p>Improvements Included in Version 1.1.23 (3/26/2018):  General system stability improvements to enhance the user\'s experience</p>\n' +
     '<p>Improvements Included in Version 1.1.21 (3/20/2018):  General system stability improvements to enhance the user\'s experience, including: </p>' +
     // '<ul><li>Fixed a bug allowing inventive users to book rooms in the past</li>\n' +
