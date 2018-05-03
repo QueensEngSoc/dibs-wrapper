@@ -30,7 +30,13 @@ router.post('/accounts/unbook', function (req, res) {
             roomBook.unbookRoom(day, bookingTimeStart, length, roomid, usrid, req).then(function (data) { // day, time, length, roomID, usrid
                 console.log("Request Body: " + JSON.stringify(req.body) + " room id: " + roomid + " Success" + data.success);
                 var left = consts.room_hour_limit - req.user.local.booking_count;
-                res.send({HeaderMsg: data.header, BookingStatusMsg: data.bookMsg, BookStatus: data.success, HoursNow: left, maxHours: consts.room_hour_limit});
+                res.send({
+                    HeaderMsg: data.header,
+                    BookingStatusMsg: data.bookMsg,
+                    BookStatus: data.success,
+                    HoursNow: left,
+                    maxHours: consts.room_hour_limit
+                });
             });
         } else {
             var date = new Date();
@@ -67,7 +73,7 @@ router.get('/account/verify', function (req, res, next) {
 
     if (req.query.verificationCode != undefined && req.query.verificationCode != "") {
         var code = req.query.verificationCode;
-        if (code == user.local.verify_token){
+        if (code == user.local.verify_token) {
             User.findOneAndUpdate({'local.email': email}, {'local.verified': true}, function (err, resp) {
                 console.log('The user has been verified!');
             });
@@ -75,8 +81,7 @@ router.get('/account/verify', function (req, res, next) {
             res.render('/accounts');
         }
     }
-    else
-    {
+    else {
         req.flash('loginMessage', 'Verification code incorrect!  A email was resent to your inbox, please try again');
         res.render('login');
     }
@@ -100,8 +105,8 @@ router.get('/accounts', function (req, res, next) {
 
     var msg = req.flash('bookingMessage')
     var newSignupMsg = req.flash('signupMessage');
-    if (newSignupMsg != undefined && newSignupMsg.length > 0){
-        if (newSignupMsg.indexOf('signup_successful!') >= 0){
+    if (newSignupMsg != undefined && newSignupMsg.length > 0) {
+        if (newSignupMsg.indexOf('signup_successful!') >= 0) {
             return res.redirect('/welcome');
         }
     }
@@ -132,17 +137,27 @@ router.get('/accounts', function (req, res, next) {
 
                     var free = listBookings;
                     if (free != undefined) {
-                        if (data.header == "Booking Success!")
-                        {
-                            if (listBookings.length == 0){
-                                //free = roomFuncs.getFree(day, parseInt(data.roomID, 10));
+                        if (data.header == "Booking Success!") {
+                            if (listBookings.length == 0) { // generate a free table for the day the room was booked, since we have a blank var here
+                                listBookings = data;
                             }
-                            else {
-                                var day = parseInt(data.day,10);
-                                for (var time of timeArr) {
-                                    free[day].free[time - 7].free = false;
-                                    free[day].free[time - 7].owner = req.user.id;
+
+                            // set the appropriate variables so that the booking shows up on the admin page properly
+                            var day = parseInt(data.day, 10);
+                            var flag = false;
+
+                            for (var dayData of listBookings) {
+                                if (dayData.intDay == day && data.roomNum == dayData.roomNum) {  // the day is the same as the one we just booked, so add that one into the system
+                                    for (var time of timeArr) {
+                                        free[day].free[time - 7].free = false;
+                                        free[day].free[time - 7].owner = req.user.id;
+                                    }
+                                    flag = true;
                                 }
+                            }
+
+                            if (flag == false){
+                                listBookings.push(data);
                             }
                         }
 

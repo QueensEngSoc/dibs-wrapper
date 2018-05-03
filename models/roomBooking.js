@@ -104,11 +104,23 @@ function bookMultiple(day, times, roomID, usrid, req) {
 
         roomDatabase.find({RoomID: roomID}).each(function (data, val) {
             var temp = data.Free;
+            var roomNum = data.Name.match(/\d+/)[0]; // get the number from the room
+            var mapRoomName = "bmh" + roomNum;
+            var prettyDay = getPrettyDay(day);
+
             var out = {
                 header: "Booking failed",
                 bookMsg: "Sorry, an error occured and the room was not booked.  Please try again later.",
                 success: false,
-                day: day
+                day: day,
+                room: data.Name,
+                roomNum: mapRoomName,
+                free: data.Free[day],
+                pic: data.Picture,
+                roomid: data.RoomID,
+                intDay: day,
+                prettyDay: prettyDay,
+                description: data.Description
             };
 
             var bookingHash = randomstring.generate({
@@ -306,8 +318,21 @@ function getTotalBookedHoursPerRoom(totalBooked, temp, usrid) {
             totalBooked++;
     }
     return totalBooked;
-
 }
+
+function getPrettyDay(intDay) {
+    if (intDay == 0)
+        return "Today";
+    else if (intDay == 1)
+        return "Tomorrow";
+    else if (intDay == -1)
+        return "Yesterday";
+
+    var today = new Date();
+    today.setTime(today.getTime() + intDay * 24 * 60 * 60 * 1000);
+    return today.toDateString();
+}
+
 
 module.exports = {
     bookRoom: bookRoom,

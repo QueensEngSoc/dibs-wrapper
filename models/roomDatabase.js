@@ -322,6 +322,31 @@ function addDays(date, days) {
     return result;
 }
 
+/**
+ * Generates a new free table array, without adding it to the database.  This is (for now) only used in the admin page
+ * to fix the issue with just booked rooms not showinf up on the admin page
+ * @param days
+ * @param len
+ * @returns free table array object with the number of days specified by days, and a day length of len
+ */
+function generateFreeTable (days, len){
+    var out = new Array(days);
+    for (var j = 0; j < days; j++) {
+        var curDay = new Array(len);
+        for (var i = 0; i < len; i++) {
+            curDay[i] = {
+                free: false,
+                time: ((7 + i) >= 10 ? (7 + i) : "0" + (7 + i)) + ":30 - " + ((8 + i) >= 10 ? (8 + i) : "0" + (8 + i)) + ":30",
+                startTime: 7 + i,
+                owner: 0,
+                bookingHash: ""
+            };
+        }
+        out[j] = curDay;
+    }
+    return out;
+}
+
 module.exports = {
     getFree: getFree,
     getInfo: getInfo,
@@ -331,5 +356,6 @@ module.exports = {
     getAllFreeNow: getAllFreeNow,
     getNextFree: getNextFree,
     getNextValidHalfHour: getNextValidHalfHour,
-    getValidDate: getValidDate
+    getValidDate: getValidDate,
+    generateFreeTable: generateFreeTable
 };
