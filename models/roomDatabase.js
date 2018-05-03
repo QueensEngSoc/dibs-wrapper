@@ -70,9 +70,9 @@ function getNextFree() {
                 return resolve({});
 
             // try to find a small room first
-            for (var i in rooms) {
-                if (rooms.hasOwnProperty(i) && rooms[i].free && rooms[i].isSmall === true)
-                    return resolve(rooms[i].id) // return available roomID
+            for (var i of rooms) {
+                if (i.isFree && i.size == 0)
+                    return resolve(i.id) // return available roomID
             }
 
             // otherwise just return the id of the last element (it really doesn't matter which room it is)
@@ -173,7 +173,8 @@ function getListOfRoomState(day, time, usrid) {
                     size: data.size,
                     hasTV: data.tv,
                     hasPhone: data.phone,
-                    isFree: data.Free[day]
+                    isFree: data.Free[day],
+                    id: data.RoomID
                 })
             }
             else {
@@ -185,7 +186,8 @@ function getListOfRoomState(day, time, usrid) {
                         isFree: false,
                         size: data.size,
                         hasTV: data.tv,
-                        hasPhone: data.phone
+                        hasPhone: data.phone,
+                        id: data.RoomID
                     })
                 } else {
                     if (data.Free[day][time - 7] == undefined)
@@ -203,6 +205,7 @@ function getListOfRoomState(day, time, usrid) {
                             size: data.size,
                             hasTV: data.tv,
                             hasPhone: data.phone,
+                            id: data.RoomID,
                             isFree: data.Free[day][time - 7].free,
                             isMine: (data.Free[day][time - 7].owner == usrid)  // true if the user booked the room, false otherwise
                         })

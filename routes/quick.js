@@ -25,7 +25,8 @@ router.post('/quicky', function (req, res, next) {
         if (out === {})
             return res.send("No free rooms!");
 
-        roomBook.bookRoom(0, roomDB.getNextValidHalfHour(false, true), out, 1, usrid, req).then(function (data) {
+        var time = roomDB.getNextValidHalfHour(false, true);
+        roomBook.bookRoom(0, time, out, 1, usrid, req).then(function (data) {
             console.log(data.bookMsg);
             res.send({HeaderMsg: data.header, BookingStatusMsg: data.bookMsg, BookStatus: data.success});
         }).catch(function(err) {
