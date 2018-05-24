@@ -24,5 +24,9 @@ These steps are for setting up the room database. To setup the admin database lo
 ## Resetting The Database
 To reset any database, simply drop the collection by running *database\*.\*collection\*.drop() in the mongo console (where *database* is the database you are targetting and *collection* is the collection you want to drop, run show collections to see them) and do step 2 from the setting up the database section.
 
+## Removing and Modifying Bookings
+To clear a single day of bookings for a specific room without nuking the entire DB, run clearData.js in node and follow the prompts.  Please note however that this wizard is still in beta, and while it *should* work, it may fail within some edge cases.  This will irreversibly clear the data for that day, for that room from the DB, so tread lightly!  
+Tools to remove individual bookings, or remove larger blocks of bookings are planed for a future release.
+
 ## Troubleshooting
 Most problems with the app can be fixed by resetting the database (as explained above). If a reset does not fix this try restarting the app.
