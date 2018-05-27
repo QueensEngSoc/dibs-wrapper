@@ -1,3 +1,5 @@
+// USE This file, and not createOfflineDB for now.  This one is more up to date at the moment
+
 var monk = require('monk');
 var env = process.env.NODE_ENV || 'dev';
 if (env == 'dev')
@@ -7,12 +9,27 @@ else
 
 var roomInfo = db.get('roomDatabase');
 
-getAPIInfo();
+if (roomInfo != null){
+    roomInfo.findOne({}).then(function (data, i) {
+        console.log("\x1b[31m","There is currently data in the DB, this script will thus clear the existing DB and re-set it with the default information in 3 seconds.");
+        console.log("\x1b[31m","please stop the program if you do not want to do this");
+        setTimeout(function() {
+            console.log("\x1b[31m",'deleting the DB now :)');
+            roomInfo.drop();
+            console.log("\x1b[32m", "DB Deleted!");
+            console.log("\x1b[0m", "\nGrabbing Data and generating database...");
+            getAPIInfo();
+        }, 3000);
+    });
+}
+else
+    getAPIInfo();
 
 function getAPIInfo() {
     var request = require('request');
     var fs = require('fs'); // file system calls, in order to see if we have a local copy of the photo on the server
     var str = "https://queensu.evanced.info/dibsAPI/rooms";
+
 
     request(str, function (err, res, body) {
             for (var json in JSON.parse(body)) {
@@ -58,7 +75,7 @@ function getAPIInfo() {
                 console.log(data);
             }
 
-            console.log("-------------------------------------------\n       DONE           \n-------------------------------------------")
+            console.log("-------------------------------------------\n        DONE           \n-------------------------------------------")
             setTimeout(killProcess, 2000);  // the delay ensures that the DB has been fully written to prior to
             // ending the process, this was the reason as to why this function
             // was not working before :(
