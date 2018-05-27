@@ -302,7 +302,8 @@ function getNextValidHalfHour(formatAsInterval, formatAsDBTime) {
     if (formatAsInterval)
         return nextHour + ":30-" + (++nextHour) + ":30";
     else if (formatAsDBTime)
-        return nextHour - 7;
+        //return nextHour - 7;
+        return nextHour;    // booking function already subtracts 7, so this had the effect of doing -14, or 7 hours before you actually wanted the room :(
     else
         return nextHour + ":30";
 }

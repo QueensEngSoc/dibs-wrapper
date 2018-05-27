@@ -20,14 +20,35 @@ router.post('/quicky', function (req, res, next) {
         return res.redirect('/login?redirect=/quicky'); // do the redirecting thing TODO: Alex?
 
     var usrid = accountFuncs.getUserID(req);
+    var bookDay = 0;
 
+    // var time = figureOutNextValidTime(usrid);
     roomDB.getNextFree().then(function(out) {
         if (out === {})
             return res.send("No free rooms!");
-
+        var date = new Date();
+        var quick = accountFuncs.getQuickyStatus(req);
         var time = roomDB.getNextValidHalfHour(false, true);
-        roomBook.bookRoom(0, time, out, 1, usrid, req).then(function (data) {
+
+        if (date.toDateString() == quick.date && quick.number > 0){
+            time += quick.number;
+            if (time >= 23) {
+                time = time % 23 + 7;
+                bookDay++;
+            }
+        }
+
+        roomBook.bookRoom(bookDay, time, out, 1, usrid, req).then(function (data) {
             console.log(data.bookMsg);
+            if (data.header.indexOf('Booking Success!') >= 0){
+                quick.number ++;
+                if (isNaN(quick.number))
+                    quick.number = 1;
+                quick.date = date.toDateString();
+                accountFuncs.setQuickyStatus(req, quick);
+                if(bookDay > 0)
+                    data.bookMsg += " tomorrow";
+            }
             res.send({HeaderMsg: data.header, BookingStatusMsg: data.bookMsg, BookStatus: data.success});
         }).catch(function(err) {
             console.log(err);
@@ -36,4 +57,10 @@ router.post('/quicky', function (req, res, next) {
     })
 });
 
+// function figureOutNextValidTime(usrid){
+//     roomDB.getListOfRoomsForUser(usrid).then(function (listBookings) {
+//         for(var booking in listBookings){
+//         }
+//     });
+// }
 module.exports = router;

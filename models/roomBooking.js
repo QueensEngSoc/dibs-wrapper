@@ -28,7 +28,7 @@ function bookRoom(day, time, roomID, length, usrid, req) { //books a room at a c
         if (!userFuncs.canBookMoreRooms(req)) {
             var out = {
                 header: "Booking failed",
-                bookMsg: "Sorry, You have booked too many rooms.  There are a max of " + consts.room_booking_limit + " room bookings allowed.",
+                bookMsg: "Sorry, You have booked too many hours.  There are a max of " + consts.room_hour_limit + " hours allowed.",
                 success: false
             };
 

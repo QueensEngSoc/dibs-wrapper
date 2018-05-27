@@ -16,7 +16,8 @@ var userSchema = mongoose.Schema({
         preferences  : String,
         version      : Number,
         booking_count: Number,
-        lastBookedRooms: String
+        lastBookedRooms: String,
+        quicky       : String
     }
     // uncomment below section  if we eventually ever want to use other forms of authentication
     // (which I doubt, but ¯\_(ツ)_/¯ )

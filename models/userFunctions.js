@@ -143,6 +143,34 @@ function getLastBookedRooms(req){
     }
 }
 
+function getQuickyStatus(req){
+    if (req.isAuthenticated()) {
+        try {
+            var user = req.user;
+            return JSON.parse(user.local.quicky);
+
+        } catch (exception) {
+            return ({});
+        }
+    }
+}
+
+function setQuickyStatus(req, quick){
+    if (req.isAuthenticated()) {
+        try {
+            var user = req.user;
+            user.local.quicky = JSON.stringify(quick);
+            User.findOneAndUpdate({'local.email': user.local.email}, {'local.quicky': user.local.quicky}, function (err, resp) {
+                console.log("Updated quicky profile");
+            });
+            return true;
+
+        } catch (exception) {
+            return false;
+        }
+    }
+}
+
 
 module.exports = {
     getUserID: getUserID,
@@ -152,5 +180,7 @@ module.exports = {
     resetBookingCount: resetBookingCount,
     endOfDayBookingCountReset: endOfDayBookingCountReset,
     setLastBookedRooms: setLastBookedRooms,
-    getLastBookedRooms: getLastBookedRooms
+    getLastBookedRooms: getLastBookedRooms,
+    getQuickyStatus: getQuickyStatus,
+    setQuickyStatus: setQuickyStatus
 };
