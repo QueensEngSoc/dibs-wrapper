@@ -8,18 +8,23 @@ else
     var db = monk('mongodb://heroku_08d6gg04:tbjjetli24bdv2nqrpiu6gdlta@ds153978.mlab.com:53978/heroku_08d6gg04');
 
 var roomInfo = db.get('roomDatabase');
+console.log("Starting database setup program...\n");
 
 if (roomInfo != null){
     roomInfo.findOne({}).then(function (data, i) {
-        console.log("\x1b[31m","There is currently data in the DB, this script will thus clear the existing DB and re-set it with the default information in 3 seconds.");
-        console.log("\x1b[31m","please stop the program if you do not want to do this");
-        setTimeout(function() {
-            console.log("\x1b[31m",'deleting the DB now :)');
-            roomInfo.drop();
-            console.log("\x1b[32m", "DB Deleted!");
-            console.log("\x1b[0m", "\nGrabbing Data and generating database...");
+        if (data != null && data.Name != null && data.Name.length > 0) {
+            console.log("\x1b[31m", "There is currently data in the DB, this script will thus clear the existing DB and re-set it with the default information in 4 seconds.");
+            console.log("\x1b[31m", "please stop the program if you do not want to do this");
+            setTimeout(function () {
+                console.log("\x1b[31m", 'deleting the DB now :)');
+                roomInfo.drop();
+                console.log("\x1b[32m", "DB Deleted!");
+                console.log("\x1b[0m", "\nGrabbing Data and generating database...");
+                getAPIInfo();
+            }, 4000);
+        }
+        else
             getAPIInfo();
-        }, 3000);
     });
 }
 else
