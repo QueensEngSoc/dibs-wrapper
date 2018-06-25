@@ -1,5 +1,16 @@
 // this contains some JS functions that are used on the index page
 
+var jsonData = [];
+
+var dateObj = new Date();
+var current_hour = dateObj.getHours();
+var current_min = dateObj.getMinutes();
+if (current_min < 30)
+  current_hour--;
+
+var selectedTime = current_hour;
+var responseData = [];
+
 $(document).on("change","input[type=radio]", filterList);
 
 $('.chk-container').on('change', filterList);
@@ -67,6 +78,9 @@ jQuery(function($) {
 
 $(document).ready(function() {
     $("#datepicker").val("Today");
+
+    jsonData = document.getElementById('roomData').value;   // get the data for the selected day and parse it
+    jsonData = JSON.parse(jsonData);
 });
 
 $('#datepicker').change(function(){
@@ -86,7 +100,10 @@ function getNewDayData(day)
         data: {day: day},
         dataType: "json",
         success: function (data) {
-            updateButtons(data);
+            jsonData = data.list;
+            responseData = data;
+            updateButtons(jsonData);
+            updateTimePicker();
         },
         error: function (data) {
             console.log("Error: " + data);
@@ -96,20 +113,21 @@ function getNewDayData(day)
 }
 
 function updateButtons(data){
-    for (var d = 0; d < data.list.length; d++){
-        var room = data.list[d];
+    for (var d = 0; d < data.length; d++){
+        var room = data[d];
 
         var matchingElement = document.getElementById(room.roomNum);
-        matchingElement.href = "/book/" + room.roomID + "/" + data.prettyDate;
+        matchingElement.href = "/book/" + room.roomID + "/" + responseData.prettyDate;
 
-        if (room.isFree){
+        var arrayTime = (selectedTime - 7);
+        if (room.isFree[arrayTime].free){
             matchingElement.classList.remove("mroom");
             matchingElement.classList.remove("nroom");
             matchingElement.classList.add("yroom");
         }
         else
         {
-            if (room.isMine){
+            if (room.isFree[arrayTime].isMine){
                 matchingElement.classList.remove("nroom");
                 matchingElement.classList.remove("yroom");
                 matchingElement.classList.add("mroom");
@@ -133,4 +151,37 @@ function showHideFilters(el) {
         el.innerText = 'Hide Filters';
 
     shown = !shown;
+}
+
+//////////////////////// TIME PICKER STUFF //////////////////////////
+
+$('#timepicker').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
+  // do something...
+  var value = $('.selectpicker').val()
+  selectedTime = value;
+  updateButtons(jsonData);
+});
+
+function updateTimePicker(){
+  if (responseData.day > 0){
+      generateTimes(7);
+  }
+  else
+      generateTimes(responseData.currentHour);
+}
+
+function generateTimes(startTime) {
+  var options = [];
+
+  for (var i = startTime; i < 23; i++)
+  {
+    var amPmTime = ((i) % 12 == 0) ? 12 : i % 12;
+    var endAmPmTime = ((i + 1) % 12 == 0) ? 12 : (i + 1) % 12;
+
+    var option = "<option data-tokens=\"" + amPmTime +  " " + i + "\" value=\"" + i + "\">" + amPmTime + ":30-" + endAmPmTime + ":30" + "</option>"
+    options.push(option);
+  }
+
+  $('#timepicker').html(options);
+  $('#timepicker').selectpicker('refresh');
 }

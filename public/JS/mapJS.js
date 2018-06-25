@@ -215,6 +215,7 @@ var f1 = document.getElementById("floor1"); // does the initial load for the SVG
 // It's important to add an load event listener to the object,
 // as it will load the svg doc asynchronously
 f1.addEventListener("load", function () {
+  console.log("loaded floor 1!");
 
     // get the inner DOM of alpha.svg
     var svgDoc = f1.contentDocument;
@@ -245,7 +246,7 @@ var f2 = document.getElementById("floor2");
 // It's important to add an load event listener to the object,
 // as it will load the svg doc asynchronously
 f2.addEventListener("load", function () {
-    console.log("loaded floor 1!");
+    console.log("loaded floor 2!");
     // get the inner DOM of alpha.svg
     var svgDoc = f2.contentDocument;
     // get the inner element by id

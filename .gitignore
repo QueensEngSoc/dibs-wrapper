@@ -1,5 +1,5 @@
-Mongonode_modules
-
+Mongo
+node_modules
 .idea/*
 MongoDB/*
 config/emailConfig.js

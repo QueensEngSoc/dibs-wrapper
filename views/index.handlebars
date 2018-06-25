@@ -1,9 +1,14 @@
 <link href="https://code.jquery.com/ui/1.9.2/themes/smoothness/jquery-ui.css" rel="stylesheet" />
-<link rel='stylesheet' type='text/css' href='CSS/timepicker.css'/>
-<script type='text/javascript' src='JS/timepicker.js'></script>
+<!-- Latest compiled and minified CSS -->
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.min.css">
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+
 <br/>
 <div class="row justify-content-center">
-    <div class="col-8">
+    <div class="col-2"></div>
+    <div class="col-4" >
         <div class="form-group text-center">
             <h3>
                 <strong>Pick a day:&nbsp</strong>
@@ -11,37 +16,22 @@
             </h3>
         </div>
     </div>
+    <div class="col-4">
+        <div class="form-group text-center">
+            <h3>
+                <strong>Pick a time:&nbsp</strong>
+                <select class="selectpicker" id="timepicker" data-live-search="true" data-size="10">
+                    {{#each timeCountObj}}
+                        <option data-tokens="{{hour}} {{twenty4Hour}}" value="{{twenty4Hour}}">{{timeString}}</option>
+                        <!--data-content="<span class='label label-success'>{TEST!!}</span>"-->
+                    {{/each}}
+                </select>
+            </h3>
+        </div>
+    </div>
+    <div class="col-2"></div>
 </div>
-<!--<div class="row justify-content-center">-->
-    <!--<div class="col-12 text-center text-sm-right col-sm-4 col-md-3 col-lg-2" style="padding-right: 0;">-->
-        <!--<h3>-->
-            <!--<strong class="float-none float-md-right">Pick a time:&nbsp</strong>-->
-        <!--</h3>-->
-    <!--</div>-->
-    <!--<div class="col-10 text-center text-sm-left col-sm-5 col-md-4 col-lg-3">-->
-        <!--<div class="form-group float-none float-md-left">-->
-            <!--<h3>-->
-                <!--<div class="input-group date" id="timepicker1" data-target-input="nearest">-->
-                    <!--<input type="text" class="form-control datetimepicker-input" data-target="#timepicker1"/>-->
-                    <!--<div class="input-group-append" data-target="#timepicker1" data-toggle="datetimepicker">-->
-                        <!--<div class="input-group-text"><i class="fa fa-clock-o"></i></div>-->
-                    <!--</div>-->
-                <!--</div>-->
-            <!--</h3>-->
-        <!--</div>-->
-    <!--</div>-->
-<!--</div>-->
-<!--<script type='text/javascript'>-->
-    <!--$(function () { // using Tempus Dominus Boostrap 4 dateTimePicker-->
-        <!--$('#timepicker1').datetimepicker({-->
-            <!--format: 'LT',-->
-            <!--stepping: 30,-->
-            <!--disabledHours: disabledHours,-->
-            <!--defaultDate: date-->
-        <!--});-->
-        <!--// $('#timepicker1').datetimepicker('date', date.toTimeString());-->
-    <!--});-->
-<!--</script>-->
+
 <br>
 <div class="row justify-content-center">
     <div class="col-8">
@@ -76,30 +66,36 @@
     <div class="col-8" id="roomButtons" align="center">
         <!-- handlebars loops through each room array -->
         {{#each list}}
-            {{#if this.isFree}}
-                <a class="btn btn-lg yroom" href="/book/{{this.roomID}}" role="button" id="{{this.roomNum}}">{{this.roomNum}}
-                    <input type=hidden id="roomSize" name="roomSize" value={{this.size}}/>
-                    <input type=hidden id="hasTV" name="hasTV" value={{this.hasTV}}/>
-                    <input type=hidden id="hasPhone" name="hasPhone" value={{this.hasPhone}}/>
+            {{#with (lookup this.isFree ../currentTime ) }}
+
+            {{#if this.free}}
+                <a class="btn btn-lg yroom" href="/book/{{../this.roomID}}" role="button" id="{{../this.roomNum}}">{{../this.roomNum}}
+                    <input type=hidden id="roomSize" name="roomSize" value={{../this.size}}/>
+                    <input type=hidden id="hasTV" name="hasTV" value={{../this.hasTV}}/>
+                    <input type=hidden id="hasPhone" name="hasPhone" value={{../this.hasPhone}}/>
                 </a>
             {{else}}
                 {{#if this.isMine}}
-                    <a class="btn btn-lg mroom" href="/book/{{this.roomID}}" role="button" id="{{this.roomNum}}">{{this.roomNum}}
-                        <input type=hidden id="roomSize" name="roomSize" value={{this.size}}/>
-                        <input type=hidden id="hasTV" name="hasTV" value={{this.hasTV}}/>
-                        <input type=hidden id="hasPhone" name="hasPhone" value={{this.hasPhone}}/>
+                    <a class="btn btn-lg mroom" href="/book/{{../this.roomID}}" role="button" id="{{../this.roomNum}}">{{../this.roomNum}}
+                        <input type=hidden id="roomSize" name="roomSize" value={{../this.size}}/>
+                        <input type=hidden id="hasTV" name="hasTV" value={{../this.hasTV}}/>
+                        <input type=hidden id="hasPhone" name="hasPhone" value={{../this.hasPhone}}/>
                     </a>
                 {{else}}
-                <a class="btn btn-lg nroom" href="/book/{{this.roomID}}" role="button" id="{{this.roomNum}}">{{this.roomNum}}
-                    <input type=hidden id="roomSize" name="roomSize" value={{this.size}}/>
-                    <input type=hidden id="hasTV" name="hasTV" value={{this.hasTV}}/>
-                    <input type=hidden id="hasPhone" name="hasPhone" value={{this.hasPhone}}/>
+                <a class="btn btn-lg nroom" href="/book/{{../this.roomID}}" role="button" id="{{../this.roomNum}}">{{../this.roomNum}}
+                    <input type=hidden id="roomSize" name="roomSize" value={{../this.size}}/>
+                    <input type=hidden id="hasTV" name="hasTV" value={{../this.hasTV}}/>
+                    <input type=hidden id="hasPhone" name="hasPhone" value={{../this.hasPhone}}/>
                 </a>
                 {{/if}}
             {{/if}}
+
+            {{/with}}
         {{/each}}
     </div>
 </div>
+
+<input hidden id="roomData" value="{{listFree}}" >
 
 <!--<footer class="footer" style="margin-top: 10px;">-->
     <!--{{>footer}}-->
