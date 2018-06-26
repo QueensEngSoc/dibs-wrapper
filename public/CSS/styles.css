@@ -343,3 +343,60 @@ li {
 .hidden {
     display: none;
 }
+
+/*/////// Custom Radio Buttons ////////*/
+
+group + group {
+    margin-top: 20px;
+}
+
+.inline-radio {
+    display: flex;
+    border-radius: 3px;
+    overflow: hidden;
+    border: 1px solid #b6b6b6;
+}
+
+.inline-radio > div {
+    position: relative;
+    flex: 1;
+}
+
+.inline-radio > div > input {
+    width: 100%;
+    padding-left: 20px;
+    padding-right: 20px;
+    height: 36px;
+    opacity: 0;
+}
+
+.inline-radio > div > label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: #b6b6b6;
+    width: 100%;
+    padding-left: 20px;
+    padding-right: 20px;
+    height: 100%;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    border-right: 1px solid #b6b6b6;
+}
+
+.inline-radio  > div:last-child label {
+    border-right: 0;
+}
+
+.inline-radio  > div > input:checked + label {
+    background: #d81b60;
+    font-weight: 500;
+    color: #fff;
+}
+
+
+/*/////////// CUSTOM STYLES /////////////*/
+

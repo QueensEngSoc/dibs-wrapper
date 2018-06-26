@@ -1,14 +1,12 @@
 <link href="https://code.jquery.com/ui/1.9.2/themes/smoothness/jquery-ui.css" rel="stylesheet" />
-<!-- Latest compiled and minified CSS -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.min.css">
-<!-- Latest compiled and minified JavaScript -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+<!--<script src="JS/jquery.timepicker.beta.js"></script>-->
 
 <br/>
 <div class="row justify-content-center">
-    <div class="col-2"></div>
-    <div class="col-4" >
+    <div class="col-md-auto" >
         <div class="form-group text-center">
             <h3>
                 <strong>Pick a day:&nbsp</strong>
@@ -16,33 +14,41 @@
             </h3>
         </div>
     </div>
-    <div class="col-4">
+    <div class="col-md-auto">
         <div class="form-group text-center">
             <h3>
                 <strong>Pick a time:&nbsp</strong>
-                <select class="selectpicker" id="timepicker" data-live-search="true" data-size="10">
+                <select class="selectpicker" id="timepicker" data-live-search="true" data-size="10" >
                     {{#each timeCountObj}}
-                        <option data-tokens="{{hour}} {{twenty4Hour}}" value="{{twenty4Hour}}">{{timeString}}</option>
+                        <option style="background: #5cb85c; color: #fff;" data-tokens="{{hour}} {{twenty4Hour}}"  value="{{twenty4Hour}}">{{timeString}}</option>
                         <!--data-content="<span class='label label-success'>{TEST!!}</span>"-->
                     {{/each}}
                 </select>
             </h3>
         </div>
     </div>
-    <div class="col-2"></div>
 </div>
 
 <br>
 <div class="row justify-content-center">
-    <div class="col-8">
+    <div class="col-md-8 col-sm-12 col-xs-12">
         <div class="form-group text-center" id="selectionForm">
             <h4>
-                <strong>Room Size:&nbsp&nbsp</strong>
-                <label class="radio-inline"><input checked='checked' type="radio" name="optradio">Any</label>&nbsp
-                <label class="radio-inline"><input type="radio" value="0" name="optradio">Small</label>&nbsp
-                <label class="radio-inline"><input type="radio" value="1" name="optradio">Medium</label>&nbsp
-                <label class="radio-inline"><input type="radio" value="2" name="optradio">Large</label>
+                <div class="row" style="justify-content:center;">
+                    <div class="col-md-auto">
+                        <strong>Room Size:&nbsp&nbsp</strong>
+                    </div>
+                    <div class="col-md-8 col-sm-12 col-xs-12">
+                        <group class="inline-radio">
+                            <div><input checked='checked' type="radio" name="optradio"><label>Any</label></div>
+                            <div><input type="radio" value="0" name="optradio"><label>Small</label></div>
+                            <div><input type="radio" value="1" name="optradio"><label>Medium</label></div>
+                            <div><input type="radio" value="2" name="optradio"><label>Large</label></div>
+                        </group>
+                    </div>
+                </div>
             </h4>
+            <br>
             <button onclick="showHideFilters(this)" class="btn btn-primary">Show More Filters</button>
             <div id="filters" style="display: none; padding-top: 15px;">
                 <label class="chk-container">&nbsp;
