@@ -80,7 +80,6 @@ router.get('/', function (req, res, next) {
                           // and we should therefore subtract 1 from the hour to get the right data (eg. if it is 7:10pm
                           // right now, then we really want the data from 6:30 - 7:30, not 7:30 - 8:30)
 
-  current_hour--;
   var userid = accountFuncs.getUserID(req);
 
   roomDB.getListOfRoomState(day, -1, userid).then(function (listFree) {
@@ -120,7 +119,6 @@ router.get('/', function (req, res, next) {
     for (var i = 0; i < timecount.length; i++)
       timecount[i].totalFree = timecount[i].totalCount - timecount[i].hourCount;
 
-    var jsonTimeCount = JSON.stringify(timecount);
     var jsonList = JSON.stringify(listFree);
     // var prettyDate = formatDate(date);
 
@@ -130,7 +128,6 @@ router.get('/', function (req, res, next) {
       navPic: '<a href="/map"><img src="/img/map.png" height="35" width="60"></a>',
       theme: req.theme === "custom" ? false : req.theme,
       colors: req.colors,
-      stringTimeCountObj: jsonTimeCount,  // stores the count of the free rooms for each hour, and the string for each time in the day
       timeCountObj: timecount,
       listFree: jsonList,            // stores the free arrays for each room, for the selected day
       currentTime: current_hour - 7

@@ -104,6 +104,7 @@ function getNewDayData(day)
             responseData = data;
             updateButtons(jsonData);
             updateTimePicker();
+            filterList();
         },
         error: function (data) {
             console.log("Error: " + data);
@@ -157,9 +158,11 @@ function showHideFilters(el) {
 
 $('#timepicker').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
   // do something...
-  var value = $('.selectpicker').val()
+  var value = $('.selectpicker').val();
+  console.log('Selected time is: ', value);
   selectedTime = value;
   updateButtons(jsonData);
+  filterList();
 });
 
 function updateTimePicker(){
@@ -173,15 +176,23 @@ function updateTimePicker(){
 function generateTimes(startTime) {
   var options = [];
 
-  for (var i = startTime; i < 23; i++)
-  {
+  for (var i = startTime; i < 23; i++) {
+    var amOrPm = (i >= 11) ? " PM" : " AM";
     var amPmTime = ((i) % 12 == 0) ? 12 : i % 12;
     var endAmPmTime = ((i + 1) % 12 == 0) ? 12 : (i + 1) % 12;
 
-    var option = "<option data-tokens=\"" + amPmTime +  " " + i + "\" value=\"" + i + "\">" + amPmTime + ":30-" + endAmPmTime + ":30" + "</option>"
+    var option = "<option data-tokens=\"" + amPmTime + " " + i + "\" value=\"" + i + "\">" + amPmTime + ":30-" + endAmPmTime + ":30" + amOrPm + "</option>"
     options.push(option);
   }
 
   $('#timepicker').html(options);
   $('#timepicker').selectpicker('refresh');
+
+  if (selectedTime < startTime) {
+      selectedTime = startTime;
+  }
+
+  var amOrPm = (selectedTime >= 11) ? " PM" : " AM";
+
+  $('#timepicker').selectpicker('val', selectedTime);
 }
