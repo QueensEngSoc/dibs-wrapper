@@ -81,6 +81,8 @@ $(document).ready(function() {
 
     jsonData = document.getElementById('roomData').value;   // get the data for the selected day and parse it
     jsonData = JSON.parse(jsonData);
+
+    updateTimePicker(0, selectedTime);
 });
 
 $('#datepicker').change(function(){
@@ -103,7 +105,7 @@ function getNewDayData(day)
             jsonData = data.list;
             responseData = data;
             updateButtons(jsonData);
-            updateTimePicker();
+            updateTimePicker(responseData.day, responseData.currentHour);
             filterList();
         },
         error: function (data) {
@@ -165,12 +167,12 @@ $('#timepicker').on('changed.bs.select', function (e, clickedIndex, isSelected, 
   filterList();
 });
 
-function updateTimePicker(){
-  if (responseData.day > 0){
+function updateTimePicker(day, startTime){
+  if (day > 0){
       generateTimes(7);
   }
   else
-      generateTimes(responseData.currentHour);
+      generateTimes(startTime);
 }
 
 function generateTimes(startTime) {
@@ -181,7 +183,7 @@ function generateTimes(startTime) {
     var amPmTime = ((i) % 12 == 0) ? 12 : i % 12;
     var endAmPmTime = ((i + 1) % 12 == 0) ? 12 : (i + 1) % 12;
 
-    var option = "<option data-tokens=\"" + amPmTime + " " + i + "\" value=\"" + i + "\">" + amPmTime + ":30-" + endAmPmTime + ":30" + amOrPm + "</option>"
+    var option = "<option data-tokens=\"" + amPmTime + " " + i + " " + amOrPm +  "\" value=\"" + i + "\">" + amPmTime + ":30-" + endAmPmTime + ":30" + amOrPm + "</option>"
     options.push(option);
   }
 
