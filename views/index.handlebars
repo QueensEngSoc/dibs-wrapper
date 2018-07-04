@@ -76,20 +76,20 @@
             {{#with (lookup this.isFree ../currentTime ) }}
 
             {{#if this.free}}
-                <a class="btn btn-lg yroom" href="/book/{{../this.roomID}}" role="button" id="{{../this.roomNum}}">{{../this.roomNum}}
+                <a class="btn btn-lg yroom mobileBtn" href="/book/{{../this.roomID}}" role="button" id="{{../this.roomNum}}">{{../this.roomNum}}
                     <input type=hidden id="roomSize" name="roomSize" value={{../this.size}}/>
                     <input type=hidden id="hasTV" name="hasTV" value={{../this.hasTV}}/>
                     <input type=hidden id="hasPhone" name="hasPhone" value={{../this.hasPhone}}/>
                 </a>
             {{else}}
                 {{#if this.isMine}}
-                    <a class="btn btn-lg mroom" href="/book/{{../this.roomID}}" role="button" id="{{../this.roomNum}}">{{../this.roomNum}}
+                    <a class="btn btn-lg mroom mobileBtn" href="/book/{{../this.roomID}}" role="button" id="{{../this.roomNum}}">{{../this.roomNum}}
                         <input type=hidden id="roomSize" name="roomSize" value={{../this.size}}/>
                         <input type=hidden id="hasTV" name="hasTV" value={{../this.hasTV}}/>
                         <input type=hidden id="hasPhone" name="hasPhone" value={{../this.hasPhone}}/>
                     </a>
                 {{else}}
-                <a class="btn btn-lg nroom" href="/book/{{../this.roomID}}" role="button" id="{{../this.roomNum}}">{{../this.roomNum}}
+                <a class="btn btn-lg nroom mobileBtn" href="/book/{{../this.roomID}}" role="button" id="{{../this.roomNum}}">{{../this.roomNum}}
                     <input type=hidden id="roomSize" name="roomSize" value={{../this.size}}/>
                     <input type=hidden id="hasTV" name="hasTV" value={{../this.hasTV}}/>
                     <input type=hidden id="hasPhone" name="hasPhone" value={{../this.hasPhone}}/>

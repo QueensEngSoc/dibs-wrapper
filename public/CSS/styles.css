@@ -431,25 +431,28 @@ group + group {
     /*text-decoration: none;*/
 /*}*/
 
-@media (max-width: 540px) {
-    .nroom {
+@media (max-width: 375px) {
+    .mobileBtn {
         font-size: 1.4rem;    /*1rem = 16px*/
     }
-    .yroom {
-        font-size: 1.4rem;    /*1rem = 16px*/
-    }
-    .mroom {
-        font-size: 1.4rem;    /*1rem = 16px*/
-    }
+}
 
+@media (min-width: 376px) {
+    .mobileBtn {
+        font-size: 1.5rem;    /*1rem = 16px*/
+    }
 }
 
 /* Medium devices (tablets, 768px and up) The navbar toggle appears at this breakpoint */
 @media (min-width: 541px) {
-    h1 {font-size: 1.7rem;} /*1rem = 16px*/
+    .mobileBtn {
+        font-size: 1.5rem;    /*1rem = 16px*/
+    }
 }
 
 /* Large devices (desktops, 992px and up) */
 @media (min-width: 992px) {
-    h1 {font-size: 30px;} /*1rem = 16px*/
+    .mobileBtn {
+        font-size: 30px;    /*1rem = 16px*/
+    }
 }
