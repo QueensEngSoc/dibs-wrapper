@@ -120,7 +120,9 @@ function updateButtons(data){
         var room = data[d];
 
         var matchingElement = document.getElementById(room.roomNum);
-        matchingElement.href = "/book/" + room.roomID + "/" + responseData.prettyDate;
+
+        if (responseData.prettyDate)
+            matchingElement.href = "/book/" + room.roomID + "/" + responseData.prettyDate;
 
         var arrayTime = (selectedTime - 7);
         if (room.isFree[arrayTime].free){
