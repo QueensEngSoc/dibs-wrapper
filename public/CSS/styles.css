@@ -64,7 +64,7 @@ li {
     font-family: "Roboto Mono", Courier, monospace;
     border-radius: 12px;
     display: inline-flex;
-    font-size: 30px !important;
+    font-size: 30px;
     margin: 10px 10px;
     color: white !important;
     text-decoration: none;
@@ -74,7 +74,7 @@ li {
     font-family: "Roboto Mono", Courier, monospace !important;
     border-radius: 12px;
     display: inline-flex;
-    font-size: 30px !important;
+    font-size: 30px;
     margin: 10px 10px;
     color: white !important;
     text-decoration: none;
@@ -85,7 +85,6 @@ li {
     font-family: "Roboto Mono", Courier, monospace !important;
     border-radius: 12px;
     display: inline-flex;
-    font-size: 30px !important;
     margin: 10px 10px;
     color: white !important;
     text-decoration: none;
@@ -400,3 +399,57 @@ group + group {
 
 /*/////////// CUSTOM STYLES /////////////*/
 
+/*.yroom {*/
+    /*padding: 15px 32px;*/
+    /*font-family: "Roboto Mono", Courier, monospace;*/
+    /*border-radius: 12px;*/
+    /*display: inline-flex;*/
+    /*font-size: 30px !important;*/
+    /*margin: 10px 10px;*/
+    /*color: white !important;*/
+    /*text-decoration: none;*/
+/*}*/
+/*.nroom {*/
+    /*padding: 15px 32px;*/
+    /*font-family: "Roboto Mono", Courier, monospace !important;*/
+    /*border-radius: 12px;*/
+    /*display: inline-flex;*/
+    /*font-size: 30px !important;*/
+    /*margin: 10px 10px;*/
+    /*color: white !important;*/
+    /*text-decoration: none;*/
+/*}*/
+
+/*.mroom {*/
+    /*padding: 15px 32px;*/
+    /*font-family: "Roboto Mono", Courier, monospace !important;*/
+    /*border-radius: 12px;*/
+    /*display: inline-flex;*/
+    /*font-size: 30px !important;*/
+    /*margin: 10px 10px;*/
+    /*color: white !important;*/
+    /*text-decoration: none;*/
+/*}*/
+
+@media (max-width: 540px) {
+    .nroom {
+        font-size: 1.4rem;    /*1rem = 16px*/
+    }
+    .yroom {
+        font-size: 1.4rem;    /*1rem = 16px*/
+    }
+    .mroom {
+        font-size: 1.4rem;    /*1rem = 16px*/
+    }
+
+}
+
+/* Medium devices (tablets, 768px and up) The navbar toggle appears at this breakpoint */
+@media (min-width: 541px) {
+    h1 {font-size: 1.7rem;} /*1rem = 16px*/
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+    h1 {font-size: 30px;} /*1rem = 16px*/
+}

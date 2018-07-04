@@ -70,7 +70,7 @@
 </div>
 <br/>
 <div class="row justify-content-center">
-    <div class="col-8" id="roomButtons" align="center">
+    <div class="col-xs-12 col-sm-10 col-md-10 col-lg-8" id="roomButtons" align="center">
         <!-- handlebars loops through each room array -->
         {{#each list}}
             {{#with (lookup this.isFree ../currentTime ) }}
