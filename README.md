@@ -33,4 +33,4 @@ See https://github.com/essdev-team/dibs-wrapper/graphs/contributors for a detail
 2018 ESSDEV Dibs Team
 
 Thanks to BrowserStack
-<img src="archive/Browserstack-logo.png" width="12%">
+<a href="https://browserstack.com"> <img src="archive/Browserstack-logo.png" width="12%"> </a>
