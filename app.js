@@ -51,6 +51,14 @@ var hbs = exphbs.create({
                 return opts.fn(this);
 
         },
+        if_valid: function (a, opts) { // this function checks if the passed time (a) is less than the current time
+
+        if (a < 7 || (a > 23))
+          return opts.inverse(this);
+        else
+          return opts.fn(this);
+
+        },
         getTimes: function (free, owner, day, room) {
             var times = [];
             for (slot of free) {

@@ -85,7 +85,9 @@ router.get('/', function (req, res, next) {
   roomDB.getListOfRoomState(day, -1, userid).then(function (listFree) {
     var timecount = [];
 
-    for (var i = current_hour - 7; i < listFree[i].isFree.length; i++){
+    var startCheck = (current_hour < 7) ? 7 : current_hour;
+
+    for (var i = startCheck - 7; i < listFree[i].isFree.length; i++){
       timecount.push({
         hourCount: 0,
         totalCount: 0,
@@ -99,10 +101,10 @@ router.get('/', function (req, res, next) {
     for(var i = 0; i < listFree.length; i++){
       var count = 0;
       var mine = 0;
-      for(var j = current_hour - 7; j < listFree[i].isFree.length; j++){
+      for(var j = startCheck - 7; j < listFree[i].isFree.length; j++){
         if (!listFree[i].isFree[j].free) {
           count++;
-          timecount[j - current_hour + 7].hourCount++;
+          timecount[j - startCheck + 7].hourCount++;
         }
 
         if (listFree[i].isFree[j].owner == userid) {
@@ -112,7 +114,7 @@ router.get('/', function (req, res, next) {
         else
           listFree[i].isFree[j].isMine = false;
 
-        timecount[j - current_hour + 7].totalCount++;
+        timecount[j - startCheck + 7].totalCount++;
       }
     }
 

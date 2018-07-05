@@ -180,7 +180,9 @@ function updateTimePicker(day, startTime){
 function generateTimes(startTime) {
   var options = [];
 
-  for (var i = startTime; i < 23; i++) {
+  var startHour = (startTime < 7 || startTime > 23) ? 7 : startTime
+
+  for (var i = startHour; i < 23; i++) {
     var amOrPm = (i >= 11) ? " PM" : " AM";
     var amPmTime = ((i) % 12 == 0) ? 12 : i % 12;
     var endAmPmTime = ((i + 1) % 12 == 0) ? 12 : (i + 1) % 12;

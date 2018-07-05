@@ -73,31 +73,39 @@
     <div class="col-xs-12 col-sm-10 col-md-10 col-lg-8" id="roomButtons" align="center">
         <!-- handlebars loops through each room array -->
         {{#each list}}
-            {{#with (lookup this.isFree ../currentTime ) }}
-
-            {{#if this.free}}
-                <a class="btn btn-lg yroom mobileBtn" href="/book/{{../this.roomID}}" role="button" id="{{../this.roomNum}}">{{../this.roomNum}}
-                    <input type=hidden id="roomSize" name="roomSize" value={{../this.size}}/>
-                    <input type=hidden id="hasTV" name="hasTV" value={{../this.hasTV}}/>
-                    <input type=hidden id="hasPhone" name="hasPhone" value={{../this.hasPhone}}/>
-                </a>
+            {{#if_valid ../currentTime}}
+                {{#with (lookup this.isFree ../currentTime ) }}
+                    {{#if this.free}}
+                        <a class="btn btn-lg yroom mobileBtn" href="/book/{{../this.roomID}}" role="button" id="{{../this.roomNum}}">{{../this.roomNum}}
+                            <input type=hidden id="roomSize" name="roomSize" value={{../this.size}}/>
+                            <input type=hidden id="hasTV" name="hasTV" value={{../this.hasTV}}/>
+                            <input type=hidden id="hasPhone" name="hasPhone" value={{../this.hasPhone}}/>
+                        </a>
+                    {{else}}
+                        {{#if this.isMine}}
+                            <a class="btn btn-lg mroom mobileBtn" href="/book/{{../this.roomID}}" role="button" id="{{../this.roomNum}}">{{../this.roomNum}}
+                                <input type=hidden id="roomSize" name="roomSize" value={{../this.size}}/>
+                                <input type=hidden id="hasTV" name="hasTV" value={{../this.hasTV}}/>
+                                <input type=hidden id="hasPhone" name="hasPhone" value={{../this.hasPhone}}/>
+                            </a>
+                        {{else}}
+                        <a class="btn btn-lg nroom mobileBtn" href="/book/{{../this.roomID}}" role="button" id="{{../this.roomNum}}">{{../this.roomNum}}
+                            <input type=hidden id="roomSize" name="roomSize" value={{../this.size}}/>
+                            <input type=hidden id="hasTV" name="hasTV" value={{../this.hasTV}}/>
+                            <input type=hidden id="hasPhone" name="hasPhone" value={{../this.hasPhone}}/>
+                        </a>
+                        {{/if}}
+                    {{/if}}
+                {{/with}}
             {{else}}
-                {{#if this.isMine}}
-                    <a class="btn btn-lg mroom mobileBtn" href="/book/{{../this.roomID}}" role="button" id="{{../this.roomNum}}">{{../this.roomNum}}
+                {{#with (lookup this.isFree 7 ) }}
+                    <a class="btn btn-lg nroom mobileBtn" href="/book/{{../this.roomID}}" role="button" id="{{../this.roomNum}}">{{../this.roomNum}}
                         <input type=hidden id="roomSize" name="roomSize" value={{../this.size}}/>
                         <input type=hidden id="hasTV" name="hasTV" value={{../this.hasTV}}/>
                         <input type=hidden id="hasPhone" name="hasPhone" value={{../this.hasPhone}}/>
                     </a>
-                {{else}}
-                <a class="btn btn-lg nroom mobileBtn" href="/book/{{../this.roomID}}" role="button" id="{{../this.roomNum}}">{{../this.roomNum}}
-                    <input type=hidden id="roomSize" name="roomSize" value={{../this.size}}/>
-                    <input type=hidden id="hasTV" name="hasTV" value={{../this.hasTV}}/>
-                    <input type=hidden id="hasPhone" name="hasPhone" value={{../this.hasPhone}}/>
-                </a>
-                {{/if}}
-            {{/if}}
-
-            {{/with}}
+                {{/with}}
+            {{/if_valid}}
         {{/each}}
     </div>
 </div>
