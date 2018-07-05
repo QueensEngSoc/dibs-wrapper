@@ -31,3 +31,6 @@ Automated tests are currently being created. Check the test folder for current p
 See https://github.com/essdev-team/dibs-wrapper/graphs/contributors for a detailed breakdown of contributions.
 
 2018 ESSDEV Dibs Team
+
+Thanks to BrowserStack
+<img src="archive/Browserstack-logo.png" width="12%">
