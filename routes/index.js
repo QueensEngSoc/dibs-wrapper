@@ -56,6 +56,9 @@ router.post('/index', function (req, res) {
           }
         }
 
+        for (var i = 0; i < timecount.length; i++)
+          timecount[i].totalFree = timecount[i].totalCount - timecount[i].hourCount;
+
         var prettyDate = formatDate(date);
 
         res.send({
@@ -131,6 +134,7 @@ router.get('/', function (req, res, next) {
       theme: req.theme === "custom" ? false : req.theme,
       colors: req.colors,
       timeCountObj: timecount,
+      timeCountObjStr: JSON.stringify(timecount),
       listFree: jsonList,            // stores the free arrays for each room, for the selected day
       currentTime: current_hour - 7
     });

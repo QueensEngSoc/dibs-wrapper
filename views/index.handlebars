@@ -23,7 +23,7 @@
                 <strong>Pick a time:&nbsp</strong>
                 <select class="selectpicker" id="timepicker" data-live-search="true" data-size="10" >
                     {{#each timeCountObj}}
-                        <option style="background: #5cb85c; color: #fff;" data-tokens="{{hour}} {{twenty4Hour}}"  value="{{twenty4Hour}}">{{timeString}}</option>
+                        <option style="background: #5cb85c; color: #fff;" data-tokens="{{hour}} {{twenty4Hour}}"  value="{{twenty4Hour}}" data-content="<span><span class='badge badge-pill badge-success'>{{totalFree}}</span> {{timeString}}</span>" >{{timeString}}</option>
                         <!--data-content="<span class='label label-success'>{TEST!!}</span>"-->
                     {{/each}}
                 </select>
@@ -77,7 +77,10 @@
         <!-- handlebars loops through each room array -->
         {{#each list}}
             {{#if_valid ../currentTime}}
+                <p>SHOULD HAVE STUFF HERE {{../currentTime}}</p>
                 {{#with (lookup this.isFree ../currentTime ) }}
+                    <p>HAVE STUFF HERE {{../this.roomID}}</p>
+
                     {{#if this.free}}
                         <a class="btn btn-lg yroom mobileBtn" href="/book/{{../this.roomID}}" role="button" id="{{../this.roomNum}}">{{../this.roomNum}}
                             <input type=hidden id="roomSize" name="roomSize" value={{../this.size}}/>
@@ -114,6 +117,7 @@
 </div>
 
 <input hidden id="roomData" value="{{listFree}}" >
+<input hidden id="timeCountString" value="{{timeCountObjStr}}" >
 
 <!--<footer class="footer" style="margin-top: 10px;">-->
     <!--{{>footer}}-->

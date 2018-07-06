@@ -1,6 +1,7 @@
 // this contains some JS functions that are used on the index page
 
 var jsonData = [];
+var timeCount = [];
 
 var dateObj = new Date();
 var current_hour = dateObj.getHours();
@@ -82,6 +83,9 @@ $(document).ready(function() {
     jsonData = document.getElementById('roomData').value;   // get the data for the selected day and parse it
     jsonData = JSON.parse(jsonData);
 
+    timeCountString = document.getElementById('timeCountString').value;
+    timeCount = JSON.parse(timeCountString);
+
     updateTimePicker(0, selectedTime);
 });
 
@@ -104,6 +108,7 @@ function getNewDayData(day)
         success: function (data) {
             jsonData = data.list;
             responseData = data;
+            timeCount = data.timeCount;
             updateButtons(jsonData);
             updateTimePicker(responseData.day, responseData.currentHour);
             filterList();
@@ -116,6 +121,7 @@ function getNewDayData(day)
 }
 
 function updateButtons(data){
+    // if ()
     for (var d = 0; d < data.length; d++){
         var room = data[d];
 
@@ -125,14 +131,14 @@ function updateButtons(data){
             matchingElement.href = "/book/" + room.roomID + "/" + responseData.prettyDate;
 
         var arrayTime = (selectedTime - 7);
-        if (room.isFree[arrayTime].free){
+        if (arrayTime > 0 && arrayTime < 16 && room.isFree[arrayTime].free){
             matchingElement.classList.remove("mroom");
             matchingElement.classList.remove("nroom");
             matchingElement.classList.add("yroom");
         }
         else
         {
-            if (room.isFree[arrayTime].isMine){
+            if (arrayTime > 0 && arrayTime < 16 && room.isFree[arrayTime].isMine){
                 matchingElement.classList.remove("nroom");
                 matchingElement.classList.remove("yroom");
                 matchingElement.classList.add("mroom");
@@ -187,7 +193,15 @@ function generateTimes(startTime) {
     var amPmTime = ((i) % 12 == 0) ? 12 : i % 12;
     var endAmPmTime = ((i + 1) % 12 == 0) ? 12 : (i + 1) % 12;
 
-    var option = "<option data-tokens=\"" + amPmTime + " " + i + " " + amOrPm +  "\" value=\"" + i + "\">" + amPmTime + ":30-" + endAmPmTime + ":30" + amOrPm + "</option>"
+    var freeRoomCountForHour = timeCount[i - startHour].totalFree;
+    var pillClass = 'badge-success';
+    if (freeRoomCountForHour < 5 && freeRoomCountForHour > 0)
+        pillClass = 'badge-warning \' style=\'color: white\'';
+    else if (freeRoomCountForHour == 0)
+        pillClass = 'badge-danger';
+
+    var option = "<option data-tokens=\"" + amPmTime + " " + i + " " + amOrPm +  "\" value=\"" + i + "\" data-icon=\"fa-heart\"  data-content=\"<span><span class='badge badge-pill " + pillClass + "'>" + freeRoomCountForHour + "</span> "+ amPmTime + ":30-" + endAmPmTime + ":30" + amOrPm + "</span>\" >" + amPmTime + ":30-" + endAmPmTime + ":30" + amOrPm + "</option>"
+    console.log(option);
     options.push(option);
   }
 

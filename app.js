@@ -52,8 +52,8 @@ var hbs = exphbs.create({
 
         },
         if_valid: function (a, opts) { // this function checks if the passed time (a) is less than the current time
-
-        if (a < 7 || (a > 23))
+        var min = new Date().getMinutes();
+        if ((a <= 0 && min <= 30)|| (a >= 16 && min >= 30))
           return opts.inverse(this);
         else
           return opts.fn(this);
