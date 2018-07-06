@@ -77,10 +77,7 @@
         <!-- handlebars loops through each room array -->
         {{#each list}}
             {{#if_valid ../currentTime}}
-                <p>SHOULD HAVE STUFF HERE {{../currentTime}}</p>
                 {{#with (lookup this.isFree ../currentTime ) }}
-                    <p>HAVE STUFF HERE {{../this.roomID}}</p>
-
                     {{#if this.free}}
                         <a class="btn btn-lg yroom mobileBtn" href="/book/{{../this.roomID}}" role="button" id="{{../this.roomNum}}">{{../this.roomNum}}
                             <input type=hidden id="roomSize" name="roomSize" value={{../this.size}}/>
