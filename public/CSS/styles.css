@@ -1,6 +1,10 @@
-@import url('https://fonts.googleapis.com/css?family=Nunito');
-@import url('https://fonts.googleapis.com/css?family=Montserrat');
-@import url('https://fonts.googleapis.com/css?family=Roboto+Mono');
+/*@import url('https://fonts.googleapis.com/css?family=Nunito');*/
+/*@import url('https://fonts.googleapis.com/css?family=Montserrat');*/
+/*@import url('https://fonts.googleapis.com/css?family=Roboto+Mono');*/
+@import url('./font-nunito.css');
+@import url('./font-montserrat.css');
+@import url('./font-roboto.css');
+
 
 body {
     font-family: "Nunito", Helvitica, sans-serif !important;

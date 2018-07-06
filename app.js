@@ -137,7 +137,7 @@ server.use(express.static(path.join(__dirname, 'public')));
 require('./config/routes.js')(server, passport); // load our routes and pass in our app and fully configured passport
 // end for auth section //
 
-email.setupMailSender();
+// email.setupMailSender();
 
 //Run server
 var port = process.env.PORT || 8000;

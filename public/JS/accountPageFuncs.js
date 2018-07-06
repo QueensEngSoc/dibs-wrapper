@@ -74,7 +74,15 @@ function unbookRoomClick(roomID, time, day, owner, element, length){
                 // element.classList.add("mtime");
                 console.log("Done!");
                 // element.value = "Unbooked";
-                element.closest('.col-sm-6').remove();
+
+                if (data.unbookedAll){
+                    var cardContainerChildren = document.getElementById('bookedRow').children;
+                    while (cardContainerChildren.length) {
+                          cardContainerChildren[0].remove()
+                    }
+                }
+                else
+                    element.closest('.col-sm-6').remove();
 
                 if (data.BookStatus) {
                     var hoursLeft = document.getElementById('hoursLeft');

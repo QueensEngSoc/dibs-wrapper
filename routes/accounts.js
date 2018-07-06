@@ -59,7 +59,8 @@ router.post('/accounts/unbook', function (req, res) {
                 res.send({
                     HeaderMsg: 'Unbooking Success!',
                     BookingStatusMsg: 'Unbooking successful for all reservations',
-                    BookStatus: true
+                    BookStatus: true,
+                    unbookedAll: true
                 });
             });
         }
