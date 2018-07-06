@@ -226,10 +226,10 @@ function generateTimes(startTime) {
 function showAlert(header, message, success){
   html = "";
   if (!success){
-    html += '<div class="alert alert-danger alert-dismissible fade show" role="alert">';
+    html += '<div class="alert alert-danger alert-dismissible center-block text-center" role="alert">';
   }
   else
-    html += '<div class="alert alert-success alert-dismissible fade show" role="alert">';
+    html += '<div class="alert alert-success alert-dismissible center-block text-center" role="alert">';
 
   html += '  <button type="button" class="close" data-dismiss="alert" aria-label="Close">\n' +
     '    <span aria-hidden="true">&times;</span>\n' +
@@ -237,4 +237,7 @@ function showAlert(header, message, success){
   html += '<h4 class="alert-heading">'+header+'</h4>';
   html += '<p>'+message+'</p>';
   html += '</div>'
+  $('#message-container').append(html);
+  // $("#message-container").alert()
+
 }

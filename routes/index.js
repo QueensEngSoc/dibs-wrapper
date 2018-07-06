@@ -78,7 +78,7 @@ router.get('/', function (req, res, next) {
   var current_min = dateObj.getMinutes();
   var day = 0;
 
-  if (current_min < 29)   // logic here is that we are returning the status based on the start hour.  Since the min booking time is
+  if (current_min < 30)   // logic here is that we are returning the status based on the start hour.  Since the min booking time is
     current_hour--;       // 1 hour, if the current minute is less than 30, we are still within the previous booking slot
                           // and we should therefore subtract 1 from the hour to get the right data (eg. if it is 7:10pm
                           // right now, then we really want the data from 6:30 - 7:30, not 7:30 - 8:30)
