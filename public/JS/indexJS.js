@@ -86,6 +86,12 @@ $(document).ready(function() {
     timeCountString = document.getElementById('timeCountString').value;
     timeCount = JSON.parse(timeCountString);
 
+    var serverTime = parseInt(document.getElementById('serverTime').value) + 7;
+    if (serverTime != current_hour) {
+      current_hour = serverTime;
+      showAlert("Different Time Zone Detected", "Hey there, we noticed that you seem to be in a different time zone from us. Just so you know, all times shown here will be in EST (where Queen's is)", false);
+    }
+
     updateTimePicker(0, selectedTime);
 });
 
@@ -131,14 +137,14 @@ function updateButtons(data){
             matchingElement.href = "/book/" + room.roomID + "/" + responseData.prettyDate;
 
         var arrayTime = (selectedTime - 7);
-        if (arrayTime > 0 && arrayTime < 16 && room.isFree[arrayTime].free){
+        if (arrayTime >= 0 && arrayTime <= 16 && room.isFree[arrayTime].free){
             matchingElement.classList.remove("mroom");
             matchingElement.classList.remove("nroom");
             matchingElement.classList.add("yroom");
         }
         else
         {
-            if (arrayTime > 0 && arrayTime < 16 && room.isFree[arrayTime].isMine){
+            if (arrayTime >= 0 && arrayTime <= 16 && room.isFree[arrayTime].isMine){
                 matchingElement.classList.remove("nroom");
                 matchingElement.classList.remove("yroom");
                 matchingElement.classList.add("mroom");
@@ -215,4 +221,20 @@ function generateTimes(startTime) {
   var amOrPm = (selectedTime >= 11) ? " PM" : " AM";
 
   $('#timepicker').selectpicker('val', selectedTime);
+}
+
+function showAlert(header, message, success){
+  html = "";
+  if (!success){
+    html += '<div class="alert alert-danger alert-dismissible fade show" role="alert">';
+  }
+  else
+    html += '<div class="alert alert-success alert-dismissible fade show" role="alert">';
+
+  html += '  <button type="button" class="close" data-dismiss="alert" aria-label="Close">\n' +
+    '    <span aria-hidden="true">&times;</span>\n' +
+    '  </button>';
+  html += '<h4 class="alert-heading">'+header+'</h4>';
+  html += '<p>'+message+'</p>';
+  html += '</div>'
 }
