@@ -237,7 +237,7 @@ router.get('/accounts', function (req, res, next) {
                     bookingsLeft: bookingLimit - req.user.local.booking_count,
                     hasJson: false,
                     useTheme: req.theme === "custom" ? false : true,
-                    theme: req.theme === "custom" ? false : req.theme,
+                    theme: req.theme,
                     colors: req.colors
                 });
 

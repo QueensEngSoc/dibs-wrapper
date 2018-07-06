@@ -8,6 +8,22 @@ function launchModal(title) {
     $( '#' + title).toggle();
 }
 
+function changeCSS(cssFile, cssLinkIndex) {
+
+  var oldlink = document.getElementsByTagName("link").item(cssLinkIndex);
+
+  var newlink = document.createElement("link");
+  newlink.setAttribute("rel", "stylesheet");
+  newlink.setAttribute("type", "text/css");
+  newlink.setAttribute("href", cssFile);
+
+  oldlink.parentNode.replaceChild(newlink, oldlink);
+}
+
+function changeBgStyle(theme){
+   changeCSS("/CSS/room-style/"+ theme + "-room-style.css", 1);
+}
+
 function submitChanges() {
     var cp = jQuery.extend({}, originalValues);
     getOriginalValues();
@@ -17,8 +33,9 @@ function submitChanges() {
         type: 'PUT',
         contentType: 'application/json',
         data: JSON.stringify(originalValues)
-    }).done(function() {
+    }).done(function(data) {
         launchModal('successAndRedirect');
+        changeBgStyle(originalValues.useTheme);
         $('button.btn-success')[0].disabled = true;
     }).fail(function(err) {
         console.log(err);

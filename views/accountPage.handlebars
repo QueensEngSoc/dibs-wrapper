@@ -43,48 +43,58 @@
                 <div class="row">
                     <div class="col-sm">
                         <h3>Free Rooms</h3>
-                        {{#if useTheme}}
-                            <div class="color-swatch available {{theme}}" style="display: inline-block;"></div>
-                            <div class="hidden" data-colorinput="true">
-                                <label for="av-picker">Select a color:</label>
-                                <input type="color" class="hidden-picker" title="av-picker" value="{{customColors.av}}">
-                            </div>
-                        {{else}}
-                            <div class="color-swatch available hidden {{theme}}" style="display: inline-block;"></div>
-                            <div data-colorinput="true">
-                                <label for="av-picker">Select a color:</label>
-                                <input type="color" class="hidden-picker" title="av-picker" value="{{customColors.av}}">
-                            </div>
-                        {{/if}}
                     </div>
                     <div class="col-sm">
                         <h3>Booked Rooms</h3>
-                        {{#if useTheme}}
-                            <div class="color-swatch unavailable {{theme}}" style="display: inline-block;"></div>
-                            <div class="hidden" data-colorinput="true">
-                                <label for="ua-picker">Select a color:</label>
-                                <input type="color" class="hidden-picker" title="ua-picker" value="{{customColors.ua}}">
-                            </div>
-                        {{else}}
-                            <div class="color-swatch unavailable hidden {{theme}}" style="display: inline-block;"></div>
-                            <div data-colorinput="true">
-                                <label for="ua-picker">Select a color:</label>
-                                <input type="color" class="hidden-picker" title="ua-picker" value="{{customColors.ua}}">
-                            </div>
-                        {{/if}}
                     </div>
                     <div class="col-sm">
                         <h3>Your Rooms</h3>
+                    </div>
+                    <div class="col-sm">
+                        <h3>Background</h3>
+                    </div>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-sm">
                         {{#if useTheme}}
-                            <div class="color-swatch you-booked-it {{theme}}" style="display: inline-block;"></div>
+                            <div class="color-swatch available {{theme}}"></div>
+                            <div class="hidden" data-colorinput="true">
+                                <label for="av-picker">Select a color:</label>
+                                <input type="color" class="hidden-picker" title="av-picker" value="{{customColors.av}}">
+                            </div>
+                        {{else}}
+                            <div class="color-swatch available hidden {{theme}}" ></div>
+                            <div data-colorinput="true">
+                                <label for="av-picker">Select a color:</label>
+                                <input type="color" class="hidden-picker" title="av-picker" value="{{customColors.av}}">
+                            </div>
+                        {{/if}}
+                    </div>
+                    <div class="col-sm">
+                        {{#if useTheme}}
+                            <div class="color-swatch unavailable {{theme}}"></div>
+                            <div class="hidden" data-colorinput="true">
+                                <label for="ua-picker">Select a color:</label>
+                                <input type="color" class="hidden-picker" title="ua-picker" value="{{customColors.ua}}">
+                            </div>
+                        {{else}}
+                            <div class="color-swatch unavailable hidden {{theme}}"></div>
+                            <div data-colorinput="true">
+                                <label for="ua-picker">Select a color:</label>
+                                <input type="color" class="hidden-picker" title="ua-picker" value="{{customColors.ua}}">
+                            </div>
+                        {{/if}}
+                    </div>
+                    <div class="col-sm">
+                        {{#if useTheme}}
+                            <div class="color-swatch you-booked-it {{theme}}"></div>
                             <div class="hidden" data-colorinput="true">
                                 <label for="ybi-picker">Select a color:</label>
                                 <input type="color" class="hidden-picker" title="ybi-picker"
                                        value="{{customColors.ybi}}">
                             </div>
                         {{else}}
-                            <div class="color-swatch you-booked-it hidden {{theme}}"
-                                 style="display: inline-block;"></div>
+                            <div class="color-swatch you-booked-it hidden {{theme}}"></div>
                             <div data-colorinput="true">
                                 <label for="ybi-picker">Select a color:</label>
                                 <input type="color" class="hidden-picker" title="ybi-picker"
@@ -93,14 +103,13 @@
                         {{/if}}
                     </div>
                     <div class="col-sm">
-                        <h3>Background</h3>
                         {{#if useTheme}}
-                            <div class="color-swatch bg {{theme}}" style="display: inline-block;"></div>
+                            <div class="color-swatch bg {{theme}}"></div>
                             <div class="hidden" data-colorinput="true">
                                 <div class="color-swatch-ue bg white-bg"></div>
                             </div>
                         {{else}}
-                            <div class="color-swatch bg hidden {{theme}}" style="display: inline-block;"></div>
+                            <div class="color-swatch bg hidden {{theme}}"></div>
                             <div data-colorinput="true">
                                 <div class="color-swatch-ue bg white-bg"></div>
                             </div>
