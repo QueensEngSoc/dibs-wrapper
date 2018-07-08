@@ -89,6 +89,7 @@ $(document).ready(function() {
     var serverTime = parseInt(document.getElementById('serverTime').value) + 7;
     if (serverTime != current_hour) {
       current_hour = serverTime;
+      selectedTime = current_hour;
       showAlert("Different Time Zone Detected", "Hey there, we noticed that you seem to be in a different time zone from us. Just so you know, all times shown here will be in EST (where Queen's is)", false);
     }
 

@@ -83,6 +83,7 @@ router.get('/', function (req, res, next) {
                           // and we should therefore subtract 1 from the hour to get the right data (eg. if it is 7:10pm
                           // right now, then we really want the data from 6:30 - 7:30, not 7:30 - 8:30)
 
+  current_hour = 2;
   var userid = accountFuncs.getUserID(req);
 
   roomDB.getListOfRoomState(day, -1, userid).then(function (listFree) {
