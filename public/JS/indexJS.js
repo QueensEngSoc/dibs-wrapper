@@ -118,6 +118,7 @@ function getNewDayData(day)
             timeCount = data.timeCount;
             updateButtons(jsonData);
             updateTimePicker(responseData.day, responseData.currentHour);
+            document.getElementById('roomData').value = JSON.stringify(jsonData);
             filterList();
         },
         error: function (data) {
@@ -178,6 +179,7 @@ $('#timepicker').on('changed.bs.select', function (e, clickedIndex, isSelected, 
   var value = $('.selectpicker').val();
   console.log('Selected time is: ', value);
   selectedTime = value;
+  document.getElementById('serverTime').value = value;
   updateButtons(jsonData);
   filterList();
 });
@@ -190,7 +192,7 @@ function updateTimePicker(day, startTime){
       generateTimes(startTime);
 }
 
-function generateTimes(startTime) {
+function generateTimes(startTime, dayStart = 7) {
   var options = [];
 
   var startHour = (startTime < 7 || startTime > 23) ? 7 : startTime
@@ -200,7 +202,7 @@ function generateTimes(startTime) {
     var amPmTime = ((i) % 12 == 0) ? 12 : i % 12;
     var endAmPmTime = ((i + 1) % 12 == 0) ? 12 : (i + 1) % 12;
 
-    var freeRoomCountForHour = timeCount[i - startHour].totalFree;
+    var freeRoomCountForHour = timeCount[i - dayStart].totalFree;
     var pillClass = 'badge-success';
     if (freeRoomCountForHour < 5 && freeRoomCountForHour > 0)
         pillClass = 'badge-warning \' style=\'color: white\'';

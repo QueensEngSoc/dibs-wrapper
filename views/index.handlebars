@@ -30,8 +30,7 @@
                 <strong>Pick a time:&nbsp</strong>
                 <select class="selectpicker" id="timepicker" data-live-search="true" data-size="10" >
                     {{#each timeCountObj}}
-                        <option style="background: #5cb85c; color: #fff;" data-tokens="{{hour}} {{twenty4Hour}}"  value="{{twenty4Hour}}" data-content="<span><span class='badge badge-pill badge-success'>{{totalFree}}</span> {{timeString}}</span>" >{{timeString}}</option>
-                        <!--data-content="<span class='label label-success'>{TEST!!}</span>"-->
+                        <option data-tokens="{{hour}} {{twenty4Hour}}"  value="{{twenty4Hour}}" data-content="<span><span class='badge badge-pill {{pillClass}}'>{{totalFree}}</span> {{timeString}}</span>" >{{timeString}}</option>
                     {{/each}}
                 </select>
             </h3>

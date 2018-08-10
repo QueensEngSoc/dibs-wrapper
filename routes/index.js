@@ -90,14 +90,17 @@ router.get('/', function (req, res, next) {
 
     var startCheck = (current_hour < 7) ? 7 : current_hour;
 
-    for (var i = startCheck - 7; i < listFree[i].isFree.length; i++){
+    for (let i = startCheck - 7; i < listFree[i].isFree.length; i++){
+      let amOrPm = (startCheck >= 11) ? " PM" : " AM";
+
       timecount.push({
         hourCount: 0,
         totalCount: 0,
-        timeString: (i + 7) % 12 + ":30-" + (i + 7 + 1) % 12 + ":30",
+        timeString: (i + 7) % 12 + ":30-" + (i + 7 + 1) % 12 + ":30" + amOrPm,
         totalFree: 0,
         hour: (i + 7) % 12,
-        twenty4Hour: i + 7
+        twenty4Hour: i + 7,
+        pillClass: 'badge-success'
       });
     }
 
