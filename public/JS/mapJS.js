@@ -31,41 +31,6 @@ $('#datepicker').change(function () {
     getNewDayData(this.value, oldTime);
 });
 
-// var disabledHours = [0,1,2,3,4,5,6,23,24];
-// if (current_min < 30)
-//     current_hour--;
-
-// old timepicker stuff, may still be needed :(  This timepicker looks pretty, but has no events, so it's kinda useless...
-// $('#timepicker').timepicki({show_meridian: false,
-//     min_hour_value: current_hour,
-//     max_hour_value:22,
-//     step_size_minutes:0,
-//     start_time: [current_hour, "30"],
-//     overflow_minutes:true,
-//     increase_direction:'up',
-//     disable_keyboard_mobile: true});
-//
-// $(document).ready(function() {
-//     $("#timepicker").val("Now");
-// });
-//
-// $("#timepicker").change(function(){
-//     display("Value Changed! Selected Time: " + " input's current value: " + this.val);
-//     var date = $('#datepicker').value;
-//     getNewDayData(date, this.value);
-// });
-
-// if (day == 0){
-//     for (var i = 7; i < current_hour; i++){
-//         disabledHours.push(i);
-//     }
-// }
-// else
-//     disabledHours = [0,1,2,3,4,5,6,23,24];
-//
-// if (current_min < 30)
-//     current_hour --;
-
 var date = dateObj;
 date.setHours(current_hour);
 date.setMinutes(30);
@@ -75,6 +40,7 @@ var minHour = (today.getDay() != date.getDay()) ? 7 : current_hour;
 var mapData;
 var specificTimeData;
 var timeCount;
+var selectedHour = current_hour;
 
 function getNewDayData(day, time) {
     $.ajax({
@@ -88,8 +54,9 @@ function getNewDayData(day, time) {
             mapData = JSON.parse(mapData);
 
             timeCount = data.timeCount;
-            updateMap();
             updateSidebar(false);
+            generateSpecificTimeData();
+            updateMap();
         },
         error: function (data) {
             console.log("Error: " + data);
@@ -125,6 +92,9 @@ function updateMap() {
     else if (current == 'third') {
         element = document.getElementById("floor3");
     }
+
+    // if (mapData)
+    //     specificTimeData = mapData[selectedHour];
 
     var event; // The custom event that will be created
     if (document.createEvent) {
@@ -175,6 +145,25 @@ $(document).ready(function () {
     changeSidebarTime(minHour - 7 - 1, 16);
 });
 
+function generateSpecificTimeData(value){
+
+    if (!value)
+        value = selectedHour;
+
+  for (var i = 0; i < mapData.length; i++){
+    var room = mapData[i];
+    specificTimeData.push({
+      hasPhone: room.hasPhone,
+      isFree: room.isFree[value].free,
+      isMine: room.isFree[value].isMine,
+      room: room.room,
+      roomID: room.roomID,
+      roomNum: room.roomNum,
+      size: room.size
+    });
+  }
+
+}
 
 /////////////////////////////////// MAP UPDATING FROM TIME CHANGE //////////////////////////////////////////////////////
 
@@ -191,6 +180,7 @@ function changeSidebarTime(value, length) {
             timeElement.classList.remove("active");
     }
 
+    selectedHour = value;
     specificTimeData = [];
 
     for (var i = 0; i < mapData.length; i++){
