@@ -1,6 +1,6 @@
 const noBookingsCard = `<div class="col-sm-6">
         <div class="card" style="margin-bottom: 20px; padding-bottom: 15px;">
-            <img class="card-img-top" src="./img/ilc.jpg" alt="Card image cap"
+            <img class="card-img-top" src="./img/ilc-small.jpg" alt="Card image cap"
                  style="width: 100%; height: auto; object-fit: cover;">
             <div class="card-block">
                 <h4 class='card-title' name='bookingTime'>You have no rooms booked at the moment</h4>
@@ -11,7 +11,7 @@ const noBookingsCard = `<div class="col-sm-6">
 
 const noPrevBookingsCard = `<div class="col-sm-6">
         <div class="card" style="margin-bottom: 20px; padding-bottom: 15px;">
-            <img class="card-img-top" src="./img/ilc.jpg" alt="Card image cap"
+            <img class="card-img-top" src="./img/ilc-small.jpg" alt="Card image cap"
                  style="width: 100%; height: auto; object-fit: cover;">
             <div class="card-block">
                 <h4 class='card-title' name='bookingTime'>You're all caught up</h4>
