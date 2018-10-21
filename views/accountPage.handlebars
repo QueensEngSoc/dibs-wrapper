@@ -63,7 +63,7 @@
                                 <input type="color" class="hidden-picker" title="av-picker" value="{{customColors.av}}">
                             </div>
                         {{else}}
-                            <div class="color-swatch available hidden {{theme}}" ></div>
+                            <div class="color-swatch available hidden {{theme}}"></div>
                             <div data-colorinput="true">
                                 <label for="av-picker">Select a color:</label>
                                 <input type="color" class="hidden-picker" title="av-picker" value="{{customColors.av}}">
@@ -171,11 +171,11 @@
 
             </p>
             <!--<p>-->
-                <!--<button onclick='sendVerificationEmail()' class="btn btn-danger">Send Verification Email</button>-->
+            <!--<button onclick='sendVerificationEmail()' class="btn btn-danger">Send Verification Email</button>-->
             <!--</p>-->
             {{#if_eq user.local.email "14ar75@queensu.ca"}}
                 <p>
-                <button onclick='testDayShift()' class="btn btn-danger">Test out day shifting code</button>
+                    <button onclick='testDayShift()' class="btn btn-danger">Test out day shifting code</button>
                 </p>
             {{/if_eq}}
             <br/>
@@ -204,7 +204,7 @@
 <div class="tab-pane fade active show" id="nav-home" role="tabpanel"
      aria-labelledby="nav-home-tab"
      aria-expanded="true">
-<br>
+    <br>
 <div class="row" id="bookedRow">
 
 {{#each booking}}
@@ -215,13 +215,14 @@
                 <div class="col-sm-6">
                     <div class="card" style="margin-bottom: 20px; padding-bottom: 15px;">
                         <img class="card-img-top" src="{{../pic}}" alt="Card image cap"
-                             style="width: 100%; height: 25vw; object-fit: cover;">
-                        <div class="card-block" style="padding-left: 10px; padding-right: 10px;">
+                             style="width: 100%; height: auto; object-fit: cover;">
+                        <div class="card-block">
                             <h4 class='card-title' name='bookingTime'>{{../prettyDay}}: {{../room}} - {{time}}</h4>
                 <p class="card-text">{{../description}}</p>
             {{#if_eq ../intDay 0}}
                 {{#if_time_plus_len startTime length}}
-                        <button name="unbookBtn" onclick='unbookRoomClick({{../roomid}}, {{startTime}}, {{../intDay}}, "{{owner}}", this, {{length}})'
+                        <button name="unbookBtn"
+                                onclick='unbookRoomClick({{../roomid}}, {{startTime}}, {{../intDay}}, "{{owner}}", this, {{length}})'
                                 class="btn btn-danger" style="padding-bottom: 5px;">Cancel Booking
                         </button>
                 {{else}}
@@ -231,7 +232,8 @@
                         </button>
                 {{/if_time_plus_len}}
             {{else}}
-                    <button name="unbookBtn" onclick='unbookRoomClick({{../roomid}}, {{startTime}}, {{../intDay}}, "{{owner}}", this, {{length}})'
+                    <button name="unbookBtn"
+                            onclick='unbookRoomClick({{../roomid}}, {{startTime}}, {{../intDay}}, "{{owner}}", this, {{length}})'
                             class="btn btn-danger" style="padding-bottom: 5px;">Cancel Booking
                     </button>
             {{/if_eq}}
@@ -244,6 +246,7 @@
 
     {{/each}}
 {{/each}}
+
 </div>
 </div>
 <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab"
@@ -258,10 +261,11 @@
 </div>
 </div>
 
-
-<button onclick='unbookRoomClick(-1, 7, -1, "{{owner}}", this)' class="btn btn-danger" style="padding-bottom: 5px;">
-    Unbook All Active
-</button>
+<div class="unbook-all-button">
+    <button onclick='unbookRoomClick(-1, 7, -1, "{{owner}}", this)' class="btn btn-danger" style="padding-bottom: 5px;">
+        Unbook All Active
+    </button>
+</div>
 </div>
 
 </p>

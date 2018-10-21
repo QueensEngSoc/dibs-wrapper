@@ -460,3 +460,11 @@ group + group {
         font-size: 30px;    /*1rem = 16px*/
     }
 }
+
+.card-block {
+    padding: 10px 10px 0 10px;
+}
+
+.unbook-all-button {
+    padding-top: 12px
+}

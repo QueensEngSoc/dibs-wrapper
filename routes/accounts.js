@@ -163,9 +163,7 @@ router.get('/accounts', function (req, res, next) {
                         }
 
                         for (var day = 0; day < listBookings.length; day++) {
-                            var hash = "";
                             var length = 1;
-                            var start = 0;
                             var end = 16;
                             for (var i = 0; i < end; i++) {
                                 if (free[day].free[i].owner == req.user.id) {
@@ -207,9 +205,7 @@ router.get('/accounts', function (req, res, next) {
                 var free = listBookings;
                 if (free != undefined) {
                     for (var day = 0; day < listBookings.length; day++) {
-                        var hash = "";
                         var length = 1;
-                        var start = 0;
                         var end = 16;
                         for (var i = 0; i < end; i++) {
                             if (free[day].free[i].owner == req.user.id) {
