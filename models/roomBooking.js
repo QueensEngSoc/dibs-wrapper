@@ -12,84 +12,20 @@ var randomstring = require("randomstring"); // used to generate the random hash 
 
 //use is same as roomDatabase
 
-
 /**
- *
+ * Used to book different 1 hour time slots for a certain room
  * @param day
- * @param time
+ * @param times
  * @param roomID
  * @param usrid
- * @returns {promise}
+ * @param req
+ * @returns {Promise<any>}
  */
-//OUT OF DATE, DO NOT USE!!!! USE bookMultiple
-function bookRoom(day, time, roomID, length, usrid, req) { //books a room at a certain time and day and sets the owner to be the usrid
-    return new Promise(function (resolve, reject) {
-
-        if (!userFuncs.canBookMoreRooms(req)) {
-            var out = {
-                header: "Booking failed",
-                bookMsg: "Sorry, You have booked too many hours.  There are a max of " + consts.room_hour_limit + " hours allowed.",
-                success: false
-            };
-
-            resolve(out);
-            return;
-        }
-
-        roomDatabase.find({RoomID: roomID}).each(function (data, val) {
-            var temp = data.Free;
-            var out = {
-                header: "Booking failed",
-                bookMsg: "Sorry, an error occured and the room was not booked.  Please try again later.",
-                success: false
-            };
-
-            var end = length + parseInt(time, 10);
-            var bookingHash = randomstring.generate({
-                length: 5
-            });
-
-            for (var i = time; i < end; i++) {
-                if (temp[day][i - 7].free === true) {
-                    temp[day][i - 7].free = false;
-                    temp[day][i - 7].owner = usrid;
-                    temp[day][i - 7].bookingHash = bookingHash;
-                }
-                else {
-                    out.bookMsg = "Sorry, this room is booked.  Looks like someone beat you to it :(";
-                    out.header = "Room Already Booked"
-                    resolve(out);
-                }
-            }
-            if (userFuncs.updateBookingCount(1, req)) {
-                roomDatabase.update({RoomID: roomID}, {$set: {Free: temp}});
-                out.success = true;
-                out.bookMsg = "Booking successful for " + data.Name + " from " + time + ":30 - " + (time + length) + ":30";
-                out.header = "Booking Success!";
-                resolve(out);
-
-            }
-            else {
-                out = {
-                    header: "Booking failed",
-                    bookMsg: "Sorry, an error occured and the room was not booked.  Please try again later.",
-                    success: false
-                };
-                resolve(out);
-
-            }
-            resolve(out);
-
-
-        });
-    });
-}
-
 function bookMultiple(day, times, roomID, usrid, req) {
     return new Promise(function (resolve, reject) {
 
         if (usrid !== "admin") {
-            if (!userFuncs.canBookMoreRooms(req)) {
+            if (!userFuncs.canBookMoreRooms(req)) { //Checking if the user has reached their book limit
                 var out = {
                     header: "Booking failed",
                     bookMsg: "Sorry, You have booked too many hours.  There are a max of " + consts.room_hour_limit + " hours allowed.",
@@ -103,12 +39,12 @@ function bookMultiple(day, times, roomID, usrid, req) {
         }
 
         roomDatabase.find({RoomID: roomID}).each(function (data, val) {
-            var temp = data.Free;
+            var temp = data.Free; //the array of free times for this day
             var roomNum = data.Name.match(/\d+/)[0]; // get the number from the room
             var mapRoomName = "bmh" + roomNum;
             var prettyDay = getPrettyDay(day);
 
-            var out = {
+            var out = { //initialize the output json to send, will be modified based on if the room was successfully booked
                 header: "Booking failed",
                 bookMsg: "Sorry, an error occured and the room was not booked.  Please try again later.",
                 success: false,
@@ -130,20 +66,20 @@ function bookMultiple(day, times, roomID, usrid, req) {
             var totalBooked = 0;
             var dayData = data.Free[day];
             totalBooked = getTotalBookedHoursPerRoom(totalBooked, dayData, usrid);
-            if (consts.per_room_limit - totalBooked <= 0) {
+            if (consts.per_room_limit - totalBooked <= 0) { //check if user has booked too many hours for this room
                 out.bookMsg = "Sorry, you can only book " + consts.per_room_limit + " hours per day in a single room";
                 out.header = "Max of " + consts.per_room_limit + " hours per room";
                 resolve(out);
                 return;
             }
 
-            for (var time of times) { //iterate over an array of times instead of a sequence of numbers
-                if (usrid !== "admin") {
-                    if (temp[day][time - 7].free === true) {
+            for (var time of times) { //iterate over the array of times given instead of a sequence of numbers
+                if (usrid !== "admin") { //if a normal user...
+                    if (temp[day][time - 7].free === true) { //if the room is free at this time
                         if (consts.per_room_limit - totalBooked - numBooked <= 0) {
                             break;
                         }
-                        temp[day][time - 7].free = false;
+                        temp[day][time - 7].free = false; //setup the owner
                         temp[day][time - 7].owner = usrid;
                         temp[day][time - 7].bookingHash = bookingHash;
                         numBooked++;
@@ -153,7 +89,7 @@ function bookMultiple(day, times, roomID, usrid, req) {
                         out.header = "Room Already Booked";
                         resolve(out);
                     }
-                } else {
+                } else { //if an admin is booking override anything there
                     temp[day][time - 7].free = false;
                     temp[day][time - 7].owner = usrid;
                     temp[day][time - 7].bookingHash = bookingHash;
@@ -173,6 +109,7 @@ function bookMultiple(day, times, roomID, usrid, req) {
             } else if (userFuncs.updateBookingCount(numBooked, req)) {  // times.length -> if you increment by the number in the array, then if the user books more than once without refreshing, it double counts the hours
                 roomDatabase.update({RoomID: roomID}, {$set: {Free: temp}});
 
+                //setting up output message
                 out.success = true;
                 var msg = "Booking successful for "; //setting up the message to include multiple times
                 for (i in times) {
@@ -191,7 +128,7 @@ function bookMultiple(day, times, roomID, usrid, req) {
                 }
                 resolve(out);
 
-            } else {
+            } else { //if everything fails
                 out = {
                     header: "Booking failed",
                     bookMsg: "Sorry, an error occured and the room was not booked.  Please try again later.",
@@ -331,6 +268,79 @@ function getPrettyDay(intDay) {
     var today = new Date();
     today.setTime(today.getTime() + intDay * 24 * 60 * 60 * 1000);
     return today.toDateString();
+}
+
+
+/**
+ *
+ * @param day
+ * @param time
+ * @param roomID
+ * @param usrid
+ * @returns {promise}
+ */
+//OUT OF DATE, DO NOT USE!!!! USE bookMultiple
+function bookRoom(day, time, roomID, length, usrid, req) { //books a room at a certain time and day and sets the owner to be the usrid
+    return new Promise(function (resolve, reject) {
+
+        if (!userFuncs.canBookMoreRooms(req)) {
+            var out = {
+                header: "Booking failed",
+                bookMsg: "Sorry, You have booked too many hours.  There are a max of " + consts.room_hour_limit + " hours allowed.",
+                success: false
+            };
+
+            resolve(out);
+            return;
+        }
+
+        roomDatabase.find({RoomID: roomID}).each(function (data, val) {
+            var temp = data.Free;
+            var out = {
+                header: "Booking failed",
+                bookMsg: "Sorry, an error occured and the room was not booked.  Please try again later.",
+                success: false
+            };
+
+            var end = length + parseInt(time, 10);
+            var bookingHash = randomstring.generate({
+                length: 5
+            });
+
+            for (var i = time; i < end; i++) {
+                if (temp[day][i - 7].free === true) {
+                    temp[day][i - 7].free = false;
+                    temp[day][i - 7].owner = usrid;
+                    temp[day][i - 7].bookingHash = bookingHash;
+                }
+                else {
+                    out.bookMsg = "Sorry, this room is booked.  Looks like someone beat you to it :(";
+                    out.header = "Room Already Booked"
+                    resolve(out);
+                }
+            }
+            if (userFuncs.updateBookingCount(1, req)) {
+                roomDatabase.update({RoomID: roomID}, {$set: {Free: temp}});
+                out.success = true;
+                out.bookMsg = "Booking successful for " + data.Name + " from " + time + ":30 - " + (time + length) + ":30";
+                out.header = "Booking Success!";
+                resolve(out);
+
+            }
+            else {
+                out = {
+                    header: "Booking failed",
+                    bookMsg: "Sorry, an error occured and the room was not booked.  Please try again later.",
+                    success: false
+                };
+                resolve(out);
+
+            }
+            resolve(out);
+
+
+        });
+    });
 }
 
 

@@ -3,6 +3,7 @@ var index = require('../routes/index');
 var loginPage = require('../routes/login');
 var accountPage = require('../routes/accounts');
 var signupPage = require('../routes/signup');
+var adminPage = require('../routes/admin');
 var prefPage = require('../routes/preferences');
 var quick = require('../routes/quick');
 var map = require('../routes/map');
@@ -66,7 +67,8 @@ module.exports = function(app, passport) {
     // =====================================
     // show the signup form
     app.get('/signup', signupPage);
-    // app.get('/admin', adminPage);
+    app.get('/admin', adminPage);
+    app.post('/admin', adminPage);
     // app.get('/preferences', prefPage);
 
     // process the signup form

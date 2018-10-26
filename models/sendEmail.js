@@ -6,9 +6,11 @@ var pass = "";
 var env = process.env.NODE_ENV || 'dev';
 
 if (env == 'dev'){
-    var emailInfo = require('../config/emailConfig');
-    user = emailInfo.emailUsername;
-    pass = emailInfo.emailPassword;
+    // var emailInfo = require('../config/emailConfig');
+    // user = emailInfo.emailUsername;
+    // pass = emailInfo.emailPassword;
+    user = process.env.emailUsername;
+    pass = process.env.emailPassword;
 }
 else
 {

@@ -1,0 +1,24 @@
+<style>
+    ::-webkit-clear-button {
+        display: none;
+    }
+</style>
+
+<div class="container" align="CENTER" style="padding-top: 40px">
+    <h2>Welcome to the Schedule Creation Wizard</h2>
+
+    <br>
+
+    <form>
+        Choose the starting date for your schedule:
+        <input type="date" name="Date" id="datePicker">
+        <br><br>
+        Choose the starting time for your schedule (from 7:30am - 10:30pm):
+        <input type="time" name="Time" value="06:30" id="timePicker" step="3600" min="07:30" max="22:30">
+        <br>
+        <div id="timeError" style="color: red;"></div>
+        <br><br>
+    </form>
+</div>
+
+<script src="/JS/schedule.js"></script>

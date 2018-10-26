@@ -8,6 +8,10 @@ var adminDB = db.get('adminDatabase');
 //     console.log(data);
 // });
 
+/**
+ *
+ * @returns {Promise<any>}
+ */
 function getAll() {
     return new Promise(function(resolve, reject) {
         adminDB.find({}, function(err, data) {
@@ -21,17 +25,27 @@ function getAll() {
  * @param schedule
  */
 function addSchedule(schedule) {
-    for (room of schedule.roomsAffected) {
-        adminDB.find({RoomID: room}, function (err, data) {
-            if (err)
-                console.log(err);
+    return new Promise(function(resolve, reject) {
+        var out;
+        var errors = [];
+        for (room of schedule.roomsAffected) {
+            adminDB.find({RoomID: room}, function (err, data) {
+                if (err) {
+                    console.log(err);
+                    errors.push(err);
+                }
 
-            var futureRules = data[0].futureRules; //adding rules to current list for room
-            futureRules.push(schedule.rules);
+                var futureRules = data[0].futureRules; //adding rules to current list for room
+                futureRules.push(schedule.rules);
 
-            adminDB.update({RoomID: room}, {$set: {futureRules: futureRules}});
-        });
-    }
+                adminDB.update({RoomID: room}, {$set: {futureRules: futureRules}});
+            });
+        }
+        if (errors.length > 0)
+            out = {errors: errors};
+
+        resolve(out);
+    });
 }
 
 /**

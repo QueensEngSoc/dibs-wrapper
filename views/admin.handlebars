@@ -1,0 +1,63 @@
+<style>
+    ::-webkit-clear-button {
+        display: none;
+    }
+</style>
+
+
+<h2 style="padding-top: 40px" align="CENTER">Welcome to the admin page!</h2>
+<h3 style="padding-bottom: 40px" align="CENTER">Here you can create schedules and apply them to different rooms. You can also enable or disable rooms.</h3>
+
+<br>
+<h4 style="padding-bottom: 40px" align="CENTER">Active Schedules</h4>
+<br>
+
+<div class="container" align="CENTER">
+    <button onclick="toggleCreation(this)" class="btn btn-primary">Create a Schedule</button>
+    <p></p>
+    <button onclick="toggleEnable(this)" class="btn btn-primary">Enable or Disable Rooms</button>
+</div>
+
+<!--Schedule Creation-->
+<div class="container" align="CENTER" style="display: none" id="schedule">
+    <div class="container" align="CENTER" style="padding-top: 40px">
+        <h2>Welcome to the Schedule Creation Wizard</h2>
+
+        <br>
+
+        <form onsubmit="submitSchedule();">
+            Choose the start and end dates for your schedule:
+            <br>
+            <input type="date" name="Date" id="startDatePicker"> to <input type="date" name="Date" id="endDatePicker">
+            <div id="dateError" style="color: red;"></div>
+            <br><br>
+            Choose the start and end times for when the rooms will be unavailable each day (from 7:30am - 10:30pm):
+            <br>
+            <input type="time" name="Time" value="07:30" id="startTimePicker" step="60"> to
+            <input type="time" name="Time" value="23:30" id="endTimePicker" step="60">
+            <br>Make sure to select the correct AM or PM.<br>
+            <div id="timeError" style="color: red;"></div>
+            <br>
+            <button type="button" onclick="selectAll();" class="ctime">Select All</button> <br>
+            {{#each list}}
+                <button type="button" name="{{this.RoomID}}" class="ntime" onclick="select(this);">{{this.Name}}</button>
+            {{/each}}
+            <br>
+            <p>(Red = No affect on room, Green = Schedule will affect room)</p>
+            <br><br>
+            <button type="button" onclick="submitSchedule();" class="btn btn-primary">Submit Schedule</button>
+        </form>
+    </div>
+</div>
+
+<!--Enable or Disable Rooms-->
+<div class="container" align="CENTER" style="display: none" id="enable">
+    <div class="container" align="CENTER" style="padding-top: 40px">
+        <h2>You can enable or disable rooms to be booked here.</h2>
+
+        <br>
+
+    </div>
+</div>
+
+<script src="/JS/admin.js"></script>
