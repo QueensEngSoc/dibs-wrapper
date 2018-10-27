@@ -38,9 +38,9 @@
             <br>Make sure to select the correct AM or PM.<br>
             <div id="timeError" style="color: red;"></div>
             <br>
-            <button type="button" onclick="selectAll();" class="ctime">Select All</button> <br>
+            <button type="button" onclick="selectAllSched();" class="ctime">Select All</button> <br>
             {{#each list}}
-                <button type="button" name="{{this.RoomID}}" class="ntime" onclick="select(this);">{{this.Name}}</button>
+                <button type="button" name="{{this.RoomID}}" section="sched" class="ntime" onclick="selectSched(this);">{{this.Name}}</button>
             {{/each}}
             <br>
             <p>(Red = No affect on room, Green = Schedule will affect room)</p>
@@ -54,9 +54,17 @@
 <div class="container" align="CENTER" style="display: none" id="enable">
     <div class="container" align="CENTER" style="padding-top: 40px">
         <h2>You can enable or disable rooms to be booked here.</h2>
-
         <br>
-
+        <button type="button" onclick="selectAll();" class="ctime">Select All</button> <br>
+        {{#each list}}
+            {{#if this.enabled}}
+                <button type="button" name="{{this.RoomID}}" section="status" class="ytime" onclick="select(this);">{{this.Name}}</button>
+            {{else}}
+                <button type="button" name="{{this.RoomID}}" section="status" class="ntime" onclick="select(this);">{{this.Name}}</button>
+            {{/if}}
+        {{/each}}
+        <br><br>
+        <button type="button" onclick="submitStatus();" class="btn btn-primary">Save Room Status</button>
     </div>
 </div>
 

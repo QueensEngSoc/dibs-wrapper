@@ -80,29 +80,29 @@ endTPicker.max = "23:59";
 //     // }
 // };
 
-var selected = [];
-
+var selectedSched = [];
 //Select room
-function select(button) {
+function selectSched(button) {
     var id = parseInt(button.name);
 
-    if (selected.includes(id)){
-        var i = selected.findIndex(function (element) {
+    if (selectedSched.includes(id)){
+        var i = selectedSched.findIndex(function (element) {
             return element == id;
         });
-        selected.splice(i, 1);
+        selectedSched.splice(i, 1);
         button.setAttribute("class", "ntime");
     } else {
-        selected.push(id);
+        selectedSched.push(id);
         button.setAttribute("class", "ytime");
     }
 }
 
 //Selects all unselected buttons
-function selectAll() {
-    var unselected = $('.ntime');
+function selectAllSched() {
+    var unselected = $("[section=sched][class=ntime]");
+    console.log(unselected);
     for (button of unselected) {
-        select(button);
+        selectSched(button);
     }
 }
 
@@ -131,9 +131,61 @@ function submitSchedule() {
 
     //send er
     $.ajax({
-        url: "/admin",
+        url: "/schedule",
         type: "POST",
         data: {startDate: JSON.stringify(startDate), length: days, hours: hours, rooms: rooms},
+        dataType: "json",
+        success: function(data) {
+            alert(data.msg);
+        },
+        error: function(data) {
+            alert(data.msg);
+        }
+    });
+}
+
+
+var selected = [];
+//Select room
+function select(button) {
+    var id = parseInt(button.name);
+
+    if (selected.includes(id)){
+        var i = selected.findIndex(function (element) {
+            return element == id;
+        });
+        selected.splice(i, 1);
+        button.setAttribute("class", "ntime");
+    } else {
+        selected.push(id);
+        button.setAttribute("class", "ytime");
+    }
+}
+
+//Selects all unselected buttons
+function selectAll() {
+    var unselected = $("[section=status][class=ntime]");
+    for (button of unselected) {
+        select(button);
+    }
+}
+
+var list = $("[section=status][class=ytime]");
+for (var i = 0; i < list.length; i++) {
+    selected.push(parseInt(list[i].name));
+}
+
+function submitStatus() {
+    var toDisable = [];
+    var ntimes = $("[section=status][class=ntime]");
+    for (var i = 0; i < ntimes.length; i++) {
+        toDisable.push(parseInt(ntimes[i].name));
+    }
+
+    $.ajax({
+        url: "/status",
+        type: "POST",
+        data: {roomID: selected, toDisable: toDisable},
         dataType: "json",
         success: function(data) {
             alert(data.msg);

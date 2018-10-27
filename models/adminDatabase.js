@@ -1,4 +1,5 @@
-var monk = require('monk'); var env = process.env.NODE_ENV || 'dev';
+var monk = require('monk');
+var env = process.env.NODE_ENV || 'dev';
 
 var db = monk('localhost:27017/adminDatabase');
 var adminDB = db.get('adminDatabase');
@@ -103,6 +104,43 @@ function getInRange(room) {
     });
 }
 
+/** Sets the status of a certain room to be enabled or disabled
+ *
+ * @param roomID - The integer ID of the room in question
+ * @param status - Boolean value, sets the room to be enabled or disabled.
+ */
+function setStatus(roomID, status) {
+    return new Promise(function (resolve, reject) {
+        adminDB.find({RoomID: roomID}, function (err, data) {
+            if (err) {
+                console.log(err);
+                resolve(err);
+            }
+
+            adminDB.update({RoomID: roomID}, {$set: {enabled: status}});
+            resolve(undefined);
+        });
+    });
+}
+
+/** Gets the list of rooms which are currently disabled
+ *
+ * @returns {Promise<any>}
+ */
+function getDisabled() {
+    return new Promise(function(resolve, reject) {
+        var out = [];
+        getAll().then(function(data) {
+            for (room in data) {
+                if (room.enabled == false) {
+                    out.push(room);
+                }
+            }
+            resolve(out);
+        });
+    });
+}
+
 /** getDaysWithinFortnight - returns the number of days the given date is within a fortnight
  *
  * @param date - the date to check
@@ -123,5 +161,6 @@ module.exports = {
     addSchedule: addSchedule,
     createSchedule: createSchedule,
     getInRange: getInRange,
-    getAll: getAll
+    getAll: getAll,
+    setStatus: setStatus
 };

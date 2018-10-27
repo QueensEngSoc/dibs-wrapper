@@ -68,7 +68,8 @@ module.exports = function(app, passport) {
     // show the signup form
     app.get('/signup', signupPage);
     app.get('/admin', adminPage);
-    app.post('/admin', adminPage);
+    app.post('/schedule', adminPage);
+    app.post('/status', adminPage);
     // app.get('/preferences', prefPage);
 
     // process the signup form

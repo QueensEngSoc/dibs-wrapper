@@ -65,7 +65,8 @@ function checkAdminDB() {
             adminFuncs.getInRange(room.RoomID).then(function(ranges, err) {
                 for (var range of ranges) {
                     roomBook.bookMultiple(range.start, range.hours, range.roomID, "admin", undefined).then(function (data) {
-
+                        console.log("A schedule is in range, booking rooms...");
+                        console.log(data);
                     });
                 }
             });

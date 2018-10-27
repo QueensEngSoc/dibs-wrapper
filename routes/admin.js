@@ -12,7 +12,7 @@ router.get('/admin', function(req, res) {
 //     res.render('schedule', {});
 // });
 
-router.post('/admin', function(req, res) {
+router.post('/schedule', function(req, res) {
     //receive the data and set it up in usable form
     var startDate = new Date(JSON.parse(req.body.startDate));
     var length = parseInt(req.body.length);
@@ -42,6 +42,40 @@ router.post('/admin', function(req, res) {
 
         res.send({msg: msg});
     });
+});
+
+router.post('/status', function(req, res) {
+    //Get the data from the body of the request
+    var roomID = req.body['roomID[]'];
+    var toDisable = req.body['toDisable[]'];
+
+
+    console.log(roomID);
+    console.log(toDisable);
+
+    var msg = "Status of room set successfully";
+    if (roomID) {
+        for (var i = 0; i < roomID.length; i++) {
+            adminFuncs.setStatus(parseInt(roomID[i]), true).then(function (err) {
+                if (err) {
+                    console.log(err);
+                    msg = "Something went wrong, please try again.";
+                }
+            });
+        }
+    }
+    if (toDisable) {
+        for (var i = 0; i < toDisable.length; i++) {
+            adminFuncs.setStatus(parseInt(toDisable[i]), false).then(function (err) {
+                if (err) {
+                    console.log(err);
+                    msg = "Something went wrong, please try again.";
+                }
+            })
+        }
+    }
+
+    res.send({msg: msg});
 });
 
 module.exports = router;
