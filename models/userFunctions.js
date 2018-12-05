@@ -24,7 +24,7 @@ function getAdminStatus(req) {
     if (req.isAuthenticated()) {
         try {
             var user = req.user;
-            return user.isAdmin;
+            return user.local.isAdmin;
 
         } catch (exception) {
             console.error(exception);

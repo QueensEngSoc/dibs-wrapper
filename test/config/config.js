@@ -9,8 +9,8 @@ describe('Config JS Constants Test', function () {
         });
     });
     describe('Room Hour Limit', function () {
-        it('Should be 10', function (done) {
-            assert.equal(config.room_hour_limit, 10);
+        it('Should be 12', function (done) {
+            assert.equal(config.room_hour_limit, 12);
             done();
         });
     });

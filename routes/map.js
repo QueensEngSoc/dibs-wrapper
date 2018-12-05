@@ -6,7 +6,7 @@ var router = express.Router();
 var roomFuncs = require('../models/roomDatabase');
 var accountFuncs = require('../models/userFunctions');
 
-router.post('/map', function (req, res) {
+router.post('/map', async function (req, res) {
     var data = JSON.stringify(req.body);
     var obj = JSON.parse(data);
     var dateStr = obj.day;
@@ -24,50 +24,48 @@ router.post('/map', function (req, res) {
 
     var usrid = accountFuncs.getUserID(req);
 
-    roomFuncs.getListOfRoomState(day, -1, usrid).then(function (listFree) {
-        var timecount = [];
+    const listFree = await roomFuncs.getListOfRoomState(day, -1, usrid);
+    var timecount = [];
 
-        for (var i = 0; i < listFree[i].isFree.length; i++){
-            timecount.push({
-                hourCount: 0,
-                totalCount: 0
-            });
-        }
-
-        for(var i = 0; i < listFree.length; i++){
-            var count = 0;
-            var mine = 0;
-            for(var j = 0; j < listFree[i].isFree.length; j++){
-                if (!listFree[i].isFree[j].free) {
-                    count++;
-                    timecount[j].hourCount++;
-                }
-                if (listFree[i].isFree[j].owner == usrid) {
-                    mine++;
-                    listFree[i].isFree[j].isMine = true;
-                }
-                else
-                    listFree[i].isFree[j].isMine = false;
-
-                timecount[j].totalCount++;
-            }
-        }
-
-        var jsonTimeCount = JSON.stringify(timecount);
-        var jsonList = JSON.stringify(listFree);
-        var prettyDate = formatDate(date);
-
-        res.send({
-            list: listFree,
-            roomStatus: jsonList,
-            currentHour: hour,
-            timeCount: jsonTimeCount,
-            prettyDate: prettyDate
+    for (var i = 0; i < listFree[i].isFree.length; i++) {
+        timecount.push({
+            hourCount: 0,
+            totalCount: 0
         });
+    }
+
+    for (var i = 0; i < listFree.length; i++) {
+        var count = 0;
+        var mine = 0;
+        for (var j = 0; j < listFree[i].isFree.length; j++) {
+            if (!listFree[i].isFree[j].free) {
+                count++;
+                timecount[j].hourCount++;
+            }
+            if (listFree[i].isFree[j].owner == usrid) {
+                mine++;
+                listFree[i].isFree[j].isMine = true;
+            } else
+                listFree[i].isFree[j].isMine = false;
+
+            timecount[j].totalCount++;
+        }
+    }
+
+    var jsonTimeCount = JSON.stringify(timecount);
+    var jsonList = JSON.stringify(listFree);
+    var prettyDate = formatDate(date);
+
+    res.send({
+        list: listFree,
+        roomStatus: jsonList,
+        currentHour: hour,
+        timeCount: jsonTimeCount,
+        prettyDate: prettyDate
     });
 });
 
-router.get('/map', function (req, res, next) {
+router.get('/map', async function (req, res, next) {
 
 
     var dateObj = new Date();
@@ -82,51 +80,47 @@ router.get('/map', function (req, res, next) {
 
     var usrid = accountFuncs.getUserID(req);
 
-    roomFuncs.getListOfRoomState(day, -1, usrid).then(function (listFree) {
-        var timecount = [];
+    const listFree = await roomFuncs.getListOfRoomState(day, -1, usrid);
+    var timecount = [];
 
-        for (var i = 0; i < listFree[i].isFree.length; i++){
-            timecount.push({
-                hourCount: 0,
-                totalCount: 0
-            });
-        }
-
-        for(var i = 0; i < listFree.length; i++){
-            var count = 0;
-            var mine = 0;
-            for(var j = 0; j < listFree[i].isFree.length; j++){
-                if (!listFree[i].isFree[j].free) {
-                    count++;
-                    timecount[j].hourCount++;
-                }
-                if (listFree[i].isFree[j].owner == usrid) {
-                    mine++;
-                    listFree[i].isFree[j].isMine = true;
-                }
-                else
-                    listFree[i].isFree[j].isMine = false;
-
-                timecount[j].totalCount++;
-            }
-        }
-
-        var jsonTimeCount = JSON.stringify(timecount);
-        var jsonList = JSON.stringify(listFree);
-        // var prettyDate = formatDate(date);
-
-        res.render('map', {    // render the page with server side variables passed to the client
-            // vars go here, like if a room is booked or not
-            title: "D!Bs Map View",
-            roomStatus: jsonList,
-            currentHour: current_hour,
-            theme: req.theme === "custom" ? false : req.theme,
-            colors: req.colors,
-            timeCount: jsonTimeCount
+    for (var i = 0; i < listFree[i].isFree.length; i++) {
+        timecount.push({
+            hourCount: 0,
+            totalCount: 0
         });
+    }
 
+    for (var i = 0; i < listFree.length; i++) {
+        var count = 0;
+        var mine = 0;
+        for (var j = 0; j < listFree[i].isFree.length; j++) {
+            if (!listFree[i].isFree[j].free) {
+                count++;
+                timecount[j].hourCount++;
+            }
+            if (listFree[i].isFree[j].owner == usrid) {
+                mine++;
+                listFree[i].isFree[j].isMine = true;
+            } else
+                listFree[i].isFree[j].isMine = false;
+
+            timecount[j].totalCount++;
+        }
+    }
+
+    var jsonTimeCount = JSON.stringify(timecount);
+    var jsonList = JSON.stringify(listFree);
+    // var prettyDate = formatDate(date);
+
+    res.render('map', {    // render the page with server side variables passed to the client
+        // vars go here, like if a room is booked or not
+        title: "D!Bs Map View",
+        roomStatus: jsonList,
+        currentHour: current_hour,
+        theme: req.theme === "custom" ? false : req.theme,
+        colors: req.colors,
+        timeCount: jsonTimeCount
     });
-
 
 });
 

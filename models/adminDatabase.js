@@ -127,19 +127,32 @@ function setStatus(roomID, status) {
  *
  * @returns {Promise<any>}
  */
-function getDisabled() {
-    return new Promise(function(resolve, reject) {
-        var out = [];
-        getAll().then(function(data) {
-            for (room in data) {
-                if (room.enabled == false) {
-                    out.push(room);
-                }
-            }
-            resolve(out);
-        });
-    });
+async function getDisabled() {
+    var out = [];
+    const data = await getAll();
+    for (const room of data) {
+        if (room.enabled == false) {
+            out.push(room);
+        }
+    }
+    return out;
 }
+
+/** Gets the list of room ids which are currently disabled
+ *
+ * @returns {Promise<Array>}
+ */
+async function getDisabledRoomIDs() {
+    var out = [];
+    const data = await getAll();
+    for (const room of data) {
+        if (room.enabled == false) {
+            out.push(room.RoomID);
+        }
+    }
+    return out;
+}
+
 
 /** getDaysWithinFortnight - returns the number of days the given date is within a fortnight
  *
@@ -162,5 +175,7 @@ module.exports = {
     createSchedule: createSchedule,
     getInRange: getInRange,
     getAll: getAll,
-    setStatus: setStatus
+    setStatus: setStatus,
+    getDisabled,
+    getDisabledRoomIDs
 };
