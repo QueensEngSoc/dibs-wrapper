@@ -1,11 +1,22 @@
 var express = require('express');
 var router = express.Router();
 var adminFuncs = require('../models/adminDatabase');
+var userFuncs = require('../models/userFunctions');
 
 router.get('/admin', function(req, res) {
-    adminFuncs.getAll().then(function(data) {
-        res.render('admin', {list: data});
-    });
+    if (req.isAuthenticated() && userFuncs.getAdminStatus(req)) {
+      adminFuncs.getAll().then(function (data) {
+        res.render('admin', { list: data });
+      });
+    } else {
+      res.render("404", {
+        message: "<p>That room does not exist!</p>" +
+          "<p><a href='/'>Go back to the homepage</a> or <a href='/quicky'>QuickBook a room</a>!</p>",
+        image: "trail.jpg",
+        theme: req.theme === "custom" ? false : req.theme,
+        colors: req.colors
+      });
+    }
 });
 
 // router.get('/schedulecreation', function(req, res) {

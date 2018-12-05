@@ -18,6 +18,22 @@ function getUserID(req) {
     return usrid;
 }
 
+function getAdminStatus(req) {
+    var usrid = -1;
+
+    if (req.isAuthenticated()) {
+        try {
+            var user = req.user;
+            return user.isAdmin;
+
+        } catch (exception) {
+            console.error(exception);
+        }
+    }
+    return usrid;
+}
+
+
 function canBookMoreRooms(req) {
 
     if (req.isAuthenticated()) {
@@ -173,14 +189,15 @@ function setQuickyStatus(req, quick){
 
 
 module.exports = {
-    getUserID: getUserID,
-    getBookingCount: getBookingCount,
-    canBookMoreRooms: canBookMoreRooms,
-    updateBookingCount: updateBookingCount,
-    resetBookingCount: resetBookingCount,
-    endOfDayBookingCountReset: endOfDayBookingCountReset,
-    setLastBookedRooms: setLastBookedRooms,
-    getLastBookedRooms: getLastBookedRooms,
-    getQuickyStatus: getQuickyStatus,
-    setQuickyStatus: setQuickyStatus
+    getUserID,
+    getBookingCount,
+    canBookMoreRooms,
+    updateBookingCount,
+    resetBookingCount,
+    endOfDayBookingCountReset,
+    setLastBookedRooms,
+    getLastBookedRooms,
+    getQuickyStatus,
+    setQuickyStatus,
+    getAdminStatus
 };

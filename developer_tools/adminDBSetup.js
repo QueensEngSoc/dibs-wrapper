@@ -1,26 +1,21 @@
 var monk = require('monk');
 var db = monk('localhost:27017/adminDatabase');
 var adminDB = db.get('adminDatabase');
-var jsonfile = require('jsonfile');
 
-jsonfile.readFile('adminDBSchema.json', function(err, data) {
-    if (err)
-        console.log(err);
+const json = require('./adminDBSchema.json');
+for (const room of json) {
+    var out = room;
 
-    for (room of data) {
-        var out = room;
+    var unix = new Date();
+    unix.setFullYear(1971, 10, 3); //November 3rd, 1971 (default date)
+    out.disabledEnd = unix;
+    out.endSpDate = unix;
 
-        var unix = new Date();
-        unix.setFullYear(1971, 10, 3); //November 3rd, 1971 (default date)
-        out.disabledEnd = unix;
-        out.endSpDate = unix;
+    adminDB.insert(out);
+}
 
-        adminDB.insert(out);
-    }
-
-    console.log("Insertion Successful");
-});
-
+console.log("Database Generation Successful");
+process.exit(0);
 
 // Code to setup schema from offlineDBSetupFile.json
 // ----------------------------------------------------------------------

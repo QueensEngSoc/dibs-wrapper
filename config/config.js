@@ -1,7 +1,7 @@
 const room_booking_limit = 4;
 const room_hour_limit = 12;
 const per_room_limit = 5;
-const userVersion = 3;
+const userVersion = 4;
 const fromEmail = "no-reply@engsoc.queensu.ca";
 const dibsVersion = "1.1.23";
 // const hostName = "localhost:8080"
