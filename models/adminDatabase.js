@@ -1,11 +1,12 @@
 var monk = require('monk');
 var env = process.env.NODE_ENV || 'dev';
 
-var db = monk('localhost:27017/adminDatabase');
 if (env == 'dev')
     var db = monk('localhost:27017/adminDatabase');
 else
     var db = monk('mongodb://heroku_hh23n177:mkhup337tbpb35q85m5c066jla@ds035607.mlab.com:35607/heroku_hh23n177');
+
+var adminDB = db.get('adminDatabase');
 
 // addSchedule(createSchedule(new Date(2018, 3, 1), 2, [7], [1]));
 // getInRange(1).then(function (data) {
