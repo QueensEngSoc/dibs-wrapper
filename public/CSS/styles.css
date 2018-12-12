@@ -226,6 +226,11 @@ nav .navbar-nav {
     margin-left: -15px;
 }
 
+.map-container {
+    width: 80%;
+    margin: auto;
+}
+
 @media (max-width: 575px) {
     .navbar-expand-sm .navbar-nav .show .dropdown-menu .dropdown-item {
         color: #ecf0f1;
@@ -282,6 +287,12 @@ nav .navbar-nav {
     .navbar-expand-xl .navbar-nav .show .dropdown-menu .dropdown-item.active {
         color: #ebb8ff;
         background-color: #c771e9;
+    }
+}
+
+@media (max-width: 1700px) {
+    .map-container {
+        width: auto;
     }
 }
 
@@ -368,7 +379,8 @@ nav .navbar-nav {
 }
 
 .hidden {
-    display: none;
+    position: absolute;
+    visibility: hidden;
 }
 
 /*/////// Custom Radio Buttons ////////*/
