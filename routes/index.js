@@ -131,6 +131,7 @@ router.get('/', async function (req, res, next) {
     list: listFree,
     navLink: '<a href="/map" class="nav-link white">Map<img src="/img/map.png" class="li-spacing" height="30" width="70"></a>',
     navPic: '<a href="/map"><img src="/img/map.png" height="35" width="60"></a>',
+    isLoggedIn: req.isAuthenticated(),
     theme: req.theme === "custom" ? false : req.theme,
     colors: req.colors,
     timeCountObj: timecount,

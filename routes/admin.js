@@ -6,11 +6,11 @@ var userFuncs = require('../models/userFunctions');
 router.get('/admin', function(req, res) {
     if (req.isAuthenticated() && userFuncs.getAdminStatus(req)) {
       adminFuncs.getAll().then(function (data) {
-        res.render('admin', { list: data });
+        res.render('admin', { list: data, isLoggedIn: true});
       });
     } else {
       res.render("404", {
-        message: "<p>That room does not exist!</p>" +
+        message: "<p>You seem to have wandered off the beaten path!</p>" +
           "<p><a href='/'>Go back to the homepage</a> or <a href='/quicky'>QuickBook a room</a>!</p>",
         image: "trail.jpg",
         theme: req.theme === "custom" ? false : req.theme,

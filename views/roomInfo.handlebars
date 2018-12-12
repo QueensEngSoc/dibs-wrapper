@@ -3,9 +3,32 @@
     <div class="row justify-content-center">
         <div class="times col-12 col-md-5">
             <ul>
-                {{#each free}}
-                    {{#if_eq ../day 0}}
-                        {{#if_time startTime}}
+                {{#with roomData}}
+                    {{#each free}}
+                        {{#if_eq ../day 0}}
+                            {{#if_time startTime}}
+                                {{#if free}}
+                                    <li>
+                                        <button class="ytime"
+                                                onclick='select({{startTime}}, this)' id={{startTime}}>{{time}}</button>
+                                    </li>
+                                {{else}}
+                                    {{#if_eq owner ../userid}}
+                                        <li>
+                                            <button class="mtime"
+                                                    onclick='dibsRoomBookClick(document.getElementById("roomID").value, {{startTime}}, this, "{{../room}}", 1, {{../day}})'
+                                                    id={{startTime}}>{{time}}</button>
+                                        </li>
+                                    {{else}}
+                                        <li>
+                                            <button class="ntime"
+                                                    onclick='dibsRoomBookClick(document.getElementById("roomID").value, {{startTime}}, this, "{{../room}}", 1, {{../day}})'
+                                                    id={{startTime}}>{{time}}</button>
+                                        </li>
+                                    {{/if_eq}}
+                                {{/if}}
+                            {{/if_time}}
+                        {{else}}
                             {{#if free}}
                                 <li>
                                     <button class="ytime"
@@ -15,62 +38,41 @@
                                 {{#if_eq owner ../userid}}
                                     <li>
                                         <button class="mtime"
-                                                onclick='dibsRoomBookClick(document.getElementById("roomID").value, {{startTime}}, this, "{{../room}}", 1, {{../day}})' id={{startTime}}>{{time}}</button>
+                                                onclick='dibsRoomBookClick(document.getElementById("roomID").value, {{startTime}}, this, "{{../room}}", 1, {{../day}})'
+                                                id={{startTime}}>{{time}}</button>
                                     </li>
                                 {{else}}
                                     <li>
                                         <button class="ntime"
-                                                onclick='dibsRoomBookClick(document.getElementById("roomID").value, {{startTime}}, this, "{{../room}}", 1, {{../day}})' id={{startTime}}>{{time}}</button>
+                                                onclick='dibsRoomBookClick(document.getElementById("roomID").value, {{startTime}}, this, "{{../room}}", 1, {{../day}})'
+                                                id={{startTime}}>{{time}}</button>
                                     </li>
                                 {{/if_eq}}
                             {{/if}}
-                        {{/if_time}}
-                    {{else}}
-                        {{#if free}}
-                            <li>
-                                <button class="ytime"
-                                        onclick='select({{startTime}}, this)' id={{startTime}}>{{time}}</button>
-                            </li>
-                        {{else}}
-                            {{#if_eq owner ../userid}}
-                                <li>
-                                    <button class="mtime"
-                                            onclick='dibsRoomBookClick(document.getElementById("roomID").value, {{startTime}}, this, "{{../room}}", 1, {{../day}})' id={{startTime}}>{{time}}</button>
-                                </li>
-                            {{else}}
-                                <li>
-                                    <button class="ntime"
-                                            onclick='dibsRoomBookClick(document.getElementById("roomID").value, {{startTime}}, this, "{{../room}}", 1, {{../day}})' id={{startTime}}>{{time}}</button>
-                                </li>
-                            {{/if_eq}}
-                        {{/if}}
 
-                    {{/if_eq}}
-                {{/each}}
+                        {{/if_eq}}
+                    {{/each}}
+                {{/with}}
             </ul>
         </div>
         <div class="col-md-1"></div>
         <div class="desc col-12 col-md-6">
-            <img class="img-fluid" alt="RoomPicture" src={{imgURL}}>
-            <br><br>
-            <p style="text-align: left;">{{size}}.<br><br>{{#if tv}}
-                There is{{else}}There is not{{/if}} a TV.<br><br>{{#if
-                    special}}This is a special room{{/if}}</p>
-            <br>
-            <button type="button" class="btn btn-primary" style="font-size: 20px;"
-                    onclick="checkout({{roomid}}, {{day}})">
-                Checkout
-            </button>
-            <!--<p>Test Booking 3 Hours (last 3 to facilitate unbooking) 8:30-11:30</p>-->
-            <!--<button type="button" class="btn btn-primary" style="font-size: 20px;"-->
-                    <!--onclick='dibsRoomBookClick(document.getElementById("roomID").value, 20, this, "{{room}}", 3, {{day}})'>-->
-                <!--Book-->
-                <!--8:30-11:30 pm-->
-            <!--</button>-->
+            {{#with roomData}}
+                <img class="img-fluid" alt="RoomPicture" src={{imgURL}}>
+                <br><br>
+                <p style="text-align: left;">{{size}}.<br><br>{{#if tv}}
+                    There is{{else}}There is not{{/if}} a TV.<br><br>{{#if
+                        special}}This is a special room{{/if}}</p>
+                <br>
+                <button type="button" class="btn btn-primary" style="font-size: 20px;"
+                        onclick="checkout({{roomid}}, {{day}})">
+                    Checkout
+                </button>
+            {{/with}}
         </div>
     </div>
 </div>
-<input type=hidden id="roomID" name="roomID" value="{{roomid}}"/>
+<input type=hidden id="roomID" name="roomID" value="{{roomData.roomid}}"/>
 
 <script src="/JS/roomJSFuncs.js"></script>
 <script src="/JS/checkout.js"></script>

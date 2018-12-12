@@ -11,7 +11,8 @@ router.get('/quicky', function (req, res, next) { //the request to render the pa
 
   res.render('quick', {
     theme: req.theme === "custom" ? false : req.theme,
-    colors: req.colors
+    colors: req.colors,
+    isLoggedIn: req.isAuthenticated()
   });
 });
 

@@ -26,7 +26,7 @@ router.get('/book/:roomName/', function (req, res, next) {
         out.day = 0;
         out.theme = req.theme === "custom" ? false : req.theme;
         out.colors = req.colors;
-        res.render('roomInfo', out);
+        res.render('roomInfo', { roomData: out, isLoggedIn: req.isAuthenticated() });
     }).catch(function () {
         res.render("404", {
             message: "<p>That room does not exist!</p>" +
@@ -98,7 +98,7 @@ router.get('/book/:roomName/:date', function (req, res, next) {
                 out.day = diff;
                 out.theme = req.theme === "custom" ? false : req.theme;
                 out.colors = req.colors;
-                res.render('roomInfo', out);
+                res.render('roomInfo', { out, isLoggedIn: req.isAuthenticated()});
             }
         }).catch(function () {
             res.render("404", {

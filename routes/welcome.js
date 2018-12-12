@@ -114,6 +114,7 @@ router.get('/accounts', function (req, res, next) {
 
                 res.render('accountPage', {    // render the page with server side variables passed to the client
                     user: req.user,
+                    isLoggedIn: req.isAuthenticated(),
                     booking: listBookings,
                     json: json,
                     bookingLimit: bookingLimit,

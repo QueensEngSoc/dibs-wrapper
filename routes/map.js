@@ -119,7 +119,8 @@ router.get('/map', async function (req, res, next) {
         currentHour: current_hour,
         theme: req.theme === "custom" ? false : req.theme,
         colors: req.colors,
-        timeCount: jsonTimeCount
+        timeCount: jsonTimeCount,
+        isLoggedIn: req.isAuthenticated()
     });
 
 });

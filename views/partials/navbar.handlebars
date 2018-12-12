@@ -1,5 +1,5 @@
  <nav class="navbar navbar-custom navbar-expand-md">
-     <ul class="nav navbar-nav d-none d-md-block" style="padding-left: 15%; padding-right: 15%;">
+     <ul class="nav navbar-nav d-none d-md-block">
          <li class="float-left nav-item">
              <a href="/" class="nav-link no-vert-padding">
                  <img src="/img/qlogo.png" height="40" width="60" style="padding-right: 10px;">
@@ -8,6 +8,15 @@
          <li class="float-left nav-item no-vert-padding">
              <a class="no-vert-padding" href="/" style="color: #fff; font-size: 30px;" class="nav-link">QBook</a>
          </li>
+         {{#if isLoggedIn}}
+             <li class="float-right nav-item no-vert-padding">
+                 <a href="/logout" class="nav-link">Log Out
+                     <svg class="li-spacing nav-item__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                         <path d="M19,3 C20.11,3 21,3.9 21,5 L21,8 L19,8 L19,5 L5,5 L5,19 L19,19 L19,16 L21,16 L21,19 C21,20.1 20.11,21 19,21 L5,21 C3.9,21 3,20.1 3,19 L3,5 C3,3.9 3.9,3 5,3 L19,3 Z M15.5,17 L20.5,12 L15.5,7 L14.09,8.41 L16.67,11 L7,11 L7,13 L16.67,13 L14.09,15.59 L15.5,17 Z"
+                     </svg>
+                 </a>
+             </li>
+         {{/if}}
          <li class="float-right nav-item no-vert-padding">
              <a href="/accounts" class="nav-link">Account
                  <img src="/img/user.png" class="li-spacing" height="30" width="40">
@@ -29,6 +38,15 @@
                  <img src="/img/qlogo.png" height="40" width="53">
              </a>
          </li>
+         {{#if isLoggedIn}}
+             <li class="float-right nav-item no-vert-padding">
+                 <a href="/accounts" class="nav-link no-vert-padding">
+                     <svg class="li-spacing nav-item__icon--mobile" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                         <path d="M19,3 C20.11,3 21,3.9 21,5 L21,8 L19,8 L19,5 L5,5 L5,19 L19,19 L19,16 L21,16 L21,19 C21,20.1 20.11,21 19,21 L5,21 C3.9,21 3,20.1 3,19 L3,5 C3,3.9 3.9,3 5,3 L19,3 Z M15.5,17 L20.5,12 L15.5,7 L14.09,8.41 L16.67,11 L7,11 L7,13 L16.67,13 L14.09,15.59 L15.5,17 Z"
+                     </svg>
+                 </a>
+             </li>
+         {{/if}}
          <li class="float-right nav-item no-vert-padding">
              <a href="/accounts" class="nav-link no-vert-padding">
                  <img src="/img/user.png" height="35" width="35">
