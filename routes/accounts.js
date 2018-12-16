@@ -111,8 +111,10 @@ router.get('/accounts', function (req, res, next) {
             return res.redirect('/welcome');
         }
     }
+
+    const isAdmin = accountFuncs.getAdminStatus(req);
     // var bookingLimit = consts.room_booking_limit;    // by room bookings
-    var bookingLimit = consts.room_hour_limit;          // by hour bookings
+    var bookingLimit = isAdmin ? 'unlimited' : consts.room_hour_limit;          // by hour bookings
 
     if (usrid == -1 || usrid == undefined)
         return res.redirect('/login');
@@ -183,13 +185,17 @@ router.get('/accounts', function (req, res, next) {
                         }
                     }
 
+                    const bookingsLeftMessage = isAdmin ? `${req.user.local.booking_count} of unlimited` : `${bookingLimit - req.user.local.booking_count} of ${bookingLimit}`;
+                    const bookingsHeader = isAdmin ? 'Hours booked' : 'Hours Left';
+                    console.log(bookingsHeader, bookingsLeftMessage, '*************')
                     res.render('accountPage', {    // render the page with server side variables passed to the client
                         user: req.user,
                         isLoggedIn: true,
                         booking: listBookings,
                         json: json,
                         bookingLimit: bookingLimit,
-                        bookingsLeft: bookingLimit - req.user.local.booking_count,
+                        bookingsHeader,
+                        bookingsLeftMessage,
                         hasJson: true,
                         theme: req.theme === "custom" ? false : req.theme,
                         useTheme: req.theme === "custom" ? false : true,
@@ -226,13 +232,18 @@ router.get('/accounts', function (req, res, next) {
                     }
                 }
 
+                const bookingsLeftMessage = isAdmin ? `${req.user.local.booking_count} of unlimited` : `${bookingLimit - req.user.local.booking_count} of ${bookingLimit}`;
+                const bookingsHeader = isAdmin ? 'Hours booked' : 'Hours Left';
+                console.log(bookingsHeader, bookingsLeftMessage, '*************')
+
                 res.render('accountPage', {    // render the page with server side variables passed to the client
                     user: req.user,
                     isLoggedIn: true,
                     booking: listBookings,
                     json: json,
                     bookingLimit: bookingLimit,
-                    bookingsLeft: bookingLimit - req.user.local.booking_count,
+                    bookingsHeader,
+                    bookingsLeftMessage,
                     hasJson: false,
                     useTheme: req.theme === "custom" ? false : true,
                     theme: req.theme,
@@ -243,8 +254,7 @@ router.get('/accounts', function (req, res, next) {
         }
     }
 
-})
-;
+});
 
 function updateTime(time, length) {
     var pos = getPosition(time, '-', 1);        // get the position of the second - in the string
@@ -262,4 +272,4 @@ function getPosition(string, subString, index) {
     return string.split(subString, index).join(subString).length;
 }
 
-module.exports = router;
+export default router;

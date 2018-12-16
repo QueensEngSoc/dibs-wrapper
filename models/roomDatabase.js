@@ -37,7 +37,7 @@ function createNewFreeTable(length, isFree) {
   return newFreeTable;
 }
 
-async function getFree(day, roomID) { //gets the free array of the roomID on the day given
+export async function getFree(day, roomID) { //gets the free array of the roomID on the day given
   const disabledRooms = await adminFuncs.getDisabledRoomIDs();
   const rooms = await roomDatabase.find({ RoomID: roomID });
 
@@ -59,7 +59,7 @@ async function getFree(day, roomID) { //gets the free array of the roomID on the
 /**
  * Returns an object full of rooms free in the next hour with the size of the room appended
  */
-function getAllFreeNow() {
+export function getAllFreeNow() {
   return new Promise(function (resolve) {
     var time = getNextValidHalfHour(false, true);
     var out = {};
@@ -80,7 +80,7 @@ function getAllFreeNow() {
  *
  * @return {*}: the id of the free room
  */
-async function getNextFree() {
+export async function getNextFree() {
   var time = getNextValidHalfHour(false, true);
   const rooms = await getListOfRoomState(0, time);
   if (rooms === {})
@@ -102,7 +102,7 @@ async function getNextFree() {
  * @param roomID
  * @returns {promise}
  */
-function getInfo(roomID) { //gets the info of the selected room (roomID)
+export function getInfo(roomID) { //gets the info of the selected room (roomID)
   var out = {
     room: "Error",
     size: "Error",
@@ -133,7 +133,7 @@ function getInfo(roomID) { //gets the info of the selected room (roomID)
   return find;
 }
 
-function getInfoByName(roomName) { //gets the info of the selected room (roomID)
+export function getInfoByName(roomName) { //gets the info of the selected room (roomID)
   var out = {
     room: "Error",
     size: "Error",
@@ -171,7 +171,7 @@ function getInfoByName(roomName) { //gets the info of the selected room (roomID)
  * @param time
  * @returns {*}
  */
-async function getListOfRoomState(day, time, usrid) {
+export async function getListOfRoomState(day, time, usrid) {
   var listFree = [];
   usrid = typeof usrid !== 'undefined' ? usrid : -1;
 
@@ -238,7 +238,7 @@ async function getListOfRoomState(day, time, usrid) {
  * @param usrid
  * @returns {*}
  */
-function getListOfRoomsForUser(usrid) {
+export function getListOfRoomsForUser(usrid) {
   return new Promise(function (resolve, reject) {
     var listBookings = [];
     usrid = typeof usrid !== 'undefined' ? usrid : -1;
@@ -299,7 +299,7 @@ function isValidTime(time, day) {
  * @param formatAsInterval {boolean} whether to format the string as a time interval
  * @param formatAsDBTime {boolean} whether to format the string in the DB format (0-15)
  */
-function getNextValidHalfHour(formatAsInterval, formatAsDBTime) {
+export function getNextValidHalfHour(formatAsInterval, formatAsDBTime) {
   var d = new Date();
   var nextHour = d.getHours();
   var nextMin = d.getMinutes();
@@ -319,7 +319,7 @@ function getNextValidHalfHour(formatAsInterval, formatAsDBTime) {
     return nextHour + ":30";
 }
 
-function getValidDate(date) {
+export function getValidDate(date) {
   var today = new Date();
   var max = addDays(today, 14);
 
@@ -344,7 +344,7 @@ function addDays(date, days) {
  * @param len
  * @returns free table array object with the number of days specified by days, and a day length of len
  */
-function generateFreeTable(days, len) {
+export function generateFreeTable(days, len) {
   var out = new Array(days);
   for (var j = 0; j < days; j++) {
     var curDay = new Array(len);
@@ -361,16 +361,3 @@ function generateFreeTable(days, len) {
   }
   return out;
 }
-
-module.exports = {
-  getFree,
-  getInfo: getInfo,
-  getListOfRoomState,
-  getInfoByName: getInfoByName,
-  getListOfRoomsForUser: getListOfRoomsForUser,
-  getAllFreeNow: getAllFreeNow,
-  getNextFree: getNextFree,
-  getNextValidHalfHour: getNextValidHalfHour,
-  getValidDate: getValidDate,
-  generateFreeTable: generateFreeTable
-};

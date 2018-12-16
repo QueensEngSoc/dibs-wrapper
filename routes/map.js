@@ -7,13 +7,13 @@ var roomFuncs = require('../models/roomDatabase');
 var accountFuncs = require('../models/userFunctions');
 
 router.post('/map', async function (req, res) {
-    var data = JSON.stringify(req.body);
+    const data = JSON.stringify(req.body);
     var obj = JSON.parse(data);
     var dateStr = obj.day;
     var date = new Date(dateStr);
 
     var dateObj = new Date();
-    current_hour = dateObj.getHours();
+    const current_hour = dateObj.getHours();
     // var current_min = dateObj.getMinutes();
     var day = date - dateObj;
     day = Math.ceil(day / (1000 * 3600 * 24));
@@ -137,4 +137,4 @@ function formatDate(date) {
     return [year, month, day].join('-');
 }
 
-module.exports = router;
+export default router;

@@ -3,16 +3,16 @@
 // config/passport.js
 
 // load all the things we need
-var LocalStrategy = require('passport-local').Strategy;
-
+import { Strategy as LocalStrategy } from "passport-local";
 // load up the user model
-var User = require('../models/user');
-var randomstring = require("randomstring");
-var consts = require('./config');
-var emailFuncs = require('../models/sendEmail');
+
+import randomstring from "randomstring";
+import * as consts from "./config";
+import User from "../models/user";
+import * as emailFuncs from "../models/sendEmail";
 
 // expose this function to our app using module.exports
-module.exports = function (passport) {
+export default function (passport) {
 
   // =========================================================================
   // passport session setup ==================================================

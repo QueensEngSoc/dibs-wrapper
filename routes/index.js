@@ -9,7 +9,7 @@ router.post('/index', async function (req, res) {
   var dateStr = obj.day;
   var date = new Date(dateStr);
 
-  var dateObj = new Date();
+  const dateObj = new Date();
   var current_hour = dateObj.getHours();
   var current_min = dateObj.getMinutes();
   var day = date - dateObj;
@@ -153,4 +153,4 @@ function formatDate(date) {
   return [year, month, day].join('-');
 }
 
-module.exports = router;
+export default router;

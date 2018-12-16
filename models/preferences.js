@@ -1,8 +1,8 @@
-var consts = require('../config/config');
-var User = require('../models/user');
-var userFuncs = require('./userFunctions');
+import * as consts from "../config/config";
+import User from "../models/user";
+import * as userFuncs from "./userFunctions";
 
-function getPrefsObj(req) {
+export function getPrefsObj(req) {
     return new Promise(function (resolve, reject) {
         if (req.isAuthenticated()) {
             var user = req.user;
@@ -21,7 +21,7 @@ function getPrefsObj(req) {
  * @param req, data  -> to get the user.  Data should be a JSON object
  * @returns {true or false}
  */
-function updatePrefsObj(req, data){
+export function updatePrefsObj(req, data){
     return new Promise(function (resolve, reject) {
         if (req.isAuthenticated()) {
             var user = req.user;
@@ -38,8 +38,3 @@ function updatePrefsObj(req, data){
         }
     });
 }
-
-module.exports = {
-    getPrefsObj: getPrefsObj,
-    updatePrefsObj: updatePrefsObj
-};

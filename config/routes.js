@@ -1,24 +1,25 @@
 //Serving routes
-var index = require('../routes/index');
-var loginPage = require('../routes/login');
-var accountPage = require('../routes/accounts');
-var signupPage = require('../routes/signup');
-var adminPage = require('../routes/admin');
-var prefPage = require('../routes/preferences');
-var quick = require('../routes/quick');
-var map = require('../routes/map');
-var book = require('../routes/book');
-var bookRoom = require('../routes/bookRoom');
-var bookCheckout = require('../routes/bookCheckout');
-var welcome = require('../routes/welcome');
-var getTheme = require('../middleware/getThemePref');
+import index from "../routes/index";
+import welcome from "../routes/welcome";
+import bookCheckout from "../routes/bookCheckout";
+import bookRoom from "../routes/bookRoom";
+import book from "../routes/book";
+import map from "../routes/map";
+import quick from "../routes/quick";
+import prefPage from "../routes/preferences";
+import adminPage from "../routes/admin";
+import signupPage from "../routes/signup";
+import accountPage from "../routes/accounts";
+import loginPage from "../routes/login";
+
+import getTheme from "../middleware/getThemePref";
 
 // app/routes.js
-module.exports = function(app, passport) {
+export default function(app, passport) {
     // =====================================
     // MIDDLEWARE                   ========
     // =====================================
-    app.use(getTheme.getThemePref);
+    app.use(getTheme);
 
     // =====================================
     // HOME PAGE (with login links) ========
@@ -128,7 +129,7 @@ module.exports = function(app, passport) {
 };
 
 // route middleware to make sure a user is logged in
-function isLoggedIn(req, res, next) {
+export function isLoggedIn(req, res, next) {
 
     // if user is authenticated in the session, carry on
     if (req.isAuthenticated())

@@ -1,8 +1,8 @@
 "use strict";
 
-var preferences = require('../models/preferences');
+import * as preferences from "../models/preferences";
 
-function getThemePref(req, res, next) {
+export default function getThemePref(req, res, next) {
     if (!req.isAuthenticated())
         return next();
 
@@ -16,7 +16,3 @@ function getThemePref(req, res, next) {
         next();
     });
 }
-
-module.exports = {
-    getThemePref: getThemePref
-};

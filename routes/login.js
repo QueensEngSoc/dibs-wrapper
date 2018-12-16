@@ -50,4 +50,4 @@ router.get('/accounts/verify', function (req, res, next) {
 });
 
 
-module.exports = router;
+export default router;

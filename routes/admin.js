@@ -89,4 +89,4 @@ router.post('/status', function(req, res) {
     res.send({msg: msg});
 });
 
-module.exports = router;
+export default router;

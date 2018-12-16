@@ -1,4 +1,5 @@
-var monk = require('monk');var env = process.env.NODE_ENV || 'dev';
+var monk = require('monk');
+var env = process.env.NODE_ENV || 'dev';
 
 if (env == 'dev')
     var db = monk('localhost:27017/roomDatabase');
@@ -11,7 +12,7 @@ var accountFuncs = require('./userFunctions');
 var adminFuncs = require('./adminDatabase');
 var roomBook = require('./roomBooking');
 
-function endOfDayShift(){
+export function endOfDayShift(){
     return new Promise(function(resolve, reject) {
 
         return roomDatabase.find({}).each(function(data, i) {
@@ -74,7 +75,7 @@ function checkAdminDB() {
     });
 }
 
-function setupEndOfDayScript(){
+export function setupEndOfDayScript(){
     console.log("Setting up day shifting code...");
 
     schedule.scheduleJob({hour: 0, minute: 0}, function() {
@@ -103,8 +104,3 @@ function createNewDayArray(len, val) {
 }
 
 // endOfDayShift(); // uncomment out this line to cause the day shifting to run when app.js starts, irrespective of what time it is
-
-module.exports = {
-    endOfDayShift: endOfDayShift,
-    setupEndOfDayScript: setupEndOfDayScript
-};

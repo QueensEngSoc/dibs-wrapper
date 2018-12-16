@@ -163,11 +163,10 @@
             <h3><span class="fa fa-user"></span> Local</h3>
 
             <p style="text-align: left;">
-                <!--<strong>id</strong>: {{user._id}}<br> I think this can go? -->
                 <strong>Email</strong>: {{user.local.email}}<br>
-                <!--<strong>password</strong>: {{user.local.password}}<br> Same with this field -->
+                {{#if user.local.isAdmin}}<strong>Account type</strong>: Admin<br>{{/if}}
                 <!--<strong>Verification Status</strong>: {{user.local.verified}}<br>-->
-                <strong>Hours Left</strong><span id="hoursLeft">: {{bookingsLeft}} of {{bookingLimit}}</span>
+                <strong>{{bookingsHeader}}</strong><span id="hoursLeft">: {{bookingsLeftMessage}}</span>
 
             </p>
             <!--<p>-->

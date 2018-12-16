@@ -5,9 +5,10 @@ if (env == 'dev')
   var db = monk('localhost:27017/roomDatabase');
 else
   var db = monk('mongodb://heroku_08d6gg04:tbjjetli24bdv2nqrpiu6gdlta@ds153978.mlab.com:53978/heroku_08d6gg04');
+
 var roomDatabase = db.get('roomDatabase');
-var userFuncs = require('../models/userFunctions');
-var consts = require('../config/config');
+import * as userFuncs from "../models/userFunctions";
+import * as consts from "../config/config";
 var randomstring = require("randomstring"); // used to generate the random hash to see if the room is part of the same booking
 
 //use is same as roomDatabase
@@ -21,7 +22,7 @@ var randomstring = require("randomstring"); // used to generate the random hash 
  * @param req
  * @returns {Promise<any>}
  */
-function bookMultiple(day, times, roomID, usrid, req) {
+export function bookMultiple(day, times, roomID, usrid, req) {
   return new Promise(function (resolve, reject) {
 
     if (usrid !== "admin") {
@@ -66,53 +67,44 @@ function bookMultiple(day, times, roomID, usrid, req) {
       var totalBooked = 0;
       var dayData = data.Free[day];
       totalBooked = getTotalBookedHoursPerRoom(totalBooked, dayData, usrid);
-      if (consts.per_room_limit - totalBooked <= 0) { //check if user has booked too many hours for this room
+      if (consts.per_room_limit - totalBooked <= 0 && !isAdmin) { //check if user has booked too many hours for this room
         out.bookMsg = "Sorry, you can only book " + consts.per_room_limit + " hours per day in a single room";
         out.header = "Max of " + consts.per_room_limit + " hours per room";
         resolve(out);
         return;
       }
 
-      for (var time of times) { //iterate over the array of times given instead of a sequence of numbers
-        if (usrid !== "admin") { //if a normal user...
-          if (temp[day][time - 7].free === true) { //if the room is free at this time
-            if (consts.per_room_limit - totalBooked - numBooked <= 0) {
-              break;
-            }
-            temp[day][time - 7].free = false; //setup the owner
-            temp[day][time - 7].owner = usrid;
-            temp[day][time - 7].bookingHash = bookingHash;
-            numBooked++;
-          } else {
+      const isAdmin = userFuncs.getAdminStatus(req);
 
-            out.bookMsg = "Sorry, this room is booked.  Looks like someone beat you to it :(";
-            out.header = "Room Already Booked";
-            resolve(out);
+      for (var time of times) { //iterate over the array of times given instead of a sequence of numbers
+        // if (!isAdmin) { //if a normal user...
+        if (temp[day][time - 7].free === true) { //if the room is free at this time
+          if (consts.per_room_limit - totalBooked - numBooked <= 0 && !isAdmin) {
+            break;
           }
-        } else { //if an admin is booking override anything there
-          temp[day][time - 7].free = false;
+          temp[day][time - 7].free = false; //setup the owner
           temp[day][time - 7].owner = usrid;
           temp[day][time - 7].bookingHash = bookingHash;
+          numBooked++;
+        } else {
+
+          out.bookMsg = "Sorry, this room is booked.  Looks like someone beat you to it :(";
+          out.header = "Room Already Booked";
+          resolve(out);
         }
+        // } else { //if an admin is booking override anything there ToDo: figure out what to do here, as we probably don't want to just let an admin override any booking, do we?
+        //   temp[day][time - 7].free = false;
+        //   temp[day][time - 7].owner = usrid;
+        //   temp[day][time - 7].bookingHash = bookingHash;
+        // }
       }
-      if (usrid === "admin") {
-        roomDatabase.update({ RoomID: roomID }, { $set: { Free: temp } });
-        out.success = true;
-        var msg = "Booking successful for "; //setting up the message to include multiple times
-        for (i in times) {
-          time = times[i];
-          msg += time + ":30 - " + (time + 1) + (i == times.length - 1 ? ":30." : ":30, ");
-        }
-        out.bookMsg = msg;
-        out.header = "Booking Success!";
-        resolve(out);
-      } else if (userFuncs.updateBookingCount(numBooked, req)) {  // times.length -> if you increment by the number in the array, then if the user books more than once without refreshing, it double counts the hours
+      if (userFuncs.updateBookingCount(numBooked, req)) {  // times.length -> if you increment by the number in the array, then if the user books more than once without refreshing, it double counts the hours
         roomDatabase.update({ RoomID: roomID }, { $set: { Free: temp } });
 
         //setting up output message
         out.success = true;
         var msg = "Booking successful for "; //setting up the message to include multiple times
-        for (i in times) {
+        for (const i in times) {
           time = times[i];
           if (temp[day][time - 7].bookingHash == bookingHash)
             msg += time + ":30 - " + (time + 1) + (i == times.length - 1 ? ":30." : ":30, ");
@@ -122,7 +114,7 @@ function bookMultiple(day, times, roomID, usrid, req) {
         out.bookMsg = msg;
         out.header = "Booking Success!";
 
-        if (consts.per_room_limit - totalBooked - numBooked < 0) {
+        if (consts.per_room_limit - totalBooked - numBooked < 0 && !isAdmin) {
           out.bookMsg = "Sorry, you can only book " + consts.per_room_limit + " hours per day in a single room.  " + msg;
           out.header = "Max of " + consts.per_room_limit + " hours per room";
         }
@@ -138,8 +130,6 @@ function bookMultiple(day, times, roomID, usrid, req) {
 
       }
       resolve(out);
-
-
     });
   });
 }
@@ -151,7 +141,7 @@ function bookMultiple(day, times, roomID, usrid, req) {
  * @param roomID
  * @param usrid
  */
-function unbookRoom(day, time, length, roomID, usrid, req) {
+export function unbookRoom(day, time, length, roomID, usrid, req) {
   return new Promise(function (resolve, reject) {
     roomDatabase.find({ RoomID: roomID }).each(function (data, val) {
       var temp = data.Free;
@@ -172,8 +162,8 @@ function unbookRoom(day, time, length, roomID, usrid, req) {
           numUnbooked++;
         } else {
           out.success = false;
-          out.bookMsg = "Sorry, this room is unbooked.  Looks like someone beat you to it :(";
-          out.header = "Room Already Unbooked"
+          out.bookMsg = "Huh, this room is already unbooked.  Looks like something went wrong on our end :(";
+          out.header = "Room Already Unbooked";
           resolve(out);
         }
       }
@@ -181,13 +171,16 @@ function unbookRoom(day, time, length, roomID, usrid, req) {
       if (userFuncs.updateBookingCount(-numUnbooked, req)) {
         roomDatabase.update({ RoomID: roomID }, { $set: { Free: temp } });
       }
+      else {
+
+      }
       resolve(out);
 
     });
   });
 }
 
-function unbookAllForUser(day, roomID, usrid, req) {
+export function unbookAllForUser(day, roomID, usrid, req) {
   return new Promise(function (resolve, reject) {
     roomDatabase.find({ RoomID: roomID }).each(function (data, val) {
       var temp = data.Free;
@@ -216,7 +209,7 @@ function unbookAllForUser(day, roomID, usrid, req) {
   });
 }
 
-function unbookAllForRoom(day, roomID) {
+export function unbookAllForRoom(day, roomID) {
   return new Promise(function (resolve, reject) {
     roomDatabase.find({ RoomID: roomID }).each(function (data, val) {
       var temp = data.Free;
@@ -247,7 +240,7 @@ function unbookAllForRoom(day, roomID) {
  * @param usrid
  * @returns {totalBooked} (the amount of hours booked by the user for the given room, on that day)
  */
-function getTotalBookedHoursPerRoom(totalBooked, temp, usrid) {
+export function getTotalBookedHoursPerRoom(totalBooked, temp, usrid) {
 
   for (var i = 7; i < 23; i++) {
     if (temp[i - 7].owner == usrid)
@@ -279,7 +272,7 @@ function getPrettyDay(intDay) {
  * @returns {promise}
  */
 //OUT OF DATE, DO NOT USE!!!! USE bookMultiple
-function bookRoom(day, time, roomID, length, usrid, req) { //books a room at a certain time and day and sets the owner to be the usrid
+export function bookRoom(day, time, roomID, length, usrid, req) { //books a room at a certain time and day and sets the owner to be the usrid
   return new Promise(function (resolve, reject) {
 
     if (!userFuncs.canBookMoreRooms(req)) {
@@ -335,16 +328,6 @@ function bookRoom(day, time, roomID, length, usrid, req) { //books a room at a c
       }
       resolve(out);
 
-
     });
   });
 }
-
-
-module.exports = {
-  bookRoom: bookRoom,
-  unbookRoom: unbookRoom,
-  unbookAllForUser: unbookAllForUser,
-  unbookAllForRoom: unbookAllForRoom,
-  bookMultiple: bookMultiple
-};

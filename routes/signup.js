@@ -19,4 +19,4 @@ router.get('/signup', function (req, res, next) { //the request to render the pa
 
 });
 
-module.exports = router;
+export default router;

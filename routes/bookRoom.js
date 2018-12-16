@@ -1,17 +1,17 @@
-var express = require('express');
-var router = express.Router();
-var accountFuncs = require('../models/userFunctions');
-var roomBook = require('../models/roomBooking');
+const express = require('express');
+const router = express.Router();
+const accountFuncs = require('../models/userFunctions');
+const roomBook = require('../models/roomBooking');
 
-router.post('/bookroom', function (req, res) {
-    var roomToBook = JSON.stringify(req.body);
-    var obj = JSON.parse(roomToBook);
+router.post('/bookroom', async function (req, res) {
+    const roomToBook = JSON.stringify(req.body);
+    const obj = JSON.parse(roomToBook);
 
-    var bookingTimeStart = parseInt(obj.time, 10);
-    var roomID = parseInt(obj.roomID, 10);
-    var usrid = accountFuncs.getUserID(req);
-    var day = parseInt(obj.day, 10);
-    var length = parseInt(obj.length, 10);
+    const bookingTimeStart = parseInt(obj.time, 10);
+    const roomID = parseInt(obj.roomID, 10);
+    const usrid = accountFuncs.getUserID(req);
+    const day = parseInt(obj.day, 10);
+    const length = parseInt(obj.length, 10);
 
     if (usrid == -1 || usrid == undefined) {
         res.send({
@@ -21,11 +21,11 @@ router.post('/bookroom', function (req, res) {
         });
     }
     else {
-        roomBook.bookRoom(day, bookingTimeStart, roomID, length, usrid, req).then(function (data) {
-            console.log("Request Body: " + JSON.stringify(req.body) + " room id: " + roomToBook + " Success: " + data.success);
-            res.send({HeaderMsg: data.header, BookingStatusMsg: data.bookMsg, BookStatus: data.success});
-        });
+        const bookingResponse = await roomBook.bookRoom(day, bookingTimeStart, roomID, length, usrid, req);
+        console.log('***********************', bookingResponse);
+        console.log("Request Body: " + JSON.stringify(req.body) + " room id: " + roomToBook + " Success: " + bookingResponse.success);
+        res.send({ HeaderMsg: bookingResponse.header, BookingStatusMsg: bookingResponse.bookMsg, BookStatus: bookingResponse.success });
     }
 });
 
-module.exports = router;
+export default router;

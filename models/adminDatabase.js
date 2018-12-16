@@ -17,7 +17,7 @@ var adminDB = db.get('adminDatabase');
  *
  * @returns {Promise<any>}
  */
-function getAll() {
+export function getAll() {
     return new Promise(function(resolve, reject) {
         adminDB.find({}, function(err, data) {
             resolve(data);
@@ -29,7 +29,7 @@ function getAll() {
  *
  * @param schedule
  */
-function addSchedule(schedule) {
+export function addSchedule(schedule) {
     return new Promise(function(resolve, reject) {
         var out;
         var errors = [];
@@ -61,7 +61,7 @@ function addSchedule(schedule) {
  * @param affectedRooms
  * @returns {{roomsAffected: *, rules: {startDate: *, dayLength: *, hours: *}}}
  */
-function createSchedule(start, dayLength, hours, affectedRooms) {
+export function createSchedule(start, dayLength, hours, affectedRooms) {
     return {
         roomsAffected: affectedRooms,
         rules: {
@@ -77,7 +77,7 @@ function createSchedule(start, dayLength, hours, affectedRooms) {
  * @param room - the room to check by ID
  * @returns {promises}
  */
-function getInRange(room) {
+export function getInRange(room) {
     var fortNight = new Date(); //getting the date 2 weeks away
     fortNight.setTime(fortNight.getTime() + 1209600000);
 
@@ -89,7 +89,7 @@ function getInRange(room) {
             var out = [];
 
             var rules = data[0].futureRules;
-            for (i in rules) {
+            for (const i in rules) {
                 var rule = rules[i];
                 var daysWithin = getDaysWithinFortnight(rule.startDate); //gets number of days the date is inside the next 2 weeks
                 if (daysWithin >= 0) { //if its within the next 2 weeks...
@@ -113,7 +113,7 @@ function getInRange(room) {
  * @param roomID - The integer ID of the room in question
  * @param status - Boolean value, sets the room to be enabled or disabled.
  */
-function setStatus(roomID, status) {
+export function setStatus(roomID, status) {
     return new Promise(function (resolve, reject) {
         adminDB.find({RoomID: roomID}, function (err, data) {
             if (err) {
@@ -131,7 +131,7 @@ function setStatus(roomID, status) {
  *
  * @returns {Promise<any>}
  */
-async function getDisabled() {
+export async function getDisabled() {
     var out = [];
     const data = await getAll();
     for (const room of data) {
@@ -146,7 +146,7 @@ async function getDisabled() {
  *
  * @returns {Promise<Array>}
  */
-async function getDisabledRoomIDs() {
+export async function getDisabledRoomIDs() {
     var out = [];
     const data = await getAll();
     for (const room of data) {
@@ -173,13 +173,13 @@ function getDaysWithinFortnight(date) {
     return Math.floor((fortnightMS - dateMS) / 86400000);
 }
 
-
-module.exports = {
-    addSchedule: addSchedule,
-    createSchedule: createSchedule,
-    getInRange: getInRange,
-    getAll: getAll,
-    setStatus: setStatus,
-    getDisabled,
-    getDisabledRoomIDs
-};
+//
+// export = {
+//     addSchedule: addSchedule,
+//     createSchedule: createSchedule,
+//     getInRange: getInRange,
+//     getAll: getAll,
+//     setStatus: setStatus,
+//     getDisabled,
+//     getDisabledRoomIDs
+// };

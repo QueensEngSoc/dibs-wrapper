@@ -40,4 +40,4 @@ function book(day, times, roomID, usrid, req, res) {
     });
 }
 
-module.exports = router;
+export default router;

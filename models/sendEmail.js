@@ -6,11 +6,11 @@ var pass = "";
 var env = process.env.NODE_ENV || 'dev';
 
 if (env == 'dev'){
-    // var emailInfo = require('../config/emailConfig');
-    // user = emailInfo.emailUsername;
-    // pass = emailInfo.emailPassword;
-    user = process.env.emailUsername;
-    pass = process.env.emailPassword;
+    var emailInfo = require('../config/emailConfig');
+    user = emailInfo.emailUsername;
+    pass = emailInfo.emailPassword;
+    // user = process.env.emailUsername;
+    // pass = process.env.emailPassword;
 }
 else
 {
@@ -29,21 +29,7 @@ let transporter = nodemailer.createTransport({
     }
 });
 
-// let selfSignedConfig = nodemailer.createTransport({
-//     host: 'ruffoa.ddns.net',
-//     port: 444,
-//     secure: true, // use TLS
-//     auth: {
-//         user: 'no-reply',
-//         pass: 'admin1'
-//     },
-//     tls: {
-//         // do not fail on invalid certs
-//         rejectUnauthorized: false
-//     }
-// });
-
-function setupMailSender() {
+export function setupMailSender() {
 // verify connection configuration
     transporter.verify(function (error, success) {
         if (error) {
@@ -56,7 +42,7 @@ function setupMailSender() {
 
 }
 
-function sendMail(body, message, header, email, from) {
+export function sendMail(body, message, header, email, from) {
 
     var message = {
         from: from,
@@ -80,7 +66,7 @@ function sendMail(body, message, header, email, from) {
 
 }
 
-function sendVerificationMail(email, from, confirmationCode, req) {
+export function sendVerificationMail(email, from, confirmationCode, req) {
 
     var host = req.headers.host;
 
@@ -254,10 +240,3 @@ function sendVerificationMail(email, from, confirmationCode, req) {
     });
 
 }
-
-
-module.exports = {
-    setupMailSender: setupMailSender,
-    sendMail: sendMail,
-    sendVerificationMail: sendVerificationMail
-};

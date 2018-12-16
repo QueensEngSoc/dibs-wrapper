@@ -1,9 +1,10 @@
 // Stores the functions used for account based access
-var consts = require('../config/config');
-var User = require('../models/user');
-var passport = require('passport');
+import User from "../models/user";
+import * as consts from "../config/config";
 
-function getUserID(req) {
+const passport = require('passport');
+
+export function getUserID(req) {
     var usrid = -1;
 
     if (req.isAuthenticated()) {
@@ -18,7 +19,7 @@ function getUserID(req) {
     return usrid;
 }
 
-function getAdminStatus(req) {
+export function getAdminStatus(req) {
     var usrid = -1;
 
     if (req.isAuthenticated()) {
@@ -34,7 +35,7 @@ function getAdminStatus(req) {
 }
 
 
-function canBookMoreRooms(req) {
+export function canBookMoreRooms(req) {
 
     if (req.isAuthenticated()) {
         try {
@@ -49,7 +50,7 @@ function canBookMoreRooms(req) {
     return true;
 }
 
-function getBookingCount(req) {
+export function getBookingCount(req) {
     var bookingCount = -1;
 
     if (req.isAuthenticated()) {
@@ -64,26 +65,29 @@ function getBookingCount(req) {
 
 }
 
-function updateBookingCount(toAdd, req) {
+export function updateBookingCount(toAdd, req) {
     if (req.isAuthenticated()) {
 
         try {
             var user = req.user;
             user.local.booking_count += toAdd;
-            if (user.local.booking_count > consts.room_hour_limit)
+            if (user.local.booking_count > consts.room_hour_limit && !getAdminStatus(req))
                 user.local.booking_count = consts.room_hour_limit;  // if something messed up and the user booked more than they should have, set the booked amount to the max
             User.findOneAndUpdate({'local.email': user.local.email}, {'local.booking_count': user.local.booking_count}, function (err, resp) {
-                console.log("Updated booked rooms count");
+                if (err)
+                    console.error('Error updateBookingCount: ', err);
+                console.log("Updated booked rooms count by ", toAdd);
             });
             return true;
 
         } catch (exception) {
+            console.error(exception);
             return false;
         }
     }
 }
 
-function endOfDayBookingCountReset(toAdd, usrid) {
+export function endOfDayBookingCountReset(toAdd, usrid) {
     try {
         User.findById(usrid, function (err, user) {
             console.log("Found user!");
@@ -103,7 +107,7 @@ function endOfDayBookingCountReset(toAdd, usrid) {
     }
 }
 
-function resetBookingCount(req) {
+export function resetBookingCount(req) {
     if (req.isAuthenticated()) {
         try {
             var user = req.user;
@@ -114,12 +118,13 @@ function resetBookingCount(req) {
             return true;
 
         } catch (exception) {
+            console.error(exception);
             return false;
         }
     }
 }
 
-function setLastBookedRooms(req, roomid, day, time, length, building){
+export function setLastBookedRooms(req, roomid, day, time, length, building){
     if (req.isAuthenticated()) {
         try {
             var user = req.user;
@@ -142,36 +147,39 @@ function setLastBookedRooms(req, roomid, day, time, length, building){
             return true;
 
         } catch (exception) {
+            console.error(exception);
             return false;
         }
     }
 }
 
-function getLastBookedRooms(req){
+export function getLastBookedRooms(req){
     if (req.isAuthenticated()) {
         try {
             var user = req.user;
             return JSON.parse(user.local.lastBookedRooms);
 
         } catch (exception) {
+            console.error(exception);
             return ({});
         }
     }
 }
 
-function getQuickyStatus(req){
+export function getQuickyStatus(req){
     if (req.isAuthenticated()) {
         try {
             var user = req.user;
             return JSON.parse(user.local.quicky);
 
         } catch (exception) {
+            console.error(exception);
             return ({});
         }
     }
 }
 
-function setQuickyStatus(req, quick){
+export function setQuickyStatus(req, quick){
     if (req.isAuthenticated()) {
         try {
             var user = req.user;
@@ -182,22 +190,8 @@ function setQuickyStatus(req, quick){
             return true;
 
         } catch (exception) {
+            console.error(exception);
             return false;
         }
     }
 }
-
-
-module.exports = {
-    getUserID,
-    getBookingCount,
-    canBookMoreRooms,
-    updateBookingCount,
-    resetBookingCount,
-    endOfDayBookingCountReset,
-    setLastBookedRooms,
-    getLastBookedRooms,
-    getQuickyStatus,
-    setQuickyStatus,
-    getAdminStatus
-};

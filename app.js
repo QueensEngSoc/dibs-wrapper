@@ -1,21 +1,24 @@
-var express = require('express');
-var path = require('path');
-var exphbs = require('express-handlebars');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var passport = require('passport');
-var mongoose = require('mongoose');
-var flash = require('connect-flash');
-var configDB = require('./config/database.js');
-var dbFuncs = require('./models/dbFunctions');
-var email = require('./models/sendEmail');
+import express from "express";
+
+import configRoutes from "./config/routes.js";
+import configPassport from "./config/passport";
+import path from "path";
+import exphbs from "express-handlebars";
+import cookieParser from "cookie-parser";
+import bodyParser from "body-parser";
+import passport from "passport";
+import mongoose from "mongoose";
+import flash from "connect-flash";
+import configDB from "./config/database.js";
+import * as dbFuncs from "./models/dbFunctions";
+import * as email from "./models/sendEmail";
 
 var server = express(); //initialize the server
 
 //Here you can pass helpers that you would normally define in registerHelpers
 //and you can also define stuff like `defaultLayout` and `partialsDir`
 var hbs = exphbs.create({
-    helpers: {      // These are right now just in here for fun / testing, realistically we probably won't need to use 
+    helpers: {      // These are right now just in here for fun / testing, realistically we probably won't need to use
         //handlers for anything, since AJAX and JQuery are much easier to use, and much more powerful.  That being said,
         // having a few examples is probably fairly useful, so I will leave these in for now.
         getStringifiedJson: function (value) {
@@ -86,7 +89,7 @@ if (env == 'dev')
 else
     mongoose.connect('mongodb://heroku_5h907111:qiobas1eprl1uddidasas235mt@ds253918.mlab.com:53918/heroku_5h907111');
 
-require('./config/passport')(passport); // pass passport for configuration
+configPassport(passport); // pass passport for configuration
 
 // Routes - moved to config/routes.js //
 
@@ -134,10 +137,10 @@ server.use(flash()); // use connect-flash for flash messages stored in session
 server.use(express.static(path.join(__dirname, 'public')));
 
 // routes ======================================================================
-require('./config/routes.js')(server, passport); // load our routes and pass in our app and fully configured passport
+configRoutes(server, passport); // load our routes and pass in our app and fully configured passport
 // end for auth section //
 
-// email.setupMailSender();
+// email.setupMailSender(); // ToDo: Get the correct username / password so this works again
 
 //Run server
 var port = process.env.PORT || 8000;
@@ -156,7 +159,7 @@ if (env != 'dev'){
 }
 
 dbFuncs.setupEndOfDayScript();
-module.exports = server;
+export default server;
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

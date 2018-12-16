@@ -61,4 +61,4 @@ function getPrefs(req) {
     });
 }
 
-module.exports = router;
+export default router;
