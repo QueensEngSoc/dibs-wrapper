@@ -1,6 +1,7 @@
 import { Component } from 'react';
+import ReactDOM from 'react-dom';
 
-class RadioButton extends Component {
+export default class RadioButton extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -8,59 +9,40 @@ class RadioButton extends Component {
       selected: this.props.selected || null
     }
   }
-  render() {
-    const yourPick = this.state.yourPick
-    const options = this.state.coffeeTypes.map((loan, key) => {
-      const isCurrent = this.state.yourPick === loan
-      return (
 
-        <div
-          key={key}
-          className="radioPad"
-        >
-          <div>
-            <label
-              className={
-                isCurrent ?
-                  'radioPad__wrapper radioPad__wrapper--selected' :
-                  'radioPad__wrapper'
-              }
-            >
-              <input
-                className="radioPad__radio"
-                type="radio"
-                name="coffeeTypes"
-                id={loan}
-                value={loan}
-                onChange={this.handleRadio.bind(this)}
-              />
-              {loan}
-            </label>
-          </div>
+  render() {
+    const { selected, options } = this.state;
+
+    const renderedOptions = this.state.options.map((option, key) => {
+      const isCurrent = this.state.selected === option.value;
+      return (
+        <div key={option.value}>
+          <input
+            className="radio-btn__radio"
+            type="radio"
+            name="coffeeTypes"
+            id={option.label}
+            value={option.value}
+            onChange={this.handleRadio.bind(this)}
+          />
+          <label className={
+            isCurrent ?
+              'radio-btn__wrapper radio-btn__wrapper--selected' :
+              'radio-btn__wrapper'
+          }
+          >{option.label}</label>
         </div>
       )
     })
     return (
-      <div className="container text-center">
-        <div className="row">
-          <p className="lead">
-            <strong>{yourPick}</strong>
-            {yourPick ?
-              ', nice pick!' : 'Tap away, friend.'
-            }
-          </p>
-          <hr />
-          {options}
-        </div>
+      <div className="inline-radio">
+        {renderedOptions}
       </div>
     )
   }
+
   handleRadio(e) {
-    this.setState({ yourPick: e.target.value })
+    this.setState({ selected: e.target.value });
+    this.props.onChange(e.target.value);
   }
 }
-
-ReactDOM.render(
-  <Radio />,
-  document.getElementById('root')
-)

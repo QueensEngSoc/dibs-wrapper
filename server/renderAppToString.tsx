@@ -13,8 +13,6 @@ export default function renderAppToString(req, context, store) {
     </Provider>
   );
 
-  console.log(store);
-
   const storeScript = `<script>
     window.ESSDEV = {};
     window.ESSDEV.store = ${ JSON.stringify(store.getState()).replace(

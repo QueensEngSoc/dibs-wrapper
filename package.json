@@ -60,7 +60,7 @@
   },
   "scripts": {
     "test": "NODE_ENV=mocha mocha 'test/**/*.ts' 'test/*.ts' 'test/**/*.js' 'test/*.js'",
-    "build": "rm -rf dist && npm run build:server && npm run build:client",
+    "build": "NODE_ENV=dev rm -rf dist && npm run build:server && npm run build:client",
     "build:server": "rm -rf dist && webpack --mode development --config ./config/webpack.config.server.js",
     "build:client": "BABEL_ENV=client webpack --progress --colors --config ./config/webpack.config.client.js",
     "debug": "npm run build && nodemon ./dist/server.js",
