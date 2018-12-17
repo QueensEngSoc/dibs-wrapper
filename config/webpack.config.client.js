@@ -7,7 +7,7 @@ const distPath = path.resolve(__dirname, '../public');
 const config = {
   ...baseConfig,
   entry: {
-    app: './client.tsx'
+    app: './client/client.tsx'
   },
   output: {
     filename: '[name].bundle.js',
@@ -16,11 +16,7 @@ const config = {
   },
   plugins: [
     ...baseConfig.plugins
-  ],
-  externals: {
-    react: 'react',
-    'react-dom': 'reactDom'
-  }
+  ]
 };
 
 module.exports = config;

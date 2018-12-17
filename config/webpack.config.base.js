@@ -9,7 +9,7 @@ module.exports = {
   mode: env,
   context: srcPath,
   resolve: {
-    extensions: ['.js', '.jsx', '.json'],
+    extensions: ['.ts', '.tsx', '.d.ts', '.js', '.jsx', '.json'],
     symlinks: false
   },
   plugins: [

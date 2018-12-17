@@ -15,7 +15,7 @@ export default ({ body, title, cssPath = ['/CSS/styles.css'] }) => {
         <div id="root">${body}</div>
       </body>
       
-      <script src="/assets/bundle.js"></script>
+      <script src="app.bundle.js"></script>
     </html>
   `;
 };

@@ -1,11 +1,20 @@
+import { setCurrentHour, setRooms } from "../store/actions/rooms";
+import template from '../server/template';
+import createStore from '../store/createStore';
+import renderAppToString from "../server/renderAppToString";
+import { selectRoomData } from "../store/selectors/rooms";
+
 var express = require('express');
 var router = express.Router();
 var roomDB = require('../models/roomDatabase.js'); //the roomDatabase interface which provide 5 functions. Look in the file for how to use them
 var accountFuncs = require('../models/userFunctions');
-import template from '../server/template';
-import HomeContainer from '../containers/Home';
-import { renderToString } from 'react-dom/server';
-import render from '../server/render';
+
+async function createStoreInstance(req, data, current_hour) {
+  const store = createStore({});
+  await store.dispatch(setRooms(data));
+  await store.dispatch(setCurrentHour(current_hour));
+  return store;
+}
 
 router.get('/react', async function (req, res, next) {
   var dateObj = new Date();
@@ -61,20 +70,19 @@ router.get('/react', async function (req, res, next) {
   for (var i = 0; i < timecount.length; i++)
     timecount[i].totalFree = timecount[i].totalCount - timecount[i].hourCount;
 
-  const jsonList = JSON.stringify(listFree);
+  const store = await createStoreInstance(req, listFree, current_hour);
+  const state = store.getState();
+
+  console.log(state);
   // var prettyDate = formatDate(date);
 
   // const markup = render(HomeContainer);
-  const body = render(HomeContainer, { data: listFree, time: current_hour });
+  // const body = render(HomeContainer, { data: listFree, time: current_hour });
+  const context = {};
+  const body = renderAppToString(req, context, store);
   const title = 'Server side Rendering with Styled Components';
   const theme = req.theme === "custom" ? false : req.theme || 'default';
   const cssPath = ['/CSS/styles.css', `/CSS/room-style/${theme}-room-style.css`];
-
-  const temp = template({
-    body,
-    title,
-    cssPath
-  });
 
   res.send(template({
     body,
