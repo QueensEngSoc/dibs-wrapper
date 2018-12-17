@@ -59,12 +59,14 @@
     "webpack-node-externals": "^1.7.2"
   },
   "scripts": {
+    "heroku-prebuild": "npm install --dev",
     "test": "NODE_ENV=mocha mocha 'test/**/*.ts' 'test/*.ts' 'test/**/*.js' 'test/*.js'",
     "build": "NODE_ENV=dev rm -rf dist && npm run build:server && npm run build:client",
     "build:server": "rm -rf dist && webpack --mode development --config ./config/webpack.config.server.js",
     "build:client": "BABEL_ENV=client webpack --progress --colors --config ./config/webpack.config.client.js",
     "debug": "npm run build && nodemon ./dist/server.js",
-    "start": "node app.js"
+    "start": "npm run build && node ./dist/server.js",
+    "start-old": "node app.js"
   },
   "repository": {
     "type": "git",
