@@ -1,4 +1,4 @@
-import { UserActionType, UserDataAction, UserState } from '../../types/user';
+import { UserActionType, UserDataAction, UserState } from '../../types/enums/user';
 
 const initialState: UserState = {
   theme: null

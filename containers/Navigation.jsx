@@ -4,7 +4,7 @@ export default function NavigationContainer(props) {
   const { navigationProps } = props;
 
   return (
-    <nav class="navigation">
+    <nav className="navigation">
       Nav!
     </nav>
   );

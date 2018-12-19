@@ -2,7 +2,7 @@ import * as ReactDOM from 'react-dom/server';
 import { Provider } from 'react-redux';
 import { StaticRouter as Router } from 'react-router';
 import App from '../components/App';
-const page = require('../client/page');
+import * as React from 'react';
 
 export default function renderAppToString(req, context, store) {
   const appString = ReactDOM.renderToString(
@@ -18,7 +18,9 @@ export default function renderAppToString(req, context, store) {
     window.ESSDEV.store = ${ JSON.stringify(store.getState()).replace(
     /</g,
     '\\u003c'
-  )};</script>;`;
+  )};</script>`;
+
+  // console.log(appString);
 
   return `<div id="main" role="main">${appString}</div>` + storeScript;
 }

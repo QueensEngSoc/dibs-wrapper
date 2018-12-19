@@ -1,6 +1,4 @@
-export enum UserActionType {
-  SetUserData = 'SetUserData'
-}
+import { UserActionType } from './enums/user';
 
 export interface UserState {
   theme: string;

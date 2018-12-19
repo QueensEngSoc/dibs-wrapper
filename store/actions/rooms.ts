@@ -1,4 +1,5 @@
-import { Room, RoomDataAction, RoomsActionType } from '../../types/room';
+import { Room, RoomDataAction } from '../../types/room';
+import { RoomsActionType } from '../../types/enums/room';
 
 export function setRooms(payload: Array<Room>): RoomDataAction {
   return {

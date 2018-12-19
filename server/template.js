@@ -1,8 +1,7 @@
 // src/template.js
 
 export default ({ body, title, cssPath = ['/CSS/styles.css'] }) => {
-  return `
-    <!DOCTYPE html>
+  return `<!DOCTYPE html>
     <html>
       <head>
         <title>${title}</title>
@@ -22,6 +21,5 @@ export default ({ body, title, cssPath = ['/CSS/styles.css'] }) => {
       </body>
       
       <script src="app.bundle.js"></script>
-    </html>
-  `;
+    </html>`;
 };

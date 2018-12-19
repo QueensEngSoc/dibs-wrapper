@@ -1,4 +1,4 @@
-import assert from 'assert';
+import * as assert from 'assert';
 import { setCurrentHour, setRooms } from '../../../store/actions/rooms';
 import roomsReducer from '../../../store/reducers/rooms';
 import { Room, RoomState } from '../../../types/room';

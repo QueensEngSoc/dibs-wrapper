@@ -1,7 +1,4 @@
-export enum RoomsActionType {
-  SetRoomData = 'SetRoomData',
-  SetCurrentHour = 'SetCurrentHour'
-}
+import { RoomsActionType } from './enums/room';
 
 export interface RoomFreeTable {
   free: boolean;

@@ -1,5 +1,4 @@
 import { Component } from 'react';
-import ReactDOM from 'react-dom';
 
 export default class RadioButton extends Component {
   constructor(props) {
@@ -13,27 +12,24 @@ export default class RadioButton extends Component {
   render() {
     const { selected, options } = this.state;
 
-    const renderedOptions = this.state.options.map((option, key) => {
-      const isCurrent = this.state.selected === option.value;
+    const renderedOptions = options.map((option, key) => {
+      const isCurrent = selected === option.value;
       return (
         <div key={option.value}>
           <input
             className="radio-btn__radio"
             type="radio"
-            name="coffeeTypes"
+            name="roomSizes"
             id={option.label}
             value={option.value}
             onChange={this.handleRadio.bind(this)}
           />
-          <label className={
-            isCurrent ?
-              'radio-btn__wrapper radio-btn__wrapper--selected' :
-              'radio-btn__wrapper'
-          }
-          >{option.label}</label>
+          <label className={ isCurrent ? 'radio-btn__radio radio-btn__radio--selected' : 'radio-btn__radio' }>
+            {option.label}
+          </label>
         </div>
-      )
-    })
+      );
+    });
     return (
       <div className="inline-radio">
         {renderedOptions}

@@ -1,9 +1,12 @@
-import { Component } from 'react';
+// @ts-ignore
+import React, { Component } from 'react';
 import { Room, RoomFreeTable } from '../types/room';
 import { StoreState } from '../types/store';
 import { connect } from 'react-redux';
 import { selectCurrentHour, selectRoomData } from '../store/selectors/rooms';
 import RadioButton from '../components/RadioButton';
+import { Button, ExpansionPanel, ExpansionPanelSummary, Typography, ExpansionPanelDetails } from '@material-ui/core/';
+import { ExpandMore } from '@material-ui/icons';
 
 interface Props {
   roomData: Array<Room>;
@@ -16,6 +19,7 @@ interface State {
   filterPhone: boolean;
   filterTv: boolean;
   filterUnavailable: boolean;
+  showExtraFilters: boolean;
 }
 
 class Home extends Component<Props, State> {
@@ -27,7 +31,8 @@ class Home extends Component<Props, State> {
       filterSize: null,
       filterPhone: false,
       filterTv: false,
-      filterUnavailable: false
+      filterUnavailable: false,
+      showExtraFilters: false
     };
   }
 
@@ -37,7 +42,7 @@ class Home extends Component<Props, State> {
   checkFilters(room, currentTime) {
     const { filterSize, filterPhone, filterTv, filterUnavailable } = this.state;
 
-    if (filterSize !== null && room.size !== filterSize)
+    if (filterSize !== null && (room.size < filterSize && filterSize >= 2 || room.size !== filterSize && filterSize < 2))
       return false;
 
     if (filterPhone && !room.hasPhone)
@@ -53,7 +58,6 @@ class Home extends Component<Props, State> {
   }
 
   onFilterChange(selectedValue) {
-    console.log('clicked! ', selectedValue)
     const intVal = selectedValue !== '' ? parseInt(selectedValue) : null;
     this.setState({
       filterSize: intVal
@@ -91,8 +95,15 @@ class Home extends Component<Props, State> {
     );
   }
 
+  toggleAdditionalFilters(filter) {
+    this.setState({
+      filterPhone: filter === 'phone' ? !this.state.filterPhone : this.state.filterPhone,
+      filterTv: filter === 'tv' ? !this.state.filterTv : this.state.filterTv,
+      filterUnavailable: filter === 'unavailable' ? !this.state.filterUnavailable : this.state.filterUnavailable
+    })
+  }
+
   renderFilters() {
-    // @ts-ignore
     return (
       <div className="row justify-content-center">
         <div className="col-md-8 col-sm-12 col-xs-12">
@@ -103,10 +114,9 @@ class Home extends Component<Props, State> {
                   <strong>Room Size: </strong>
                 </h4>
               </div>
-
               <div className="col-lg-8 col-md-10 col-sm-12 col-xs-12">
-                <RadioButton selected={null} onChange={this.onFilterChange.bind(this)}>{[
-                  { label: 'Any', value: null },
+                <RadioButton selected={''} onChange={this.onFilterChange.bind(this)}>{[
+                  { label: 'Any', value: '' },
                   { label: 'Small', value: 0 },
                   { label: 'Medium', value: 1 },
                   { label: 'Large', value: 2 }]}
@@ -114,27 +124,26 @@ class Home extends Component<Props, State> {
               </div>
             </div>
             <br/>
-            <button onClick={() => {
-            }} className="btn btn-primary">Show More Filters
-            </button>
-            <div id="filters" style={{ display: 'none', paddingTop: 15 + 'px' }}>
-              <label className="chk-container">&nbsp;
-              <input type="checkbox" data-value="hasPhone">
-              </input>
-              <span className="checkmark">Has a Phone</span>
-              </label>
-              <label className="chk-container">&nbsp;
-              <input type="checkbox" data-value="hasTV">
-              </input>
-              <span className="checkmark">Has a TV</span>
-              </label>
-              <br/>
-              <label className="chk-container">&nbsp;
-              <input type="checkbox" data-value="onlyFree">
-              </input>
-              <span className="checkmark">Hide Unavailable</span>
-              </label>
-            </div>
+            <ExpansionPanel>
+              <ExpansionPanelSummary expandIcon={<ExpandMore/>}>
+                <Typography className={''}>Show More Filters</Typography>
+              </ExpansionPanelSummary>
+              <ExpansionPanelDetails>
+                <Typography>
+                  Toggle additional filters on and off here
+                </Typography>
+
+                <Button color={this.state.filterPhone ? 'primary' : 'default'} onClick={() => this.toggleAdditionalFilters('phone')}>
+                  Has a Phone
+                </Button>
+                <Button color={this.state.filterTv ? 'primary' : 'default'} onClick={() => this.toggleAdditionalFilters('tv')}>
+                  Has a TV
+                </Button>
+                <Button color={this.state.filterUnavailable ? 'primary' : 'default'} onClick={() => this.toggleAdditionalFilters('unavailable')}>
+                  Hide Unavailable
+                </Button>
+              </ExpansionPanelDetails>
+            </ExpansionPanel>
           </div>
         </div>
       </div>
@@ -151,8 +160,6 @@ class Home extends Component<Props, State> {
     );
   }
 }
-
-// roomData: selectRoomData(state)
 
 function mapStateToProps(state: StoreState) {
   return {

@@ -436,6 +436,12 @@ group + group {
     color: #fff;
 }
 
+.inline-radio .radio-btn__radio--selected{
+    background: #d81b60;
+    font-weight: 500;
+    color: #fff;
+}
+
 
 /*/////////// CUSTOM STYLES /////////////*/
 
