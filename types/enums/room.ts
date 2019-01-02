@@ -1,4 +1,5 @@
 export enum RoomsActionType {
   SetRoomData = 'SetRoomData',
-  SetCurrentHour = 'SetCurrentHour'
+  SetCurrentHour = 'SetCurrentHour',
+  SetTimeCount = 'SetTimeCount'
 }

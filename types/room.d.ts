@@ -39,12 +39,23 @@ export interface DBRoom {
   phone: boolean;
 }
 
+export interface TimeCountObject {
+  hourCount: number;
+  totalCount: number;
+  timeString: string;
+  totalFree: number;
+  hour: number;
+  twenty4Hour: number;
+  pillClass: string;
+}
+
 export interface RoomState {
   rooms: Array<Room>;
   currentHour: number;
+  timeCount: Array<TimeCountObject>;
 }
 
 export interface RoomDataAction {
   type: RoomsActionType;
-  payload: Array<Room> | number;
+  payload: Array<Room> | number | object;
 }

@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 import { StoreState } from '../../types/store';
-import { Room, RoomState } from '../../types/room';
+import { Room, RoomState, TimeCountObject } from '../../types/room';
 
 function getRooms(state: StoreState): RoomState {
   return state.roomState;
@@ -14,4 +14,9 @@ export const selectRoomData = createSelector<StoreState, RoomState, Array<Room>>
 export const selectCurrentHour = createSelector<StoreState, RoomState, number>(
   [getRooms],
   (roomState: RoomState): number => roomState.currentHour
+);
+
+export const selectTimeCount = createSelector<StoreState, RoomState, Array<TimeCountObject>>(
+  [getRooms],
+  (roomState: RoomState): Array<TimeCountObject> => roomState.timeCount
 );

@@ -1,4 +1,4 @@
-import { setCurrentHour, setRooms } from "../store/actions/rooms";
+import { setCurrentHour, setRooms, setTimeCount } from '../store/actions/rooms';
 import template from '../server/template';
 import createStore from '../store/createStore';
 import renderAppToString from "../server/renderAppToString";
@@ -8,10 +8,11 @@ var router = express.Router();
 var roomDB = require('../models/roomDatabase.js'); //the roomDatabase interface which provide 5 functions. Look in the file for how to use them
 var accountFuncs = require('../models/userFunctions');
 
-async function createStoreInstance(req, data, current_hour) {
+async function createStoreInstance(req, data, current_hour, timeCount) {
   const store = createStore({});
   await store.dispatch(setRooms(data));
   await store.dispatch(setCurrentHour(current_hour));
+  await store.dispatch(setTimeCount(timeCount));
   return store;
 }
 
@@ -35,11 +36,13 @@ router.get('/react', async function (req, res, next) {
 
   for (let i = startCheck - 7; i < listFree[i].isFree.length; i++) {
     let amOrPm = (startCheck >= 11) ? " PM" : " AM";
+    const startTime = (((i + 7) % 12 === 0) ? '12' : (i + 7) % 12) + ":30";
+    const endTime = (((i + 7 + 1) % 12 === 0) ? '12' : (i + 7 + 1) % 12) + ":30";
 
     timecount.push({
       hourCount: 0,
       totalCount: 0,
-      timeString: (i + 7) % 12 + ":30-" + (i + 7 + 1) % 12 + ":30" + amOrPm,
+      timeString: startTime + '-' + endTime + amOrPm,
       totalFree: 0,
       hour: (i + 7) % 12,
       twenty4Hour: i + 7,
@@ -69,7 +72,7 @@ router.get('/react', async function (req, res, next) {
   for (var i = 0; i < timecount.length; i++)
     timecount[i].totalFree = timecount[i].totalCount - timecount[i].hourCount;
 
-  const store = await createStoreInstance(req, listFree, current_hour);
+  const store = await createStoreInstance(req, listFree, current_hour, timecount);
   const state = store.getState();
 
   // var prettyDate = formatDate(date);

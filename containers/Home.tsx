@@ -1,16 +1,17 @@
 // @ts-ignore
 import React, { Component } from 'react';
-import { Room, RoomFreeTable } from '../types/room';
+import { Room, RoomFreeTable, TimeCountObject } from '../types/room';
 import { StoreState } from '../types/store';
 import { connect } from 'react-redux';
-import { selectCurrentHour, selectRoomData } from '../store/selectors/rooms';
+import { selectCurrentHour, selectRoomData, selectTimeCount } from '../store/selectors/rooms';
 import RadioButton from '../components/RadioButton';
-import { Button, ExpansionPanel, ExpansionPanelSummary, Typography, ExpansionPanelDetails } from '@material-ui/core/';
+import { Button, ExpansionPanel, ExpansionPanelSummary, Typography, ExpansionPanelDetails, Input, Select } from '@material-ui/core/';
 import { ExpandMore } from '@material-ui/icons';
 
 interface Props {
   roomData: Array<Room>;
   currentHour: number;
+  timeCount: Array<TimeCountObject>;
 }
 
 interface State {
@@ -64,7 +65,6 @@ class Home extends Component<Props, State> {
     });
   }
 
-
   renderTimeButtons() {
     const { roomData } = this.state;
     const currentTime = this.props.currentHour - 7;
@@ -88,7 +88,7 @@ class Home extends Component<Props, State> {
 
     return (
       <div className="row justify-content-center">
-        <div className="col-xs-12 col-sm-10 col-md-10 col-lg-8" id="roomButtons">
+        <div className="col-xs-12 col-sm-10 col-md-10 col-lg-8 indexRoomButtonContainer" id="roomButtons">
           {roomButtons}
         </div>
       </div>
@@ -129,21 +129,65 @@ class Home extends Component<Props, State> {
                 <Typography className={''}>Show More Filters</Typography>
               </ExpansionPanelSummary>
               <ExpansionPanelDetails>
-                <Typography>
-                  Toggle additional filters on and off here
-                </Typography>
-
-                <Button color={this.state.filterPhone ? 'primary' : 'default'} onClick={() => this.toggleAdditionalFilters('phone')}>
-                  Has a Phone
-                </Button>
-                <Button color={this.state.filterTv ? 'primary' : 'default'} onClick={() => this.toggleAdditionalFilters('tv')}>
-                  Has a TV
-                </Button>
-                <Button color={this.state.filterUnavailable ? 'primary' : 'default'} onClick={() => this.toggleAdditionalFilters('unavailable')}>
-                  Hide Unavailable
-                </Button>
+                <div className='row'>
+                  <div className="col-md-auto">
+                    <Typography>
+                      Toggle additional filters on and off here
+                    </Typography>
+                  </div>
+                  <div className="col-md-auto moreFiltersContainer">
+                    <Button className="filterButton" variant="contained" color={this.state.filterPhone ? 'primary' : 'default'} onClick={() => this.toggleAdditionalFilters('phone')}>
+                      Has a Phone
+                    </Button>
+                    <Button className="filterButton" variant="contained" color={this.state.filterTv ? 'primary' : 'default'} onClick={() => this.toggleAdditionalFilters('tv')}>
+                      Has a TV
+                    </Button>
+                    <Button className="filterButton" variant="contained" color={this.state.filterUnavailable ? 'primary' : 'default'} onClick={() => this.toggleAdditionalFilters('unavailable')}>
+                      Hide Unavailable
+                    </Button>
+                  </div>
+                </div>
               </ExpansionPanelDetails>
             </ExpansionPanel>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  onTimeChange(event) {
+    const selectedValue = event.target.value;
+    const intVal = selectedValue !== '' ? parseInt(selectedValue) : null;
+    console.log(selectedValue, intVal);
+  }
+
+  renderTimeSwitcher() {
+    const { timeCount } = this.props;
+
+    return (
+      <div className="row justify-content-center">
+        <div className="col-md-auto">
+          <div className="form-group text-center">
+            <h3>
+              <strong>Pick a day: </strong>
+              <Input style={{ width: 220 + 'px', border: '2d2e2e', borderWidth: 2 + 'px' }} type='text' id="datepicker"
+                     readOnly={true}/>
+            </h3>
+          </div>
+        </div>
+        <div className="col-md-auto">
+          <div className="form-group text-center">
+            <h3>
+              <strong>Pick a time: </strong>
+              <Select onChange={this.onTimeChange.bind(this)} className="selectpicker" id="timepicker" data-live-search="true" data-size="10" autoWidth displayEmpty>
+                {timeCount.map((time) => {
+                  return (<option key={time.twenty4Hour} data-tokens={`${time.hour} ${time.twenty4Hour}`} value={time.twenty4Hour}
+                          data-content={`<span><span class='badge badge-pill ${time.pillClass}>${time.totalFree}</span> ${time.timeString}</span>`}>
+                    {time.timeString}
+                  </option>);
+                })}
+              </Select>
+            </h3>
           </div>
         </div>
       </div>
@@ -154,6 +198,7 @@ class Home extends Component<Props, State> {
     return (
       <div>
         <h1>Hello, this is React!</h1>
+        {this.renderTimeSwitcher()}
         {this.renderFilters()}
         {this.renderTimeButtons()}
       </div>
@@ -164,7 +209,8 @@ class Home extends Component<Props, State> {
 function mapStateToProps(state: StoreState) {
   return {
     roomData: selectRoomData(state),
-    currentHour: selectCurrentHour(state)
+    currentHour: selectCurrentHour(state),
+    timeCount: selectTimeCount(state)
   };
 }
 

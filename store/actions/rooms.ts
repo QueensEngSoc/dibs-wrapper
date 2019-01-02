@@ -1,4 +1,4 @@
-import { Room, RoomDataAction } from '../../types/room';
+import { Room, RoomDataAction, TimeCountObject } from '../../types/room';
 import { RoomsActionType } from '../../types/enums/room';
 
 export function setRooms(payload: Array<Room>): RoomDataAction {
@@ -15,3 +15,9 @@ export function setCurrentHour(payload: number): RoomDataAction {
   };
 }
 
+export function setTimeCount(payload: Array<TimeCountObject>): RoomDataAction {
+  return {
+    type: RoomsActionType.SetTimeCount,
+    payload
+  };
+}
