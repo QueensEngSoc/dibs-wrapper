@@ -175,7 +175,7 @@ export default server;
 //                  mongo
 //                  use roomDatabase
 //
-//  You can then run grabJSONS to set up the database, then run the app with app.js.  Navigate to localhost:8000 and it
+//  You can then run grabJSONS to set up the database, then run the app with `npm run debug`.  Navigate to localhost:8000 and it
 //  should work!
 //
 //  To view information in the database, type
