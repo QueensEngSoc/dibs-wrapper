@@ -4,8 +4,9 @@ import roomsReducer from '../../../store/reducers/rooms';
 import { Room, RoomState } from '../../../types/room';
 
 const defaultState: RoomState = {
-  rooms: undefined,
-  currentHour: null
+  rooms: null,
+  currentHour: null,
+  timeCount: null
 };
 
 const mockRoom: Room = {
