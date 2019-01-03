@@ -407,6 +407,7 @@ group + group {
     padding-right: 20px;
     height: 36px;
     opacity: 0;
+    cursor: pointer;
 }
 
 .inline-radio > div > label {
