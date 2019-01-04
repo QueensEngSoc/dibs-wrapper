@@ -66,7 +66,7 @@
     "webpack-node-externals": "^1.7.2"
   },
   "scripts": {
-    "heroku-prebuild": "npm install --dev && npm run build",
+    "heroku-prebuild": "npm install --dev && touch config/emailConfig.js && npm run build",
     "test": "NODE_ENV=mocha mocha 'test/**/*.ts' 'test/*.ts' 'test/**/*.js' 'test/*.js'",
     "debug": "NODE_ENV=dev npm run build && concurrently -n watch,debug \"npm:watch:*\" \"npm:debug:server\"",
     "debug:server": "NODE_ENV=dev nodemon --watch dist ./dist/server.js",
