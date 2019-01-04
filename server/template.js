@@ -2,10 +2,15 @@
 
 export default ({ body, title, cssPath = ['/CSS/styles.css'] }) => {
   return `<!DOCTYPE html>
-    <html>
+    <html lang="en">
       <head>
         <title>${title}</title>
-        
+        <meta name="theme-color" content="#c771e9;"/>
+        <meta name="viewport" content="width = device-width, initial-scale = 1">
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" />
+
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous" />
         <link rel="stylesheet" href="/CSS/font-awesome-all.css" />
 
@@ -21,6 +26,7 @@ export default ({ body, title, cssPath = ['/CSS/styles.css'] }) => {
         }).join('\n')}
 
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+        <link rel="manifest" href="/manifest.json">
       </head>
       
       <body>

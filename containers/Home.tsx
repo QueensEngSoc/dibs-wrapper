@@ -7,6 +7,7 @@ import { selectCurrentHour, selectRoomData, selectTimeCount } from '../store/sel
 import RadioButton from '../components/RadioButton';
 import { Button, ExpansionPanel, ExpansionPanelSummary, Typography, ExpansionPanelDetails, Input, Select } from '@material-ui/core/';
 import { ExpandMore } from '@material-ui/icons';
+import MaterialDatePicker from '../components/MaterialDatePicker';
 
 interface Props {
   roomData: Array<Room>;
@@ -21,6 +22,7 @@ interface State {
   filterTv: boolean;
   filterUnavailable: boolean;
   showExtraFilters: boolean;
+  selectedTime: number;
 }
 
 class Home extends Component<Props, State> {
@@ -33,11 +35,13 @@ class Home extends Component<Props, State> {
       filterPhone: false,
       filterTv: false,
       filterUnavailable: false,
-      showExtraFilters: false
+      showExtraFilters: false,
+      selectedTime: this.props.timeCount[0].twenty4Hour
     };
   }
 
   componentDidMount() {
+
   }
 
   checkFilters(room, currentTime) {
@@ -158,6 +162,10 @@ class Home extends Component<Props, State> {
   onTimeChange(event) {
     const selectedValue = event.target.value;
     const intVal = selectedValue !== '' ? parseInt(selectedValue) : null;
+
+    this.setState({
+      selectedTime: intVal
+    });
     console.log(selectedValue, intVal);
   }
 
@@ -170,8 +178,7 @@ class Home extends Component<Props, State> {
           <div className="form-group text-center">
             <h3>
               <strong>Pick a day: </strong>
-              <Input style={{ width: 220 + 'px', border: '2d2e2e', borderWidth: 2 + 'px' }} type='text' id="datepicker"
-                     readOnly={true}/>
+              <MaterialDatePicker daysToSpan={14} />
             </h3>
           </div>
         </div>
@@ -179,7 +186,7 @@ class Home extends Component<Props, State> {
           <div className="form-group text-center">
             <h3>
               <strong>Pick a time: </strong>
-              <Select onChange={this.onTimeChange.bind(this)} className="selectpicker" id="timepicker" data-live-search="true" data-size="10" autoWidth displayEmpty>
+              <Select value={this.state.selectedTime} onChange={this.onTimeChange.bind(this)} className="selectpicker" id="timepicker" data-live-search="true" data-size="10" autoWidth displayEmpty>
                 {timeCount.map((time) => {
                   return (<option key={time.twenty4Hour} data-tokens={`${time.hour} ${time.twenty4Hour}`} value={time.twenty4Hour}
                           data-content={`<span><span class='badge badge-pill ${time.pillClass}>${time.totalFree}</span> ${time.timeString}</span>`}>

@@ -2,7 +2,7 @@ import { Component } from 'react';
 
 export default class RadioButton extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       options: this.props.children,
       selected: this.props.selected || null

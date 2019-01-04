@@ -66,7 +66,7 @@
     "webpack-node-externals": "^1.7.2"
   },
   "scripts": {
-    "heroku-prebuild": "npm install --dev",
+    "heroku-prebuild": "npm install --dev && npm run build",
     "test": "NODE_ENV=mocha mocha 'test/**/*.ts' 'test/*.ts' 'test/**/*.js' 'test/*.js'",
     "debug": "NODE_ENV=dev npm run build && concurrently -n watch,debug \"npm:watch:*\" \"npm:debug:server\"",
     "debug:server": "NODE_ENV=dev nodemon --watch dist ./dist/server.js",
@@ -75,9 +75,10 @@
     "tsc": "tsc --noEmit",
     "build": "npm run clean && npm run build:client && npm run build:server",
     "build:client": "BABEL_ENV=client webpack --progress --colors --config ./config/webpack.config.client.js",
-    "build:server": "webpack --progress --colors --mode development --config ./config/webpack.config.server.js",
+    "build:server": "webpack --progress --colors --config ./config/webpack.config.server.js",
     "watch": "concurrently -n watch \"npm:watch:client\" \"npm:watch:server\"",
-    "watch:server": "npm run build:server -- --watch"
+    "watch:server": "npm run build:server -- --watch",
+    "start": "node ./dist/server.js"
   },
   "repository": {
     "type": "git",
