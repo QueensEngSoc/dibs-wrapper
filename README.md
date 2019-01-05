@@ -9,12 +9,16 @@ QBook is programmed entirely in Javascript, running Node.js on the backend and s
 ## Running the server
 
 To run the server, please check that the following are true:
-* Make sure you have done an `npm install` first, and are in the project root directory.  
-* Make sure that the MongoDB server is running on 127.0.0.1:27017 (this should be the default setting), and that it has been initialized with both the admin database, and the rooms database.  
+* Make sure you have done an `npm install` first, and are in the project root directory.
+* Make sure that the MongoDB server is running on 127.0.0.1:27017 (this should be the default setting), and that it has been initialized with both the admin database, and the rooms database.
   * To initialize the roomsDB, run either createOfflineDB.js or createDatabase.js (this one needs an internet connection to work)
   * To initialize the adminDB, run adminDBSetup.js
 
-Once this is done, all you have to do is type `npm run debug` into a shell to start the app using Webpack and Babel.  Note: the old way of starting the app using `npm start` no longer works, and is deprecated. 
+### For OSX / Linux users
+Once this is done, all you have to do is type `npm run debug` into a shell to start the app using Webpack and Babel.  Note: the old way of starting the app using `npm start` is deprecated.
+
+### For Windows users
+Once this is done, all you have to do is type `npm run debug:windows` into CMD to start the app using Webpack and Babel.  Note: the old way of starting the app using `node app.js` no longer works.
 
 ### Dependencies
 

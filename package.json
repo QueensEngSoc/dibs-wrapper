@@ -80,8 +80,9 @@
     "watch:server": "npm run build:server -- --watch",
     "start": "node ./dist/server.js",
     "debug:windows": "NODE_ENV=dev npm run build:windows && concurrently -n watch,debug \"npm:watch:*\" \"npm:debug:server\"",
-    "build:windows": "npm run clean:windows && npm run build:client && npm run build:server",
-    "clean:windows": "rmdir /s /q ./dist ./public/*.js ./public/*.map"
+    "build:windows": "npm run build:clientwindows && npm run build:server",
+    "build:clientwindows": "set BABEL_ENV=client webpack --progress --colors --config ./config/webpack.config.client.js",
+    "clean:windows": "rmdir /s /q dist public/*.js public/*.map"
   },
   "repository": {
     "type": "git",
