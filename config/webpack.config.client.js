@@ -7,7 +7,7 @@ const distPath = path.resolve(__dirname, '../public');
 const config = {
   ...baseConfig,
   entry: {
-    app: './client/client.tsx'
+    app: './src/client/client.tsx'
   },
   output: {
     filename: '[name].bundle.js',

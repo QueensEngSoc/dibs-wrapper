@@ -1,7 +1,7 @@
 import * as assert from 'assert';
-import { setCurrentHour, setRooms } from '../../../store/actions/rooms';
-import roomsReducer from '../../../store/reducers/rooms';
-import { Room, RoomState } from '../../../types/room';
+import { setCurrentHour, setRooms } from '../../../src/store/actions/rooms';
+import roomsReducer from '../../../src/store/reducers/rooms';
+import { Room, RoomState } from '../../../src/types/room';
 
 const defaultState: RoomState = {
   rooms: null,

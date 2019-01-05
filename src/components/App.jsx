@@ -1,7 +1,7 @@
 import { Component } from 'react';
-import { routes } from '../config/clientRoutes';
+import { routes } from '../../config/clientRoutes';
 import NavigationContainer from '../containers/Navigation';
-import NotFound from '../components/NotFound';
+import NotFound from './NotFound';
 
 import { Switch, Route } from 'react-router-dom';
 

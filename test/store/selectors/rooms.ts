@@ -1,8 +1,8 @@
 import * as assert from 'assert';
-import { selectCurrentHour, selectRoomData, selectTimeCount } from '../../../store/selectors/rooms';
-import { Room } from '../../../types/room';
+import { selectCurrentHour, selectRoomData, selectTimeCount } from '../../../src/store/selectors/rooms';
+import { Room } from '../../../src/types/room';
 import { defaultState } from '../../fixtures/defaultState';
-import { StoreState } from '../../../types/store';
+import { StoreState } from '../../../src/types/store';
 
 const mockRoom: Room = {
   room: 'BMH 111',

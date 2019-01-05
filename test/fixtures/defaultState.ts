@@ -1,4 +1,4 @@
-import { StoreState } from '../../types/store';
+import { StoreState } from '../../src/types/store';
 
 export const defaultState: StoreState = {
   user: null,

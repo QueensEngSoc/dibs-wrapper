@@ -1,7 +1,7 @@
-import { setCurrentHour, setRooms, setTimeCount } from '../store/actions/rooms';
-import template from '../server/template';
-import createStore from '../store/createStore';
-import renderAppToString from "../server/renderAppToString";
+import { setCurrentHour, setRooms, setTimeCount } from '../src/store/actions/rooms';
+import template from '../src/server/template';
+import createStore from '../src/store/createStore';
+import renderAppToString from "../src/server/renderAppToString";
 
 var express = require('express');
 var router = express.Router();
