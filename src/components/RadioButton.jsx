@@ -5,7 +5,7 @@ export default class RadioButton extends Component {
     super(props);
     this.state = {
       options: this.props.children,
-      selected: this.props.selected || null
+      selected: this.props.selected !== null ? this.props.selected : null
     }
   }
 
@@ -14,6 +14,7 @@ export default class RadioButton extends Component {
 
     const renderedOptions = options.map((option, key) => {
       const isCurrent = selected === option.value;
+
       return (
         <div key={option.value}>
           <input

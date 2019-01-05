@@ -7,6 +7,7 @@ import { KeyboardArrowLeftRounded, KeyboardArrowRightRounded } from '@material-u
 interface Props {
   daysToSpan?: number;
   startDate?: Date;
+  onChange?: Function;
 }
 
 interface State {
@@ -23,6 +24,7 @@ class MaterialDatePicker extends React.Component<Props, State> {
 
   handleDateChange = date => {
     this.setState({ selectedDate: date });
+    this.props.onChange(date);
   };
 
   addDays(date, days) {

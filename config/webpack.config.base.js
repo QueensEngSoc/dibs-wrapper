@@ -29,6 +29,14 @@ module.exports = {
           }
         ],
         exclude: /node_modules\/.*/
+      },
+      {
+        test: /\.scss$/,
+        use: [
+          'iso-morphic-style-loader',
+          'css-loader',
+          'sass-loader'
+        ]
       }
     ]
   },

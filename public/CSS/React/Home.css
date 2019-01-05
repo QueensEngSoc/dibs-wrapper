@@ -1,0 +1,12 @@
+/* ---------------------- REACT INDEX PAGE ------------------------*/
+
+.indexRoomButtonContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.moreFiltersContainer .filterButton {
+    margin-right: 20px;
+    margin-top: -8px;
+}

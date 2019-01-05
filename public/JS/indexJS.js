@@ -210,7 +210,7 @@ function generateTimes(startTime, dayStart = 7) {
         pillClass = 'badge-danger';
 
     var option = "<option data-tokens=\"" + amPmTime + " " + i + " " + amOrPm +  "\" value=\"" + i + "\" data-icon=\"fa-heart\"  data-content=\"<span><span class='badge badge-pill " + pillClass + "'>" + freeRoomCountForHour + "</span> "+ amPmTime + ":30-" + endAmPmTime + ":30" + amOrPm + "</span>\" >" + amPmTime + ":30-" + endAmPmTime + ":30" + amOrPm + "</option>"
-    console.log(option);
+    // console.log(option);
     options.push(option);
   }
 

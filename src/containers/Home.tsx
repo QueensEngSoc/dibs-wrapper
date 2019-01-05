@@ -8,6 +8,18 @@ import RadioButton from '../components/RadioButton';
 import { Button, ExpansionPanel, ExpansionPanelSummary, Typography, ExpansionPanelDetails, Input, Select } from '@material-ui/core/';
 import { ExpandMore } from '@material-ui/icons';
 import MaterialDatePicker from '../components/MaterialDatePicker';
+import postReq from '../client/postReq';
+
+async function fetchData(date, time) {
+  const dateToSend = date || new Date();
+  if (time) {
+    dateToSend.setHours(time);
+  }
+
+  const response = await postReq('index', { day: date });
+  console.log('response was: ', response);
+  return response;
+}
 
 interface Props {
   roomData: Array<Room>;
@@ -23,6 +35,8 @@ interface State {
   filterUnavailable: boolean;
   showExtraFilters: boolean;
   selectedTime: number;
+  selectedDate: Date;
+  timeCount: Array<TimeCountObject>;
 }
 
 class Home extends Component<Props, State> {
@@ -36,7 +50,9 @@ class Home extends Component<Props, State> {
       filterTv: false,
       filterUnavailable: false,
       showExtraFilters: false,
-      selectedTime: this.props.timeCount[0].twenty4Hour
+      selectedTime: this.props.timeCount[0].twenty4Hour,
+      selectedDate: new Date(),
+      timeCount: this.props.timeCount
     };
   }
 
@@ -159,15 +175,33 @@ class Home extends Component<Props, State> {
     );
   }
 
-  onTimeChange(event) {
+  async onTimeChange(event) {
     const selectedValue = event.target.value;
     const intVal = selectedValue !== '' ? parseInt(selectedValue) : null;
+    const { selectedDate } = this.state;
+
+    const res = await fetchData(selectedDate, intVal);
 
     this.setState({
-      selectedTime: intVal
+      selectedTime: intVal,
+      roomData: res.list || this.state.roomData,
+      timeCount: res.timeCount || this.state.timeCount
     });
-    console.log(selectedValue, intVal);
+
+    console.log(selectedValue, intVal, res);
   }
+
+  handleDateChange = async date => {
+    console.log('date is now: ', date);
+    const { selectedTime } = this.state;
+    const res = await fetchData(date, selectedTime);
+
+    this.setState({
+      selectedDate: date,
+      roomData: res.list || this.state.roomData,
+      timeCount: res.timeCount || this.state.timeCount
+    });
+  };
 
   renderTimeSwitcher() {
     const { timeCount } = this.props;
@@ -178,7 +212,7 @@ class Home extends Component<Props, State> {
           <div className="form-group text-center">
             <h3>
               <strong>Pick a day: </strong>
-              <MaterialDatePicker daysToSpan={14} />
+              <MaterialDatePicker daysToSpan={14} onChange={this.handleDateChange.bind(this)} />
             </h3>
           </div>
         </div>

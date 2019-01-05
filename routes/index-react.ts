@@ -3,10 +3,11 @@ import template from '../src/server/template';
 import createStore from '../src/store/createStore';
 import renderAppToString from "../src/server/renderAppToString";
 
-var express = require('express');
-var router = express.Router();
-var roomDB = require('../models/roomDatabase.js'); //the roomDatabase interface which provide 5 functions. Look in the file for how to use them
-var accountFuncs = require('../models/userFunctions');
+import * as roomDB from '../models/roomDatabase.js'; //the roomDatabase interface which provide 5 functions. Look in the file for how to use them
+import * as accountFuncs from '../models/userFunctions';
+
+const express = require('express');
+const router = express.Router();
 
 async function createStoreInstance(req, data, current_hour, timeCount) {
   const store = createStore({});
@@ -73,17 +74,11 @@ router.get('/react', async function (req, res, next) {
     timecount[i].totalFree = timecount[i].totalCount - timecount[i].hourCount;
 
   const store = await createStoreInstance(req, listFree, current_hour, timecount);
-  const state = store.getState();
-
-  // var prettyDate = formatDate(date);
-
-  // const markup = render(HomeContainer);
-  // const body = render(HomeContainer, { data: listFree, time: current_hour });
   const context = {};
   const body = renderAppToString(req, context, store);
   const title = 'Server side Rendering with Styled Components';
   const theme = req.theme === "custom" ? false : req.theme || 'default';
-  const cssPath = ['/CSS/styles.css', `/CSS/room-style/${theme}-room-style.css`];
+  const cssPath = ['/CSS/styles.css', `/CSS/room-style/${theme}-room-style.css`, '/CSS/React/home.css'];
 
   res.send(template({
     body,
@@ -94,7 +89,7 @@ router.get('/react', async function (req, res, next) {
 });
 
 function formatDate(date) {
-  var d = new Date(date),
+  let d = new Date(date),
     month = '' + (d.getMonth() + 1),
     day = '' + d.getDate(),
     year = d.getFullYear();
