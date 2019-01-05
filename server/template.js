@@ -5,7 +5,7 @@ export default ({ body, title, cssPath = ['/CSS/styles.css'] }) => {
     <html lang="en">
       <head>
         <title>${title}</title>
-        <meta name="theme-color" content="#c771e9;"/>
+        <meta name="theme-color" content="#673ab7"/>
         <meta name="viewport" content="width = device-width, initial-scale = 1">
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -14,11 +14,10 @@ export default ({ body, title, cssPath = ['/CSS/styles.css'] }) => {
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous" />
         <link rel="stylesheet" href="/CSS/font-awesome-all.css" />
 
-
         <!--files for offline use-->
-        <link rel="stylesheet" href="/CSS/bootstrap.min.css">
-        <link rel="stylesheet" href="/CSS/font-awesome-all.css">
-        <script src="/JS/bootstrap.min.js"></script>
+        <!--<link rel="stylesheet" href="/CSS/bootstrap.min.css">-->
+        <!--<link rel="stylesheet" href="/CSS/font-awesome-all.css">-->
+        <!--<script src="/JS/bootstrap.min.js"></script>-->
         <!--End offline section-->
 
         ${cssPath.map((path) => {
