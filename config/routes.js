@@ -92,7 +92,7 @@ export default function (app, passport) {
   // PROFILE SECTION =====================
   // =====================================
   // we will want this protected so you have to be logged in to visit
-  // we will use route middleware to verify this (the isLoggedIn function)
+  // we will use route middleware to verify this (the isAccountMenuOpen function)
 
   app.get('/accounts', accountPage);
   app.get('/welcome', welcome);

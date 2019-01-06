@@ -16,3 +16,7 @@ body, wrapper {
 main {
     flex:1;
 }
+
+.md__icon-button:hover {
+    color: white;
+}

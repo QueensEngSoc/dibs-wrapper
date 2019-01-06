@@ -1,7 +1,9 @@
-import { UserActionType, UserDataAction, UserState } from '../../types/enums/user';
+import { UserActionType } from '../../types/enums/user';
+import { UserDataAction, UserState } from '../../types/user';
 
 const initialState: UserState = {
-  theme: null
+  theme: null,
+  isLoggedIn: false
 };
 
 export default function roomsReducer(
@@ -13,9 +15,17 @@ export default function roomsReducer(
   if (type === UserActionType.SetUserData) {
     return {
       ...state,
-      theme: payload.theme as string
+      theme: payload as string
     };
   }
+
+  if (type === UserActionType.SetLoggedIn) {
+    return {
+      ...state,
+      isLoggedIn: payload as boolean
+    };
+  }
+
 
   return state;
 }

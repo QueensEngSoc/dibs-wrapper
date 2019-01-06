@@ -5,6 +5,7 @@ import renderAppToString from "../src/server/renderAppToString";
 
 import * as roomDB from '../models/roomDatabase.js'; //the roomDatabase interface which provide 5 functions. Look in the file for how to use them
 import * as accountFuncs from '../models/userFunctions';
+import { setLoggedIn } from '../src/store/actions/user';
 
 const express = require('express');
 const router = express.Router();
@@ -14,6 +15,7 @@ async function createStoreInstance(req, data, current_hour, timeCount) {
   await store.dispatch(setRooms(data));
   await store.dispatch(setCurrentHour(current_hour));
   await store.dispatch(setTimeCount(timeCount));
+  await store.dispatch(setLoggedIn(req.isAuthenticated()));
   return store;
 }
 

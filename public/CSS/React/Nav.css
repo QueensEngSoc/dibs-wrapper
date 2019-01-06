@@ -1,0 +1,17 @@
+.navigation {
+    flex-grow: 1;
+    margin-bottom: 30px;
+}
+
+.navigation .navigation__wrapper {
+    background-color: #673ab7;
+}
+
+.nav__app-name {
+    flex-grow: 1;
+}
+
+.nav__account-menu-btn {
+    margin-left: -12px;
+    margin-right: 20px;
+}

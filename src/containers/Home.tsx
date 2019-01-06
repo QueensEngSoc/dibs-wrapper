@@ -212,7 +212,7 @@ class Home extends Component<Props, State> {
           <div className="form-group text-center">
             <h3>
               <strong>Pick a day: </strong>
-              <MaterialDatePicker daysToSpan={14} onChange={this.handleDateChange.bind(this)} />
+              <MaterialDatePicker daysToSpan={13} onChange={this.handleDateChange.bind(this)} />
             </h3>
           </div>
         </div>
@@ -239,7 +239,6 @@ class Home extends Component<Props, State> {
   render() {
     return (
       <div>
-        <h1>Hello, this is React!</h1>
         {this.renderTimeSwitcher()}
         {this.renderFilters()}
         {this.renderTimeButtons()}
