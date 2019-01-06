@@ -55,6 +55,14 @@ export interface RoomState {
   timeCount: Array<TimeCountObject>;
 }
 
+export interface RoomPostData {
+  day: Date;
+  currentHour: number;
+  list: Array<Room>;
+  prettyDate: string;
+  timeCount: Array<TimeCountObject>;
+}
+
 export interface RoomDataAction {
   type: RoomsActionType;
   payload: Array<Room> | number | object;

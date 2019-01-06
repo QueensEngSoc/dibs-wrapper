@@ -78,7 +78,7 @@ router.get('/react', async function (req, res, next) {
   const body = renderAppToString(req, context, store);
   const title = 'Server side Rendering with Styled Components';
   const theme = req.theme === "custom" ? false : req.theme || 'default';
-  const cssPath = ['/CSS/styles.css', `/CSS/room-style/${theme}-room-style.css`, '/CSS/React/home.css'];
+  const cssPath = ['/CSS/React/Main.css', '/CSS/React/home.css', `/CSS/room-style/${theme}-room-style.css`];
 
   res.send(template({
     body,

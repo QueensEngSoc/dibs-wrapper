@@ -1,0 +1,18 @@
+@import url('../font-nunito.css');
+@import url('../font-montserrat.css');
+@import url('../font-roboto.css');
+
+
+body {
+    font-family: "Nunito", Helvitica, sans-serif !important;
+}
+
+html,
+body,
+body, wrapper {
+    min-height:100vh;
+}
+
+main {
+    flex:1;
+}

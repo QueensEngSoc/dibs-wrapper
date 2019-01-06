@@ -1,11 +1,11 @@
 // @ts-ignore
 import React, { Component } from 'react';
-import { Room, RoomFreeTable, TimeCountObject } from '../types/room';
+import { Room, RoomFreeTable, RoomPostData, TimeCountObject } from '../types/room';
 import { StoreState } from '../types/store';
 import { connect } from 'react-redux';
 import { selectCurrentHour, selectRoomData, selectTimeCount } from '../store/selectors/rooms';
 import RadioButton from '../components/RadioButton';
-import { Button, ExpansionPanel, ExpansionPanelSummary, Typography, ExpansionPanelDetails, Input, Select } from '@material-ui/core/';
+import { Button, ExpansionPanel, ExpansionPanelSummary, MenuItem, Typography, ExpansionPanelDetails, Input, Select } from '@material-ui/core/';
 import { ExpandMore } from '@material-ui/icons';
 import MaterialDatePicker from '../components/MaterialDatePicker';
 import postReq from '../client/postReq';
@@ -180,12 +180,12 @@ class Home extends Component<Props, State> {
     const intVal = selectedValue !== '' ? parseInt(selectedValue) : null;
     const { selectedDate } = this.state;
 
-    const res = await fetchData(selectedDate, intVal);
+    const res = fetchData(selectedDate, intVal);
 
     this.setState({
       selectedTime: intVal,
-      roomData: res.list || this.state.roomData,
-      timeCount: res.timeCount || this.state.timeCount
+      roomData: (res as RoomPostData).list || this.state.roomData,
+      timeCount: (res as RoomPostData).timeCount || this.state.timeCount
     });
 
     console.log(selectedValue, intVal, res);
@@ -220,14 +220,15 @@ class Home extends Component<Props, State> {
           <div className="form-group text-center">
             <h3>
               <strong>Pick a time: </strong>
-              <Select value={this.state.selectedTime} onChange={this.onTimeChange.bind(this)} className="selectpicker" id="timepicker" data-live-search="true" data-size="10" autoWidth displayEmpty>
+              <Select value={this.state.selectedTime} onChange={this.onTimeChange.bind(this)} className="selectpicker" id="timepicker" data-live-search="true" data-size="10" displayEmpty>
                 {timeCount.map((time) => {
-                  return (<option key={time.twenty4Hour} data-tokens={`${time.hour} ${time.twenty4Hour}`} value={time.twenty4Hour}
+                  return (<MenuItem key={time.twenty4Hour} data-tokens={`${time.hour} ${time.twenty4Hour}`} value={time.twenty4Hour}
                           data-content={`<span><span class='badge badge-pill ${time.pillClass}>${time.totalFree}</span> ${time.timeString}</span>`}>
                     {time.timeString}
-                  </option>);
+                  </MenuItem>);
                 })}
               </Select>
+
             </h3>
           </div>
         </div>

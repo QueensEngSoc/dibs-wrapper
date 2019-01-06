@@ -1,0 +1,88 @@
+.yroom {
+    padding: 15px 32px;
+    font-family: "Roboto Mono", Courier, monospace;
+    border-radius: 12px;
+    display: inline-flex;
+    font-size: 30px;
+    margin: 10px 10px;
+    color: white !important;
+    text-decoration: none;
+}
+.nroom {
+    padding: 15px 32px;
+    font-family: "Roboto Mono", Courier, monospace !important;
+    border-radius: 12px;
+    display: inline-flex;
+    font-size: 30px;
+    margin: 10px 10px;
+    color: white !important;
+    text-decoration: none;
+}
+
+.mroom {
+    padding: 15px 32px;
+    font-family: "Roboto Mono", Courier, monospace !important;
+    border-radius: 12px;
+    display: inline-flex;
+    margin: 10px 10px;
+    color: white !important;
+    text-decoration: none;
+}
+
+.ytime {
+    color: white;
+    padding: 15px 22px;
+    font-family: "Roboto Mono", Courier, monospace;;
+    border-radius: 12px;
+    display: inline-flex;
+    font-size: 17px;
+}
+.mtime {
+    padding: 15px 22px;
+    font-family: "Roboto Mono", Courier, monospace;;
+    border-radius: 12px;
+    display: inline-flex;
+    font-size: 17px;
+}
+.ntime {
+    color: white;
+    padding: 15px 22px;
+    font-family: "Roboto Mono";
+    border-radius: 12px;
+    display: inline-flex;
+    font-size: 17px;
+}
+.ctime {
+    color: white;
+    padding: 15px 22px;
+    font-family: "Roboto Mono";
+    border-radius: 12px;
+    display: inline-flex;
+    font-size: 17px;
+}
+
+@media (max-width: 375px) {
+    .mobileBtn {
+        font-size: 1.4rem;    /*1rem = 16px*/
+    }
+}
+
+@media (min-width: 376px) {
+    .mobileBtn {
+        font-size: 1.5rem;    /*1rem = 16px*/
+    }
+}
+
+/* Medium devices (tablets, 768px and up) The navbar toggle appears at this breakpoint */
+@media (min-width: 541px) {
+    .mobileBtn {
+        font-size: 1.5rem;    /*1rem = 16px*/
+    }
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+    .mobileBtn {
+        font-size: 30px;    /*1rem = 16px*/
+    }
+}

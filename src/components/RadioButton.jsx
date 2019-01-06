@@ -16,7 +16,7 @@ export default class RadioButton extends Component {
       const isCurrent = selected === option.value;
 
       return (
-        <div key={option.value}>
+        <div key={option.value} className={"radio-btn"}>
           <input
             className="radio-btn__radio"
             type="radio"

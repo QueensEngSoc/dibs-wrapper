@@ -1,4 +1,6 @@
-export default function sendReq(url: string, data: object = null): object {
+import { RoomPostData } from '../types/room';
+
+export default function sendReq(url: string, data: object = null): RoomPostData | object {
   return fetch(url, {
     method: data ? "POST" : "GET", // *GET, POST, PUT, DELETE, etc.
     mode: "cors", // no-cors, cors, *same-origin
