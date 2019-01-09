@@ -84,8 +84,6 @@ router.get('/react', async function (req, res, next) {
   const cssPath = [`/CSS/room-style/${theme}-room-style.css`];
   const compiledCss = compile('src/SCSS/Home.scss');
 
-  console.log('compiledSass: ', compiledCss);
-
   res.send(template({
     body,
     title,

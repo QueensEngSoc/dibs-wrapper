@@ -2,6 +2,17 @@
 @import './RoomButtons';
 
 /* ---------------------- REACT INDEX PAGE ------------------------*/
+.content__wrapper {
+  flex-grow: 1;
+}
+
+.material-date-picker-wrapper {
+  display: inline-flex;
+
+  &__inner {
+    display: block;
+  }
+}
 
 .indexRoomButtonContainer {
   display: flex;

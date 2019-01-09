@@ -84,6 +84,7 @@
     "build:server": "webpack --progress --colors --config ./config/webpack.config.server.js",
     "watch": "concurrently -n watch \"npm:watch:client\" \"npm:watch:server\"",
     "watch:server": "npm run build:server -- --watch",
+    "watch:client": "npm run build:client -- --watch",
     "start": "node ./dist/server.js",
     "debug:windows": "NODE_ENV=dev npm run build:windows && concurrently -n watch,debug \"npm:watch:*\" \"npm:debug:server\"",
     "build:windows": "npm run build:clientwindows && npm run build:server",

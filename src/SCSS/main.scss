@@ -17,10 +17,22 @@ body, wrapper {
   min-height:100vh;
 }
 
-main {
+#main {
   flex:1;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
 }
 
 .md__icon-button:hover {
   color: white;
+}
+
+.row {
+  margin-right: 0;
+  margin-left: 0;
+
+  &--add-margin {
+    margin-bottom: 8px;
+  }
 }

@@ -12,7 +12,7 @@ export default class App extends Component {
       <Route key={`ROUTE_${index}`} exact={exact} path={path} component={component}/>
     );
     return (
-      <FooterContainer>
+      <>
         <NavigationContainer/>
         <Switch>
           {routeComponents}

@@ -1,13 +1,17 @@
 .navigation {
-  flex-grow: 1;
   margin-bottom: 30px;
 
-  &__wrapper {
+  & &__wrapper {
     background-color: #673ab7;
   }
 
   &__app-name {
     flex-grow: 1;
+    color: white;
+
+    &:hover, active {
+      color: white;
+    }
   }
 
   &__account-menu-btn {
@@ -15,4 +19,8 @@
     margin-right: 20px;
   }
 
+  &__qbook-logo {
+    margin-right: 0.5em;
+    margin-left: 1em;
+  }
 }

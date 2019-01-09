@@ -5,7 +5,16 @@ import { StoreState } from '../types/store';
 import { connect } from 'react-redux';
 import { selectCurrentHour, selectRoomData, selectTimeCount } from '../store/selectors/rooms';
 import RadioButton from '../components/RadioButton';
-import { Button, ExpansionPanel, ExpansionPanelSummary, MenuItem, Typography, ExpansionPanelDetails, Input, Select } from '@material-ui/core/';
+import {
+  Button,
+  ExpansionPanel,
+  ExpansionPanelSummary,
+  MenuItem,
+  Typography,
+  ExpansionPanelDetails,
+  Input,
+  Select
+} from '@material-ui/core/';
 import { ExpandMore } from '@material-ui/icons';
 import MaterialDatePicker from '../components/MaterialDatePicker';
 import postReq from '../client/postReq';
@@ -130,9 +139,7 @@ class Home extends Component<Props, State> {
           <div className="form-group text-center" id="selectionForm">
             <div className="row" style={{ justifyContent: 'center' }}>
               <div className="col-md-auto">
-                <h4 style={{ marginTop: 0.25 + 'em' }}>
-                  <strong>Room Size: </strong>
-                </h4>
+                <Typography variant={'h5'}>Room Size: </Typography>
               </div>
               <div className="col-lg-8 col-md-10 col-sm-12 col-xs-12">
                 <RadioButton selected={''} onChange={this.onFilterChange.bind(this)}>{[
@@ -143,9 +150,9 @@ class Home extends Component<Props, State> {
                 </RadioButton>
               </div>
             </div>
-            <br/>
+            <br />
             <ExpansionPanel>
-              <ExpansionPanelSummary expandIcon={<ExpandMore/>}>
+              <ExpansionPanelSummary expandIcon={<ExpandMore />}>
                 <Typography className={''}>Show More Filters</Typography>
               </ExpansionPanelSummary>
               <ExpansionPanelDetails>
@@ -156,13 +163,19 @@ class Home extends Component<Props, State> {
                     </Typography>
                   </div>
                   <div className="col-md-auto moreFiltersContainer">
-                    <Button className="filterButton" variant="contained" color={this.state.filterPhone ? 'primary' : 'default'} onClick={() => this.toggleAdditionalFilters('phone')}>
+                    <Button className="filterButton" variant="contained"
+                            color={this.state.filterPhone ? 'primary' : 'default'}
+                            onClick={() => this.toggleAdditionalFilters('phone')}>
                       Has a Phone
                     </Button>
-                    <Button className="filterButton" variant="contained" color={this.state.filterTv ? 'primary' : 'default'} onClick={() => this.toggleAdditionalFilters('tv')}>
+                    <Button className="filterButton" variant="contained"
+                            color={this.state.filterTv ? 'primary' : 'default'}
+                            onClick={() => this.toggleAdditionalFilters('tv')}>
                       Has a TV
                     </Button>
-                    <Button className="filterButton" variant="contained" color={this.state.filterUnavailable ? 'primary' : 'default'} onClick={() => this.toggleAdditionalFilters('unavailable')}>
+                    <Button className="filterButton" variant="contained"
+                            color={this.state.filterUnavailable ? 'primary' : 'default'}
+                            onClick={() => this.toggleAdditionalFilters('unavailable')}>
                       Hide Unavailable
                     </Button>
                   </div>
@@ -207,30 +220,28 @@ class Home extends Component<Props, State> {
     const { timeCount } = this.props;
 
     return (
-      <div className="row justify-content-center">
+      <div className="row justify-content-center row--add-margin">
         <div className="col-md-auto">
           <div className="form-group text-center">
-            <h3>
-              <strong>Pick a day: </strong>
-              <MaterialDatePicker daysToSpan={13} onChange={this.handleDateChange.bind(this)} />
-            </h3>
+            <Typography variant={'h5'}>Pick a day: </Typography>
           </div>
+        </div>
+        <div className="material-date-picker-wrapper">
+          <MaterialDatePicker className="material-date-picker-wrapper__inner" daysToSpan={13} onChange={this.handleDateChange.bind(this)} />
         </div>
         <div className="col-md-auto">
           <div className="form-group text-center">
-            <h3>
-              <strong>Pick a time: </strong>
-              <Select value={this.state.selectedTime} onChange={this.onTimeChange.bind(this)} className="selectpicker" id="timepicker" data-live-search="true" data-size="10" displayEmpty>
-                {timeCount.map((time) => {
-                  return (<MenuItem key={time.twenty4Hour} data-tokens={`${time.hour} ${time.twenty4Hour}`} value={time.twenty4Hour}
-                          data-content={`<span><span class='badge badge-pill ${time.pillClass}>${time.totalFree}</span> ${time.timeString}</span>`}>
-                    {time.timeString}
-                  </MenuItem>);
-                })}
-              </Select>
-
-            </h3>
+            <Typography variant={'h5'}>Pick a time: </Typography>
           </div>
+        </div>
+        <div>
+          <Select value={this.state.selectedTime} onChange={this.onTimeChange.bind(this)} className="selectpicker material-date-picker-wrapper__inner" id="timepicker" data-live-search="true" data-size="10" displayEmpty>
+            {timeCount.map((time) => {
+              return (<MenuItem key={time.twenty4Hour} data-tokens={`${time.hour} ${time.twenty4Hour}`} value={time.twenty4Hour} data-content={`<span><span class='badge badge-pill ${time.pillClass}>${time.totalFree}</span> ${time.timeString}</span>`}>
+                {time.timeString}
+              </MenuItem>);
+            })}
+          </Select>
         </div>
       </div>
     );
@@ -238,7 +249,7 @@ class Home extends Component<Props, State> {
 
   render() {
     return (
-      <div>
+      <div className="content__wrapper">
         {this.renderTimeSwitcher()}
         {this.renderFilters()}
         {this.renderTimeButtons()}

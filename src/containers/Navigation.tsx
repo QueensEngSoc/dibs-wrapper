@@ -8,24 +8,6 @@ import { connect } from 'react-redux';
 import { selectIsLoggedIn } from '../store/selectors/user';
 import { Link } from 'react-router-dom'
 import CustomImageButton from '../components/CustomImageButton';
-// import { makeStyles } from '@material-ui/styles';
-//
-// const styles = makeStyles({
-//   navigation: {
-//     flexGrow: 1,
-//     marginBottom: 30
-//   },
-//   navigation__wrapper: {
-//     backgroundColor: '#673ab7'
-//   },
-//   'nav__app-name': {
-//     flexGrow: 1
-//   },
-//   'nav__account-menu-btn': {
-//     marginLeft: -12,
-//     marginRight: 20
-//   },
-// };
 
 interface State {
   isAccountMenuOpen: boolean;
@@ -88,12 +70,20 @@ class NavigationContainer extends React.Component<Props, State> {
         <AppBar position="static" className={'navigation__wrapper'}>
           <Toolbar>
             <IconButton className={'navigation__account-menu-btn'} color="inherit" aria-label="Menu">
-              <MenuIcon/>
+              <MenuIcon />
             </IconButton>
-            <CustomImageButton imgSrc='img/qlogo.png'/>
-            <Typography variant="h6" color="inherit" className={'navigation__app-name'}>
-              QBook
-            </Typography>
+            {/*<CustomImageButton imgSrc='img/qlogo.png'/>*/}
+            <Link to={'/'}>
+              <img src="/img/qlogo.png" className="navigation__qbook-logo" alt="QBook Logo" height="20px"
+                   width="28px" />
+            </Link>
+
+            <Link to={'/'} className={'navigation__app-name'}>
+              <Typography variant="h6" color="inherit">
+                QBook
+              </Typography>
+            </Link>
+
             {isLoggedIn && (
               <div>
                 <IconButton
@@ -102,7 +92,7 @@ class NavigationContainer extends React.Component<Props, State> {
                   onClick={this.handleMenu}
                   color="inherit"
                 >
-                  <AccountCircle/>
+                  <AccountCircle />
                 </IconButton>
                 <Menu
                   id="menu-appbar"
@@ -131,7 +121,7 @@ class NavigationContainer extends React.Component<Props, State> {
                 className="md__icon-button"
                 href="/login"
               >
-                <AccountCircle/>
+                <AccountCircle />
               </IconButton>
             )}
           </Toolbar>

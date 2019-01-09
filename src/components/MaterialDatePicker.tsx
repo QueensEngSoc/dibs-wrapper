@@ -8,6 +8,7 @@ interface Props {
   daysToSpan?: number;
   startDate?: Date;
   onChange?: Function;
+  className?: string;
 }
 
 interface State {
@@ -35,6 +36,7 @@ class MaterialDatePicker extends React.Component<Props, State> {
 
   render() {
     const { selectedDate } = this.state;
+    const { className } = this.props;
 
     const startDate = this.props.startDate || new Date();
     const daysToSpan = this.props.daysToSpan || 7;
@@ -42,16 +44,15 @@ class MaterialDatePicker extends React.Component<Props, State> {
     console.log(this.state, daysToSpan, endDate);
 
     return (
-      <MuiPickersUtilsProvider utils={DateFnsUtils}>
-        <Grid container justify="space-around">
+      <MuiPickersUtilsProvider className={className} utils={DateFnsUtils}>
+        <Grid container justify="space-around" className={className}>
           <InlineDatePicker
             onlyCalendar
             disablePast
             maxDate={endDate}
             leftArrowIcon={<KeyboardArrowLeftRounded />}
             rightArrowIcon={<KeyboardArrowRightRounded />}
-            label="Pick a date"
-            helperText="Pick a date to view current room status"
+            // helperText="Pick a date to view current room status"
             value={selectedDate}
             onChange={this.handleDateChange}
           />
