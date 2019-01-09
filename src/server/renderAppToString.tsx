@@ -20,7 +20,5 @@ export default function renderAppToString(req, context, store) {
     '\\u003c'
   )};</script>`;
 
-  // console.log(appString);
-
   return `<div id="main" role="main">${appString}</div>` + storeScript;
 }

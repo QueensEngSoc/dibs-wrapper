@@ -33,7 +33,6 @@ module.exports = {
       {
         test: /\.scss$/,
         use: [
-          'iso-morphic-style-loader',
           'css-loader',
           'sass-loader'
         ]

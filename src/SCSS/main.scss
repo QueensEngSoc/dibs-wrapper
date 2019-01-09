@@ -1,4 +1,26 @@
 @import './Colors';
-@import './Home';
 @import './Nav';
+@import './Footer';
 
+@import url('../../public/CSS/font-nunito.css');
+@import url('../../public/CSS/font-montserrat.css');
+@import url('../../public/CSS/font-roboto.css');
+
+
+body {
+  font-family: "Nunito", Helvitica, sans-serif !important;
+}
+
+html,
+body,
+body, wrapper {
+  min-height:100vh;
+}
+
+main {
+  flex:1;
+}
+
+.md__icon-button:hover {
+  color: white;
+}

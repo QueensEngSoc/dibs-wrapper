@@ -7,6 +7,25 @@ import { StoreState } from '../types/store';
 import { connect } from 'react-redux';
 import { selectIsLoggedIn } from '../store/selectors/user';
 import { Link } from 'react-router-dom'
+import CustomImageButton from '../components/CustomImageButton';
+// import { makeStyles } from '@material-ui/styles';
+//
+// const styles = makeStyles({
+//   navigation: {
+//     flexGrow: 1,
+//     marginBottom: 30
+//   },
+//   navigation__wrapper: {
+//     backgroundColor: '#673ab7'
+//   },
+//   'nav__app-name': {
+//     flexGrow: 1
+//   },
+//   'nav__account-menu-btn': {
+//     marginLeft: -12,
+//     marginRight: 20
+//   },
+// };
 
 interface State {
   isAccountMenuOpen: boolean;
@@ -41,18 +60,17 @@ class NavigationContainer extends React.Component<Props, State> {
   handleClose = (url) => {
     this.setState({ ref: null });
 
-    if (url)
-      {
-        console.log('url is', url);
-        try {
-          if (window && url)
-            window.location.href = url;
-          return true;
-        } catch (err) {
-          console.error(err);
-          return null;
-        }
+    if (url) {
+      console.log('url is', url);
+      try {
+        if (window && url)
+          window.location.href = url;
+        return true;
+      } catch (err) {
+        console.error(err);
+        return null;
       }
+    }
 
     return null;
   };
@@ -67,12 +85,13 @@ class NavigationContainer extends React.Component<Props, State> {
 
     return (
       <nav className="navigation">
-        <AppBar position="static" className={"navigation__wrapper"}>
+        <AppBar position="static" className={'navigation__wrapper'}>
           <Toolbar>
-            <IconButton className={"nav__account-menu-btn"} color="inherit" aria-label="Menu">
+            <IconButton className={'navigation__account-menu-btn'} color="inherit" aria-label="Menu">
               <MenuIcon/>
             </IconButton>
-            <Typography variant="h6" color="inherit" className={"nav__app-name"}>
+            <CustomImageButton imgSrc='img/qlogo.png'/>
+            <Typography variant="h6" color="inherit" className={'navigation__app-name'}>
               QBook
             </Typography>
             {isLoggedIn && (
@@ -127,5 +146,7 @@ function mapStateToProps(state: StoreState) {
     isLoggedIn: selectIsLoggedIn(state)
   };
 }
+
+// withStyles(styles)
 
 export default withRouter(connect(mapStateToProps)(NavigationContainer));

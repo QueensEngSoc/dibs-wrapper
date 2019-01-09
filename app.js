@@ -12,13 +12,15 @@ import flash from "connect-flash";
 import configDB from "./config/database.js";
 import * as dbFuncs from "./models/dbFunctions";
 import * as email from "./models/sendEmail";
+import { setUpMuiStyles } from './src/server/cssInJsSetup';
+
 import './src/SCSS/main.scss';
 
-var server = express(); //initialize the server
+const server = express(); //initialize the server
 
 //Here you can pass helpers that you would normally define in registerHelpers
 //and you can also define stuff like `defaultLayout` and `partialsDir`
-var hbs = exphbs.create({
+const hbs = exphbs.create({
     helpers: {      // These are right now just in here for fun / testing, realistically we probably won't need to use
         //handlers for anything, since AJAX and JQuery are much easier to use, and much more powerful.  That being said,
         // having a few examples is probably fairly useful, so I will leave these in for now.
@@ -32,9 +34,9 @@ var hbs = exphbs.create({
                 return opts.inverse(this);
         },
         if_time: function (a, opts) { // this function checks if the passed time (a) is less than the current time
-            var date = new Date();
-            var current_hour = date.getHours();
-            var current_min = date.getMinutes();    // check if the time is less than the current hour, since there is no
+            const date = new Date();
+            const current_hour = date.getHours();
+            const current_min = date.getMinutes();    // check if the time is less than the current hour, since there is no
                                                     // point in unbooking a event from the past
 
             if (a < current_hour - 1 || (a < current_hour && current_min > 30))
@@ -44,9 +46,9 @@ var hbs = exphbs.create({
 
         },
         if_time_plus_len: function (a, b, opts) { // this function checks if the passed time (a) is less than the current time
-            var date = new Date();
-            var current_hour = date.getHours();
-            var current_min = date.getMinutes();    // check if the time is less than the current hour, since there is no
+            const date = new Date();
+            const current_hour = date.getHours();
+            const current_min = date.getMinutes();    // check if the time is less than the current hour, since there is no
                                                     // point in unbooking a event from the past
 
             if (a + b - 1 < current_hour - 1 || (a + b - 1 < current_hour && current_min > 30))
@@ -56,15 +58,15 @@ var hbs = exphbs.create({
 
         },
         if_valid: function (a, opts) { // this function checks if the passed time (a) is less than the current time
-        var min = new Date().getMinutes();
-        if ((a < 0 )|| (a > 16) || (a == 0 && min >= 30) || (a == 16 && min < 30))
-          return opts.inverse(this);
-        else
-          return opts.fn(this);
+            const min = new Date().getMinutes();
+            if ((a < 0) || (a > 16) || (a == 0 && min >= 30) || (a == 16 && min < 30))
+                return opts.inverse(this);
+            else
+                return opts.fn(this);
 
         },
         getTimes: function (free, owner, day, room) {
-            var times = [];
+            const times = [];
             for (slot of free) {
                 console.log(slot);
                 if (slot.owner == owner) {
@@ -72,9 +74,9 @@ var hbs = exphbs.create({
                 }
             }
 
-            var msg = "";
+            let msg = "";
             for (i in times) {
-                var time = times[i];
+                const time = times[i];
                 msg += time + (i == times.length - 1 ? "" : ", ");
             }
             return "<h4 class='card-title' name='bookingTime'>" + day + ": " + room + " - " + msg + "</h4>";
@@ -84,7 +86,7 @@ var hbs = exphbs.create({
 });
 
 // configuration ===============================================================
-var env = process.env.NODE_ENV || 'dev';
+let env = process.env.NODE_ENV || 'dev';
 if (env == 'dev')
     mongoose.connect(configDB.accountURL); // connect to our database ->: fixed depreciation warning (it was a bug :P  https://github.com/Automattic/mongoose/issues/5399)
 else
@@ -109,8 +111,8 @@ server.use(cookieParser()); // read cookies (needed for auth)
 ///
 
 //Database setup and initialization
-var monk = require('monk');
-var env = process.env.NODE_ENV || 'dev';
+const monk = require('monk');
+env = process.env.NODE_ENV || 'dev';
 
 if (env == 'dev')
     var db = monk('localhost:27017/roomDatabase');
@@ -143,15 +145,17 @@ configRoutes(server, passport); // load our routes and pass in our app and fully
 
 // email.setupMailSender(); // ToDo: Get the correct username / password so this works again
 
+// setUpMuiStyles();   // set up the inline styles using cssInJS from MaterialUI
+
 //Run server
-var port = process.env.PORT || 8000;
+const port = process.env.PORT || 8000;
 
 server.listen(port, function () {
     console.log('Example app listening on port ' + port + "!");
 });
 
 if (env != 'dev'){
-    var http = require("http");
+    const http = require("http");
     console.log("Setting up ping service to keep the Heroku site awake (fixing the lag and dayShifting code breaking)");
     setInterval(function() {
         http.get("http://dibs-beta.herokuapp.com");

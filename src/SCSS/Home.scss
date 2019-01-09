@@ -1,0 +1,75 @@
+@import './main';
+@import './RoomButtons';
+
+/* ---------------------- REACT INDEX PAGE ------------------------*/
+
+.indexRoomButtonContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.moreFiltersContainer .filterButton {
+  margin-right: 20px;
+  margin-top: -8px;
+}
+
+/* Radio Buttons (Filters on Home page) */
+group + group {
+  margin-top: 20px;
+}
+
+.inline-radio {
+  display: flex;
+  border-radius: 3px;
+  overflow: hidden;
+  border: 1px solid #b6b6b6;
+}
+
+.inline-radio > .radio-btn {
+  position: relative;
+  flex: 1;
+}
+
+.inline-radio > .radio-btn > input {
+  width: 100%;
+  padding-left: 20px;
+  padding-right: 20px;
+  height: 36px;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.inline-radio > .radio-btn > label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: #b6b6b6;
+  width: 100%;
+  padding-left: 20px;
+  padding-right: 20px;
+  height: 100%;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  border-right: 1px solid #b6b6b6;
+}
+
+.inline-radio  > .radio-btn:last-child label {
+  border-right: 0;
+}
+
+.inline-radio  > .radio-btn > input:checked + label {
+  background: #d81b60;
+  font-weight: 500;
+  color: #fff;
+}
+
+.inline-radio > .radio-btn > .radio-btn__radio--selected{
+  background: #d81b60;
+  font-weight: 500;
+  color: #fff;
+}
+/* End Radio Buttons */

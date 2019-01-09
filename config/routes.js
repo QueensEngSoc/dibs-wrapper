@@ -1,6 +1,6 @@
 //Serving routes
 import index from "../routes/index";
-import indexReact from "../routes/index-react";
+import indexReact from "../src/routes";
 import welcome from "../routes/welcome";
 import bookCheckout from "../routes/bookCheckout";
 import bookRoom from "../routes/bookRoom";

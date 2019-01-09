@@ -1,6 +1,6 @@
 // src/template.js
 
-export default ({ body, title, cssPath = ['/CSS/styles.css'] }) => {
+export default ({ body, title, cssPath = ['/CSS/styles.css'], compiledCss = null }) => {
   return `<!DOCTYPE html>
     <html lang="en">
       <head>
@@ -24,6 +24,10 @@ export default ({ body, title, cssPath = ['/CSS/styles.css'] }) => {
         ${cssPath.map((path) => {
           return `<link rel="stylesheet" href="${path}" />`;
         }).join('\n')}
+        
+        ${compiledCss && `<style>
+            ${compiledCss}
+        </style>`}
 
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
         <link rel="manifest" href="/manifest.json">
