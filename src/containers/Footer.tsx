@@ -43,7 +43,7 @@ class FooterContainer extends React.Component<Props, State> {
           </div>
         </div>
         <div className="footer__copyright-bar">
-          <Typography variant="body1" color="inherit">
+          <Typography variant="body2" color="inherit">
             © 2019 Copyright: ESSDev Team
           </Typography>
         </div>

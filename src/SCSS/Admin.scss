@@ -1,0 +1,9 @@
+@import './main';
+
+.admin {
+  &__status-card {
+    &__img {
+      height: 140px;
+    }
+  }
+}

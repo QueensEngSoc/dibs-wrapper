@@ -104,6 +104,7 @@ class Home extends Component<Props, State> {
         className = (room.isFree[currentTime] as RoomFreeTable).isMine ? 'mroom' : className;
         const shouldShow = this.checkFilters(room, currentTime);
 
+        // {/*<Typography className="room-btn__text" variant={'body2'}>{room.roomNum}</Typography>*/}
         if (shouldShow) {
           return (
             <a key={room.roomID} className={`btn btn-lg ${className} mobileBtn`}

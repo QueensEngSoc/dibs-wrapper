@@ -1,6 +1,6 @@
 //Serving routes
 import index from "../routes/index";
-import indexReact from "../src/routes";
+import indexReact from "../src/routes/index";
 import welcome from "../routes/welcome";
 import bookCheckout from "../routes/bookCheckout";
 import bookRoom from "../routes/bookRoom";
@@ -9,6 +9,7 @@ import map from "../routes/map";
 import quick from "../routes/quick";
 import prefPage from "../routes/preferences";
 import adminPage from "../routes/admin";
+import admin_V2 from '../src/routes/admin';
 import signupPage from "../routes/signup";
 import accountPage from "../routes/accounts";
 import loginPage from "../routes/login";
@@ -27,7 +28,6 @@ export default function (app, passport) {
   // =====================================
   app.get('/', index);
   app.post('/index', index);
-
   app.get('/react', indexReact);
 
   // =============================================
@@ -71,7 +71,10 @@ export default function (app, passport) {
   // =====================================
   // show the signup form
   app.get('/signup', signupPage);
+
   app.get('/admin', adminPage);
+  app.get('/admin-v2', admin_V2);
+
   app.post('/schedule', adminPage);
   app.post('/status', adminPage);
   // app.get('/preferences', prefPage);
