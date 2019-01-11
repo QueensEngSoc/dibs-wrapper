@@ -18,7 +18,8 @@ import {
   Menu as MenuIcon,
   InfoRounded,
   SettingsRounded,
-  DashboardRounded
+  DashboardRounded,
+  ExitToAppRounded
 } from '@material-ui/icons';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { StoreState } from '../types/store';
@@ -32,7 +33,8 @@ const topMenuData = [
 ];
 
 const bottomMenuData = [
-  { name: 'About', icon: <InfoRounded />, to: '/about' }
+  { name: 'About', icon: <InfoRounded />, to: '/about' },
+  { name: 'Log Out', icon: <ExitToAppRounded />, to: '/logout', if: 'isLoggedIn' }
 ];
 
 interface State {
@@ -103,7 +105,7 @@ class NavigationContainer extends React.Component<Props, State> {
 
   renderSidebar() {
     const { drawerOpen } = this.state;
-    const { isAdmin, isLoggedIn } = this.props;
+    const { isAdmin } = this.props;
 
     return (
       <Drawer open={drawerOpen} onClose={this.toggleDrawer(false)}>
@@ -115,7 +117,7 @@ class NavigationContainer extends React.Component<Props, State> {
         >
           <div className="navigation__drawer">
             <List>
-              {isAdmin && <ListItem button>
+              {isAdmin && <ListItem button onClick={this.handleClose.bind(this, '/admin')}>
                 <ListItemIcon><DashboardRounded /></ListItemIcon>
                 <ListItemText primary="Admin Dashboard" />
               </ListItem>}
@@ -133,6 +135,9 @@ class NavigationContainer extends React.Component<Props, State> {
             <Divider />
             <List>
               {bottomMenuData.map((item) => {
+                if (item.if && !this.props[item.if])
+                  return null;
+
                 return (
                   <ListItem button onClick={this.handleClose.bind(this, item.to)}>
                     <ListItemIcon>{item.icon}</ListItemIcon>
@@ -149,7 +154,7 @@ class NavigationContainer extends React.Component<Props, State> {
   }
 
   render() {
-    const { navigationProps, isLoggedIn } = this.props;
+    const { isLoggedIn } = this.props;
     const { ref } = this.state;
     const open = Boolean(ref);
 
@@ -161,7 +166,6 @@ class NavigationContainer extends React.Component<Props, State> {
                         aria-label="Menu">
               <MenuIcon />
             </IconButton>
-            {/*<CustomImageButton imgSrc='img/qlogo.png'/>*/}
             <Link to={'/'}>
               <img src="/img/qlogo.png" className="navigation__qbook-logo" alt="QBook Logo" height="20px"
                    width="28px" />
@@ -195,7 +199,7 @@ class NavigationContainer extends React.Component<Props, State> {
                     horizontal: 'right',
                   }}
                   open={open}
-                  onClose={this.handleClose}
+                  onClose={this.handleClose.bind(this, null)}
                 >
                   <MenuItem onClick={this.handleClose.bind(this, '/accounts')}>Profile</MenuItem>
                   <MenuItem onClick={this.handleClose.bind(this, '/logout')}>Log Out</MenuItem>

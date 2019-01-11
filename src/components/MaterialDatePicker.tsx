@@ -41,7 +41,6 @@ class MaterialDatePicker extends React.Component<Props, State> {
     const startDate = this.props.startDate || new Date();
     const daysToSpan = this.props.daysToSpan || 7;
     const endDate = this.addDays(startDate, daysToSpan);
-    console.log(this.state, daysToSpan, endDate);
 
     return (
       <MuiPickersUtilsProvider className={className} utils={DateFnsUtils}>

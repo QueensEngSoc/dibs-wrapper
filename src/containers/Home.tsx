@@ -38,11 +38,14 @@ interface Props {
 }
 
 interface State {
-  roomData: Array<Room>;
+  currentHour: number;
   filterSize: boolean | number;
   filterPhone: boolean;
   filterTv: boolean;
   filterUnavailable: boolean;
+  intDay: number;
+  prettyDate: string;
+  roomData: Array<Room>;
   showExtraFilters: boolean;
   selectedTime: number;
   selectedDate: Date;
@@ -54,20 +57,22 @@ class Home extends Component<Props, State> {
     super(props);
 
     this.state = {
+      currentHour: this.props.currentHour,
       roomData: this.props.roomData,
       filterSize: null,
       filterPhone: false,
       filterTv: false,
       filterUnavailable: false,
+      intDay: 0,
+      prettyDate: null,
       showExtraFilters: false,
-      selectedTime: this.props.timeCount[0].twenty4Hour,
+      selectedTime: this.props.currentHour || this.props.timeCount[0].twenty4Hour,
       selectedDate: new Date(),
       timeCount: this.props.timeCount
     };
   }
 
   componentDidMount() {
-
   }
 
   checkFilters(room, currentTime) {
@@ -96,20 +101,21 @@ class Home extends Component<Props, State> {
   }
 
   renderTimeButtons() {
-    const { roomData } = this.state;
-    const currentTime = this.props.currentHour - 7;
+    const { roomData, selectedTime, prettyDate } = this.state;
+
+    const dbTime = selectedTime - 7;
 
     const roomButtons = roomData && roomData.map((room) => {
-      if (room.isFree[currentTime]) {
-        let className = (room.isFree[currentTime] as RoomFreeTable).free ? 'yroom' : 'nroom';
-        className = (room.isFree[currentTime] as RoomFreeTable).isMine ? 'mroom' : className;
-        const shouldShow = this.checkFilters(room, currentTime);
+      if (room.isFree[dbTime]) {
+        let className = (room.isFree[dbTime] as RoomFreeTable).free ? 'yroom' : 'nroom';
+        className = (room.isFree[dbTime] as RoomFreeTable).isMine ? 'mroom' : className;
+        const shouldShow = this.checkFilters(room, dbTime);
 
         // {/*<Typography className="room-btn__text" variant={'body2'}>{room.roomNum}</Typography>*/}
         if (shouldShow) {
           return (
             <a key={room.roomID} className={`btn btn-lg ${className} mobileBtn`}
-               href={`/book/${room.roomID}`} role="button"
+               href={`/book/${room.roomID}${prettyDate && ('/' + prettyDate)}`} role="button"
                id={room.roomNum}>{room.roomNum}
             </a>
           );
@@ -195,31 +201,34 @@ class Home extends Component<Props, State> {
     const intVal = selectedValue !== '' ? parseInt(selectedValue) : null;
     const { selectedDate } = this.state;
 
-    const res = fetchData(selectedDate, intVal);
+    const res = await fetchData(selectedDate, intVal);
 
     this.setState({
-      selectedTime: intVal,
+      currentHour: res.currentHour,
+      prettyDate: null,
       roomData: (res as RoomPostData).list || this.state.roomData,
+      selectedTime: intVal,
       timeCount: (res as RoomPostData).timeCount || this.state.timeCount
     });
-
-    console.log(selectedValue, intVal, res);
   }
 
   handleDateChange = async date => {
-    console.log('date is now: ', date);
     const { selectedTime } = this.state;
     const res = await fetchData(date, selectedTime);
 
     this.setState({
-      selectedDate: date,
+      currentHour: res.currentHour,
+      intDay: res.day,
+      prettyDate: res.prettyDate,
       roomData: res.list || this.state.roomData,
+      selectedDate: date,
       timeCount: res.timeCount || this.state.timeCount
     });
   };
 
   renderTimeSwitcher() {
-    const { timeCount } = this.props;
+    const { timeCount, intDay, selectedTime, currentHour } = this.state;
+    const minTime = intDay === 0 ? currentHour : 7;
 
     return (
       <div className="row justify-content-center row--add-margin">
@@ -238,10 +247,13 @@ class Home extends Component<Props, State> {
           </div>
         </div>
         <div>
-          <Select value={this.state.selectedTime} onChange={this.onTimeChange.bind(this)}
+          <Select value={selectedTime > minTime ? selectedTime : minTime} onChange={this.onTimeChange.bind(this)}
                   className="selectpicker material-date-picker-wrapper__inner" id="timepicker" data-live-search="true"
                   data-size="10" displayEmpty>
             {timeCount.map((time) => {
+              if (time.twenty4Hour < minTime)
+                return null;
+
               return (<MenuItem key={time.twenty4Hour} data-tokens={`${time.hour} ${time.twenty4Hour}`}
                                 value={time.twenty4Hour}
                                 data-content={`<span><span class='badge badge-pill ${time.pillClass}>${time.totalFree}</span> ${time.timeString}</span>`}>

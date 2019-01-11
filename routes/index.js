@@ -31,9 +31,18 @@ router.post('/index', async function (req, res) {
     var timecount = [];
 
     for (var i = 0; i < listFree[i].isFree.length; i++) {
+      let amOrPm = (i >= 4) ? " PM" : " AM";
+      const startTime = (((i + 7) % 12 === 0) ? '12' : (i + 7) % 12) + ":30";
+      const endTime = (((i + 7 + 1) % 12 === 0) ? '12' : (i + 7 + 1) % 12) + ":30";
+
       timecount.push({
         hourCount: 0,
-        totalCount: 0
+        totalCount: 0,
+        timeString: startTime + '-' + endTime + amOrPm,
+        totalFree: 0,
+        hour: (i + 7) % 12,
+        twenty4Hour: i + 7,
+        pillClass: 'badge-success'
       });
     }
 

@@ -58,10 +58,10 @@ router.get('/react', async function (req, res, next) {
     });
   }
 
-  for (var i = 0; i < listFree.length; i++) {
-    var count = 0;
-    var mine = 0;
-    for (var j = startCheck - 7; j < listFree[i].isFree.length; j++) {
+  for (let i = 0; i < listFree.length; i++) {
+    let count = 0;
+    let mine = 0;
+    for (let j = startCheck - 7; j < listFree[i].isFree.length; j++) {
       if (!listFree[i].isFree[j].free) {
         count++;
         timecount[j - startCheck + 7].hourCount++;
@@ -77,7 +77,7 @@ router.get('/react', async function (req, res, next) {
     }
   }
 
-  for (var i = 0; i < timecount.length; i++)
+  for (let i = 0; i < timecount.length; i++)
     timecount[i].totalFree = timecount[i].totalCount - timecount[i].hourCount;
 
   const store = await createStoreInstance(req, listFree, current_hour, timecount);
