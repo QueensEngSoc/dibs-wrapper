@@ -1,11 +1,12 @@
-import { UserActionType } from './enums/user';
+import { UserAccountType, UserActionType } from './enums/user';
 
 export interface UserState {
+  accountType: UserAccountType;
   theme: string;
   isLoggedIn: boolean;
 }
 
 export interface UserDataAction {
   type: UserActionType;
-  payload: string | boolean;
+  payload: string | boolean | UserAccountType;
 }

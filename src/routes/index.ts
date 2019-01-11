@@ -1,12 +1,13 @@
 import { setCurrentHour, setRooms, setTimeCount } from '../store/actions/rooms';
 import template from '../server/template';
 import createStore from '../store/createStore';
-import renderAppToString from "../server/renderAppToString";
+import renderAppToString from '../server/renderAppToString';
 
 import * as roomDB from '../../models/roomDatabase.js'; //the roomDatabase interface which provide 5 functions. Look in the file for how to use them
 import * as accountFuncs from '../../models/userFunctions';
-import { setLoggedIn } from '../store/actions/user';
+import { setAccountType, setLoggedIn } from '../store/actions/user';
 import { compile } from '../server/compileSass';
+import { UserAccountType } from '../types/enums/user';
 
 const express = require('express');
 const router = express.Router();
@@ -17,6 +18,9 @@ async function createStoreInstance(req, data, current_hour, timeCount) {
   await store.dispatch(setCurrentHour(current_hour));
   await store.dispatch(setTimeCount(timeCount));
   await store.dispatch(setLoggedIn(req.isAuthenticated()));
+  const accountType = accountFuncs.getAdminStatus(req) ? UserAccountType.Admin : UserAccountType.Regular;
+
+  await store.dispatch(setAccountType(accountType));
   return store;
 }
 

@@ -1,15 +1,42 @@
 // import { Navigation } from
 import * as React from 'react';
-import { AppBar, IconButton, Menu, MenuItem, Toolbar, Typography } from '@material-ui/core';
-import { AccountCircle, Menu as MenuIcon } from '@material-ui/icons';
+import {
+  AppBar, Divider,
+  Drawer,
+  IconButton,
+  List,
+  ListItem, ListItemIcon,
+  ListItemText,
+  Menu,
+  MenuItem,
+  Toolbar,
+  Typography
+} from '@material-ui/core';
+import {
+  AccountCircle,
+  MapRounded,
+  Menu as MenuIcon,
+  InfoRounded,
+  SettingsRounded,
+  DashboardRounded
+} from '@material-ui/icons';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { StoreState } from '../types/store';
 import { connect } from 'react-redux';
-import { selectIsLoggedIn } from '../store/selectors/user';
+import { selectIsAdmin, selectIsLoggedIn } from '../store/selectors/user';
 import { Link } from 'react-router-dom'
 import CustomImageButton from '../components/CustomImageButton';
 
+const topMenuData = [
+  { name: 'Map View', icon: <MapRounded />, to: '/map' }
+];
+
+const bottomMenuData = [
+  { name: 'About', icon: <InfoRounded />, to: '/about' }
+];
+
 interface State {
+  drawerOpen: boolean;
   isAccountMenuOpen: boolean;
   isMounted: boolean;
   ref: HTMLElement;
@@ -17,6 +44,7 @@ interface State {
 
 // @ts-ignore
 interface Props extends RouteComponentProps<Props> {
+  isAdmin: boolean;
   isLoggedIn: boolean;
   navigationProps: any;
 }
@@ -25,6 +53,7 @@ class NavigationContainer extends React.Component<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
+      drawerOpen: false,
       isAccountMenuOpen: this.props.isLoggedIn,
       isMounted: false,
       ref: null
@@ -37,6 +66,12 @@ class NavigationContainer extends React.Component<Props, State> {
 
   handleMenu = event => {
     this.setState({ ref: event.currentTarget });
+  };
+
+  handleSidebar = event => {
+    this.setState({
+      drawerOpen: true
+    });
   };
 
   handleClose = (url) => {
@@ -60,6 +95,59 @@ class NavigationContainer extends React.Component<Props, State> {
   componentDidMount() {
   }
 
+  toggleDrawer = (open) => () => {
+    this.setState({
+      drawerOpen: open
+    });
+  };
+
+  renderSidebar() {
+    const { drawerOpen } = this.state;
+    const { isAdmin, isLoggedIn } = this.props;
+
+    return (
+      <Drawer open={drawerOpen} onClose={this.toggleDrawer(false)}>
+        <div
+          tabIndex={0}
+          role="button"
+          onClick={this.toggleDrawer(false)}
+          onKeyDown={this.toggleDrawer(false)}
+        >
+          <div className="navigation__drawer">
+            <List>
+              {isAdmin && <ListItem button>
+                <ListItemIcon><DashboardRounded /></ListItemIcon>
+                <ListItemText primary="Admin Dashboard" />
+              </ListItem>}
+            {
+              topMenuData.map((item) => {
+                return (
+                  <ListItem button onClick={this.handleClose.bind(this, item.to)}>
+                    <ListItemIcon>{item.icon}</ListItemIcon>
+                    <ListItemText primary={item.name} />
+                  </ListItem>
+                );
+              })
+            }
+            </List>
+            <Divider />
+            <List>
+              {bottomMenuData.map((item) => {
+                return (
+                  <ListItem button onClick={this.handleClose.bind(this, item.to)}>
+                    <ListItemIcon>{item.icon}</ListItemIcon>
+                    <ListItemText primary={item.name} />
+                  </ListItem>
+                );
+              })
+              }
+            </List>
+          </div>
+        </div>
+      </Drawer>
+    );
+  }
+
   render() {
     const { navigationProps, isLoggedIn } = this.props;
     const { ref } = this.state;
@@ -69,7 +157,8 @@ class NavigationContainer extends React.Component<Props, State> {
       <nav className="navigation">
         <AppBar position="static" className={'navigation__wrapper'}>
           <Toolbar>
-            <IconButton className={'navigation__account-menu-btn'} color="inherit" aria-label="Menu">
+            <IconButton onClick={this.handleSidebar} className={'navigation__account-menu-btn'} color="inherit"
+                        aria-label="Menu">
               <MenuIcon />
             </IconButton>
             {/*<CustomImageButton imgSrc='img/qlogo.png'/>*/}
@@ -126,6 +215,7 @@ class NavigationContainer extends React.Component<Props, State> {
             )}
           </Toolbar>
         </AppBar>
+        {this.renderSidebar()}
       </nav>
     );
   }
@@ -133,7 +223,8 @@ class NavigationContainer extends React.Component<Props, State> {
 
 function mapStateToProps(state: StoreState) {
   return {
-    isLoggedIn: selectIsLoggedIn(state)
+    isLoggedIn: selectIsLoggedIn(state),
+    isAdmin: selectIsAdmin(state)
   };
 }
 

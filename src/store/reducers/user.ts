@@ -1,7 +1,8 @@
-import { UserActionType } from '../../types/enums/user';
+import { UserAccountType, UserActionType } from '../../types/enums/user';
 import { UserDataAction, UserState } from '../../types/user';
 
 const initialState: UserState = {
+  accountType: null,
   theme: null,
   isLoggedIn: false
 };
@@ -26,6 +27,12 @@ export default function roomsReducer(
     };
   }
 
+  if (type === UserActionType.SetAccountType) {
+    return {
+      ...state,
+      accountType: payload as UserAccountType
+    };
+  }
 
   return state;
 }

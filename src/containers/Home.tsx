@@ -13,7 +13,8 @@ import {
   Typography,
   ExpansionPanelDetails,
   Input,
-  Select
+  Select,
+  Drawer, List, ListItem, ListItemIcon, ListItemText, Divider
 } from '@material-ui/core/';
 import { ExpandMore } from '@material-ui/icons';
 import MaterialDatePicker from '../components/MaterialDatePicker';
@@ -228,7 +229,8 @@ class Home extends Component<Props, State> {
           </div>
         </div>
         <div className="material-date-picker-wrapper">
-          <MaterialDatePicker className="material-date-picker-wrapper__inner" daysToSpan={13} onChange={this.handleDateChange.bind(this)} />
+          <MaterialDatePicker className="material-date-picker-wrapper__inner" daysToSpan={13}
+                              onChange={this.handleDateChange.bind(this)} />
         </div>
         <div className="col-md-auto">
           <div className="form-group text-center">
@@ -236,9 +238,13 @@ class Home extends Component<Props, State> {
           </div>
         </div>
         <div>
-          <Select value={this.state.selectedTime} onChange={this.onTimeChange.bind(this)} className="selectpicker material-date-picker-wrapper__inner" id="timepicker" data-live-search="true" data-size="10" displayEmpty>
+          <Select value={this.state.selectedTime} onChange={this.onTimeChange.bind(this)}
+                  className="selectpicker material-date-picker-wrapper__inner" id="timepicker" data-live-search="true"
+                  data-size="10" displayEmpty>
             {timeCount.map((time) => {
-              return (<MenuItem key={time.twenty4Hour} data-tokens={`${time.hour} ${time.twenty4Hour}`} value={time.twenty4Hour} data-content={`<span><span class='badge badge-pill ${time.pillClass}>${time.totalFree}</span> ${time.timeString}</span>`}>
+              return (<MenuItem key={time.twenty4Hour} data-tokens={`${time.hour} ${time.twenty4Hour}`}
+                                value={time.twenty4Hour}
+                                data-content={`<span><span class='badge badge-pill ${time.pillClass}>${time.totalFree}</span> ${time.timeString}</span>`}>
                 {time.timeString}
               </MenuItem>);
             })}
