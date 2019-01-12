@@ -115,7 +115,7 @@ class Home extends Component<Props, State> {
         if (shouldShow) {
           return (
             <a key={room.roomID} className={`btn btn-lg ${className} mobileBtn`}
-               href={`/book/${room.roomID}${prettyDate && ('/' + prettyDate)}`} role="button"
+               href={`/book/${room.roomID}${prettyDate ? ('/' + prettyDate) : ''}`} role="button"
                id={room.roomNum}>{room.roomNum}
             </a>
           );

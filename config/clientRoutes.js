@@ -11,5 +11,10 @@ export const routes = [
     path: '/admin-v2',
     component: Admin,
     exact: true
+  },
+  {
+    path: '/quicky',
+    component: Admin,
+    exact: true
   }
 ];

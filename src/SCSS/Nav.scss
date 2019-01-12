@@ -27,5 +27,24 @@
   &__drawer {
     width: 250px;
     margin-top: 10px;
+
+    &__logo-wrapper {
+      padding-bottom: 15px;
+    }
+
+    &__qbook-logo {
+      height: 38px;
+      margin-right: 0.5em;
+      margin-left: 0.5em;
+    }
+
+    &__app-name {
+      color: black;
+      display: inline-flex;
+
+      &:hover, active {
+        color: black;
+      }
+    }
   }
 }
