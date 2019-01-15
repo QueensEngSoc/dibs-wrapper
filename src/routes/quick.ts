@@ -1,0 +1,106 @@
+import { setCurrentHour } from '../store/actions/rooms';
+import template from '../server/template';
+import createStore from '../store/createStore';
+import renderAppToString from '../server/renderAppToString';
+
+import * as roomDB from '../../models/roomDatabase.js'; //the roomDatabase interface which provide 5 functions. Look in the file for how to use them
+import * as accountFuncs from '../../models/userFunctions';
+import { setAccountType, setLoggedIn } from '../store/actions/user';
+import { compile } from '../server/compileSass';
+import { UserAccountType } from '../types/enums/user';
+
+const express = require('express');
+const router = express.Router();
+
+async function createStoreInstance(req, current_hour) {
+  const store = createStore({});
+  await store.dispatch(setCurrentHour(current_hour));
+  await store.dispatch(setLoggedIn(req.isAuthenticated()));
+
+  const accountType = accountFuncs.getAdminStatus(req) ? UserAccountType.Admin : UserAccountType.Regular;
+  await store.dispatch(setAccountType(accountType));
+  return store;
+}
+
+router.get('/quicky', async function (req, res, next) { //the request to render the page
+  if (!req.isAuthenticated())
+    return res.redirect('/login?redirect=/quicky');
+
+  const dateObj = new Date();
+  var current_hour = dateObj.getHours();
+  const current_min = dateObj.getMinutes();
+
+  if (current_min < 30)   // logic here is that we are returning the status based on the start hour.  Since the min booking time is
+    current_hour--;       // 1 hour, if the current minute is less than 30, we are still within the previous booking slot
+                          // and we should therefore subtract 1 from the hour to get the right data (eg. if it is 7:10pm
+                          // right now, then we really want the data from 6:30 - 7:30, not 7:30 - 8:30)
+
+  const store = await createStoreInstance(req, current_hour);
+  const context = {};
+  const body = renderAppToString(req, context, store);
+  const title = 'Quick Book';
+  const compiledCss = compile('src/SCSS/Quick.scss');
+
+  res.send(template({
+    body,
+    title,
+    compiledCss
+  }));
+});
+
+router.post('/quicky', async function (req, res, next) {
+  if (!req.isAuthenticated())
+    return res.redirect('/login?redirect=/quicky'); // do the redirecting thing TODO: Alex?
+
+  var usrid = accountFuncs.getUserID(req);
+  var bookDay = 0;
+
+  // var time = figureOutNextValidTime(usrid);
+  const out = await roomDB.getNextFree();
+  if (out === {})
+    return res.send('No free rooms!');
+  var date = new Date();
+  var quick = accountFuncs.getQuickyStatus(req);
+  var time = roomDB.getNextValidHalfHour(false, true);
+
+  if (date.toDateString() == quick.date && quick.number > 0) {
+    time += quick.number;
+    if (time >= 23) {
+      time = time % 23 + 7;
+      bookDay++;
+    }
+  }
+
+  try {
+    const data = await roomDB.bookRoom(bookDay, time, out, 1, usrid, req);
+    console.log(data.bookMsg);
+    if (data.header.indexOf('Booking Success!') >= 0) {
+      quick.number++;
+      if (isNaN(quick.number))
+        quick.number = 1;
+      quick.date = date.toDateString();
+      accountFuncs.setQuickyStatus(req, quick);
+      if (bookDay > 0)
+        data.bookMsg += ' tomorrow';
+    }
+    res.send({ HeaderMsg: data.header, BookingStatusMsg: data.bookMsg, BookStatus: data.success });
+  } catch (err) {
+    console.log(err);
+    res.send('An error occurred while rushing to Automagically™ QuickBook™ your room.')
+  }
+
+});
+
+function formatDate(date) {
+  let d = new Date(date),
+    month = '' + (d.getMonth() + 1),
+    day = '' + d.getDate(),
+    year = d.getFullYear();
+
+  if (month.length < 2) month = '0' + month;
+  if (day.length < 2) day = '0' + day;
+
+  return [year, month, day].join('-');
+}
+
+export default router;

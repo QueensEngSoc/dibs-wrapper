@@ -121,12 +121,11 @@ class NavigationContainer extends React.Component<Props, State> {
             <div className="row navigation__drawer__logo-wrapper">
               <Link to={'/'}>
                 <img src="/img/qlogo.png" className="navigation__drawer__qbook-logo" alt="QBook Logo" />
-              </Link>
-
-              <Link to={'/'} className={'navigation__drawer__app-name'}>
-                <Typography variant="h5" color="inherit">
-                  QBook
-                </Typography>
+                <div className={'navigation__drawer__app-name'}>
+                  <Typography variant="h5" color="inherit">
+                    QBook
+                  </Typography>
+                </div>
               </Link>
             </div>
             <Divider />
@@ -138,7 +137,7 @@ class NavigationContainer extends React.Component<Props, State> {
               {
                 topMenuData.map((item) => {
                   return (
-                    <ListItem button onClick={this.handleClose.bind(this, item.to)}>
+                    <ListItem key={item.name} button onClick={this.handleClose.bind(this, item.to)}>
                       <ListItemIcon>{item.icon}</ListItemIcon>
                       <ListItemText primary={item.name} />
                     </ListItem>
@@ -153,7 +152,7 @@ class NavigationContainer extends React.Component<Props, State> {
                   return null;
 
                 return (
-                  <ListItem button onClick={this.handleClose.bind(this, item.to)}>
+                  <ListItem key={item.name} button onClick={this.handleClose.bind(this, item.to)}>
                     <ListItemIcon>{item.icon}</ListItemIcon>
                     <ListItemText primary={item.name} />
                   </ListItem>
@@ -163,90 +162,89 @@ class NavigationContainer extends React.Component<Props, State> {
             </List>
           </div>
         </div>
-        <
-        / Drawer>
-        );
-        }
+      </Drawer>
+    );
+  }
 
-        render() {
-        const {isLoggedIn} = this.props;
-        const {ref} = this.state;
-        const open = Boolean(ref);
+  render() {
+    const { isLoggedIn } = this.props;
+    const { ref } = this.state;
+    const open = Boolean(ref);
 
-        return (
-        <nav className="navigation">
+    return (
+      <nav className="navigation">
         <AppBar position="static" className={'navigation__wrapper'}>
-        <Toolbar>
-        <IconButton onClick={this.handleSidebar} className={'navigation__account-menu-btn'} color="inherit"
-        aria-label="Menu">
-        <MenuIcon />
-        </IconButton>
-        <Link to={'/'}>
-        <img src="/img/qlogo.png" className="navigation__qbook-logo" alt="QBook Logo" height="20px"
-        width="28px" />
-        </Link>
-
-        <Link to={'/'} className={'navigation__app-name'}>
-        <Typography variant="h6" color="inherit">
-        QBook
-        </Typography>
-        </Link>
-
-        {isLoggedIn && (
-          <div>
-            <IconButton
-              aria-owns={open ? 'menu-appbar' : undefined}
-              aria-haspopup="true"
-              onClick={this.handleMenu}
-              color="inherit"
-            >
-              <AccountCircle />
+          <Toolbar>
+            <IconButton onClick={this.handleSidebar} className={'navigation__account-menu-btn'} color="inherit"
+                        aria-label="Menu">
+              <MenuIcon />
             </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={ref}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={open}
-              onClose={this.handleClose.bind(this, null)}
-            >
-              <MenuItem onClick={this.handleClose.bind(this, '/accounts')}>Profile</MenuItem>
-              <MenuItem onClick={this.handleClose.bind(this, '/logout')}>Log Out</MenuItem>
-            </Menu>
-          </div>
-        )}
-        {!isLoggedIn && (
-          <IconButton
-            aria-owns={open ? 'menu-appbar' : undefined}
-            aria-haspopup="true"
-            color="inherit"
-            className="md__icon-button"
-            href="/login"
-          >
-            <AccountCircle />
-          </IconButton>
-        )}
-        </Toolbar>
+            <Link to={'/'}>
+              <img src="/img/qlogo.png" className="navigation__qbook-logo" alt="QBook Logo" height="20px"
+                   width="28px" />
+            </Link>
+
+            <Link to={'/'} className={'navigation__app-name'}>
+              <Typography variant="h6" color="inherit">
+                QBook
+              </Typography>
+            </Link>
+
+            {isLoggedIn && (
+              <div>
+                <IconButton
+                  aria-owns={open ? 'menu-appbar' : undefined}
+                  aria-haspopup="true"
+                  onClick={this.handleMenu}
+                  color="inherit"
+                >
+                  <AccountCircle />
+                </IconButton>
+                <Menu
+                  id="menu-appbar"
+                  anchorEl={ref}
+                  anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  open={open}
+                  onClose={this.handleClose.bind(this, null)}
+                >
+                  <MenuItem onClick={this.handleClose.bind(this, '/accounts')}>Profile</MenuItem>
+                  <MenuItem onClick={this.handleClose.bind(this, '/logout')}>Log Out</MenuItem>
+                </Menu>
+              </div>
+            )}
+            {!isLoggedIn && (
+              <IconButton
+                aria-owns={open ? 'menu-appbar' : undefined}
+                aria-haspopup="true"
+                color="inherit"
+                className="md__icon-button"
+                href="/login"
+              >
+                <AccountCircle />
+              </IconButton>
+            )}
+          </Toolbar>
         </AppBar>
         {this.renderSidebar()}
-        </nav>
-        );
-      }
-        }
+      </nav>
+    );
+  }
+}
 
-        function mapStateToProps(state: StoreState) {
-        return {
-        isLoggedIn: selectIsLoggedIn(state),
-        isAdmin: selectIsAdmin(state)
-      };
-      }
+function mapStateToProps(state: StoreState) {
+  return {
+    isLoggedIn: selectIsLoggedIn(state),
+    isAdmin: selectIsAdmin(state)
+  };
+}
 
-        // withStyles(styles)
+// withStyles(styles)
 
-        export default withRouter(connect(mapStateToProps)(NavigationContainer));
+export default withRouter(connect(mapStateToProps)(NavigationContainer));

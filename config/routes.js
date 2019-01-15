@@ -6,7 +6,7 @@ import bookCheckout from "../routes/bookCheckout";
 import bookRoom from "../routes/bookRoom";
 import book from "../routes/book";
 import map from "../routes/map";
-import quick from "../routes/quick";
+import quick from "../src/routes/quick";
 import prefPage from "../routes/preferences";
 import adminPage from "../routes/admin";
 import admin_V2 from '../src/routes/admin';
@@ -46,6 +46,7 @@ export default function (app, passport) {
   // show the login form
 
   app.get('/login', loginPage);
+  app.post('/login', loginPage);
 
   // process the login form
   app.post('/login', passport.authenticate('local-login', {

@@ -1,5 +1,6 @@
 import Home from "../src/containers/Home";
 import Admin from "../src/containers/Admin";
+import Quick from "../src/containers/Quick";
 
 export const routes = [
   {
@@ -14,7 +15,7 @@ export const routes = [
   },
   {
     path: '/quicky',
-    component: Admin,
+    component: Quick,
     exact: true
   }
 ];
