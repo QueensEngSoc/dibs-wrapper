@@ -7,6 +7,7 @@ import { selectCurrentHour, selectRoomData, selectTimeCount } from '../store/sel
 import { connect } from 'react-redux';
 import { getPrettyHour, sanitiseTime } from '../lib/dateFuncs';
 import postReq from '../client/postReq';
+import SnackBar, { SnackBarVariant } from '../components/SnackBar';
 
 interface ResponseObject {
   header: string
@@ -26,6 +27,7 @@ interface ResponseObject {
 interface State {
   currentHour: number;
   response: ResponseObject;
+  alert: any;
 }
 
 // @ts-ignore
@@ -40,6 +42,7 @@ class Quick extends React.Component<Props, State> {
     const sanitisedHour = sanitiseTime(this.props.currentHour);
 
     this.state = {
+      alert: null,
       currentHour: sanitisedHour,
       response: null
     };
@@ -53,11 +56,31 @@ class Quick extends React.Component<Props, State> {
       console.log('hour: ', hour);
       const response: ResponseObject = await postReq('/quicky', { time: hour }) as ResponseObject;
       console.log('response: ', response);
-      this.setState({
-        response
-      });
+
+      if (response.success) {
+        this.setState({
+          response
+        });
+      } else {
+        this.setState({
+          alert: response
+        });
+      }
     }
   };
+
+  renderAlert() {
+    const { alert } = this.state;
+    console.log('At renderAlert.  State: ', this.state);
+
+    if (!alert)
+      return (null);
+
+    console.log('rendering alert!');
+    return (
+      <SnackBar type={SnackBarVariant.Error} className='quick__error-alert' message={alert.bookMsg} />
+    );
+  }
 
   renderInfo() {
     const { currentHour, response } = this.state;
@@ -111,6 +134,7 @@ class Quick extends React.Component<Props, State> {
   render() {
     return (
       <div className="content__wrapper">
+        {this.renderAlert()}
         {this.renderInfo()}
       </div>
     );

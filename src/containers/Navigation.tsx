@@ -27,7 +27,6 @@ import { StoreState } from '../types/store';
 import { connect } from 'react-redux';
 import { selectIsAdmin, selectIsLoggedIn } from '../store/selectors/user';
 import { Link } from 'react-router-dom'
-import CustomImageButton from '../components/CustomImageButton';
 
 const topMenuData = [
   { name: 'Map View', icon: <MapRounded />, to: '/map' },
