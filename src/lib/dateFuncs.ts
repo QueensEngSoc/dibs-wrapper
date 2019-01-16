@@ -11,3 +11,18 @@ export function getPrettyHour(hour: number, showAmPm: boolean = false): string {
 
   return hour.toString() + ':30' + amOrPm;
 }
+
+export function sanitiseTime(hour: number, checkMinutes: boolean = false): number {
+  const minutes = new Date().getMinutes();
+  let testHour = hour;
+
+  if (checkMinutes && minutes < 30) {
+    testHour--;
+  }
+
+  if (testHour > 23 || testHour < 7) {
+    return 7;
+  }
+
+  return testHour;
+}

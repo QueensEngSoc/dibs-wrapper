@@ -26,7 +26,7 @@ export function getAdminStatus(req) {
             return user.local.isAdmin;
 
         } catch (exception) {
-            console.error(exception);
+            console.error('Crash at "getAdminStatus": ', exception);
         }
     }
     return false;
@@ -42,6 +42,7 @@ export function canBookMoreRooms(req) {
             if (bookingCount >= consts.room_hour_limit)
                 return false;
         } catch (exception) {
+            console.error('Crash at "canBookMoreRooms": ', exception);
             return false;
         }
     }
@@ -56,7 +57,7 @@ export function getBookingCount(req) {
             const user = req.user;
             bookingCount = user.local.booking_count;
         } catch (exception) {
-
+            console.error('Crash at "getBookingCount": ', exception);
         }
     }
     return bookingCount;
@@ -79,7 +80,7 @@ export function updateBookingCount(toAdd, req) {
             return true;
 
         } catch (exception) {
-            console.error(exception);
+            console.error('crash at updateBookingCount: ', exception);
             return false;
         }
     }

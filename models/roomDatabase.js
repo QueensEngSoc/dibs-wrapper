@@ -82,6 +82,7 @@ export function getAllFreeNow() {
  */
 export async function getNextFree() {
   var time = getNextValidHalfHour(false, true);
+  console.log('calling get list of Room state with: ', time);
   const rooms = await getListOfRoomState(0, time);
   if (rooms === {})
     return {};
@@ -310,10 +311,11 @@ export function getNextValidHalfHour(formatAsInterval, formatAsDBTime) {
   if (nextHour > 23 || nextHour < 7)
     nextHour = 7;
 
+  console.log('next valid half hour ', nextHour);
+
   if (formatAsInterval)
     return nextHour + ":30-" + (++nextHour) + ":30";
   else if (formatAsDBTime)
-  //return nextHour - 7;
     return nextHour;    // booking function already subtracts 7, so this had the effect of doing -14, or 7 hours before you actually wanted the room :(
   else
     return nextHour + ":30";

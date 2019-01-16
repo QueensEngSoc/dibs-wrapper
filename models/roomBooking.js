@@ -25,7 +25,9 @@ var randomstring = require("randomstring"); // used to generate the random hash 
 export function bookMultiple(day, times, roomID, usrid, req) {
   return new Promise(function (resolve, reject) {
 
-    if (usrid !== "admin") {
+    const isAdmin = userFuncs.getAdminStatus(req);
+
+    if (!isAdmin) {
       if (!userFuncs.canBookMoreRooms(req)) { //Checking if the user has reached their book limit
         var out = {
           header: "Booking failed",
@@ -44,6 +46,8 @@ export function bookMultiple(day, times, roomID, usrid, req) {
       var roomNum = data.Name.match(/\d+/)[0]; // get the number from the room
       var mapRoomName = "bmh" + roomNum;
       var prettyDay = getPrettyDay(day);
+
+      const isAdmin = userFuncs.getAdminStatus(req);
 
       var out = { //initialize the output json to send, will be modified based on if the room was successfully booked
         header: "Booking failed",
@@ -67,14 +71,13 @@ export function bookMultiple(day, times, roomID, usrid, req) {
       var totalBooked = 0;
       var dayData = data.Free[day];
       totalBooked = getTotalBookedHoursPerRoom(totalBooked, dayData, usrid);
+
       if (consts.per_room_limit - totalBooked <= 0 && !isAdmin) { //check if user has booked too many hours for this room
         out.bookMsg = "Sorry, you can only book " + consts.per_room_limit + " hours per day in a single room";
         out.header = "Max of " + consts.per_room_limit + " hours per room";
         resolve(out);
         return;
       }
-
-      const isAdmin = userFuncs.getAdminStatus(req);
 
       for (var time of times) { //iterate over the array of times given instead of a sequence of numbers
         // if (!isAdmin) { //if a normal user...
@@ -92,11 +95,6 @@ export function bookMultiple(day, times, roomID, usrid, req) {
           out.header = "Room Already Booked";
           resolve(out);
         }
-        // } else { //if an admin is booking override anything there ToDo: figure out what to do here, as we probably don't want to just let an admin override any booking, do we?
-        //   temp[day][time - 7].free = false;
-        //   temp[day][time - 7].owner = usrid;
-        //   temp[day][time - 7].bookingHash = bookingHash;
-        // }
       }
       if (userFuncs.updateBookingCount(numBooked, req)) {  // times.length -> if you increment by the number in the array, then if the user books more than once without refreshing, it double counts the hours
         roomDatabase.update({ RoomID: roomID }, { $set: { Free: temp } });

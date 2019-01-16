@@ -3,7 +3,8 @@ import template from '../server/template';
 import createStore from '../store/createStore';
 import renderAppToString from '../server/renderAppToString';
 
-import * as roomDB from '../../models/roomDatabase.js'; //the roomDatabase interface which provide 5 functions. Look in the file for how to use them
+import * as roomDB from '../../models/roomDatabase'; //the roomDatabase interface which provide 5 functions. Look in the file for how to use them
+import { bookMultiple } from '../lib/roomBooking';
 import * as accountFuncs from '../../models/userFunctions';
 import { setAccountType, setLoggedIn } from '../store/actions/user';
 import { compile } from '../server/compileSass';
@@ -49,41 +50,45 @@ router.get('/quicky', async function (req, res, next) { //the request to render 
 });
 
 router.post('/quicky', async function (req, res, next) {
+  console.log('got the post! ***************** ', req.isAuthenticated());
   if (!req.isAuthenticated())
     return res.redirect('/login?redirect=/quicky'); // do the redirecting thing TODO: Alex?
 
   var usrid = accountFuncs.getUserID(req);
   var bookDay = 0;
 
+  const data = JSON.stringify(req.body);
+  const dataObj = JSON.parse(data);
+
   // var time = figureOutNextValidTime(usrid);
   const out = await roomDB.getNextFree();
   if (out === {})
     return res.send('No free rooms!');
-  var date = new Date();
-  var quick = accountFuncs.getQuickyStatus(req);
-  var time = roomDB.getNextValidHalfHour(false, true);
+  const date = new Date();
+  const quick = accountFuncs.getQuickyStatus(req);
+  console.log('time (pt 0) is: ', (dataObj && dataObj.time), ' next valid: ', roomDB.getNextValidHalfHour(false, true), ' quick: ', quick);
+  var time = (dataObj && dataObj.time) || roomDB.getNextValidHalfHour(false, true);
+  console.log('time (pt 1) is: ', time, ' quick: ', quick);
 
-  if (date.toDateString() == quick.date && quick.number > 0) {
-    time += quick.number;
-    if (time >= 23) {
-      time = time % 23 + 7;
-      bookDay++;
-    }
+  if (time >= 23) {
+    time = time % 23 + 7;
+    bookDay++;
   }
+  console.log('time is: ', time, ' quick: ', quick, ' bookDay ', bookDay);
 
   try {
-    const data = await roomDB.bookRoom(bookDay, time, out, 1, usrid, req);
-    console.log(data.bookMsg);
+    const data = await bookMultiple(bookDay, [time], out, usrid, req);
+    console.log('data ', data);
     if (data.header.indexOf('Booking Success!') >= 0) {
       quick.number++;
-      if (isNaN(quick.number))
+      if (isNaN(quick.number) || quick.date !== date.toDateString())
         quick.number = 1;
       quick.date = date.toDateString();
       accountFuncs.setQuickyStatus(req, quick);
-      if (bookDay > 0)
-        data.bookMsg += ' tomorrow';
+      // if (bookDay > 0)
+      //   data.bookMsg += ' tomorrow';
     }
-    res.send({ HeaderMsg: data.header, BookingStatusMsg: data.bookMsg, BookStatus: data.success });
+    res.send(data);
   } catch (err) {
     console.log(err);
     res.send('An error occurred while rushing to Automagically™ QuickBook™ your room.')
