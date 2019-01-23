@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Typography, Card, CardContent, CardMedia, CardHeader, CardActions, Button } from '@material-ui/core';
+import { Typography, Card, CardContent, CardMedia, CardHeader, CardActions, Button, Grid } from '@material-ui/core';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { Link } from 'react-router-dom'
 import { StoreState } from '../types/store';
@@ -26,7 +26,7 @@ interface ResponseObject {
 
 interface State {
   currentHour: number;
-  response: ResponseObject;
+  response: Array<ResponseObject>;
   alert: any;
 }
 
@@ -44,7 +44,7 @@ class Quick extends React.Component<Props, State> {
     this.state = {
       alert: null,
       currentHour: sanitisedHour,
-      response: null
+      response: []
     };
   }
 
@@ -54,16 +54,16 @@ class Quick extends React.Component<Props, State> {
   sendPostReq = async (hour) => {
     if (hour) {
       console.log('hour: ', hour);
-      const response: ResponseObject = await postReq('/quicky', { time: hour }) as ResponseObject;
-      console.log('response: ', response);
+      const serverResponse: ResponseObject = await postReq('/quicky', { time: hour }) as ResponseObject;
+      console.log('serverResponse: ', serverResponse);
 
-      if (response.success) {
+      if (serverResponse.success) {
         this.setState({
-          response
+          response: this.state.response.concat(serverResponse)
         });
       } else {
         this.setState({
-          alert: response
+          alert: serverResponse
         });
       }
     }
@@ -82,15 +82,12 @@ class Quick extends React.Component<Props, State> {
     );
   }
 
-  renderInfo() {
-    const { currentHour, response } = this.state;
-    const isSuccess = response && response.success;
-
-    const cardHeaderText = isSuccess ? `Booked ${response.room} for ${response.times.map((time) => {
+  renderCard(cardData, currentHour, isSuccess, gridWidth = { xs: 12, sm: 9 ,md: 6, lg: 4, xl: 3 }) {
+    const cardHeaderText = isSuccess ? `Booked ${cardData.room} for ${cardData.times.map((time) => {
       return `${getPrettyHour(time)} - ${getPrettyHour(time + 1, true)}`;
     }).join(', ')}` : 'Quick Book';
-    const cardImg = isSuccess ? response.pic : '/img/ilc-small.jpg';
-    const cardDescription = isSuccess ? <Typography component="p">{response.description}</Typography> :
+    const cardImg = isSuccess ? cardData.pic : '/img/ilc-small.jpg';
+    const cardDescription = isSuccess ? <Typography component="p">{cardData.description}</Typography> :
       <>
         <Typography component="p">
           QuickBook™ Automagically™ books the first available room for the coming hour. Already got a QuickBook™ room
@@ -104,29 +101,48 @@ class Quick extends React.Component<Props, State> {
     const bookNowTime = isSuccess ? currentHour + 1 : currentHour;
 
     return (
-      <div className="quick row justify-content-center">
-        <Card className="quick__main-card">
-          <CardMedia
-            className="quick__main-card__img"
-            image={cardImg}
-            title={isSuccess ? response.room : 'ILC'}
-          />
-          <CardContent>
-            <Typography gutterBottom variant="h5" component="h2">
-              {cardHeaderText}
-            </Typography>
-            {cardDescription}
-            <CardActions>
-              <Button size="medium" color="primary" onClick={this.sendPostReq.bind(this, bookNowTime)}>
-                Book Now
-              </Button>
-              <Button size="medium" color="secondary" onClick={this.sendPostReq.bind(this, bookNowTime + 1)}>
-                Book for {getPrettyHour(bookNowTime + 1)} - {getPrettyHour(bookNowTime + 2, true)}
-              </Button>
-            </CardActions>
-          </CardContent>
-        </Card>
+      <Grid item {...gridWidth}>
+        <div className="quick">
+          <Card className="quick__main-card">
+            <CardMedia
+              className="quick__main-card__img"
+              image={cardImg}
+              title={isSuccess ? cardData.room : 'ILC'}
+            />
+            <CardContent>
+              <Typography gutterBottom variant="h5" component="h2">
+                {cardHeaderText}
+              </Typography>
+              {cardDescription}
+              <CardActions>
+                <Button size="medium" color="primary" onClick={this.sendPostReq.bind(this, bookNowTime)}>
+                  Book Now
+                </Button>
+                <Button size="medium" color="secondary" onClick={this.sendPostReq.bind(this, bookNowTime + 1)}>
+                  Book for {getPrettyHour(bookNowTime + 1)} - {getPrettyHour(bookNowTime + 2, true)}
+                </Button>
+              </CardActions>
+            </CardContent>
+          </Card>
 
+        </div>
+      </Grid>
+    );
+
+  }
+
+  renderInfo() {
+    const { currentHour, response } = this.state;
+    const isSuccess = response && response.length && response[response.length - 1].success;
+
+    return (
+      <div className="justify-content-center quick__card-container">
+        <Grid container spacing={16} className="justify-content-center">
+          {!response.length && this.renderCard([], currentHour, false, { xs: 12, sm: 10, md: 8, lg: 6, xl: 5 })}
+          {response.map((bookingData) => {
+            return this.renderCard(bookingData, currentHour, isSuccess);
+          })}
+        </Grid>
       </div>
     );
   }

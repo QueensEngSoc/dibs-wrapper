@@ -1,6 +1,15 @@
 @import "./main";
 
 .quick {
+
+  &__card-container {
+    padding: 0;
+
+    @media screen and (min-width: $medium-breakpoint) {
+      padding: 0 30px;
+    }
+  }
+
   &__main-card {
     margin: 8px;
 
