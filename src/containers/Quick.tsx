@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import { getPrettyHour, sanitiseTime } from '../lib/dateFuncs';
 import postReq from '../client/postReq';
 import SnackBar, { SnackBarVariant } from '../components/SnackBar';
+import { GridProps } from '@material-ui/core/Grid';
 
 interface ResponseObject {
   header: string
@@ -82,18 +83,18 @@ class Quick extends React.Component<Props, State> {
     );
   }
 
-  renderCard(cardData, currentHour, isSuccess, gridWidth = { xs: 12, sm: 9 ,md: 6, lg: 4, xl: 3 }) {
+  renderCard(cardData, currentHour, isSuccess, gridWidth: GridProps = { xs: 12, sm: 9 ,md: 6, lg: 4, xl: 3 }) {
     const cardHeaderText = isSuccess ? `Booked ${cardData.room} for ${cardData.times.map((time) => {
       return `${getPrettyHour(time)} - ${getPrettyHour(time + 1, true)}`;
     }).join(', ')}` : 'Quick Book';
     const cardImg = isSuccess ? cardData.pic : '/img/ilc-small.jpg';
     const cardDescription = isSuccess ? <Typography component="p">{cardData.description}</Typography> :
       <>
-        <Typography component="p">
+        <Typography component="p" align={'left'}>
           QuickBook™ Automagically™ books the first available room for the coming hour. Already got a QuickBook™ room
           for this hour? Click again to Automagically™ get a booking for the next free hour!
         </Typography>
-        <Typography component="p">
+        <Typography component="p" align={'left'}>
           Ready to get started? Click below!
         </Typography>
       </>;

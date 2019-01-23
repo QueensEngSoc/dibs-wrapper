@@ -9,6 +9,9 @@ export default ({ body, title, cssPath = ['/CSS/styles.css'], compiledCss = null
         <meta name="viewport" content="width = device-width, initial-scale = 1">
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="Description" content="Welcome to QBook, the new ILC room booking system built by the ESSDEV team! Book rooms for the next 7 days, anytime on QBook">
+        <meta name="google-site-verification" content="l_NsHLZEl7XYLX5-9RPTVDQfMYpSwNI0HNI6Mjko4oc" />
+
         <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" />
 
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous" />
