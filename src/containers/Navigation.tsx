@@ -30,7 +30,7 @@ import { Link } from 'react-router-dom'
 
 const topMenuData = [
   { name: 'Map View', icon: <MapRounded />, to: '/map' },
-  { name: 'Quick Book', icon: <ImportContactsRounded />, to: '/quicky' }
+  { name: 'Quick Book', icon: <ImportContactsRounded />, to: '/quicky', isReact: 'true' }
 ];
 
 const bottomMenuData = [
@@ -135,6 +135,14 @@ class NavigationContainer extends React.Component<Props, State> {
               </ListItem>}
               {
                 topMenuData.map((item) => {
+                  if (item.isReact) {
+                    return (
+                      <ListItem key={item.name} button component={Link} to={item.to}>
+                        <ListItemIcon>{item.icon}</ListItemIcon>
+                        <ListItemText primary={item.name} />
+                      </ListItem>
+                    );
+                  }
                   return (
                     <ListItem key={item.name} button onClick={this.handleClose.bind(this, item.to)}>
                       <ListItemIcon>{item.icon}</ListItemIcon>
