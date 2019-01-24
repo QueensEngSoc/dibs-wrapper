@@ -66,7 +66,7 @@ class Home extends Component<Props, State> {
       intDay: 0,
       prettyDate: null,
       showExtraFilters: false,
-      selectedTime: this.props.currentHour || this.props.timeCount[0].twenty4Hour,
+      selectedTime: (this.props.currentHour >= 7 && this.props.currentHour <= 23 && this.props.currentHour) || this.props.timeCount[0].twenty4Hour, // take either the current hour (if it is valid), or the first valid booking slot from the server response
       selectedDate: new Date(),
       timeCount: this.props.timeCount
     };
@@ -201,7 +201,7 @@ class Home extends Component<Props, State> {
     const intVal = selectedValue !== '' ? parseInt(selectedValue) : null;
     const { selectedDate } = this.state;
 
-    const res = await fetchData(selectedDate, intVal);
+    const res: RoomPostData = await fetchData(selectedDate, intVal) as RoomPostData;
 
     this.setState({
       currentHour: res.currentHour,
@@ -228,7 +228,7 @@ class Home extends Component<Props, State> {
 
   renderTimeSwitcher() {
     const { timeCount, intDay, selectedTime, currentHour } = this.state;
-    const minTime = intDay === 0 ? currentHour : 7;
+    const minTime = (intDay === 0 && currentHour >= 7 && currentHour <= 23) ? currentHour : 7;
 
     return (
       <div className="row justify-content-center row--add-margin">
