@@ -40,12 +40,15 @@ router.get('/quicky', async function (req, res, next) { //the request to render 
   const context = {};
   const body = renderAppToString(req, context, store);
   const title = 'Quick Book';
-  const compiledCss = compile('src/SCSS/Quick.scss');
+  const theme = req.theme === "custom" ? false : req.theme || 'default';
+  const cssPath = [`/CSS/room-style/${theme}-room-style.css`];
+  const compiledCss = compile('src/SCSS/main.scss');
 
   res.send(template({
     body,
     title,
-    compiledCss
+    compiledCss,
+    cssPath
   }));
 });
 

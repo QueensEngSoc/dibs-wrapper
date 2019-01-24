@@ -19,6 +19,7 @@ import {
 import { ExpandMore } from '@material-ui/icons';
 import MaterialDatePicker from '../components/MaterialDatePicker';
 import postReq from '../client/postReq';
+import { sanitiseTime } from '../lib/dateFuncs';
 
 async function fetchData(date, time) {
   const dateToSend = date || new Date();
@@ -72,7 +73,21 @@ class Home extends Component<Props, State> {
     };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
+    if (!this.state.roomData) {
+      const selectedDate = new Date();
+      const currentHour = sanitiseTime(selectedDate.getHours());
+
+      const res: RoomPostData = await fetchData(selectedDate, currentHour) as RoomPostData;
+
+      this.setState({
+        currentHour: res.currentHour,
+        prettyDate: null,
+        roomData: (res as RoomPostData).list || this.state.roomData,
+        selectedTime: currentHour,
+        timeCount: (res as RoomPostData).timeCount || this.state.timeCount
+      });
+    }
   }
 
   checkFilters(room, currentTime) {
@@ -250,7 +265,7 @@ class Home extends Component<Props, State> {
           <Select value={selectedTime > minTime ? selectedTime : minTime} onChange={this.onTimeChange.bind(this)}
                   className="selectpicker material-date-picker-wrapper__inner" id="timepicker" data-live-search="true"
                   data-size="10" displayEmpty>
-            {timeCount.map((time) => {
+            {timeCount && timeCount.map((time) => {
               if (time.twenty4Hour < minTime)
                 return null;
 

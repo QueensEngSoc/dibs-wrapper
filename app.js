@@ -12,7 +12,6 @@ import flash from "connect-flash";
 import configDB from "./config/database.js";
 import * as dbFuncs from "./models/dbFunctions";
 import * as email from "./models/sendEmail";
-import { setUpMuiStyles } from './src/server/cssInJsSetup';
 
 import './src/SCSS/main.scss';
 

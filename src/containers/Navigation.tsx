@@ -20,7 +20,8 @@ import {
   ImportContactsRounded,
   SettingsRounded,
   DashboardRounded,
-  ExitToAppRounded
+  ExitToAppRounded,
+  ViewModuleRounded
 } from '@material-ui/icons';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { StoreState } from '../types/store';
@@ -29,8 +30,9 @@ import { selectIsAdmin, selectIsLoggedIn } from '../store/selectors/user';
 import { Link } from 'react-router-dom'
 
 const topMenuData = [
-  { name: 'Map View', icon: <MapRounded />, to: '/map' },
-  { name: 'Quick Book', icon: <ImportContactsRounded />, to: '/quicky', isReact: 'true' }
+  { name: 'Grid View', icon: <ViewModuleRounded />, to: '/react', isReact: 'true', showOption: '/react' },
+  { name: 'Map View', icon: <MapRounded />, to: '/map', showOption: '/map' },
+  { name: 'Quick Book', icon: <ImportContactsRounded />, to: '/quicky', if: 'isLoggedIn', isReact: 'true' }
 ];
 
 const bottomMenuData = [
@@ -135,16 +137,15 @@ class NavigationContainer extends React.Component<Props, State> {
               </ListItem>}
               {
                 topMenuData.map((item) => {
-                  if (item.isReact) {
-                    return (
-                      <ListItem key={item.name} button component={Link} to={item.to}>
-                        <ListItemIcon>{item.icon}</ListItemIcon>
-                        <ListItemText primary={item.name} />
-                      </ListItem>
-                    );
-                  }
+                  if (item.showOption && item.showOption === this.props.location.pathname)
+                    return (null);
+                  const handleIf = item.if && this.props[item.if] || !item.if;
+                  const toUrl = handleIf ? item.to : '/login';
+                  const props = (item.isReact && handleIf) ? { component: Link, to: toUrl } : { onClick: this.handleClose.bind(this, toUrl)};
+
                   return (
-                    <ListItem key={item.name} button onClick={this.handleClose.bind(this, item.to)}>
+                    // @ts-ignore
+                    <ListItem key={item.name} button {...props}>
                       <ListItemIcon>{item.icon}</ListItemIcon>
                       <ListItemText primary={item.name} />
                     </ListItem>

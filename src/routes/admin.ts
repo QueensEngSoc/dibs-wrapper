@@ -80,12 +80,15 @@ router.get('/admin-v2', async function (req, res, next) {
   const context = {};
   const body = renderAppToString(req, context, store);
   const title = 'QBook Admin Dashboard';
-  const compiledCss = compile('src/SCSS/Admin.scss');
+  const theme = req.theme === "custom" ? false : req.theme || 'default';
+  const cssPath = [`/CSS/room-style/${theme}-room-style.css`];
+  const compiledCss = compile('src/SCSS/main.scss');
 
   res.send(template({
     body,
     title,
-    compiledCss
+    compiledCss,
+    cssPath
   }));
 
 });
