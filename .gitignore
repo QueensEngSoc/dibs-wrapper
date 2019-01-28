@@ -4,3 +4,4 @@ node_modules
 dist
 MongoDB/*
 config/emailConfig.js
+public/app.bundle.*

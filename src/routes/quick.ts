@@ -55,7 +55,7 @@ router.get('/quicky', async function (req, res, next) { //the request to render 
 router.post('/quicky', async function (req, res, next) {
   console.log('got the post! ***************** ', req.isAuthenticated());
   if (!req.isAuthenticated())
-    return res.redirect('/login?redirect=/quicky'); // do the redirecting thing TODO: Alex?
+    return false; // do the redirecting thing TODO: Alex?
 
   var usrid = accountFuncs.getUserID(req);
   var bookDay = 0;

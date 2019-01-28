@@ -1,14 +1,16 @@
 import { Route, Link } from 'react-router-dom';
-import * as React from "react";
-import { Button, Card, CardActions, CardContent, CardMedia, Grid, Typography } from "@material-ui/core";
-import { getPrettyHour } from "../lib/dateFuncs";
+import * as React from 'react';
+import { Button, Card, CardActions, CardContent, CardMedia, Grid, Typography } from '@material-ui/core';
+import { getPrettyHour } from '../lib/dateFuncs';
+import { GridProps } from '@material-ui/core/Grid';
 
 function renderFunction({ staticContext }) {
   if (staticContext) {
     staticContext.statusCode = 404;
   }
 
-  const gridWidth = { xs: 12, sm: 9, md: 7, lg: 5, xl: 3 };
+  const gridWidth: GridProps = { xs: 12, sm: 9, md: 7, lg: 5, xl: 3 };
+
   return (
     <div className="content__wrapper justify-content-center">
       <Grid container spacing={16} className="justify-content-center">

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Typography, Card, CardContent, CardMedia, CardHeader, CardActions, Button, Grid } from '@material-ui/core';
-import { RouteComponentProps, withRouter } from 'react-router';
+import { RouteComponentProps, withRouter, Redirect } from 'react-router';
 import { Link } from 'react-router-dom'
 import { StoreState } from '../types/store';
 import { selectCurrentHour, selectRoomData, selectTimeCount } from '../store/selectors/rooms';
@@ -9,6 +9,7 @@ import { getPrettyHour, sanitiseTime } from '../lib/dateFuncs';
 import postReq from '../client/postReq';
 import SnackBar, { SnackBarVariant } from '../components/SnackBar';
 import { GridProps } from '@material-ui/core/Grid';
+import { selectIsLoggedIn } from '../store/selectors/user';
 
 interface ResponseObject {
   header: string
@@ -34,6 +35,7 @@ interface State {
 // @ts-ignore
 interface Props extends RouteComponentProps<Props> {
   currentHour: number;
+  isLoggedIn: boolean;
 }
 
 class Quick extends React.Component<Props, State> {
@@ -50,6 +52,7 @@ class Quick extends React.Component<Props, State> {
   }
 
   componentDidMount() {
+    console.log('logged in?: ', this.props.isLoggedIn);
   }
 
   sendPostReq = async (hour) => {
@@ -83,7 +86,7 @@ class Quick extends React.Component<Props, State> {
     );
   }
 
-  renderCard(cardData, currentHour, isSuccess, gridWidth: GridProps = { xs: 12, sm: 9 ,md: 6, lg: 4, xl: 3 }) {
+  renderCard(cardData, currentHour, isSuccess, gridWidth: GridProps = { xs: 12, sm: 9, md: 6, lg: 4, xl: 3 }) {
     const cardHeaderText = isSuccess ? `Booked ${cardData.room} for ${cardData.times.map((time) => {
       return `${getPrettyHour(time)} - ${getPrettyHour(time + 1, true)}`;
     }).join(', ')}` : 'Quick Book';
@@ -149,6 +152,10 @@ class Quick extends React.Component<Props, State> {
   }
 
   render() {
+    if (!this.props.isLoggedIn) {
+      return <Redirect to={{ pathname: '/login', state: { redirect: '/quicky' } }} />
+    }
+
     return (
       <div className="content__wrapper">
         {this.renderAlert()}
@@ -162,7 +169,8 @@ function mapStateToProps(state: StoreState) {
   return {
     roomData: selectRoomData(state),
     currentHour: selectCurrentHour(state),
-    timeCount: selectTimeCount(state)
+    timeCount: selectTimeCount(state),
+    isLoggedIn: selectIsLoggedIn(state)
   };
 }
 
