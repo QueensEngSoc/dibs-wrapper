@@ -2,6 +2,21 @@
 
 /* ---------------------- REACT INDEX PAGE ------------------------*/
 
+.home {
+  &__time-picker {
+    &__item {
+      &__badge {
+        margin-right: 2px;
+        display: unset;
+
+        &--spacer {
+          margin: 2px 0;
+        }
+      }
+    }
+  }
+}
+
 .material-date-picker-wrapper {
   display: inline-flex;
 
@@ -64,19 +79,20 @@ group + group {
   border-right: 1px solid #b6b6b6;
 }
 
-.inline-radio  > .radio-btn:last-child label {
+.inline-radio > .radio-btn:last-child label {
   border-right: 0;
 }
 
-.inline-radio  > .radio-btn > input:checked + label {
+.inline-radio > .radio-btn > input:checked + label {
   background: #d81b60;
   font-weight: 500;
   color: #fff;
 }
 
-.inline-radio > .radio-btn > .radio-btn__radio--selected{
+.inline-radio > .radio-btn > .radio-btn__radio--selected {
   background: #d81b60;
   font-weight: 500;
   color: #fff;
 }
+
 /* End Radio Buttons */

@@ -14,7 +14,7 @@ import {
   ExpansionPanelDetails,
   Input,
   Select,
-  Drawer, List, ListItem, ListItemIcon, ListItemText, Divider
+  Drawer, List, ListItem, ListItemIcon, ListItemText, Divider, Badge
 } from '@material-ui/core/';
 import { ExpandMore } from '@material-ui/icons';
 import MaterialDatePicker from '../components/MaterialDatePicker';
@@ -272,7 +272,7 @@ class Home extends Component<Props, State> {
               return (<MenuItem key={time.twenty4Hour} data-tokens={`${time.hour} ${time.twenty4Hour}`}
                                 value={time.twenty4Hour}
                                 data-content={`<span><span class='badge badge-pill ${time.pillClass}>${time.totalFree}</span> ${time.timeString}</span>`}>
-                {time.timeString}
+                <span><span className={`badge badge-pill ${time.pillClass} home__time-picker__item__badge`}>{time.totalFree}</span>{time.timeString}</span>
               </MenuItem>);
             })}
           </Select>
