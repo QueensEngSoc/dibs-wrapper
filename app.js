@@ -150,7 +150,7 @@ configRoutes(server, passport); // load our routes and pass in our app and fully
 const port = process.env.PORT || 8000;
 
 server.listen(port, function () {
-    console.log('Example app listening on port ' + port + "!");
+    console.log('QBook listening on port ' + port + "!");
 });
 
 if (env != 'dev'){

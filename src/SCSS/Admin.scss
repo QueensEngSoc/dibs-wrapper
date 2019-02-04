@@ -1,4 +1,8 @@
 .admin {
+  &__const-card__container {
+    margin: 0 8px;
+  }
+
   &__status-card {
     &__img {
       height: 140px;
