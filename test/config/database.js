@@ -1,5 +1,5 @@
-var assert = require('chai').assert;
-var database = require('../../config/database');
+const assert = require('chai').assert;
+const database = require('../../config/database');
 
 describe('Database URL Test', function() {
     describe('Correct database URL set', function () {

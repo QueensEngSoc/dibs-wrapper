@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Typography, Card, CardContent, CardMedia, CardHeader, CardActions, Button, Grid } from '@material-ui/core';
+import { Typography, Button, Grid } from '@material-ui/core';
 import { RouteComponentProps, withRouter, Redirect } from 'react-router';
 import { Link } from 'react-router-dom'
 import { StoreState } from '../types/store';
@@ -10,6 +10,7 @@ import postReq from '../client/postReq';
 import SnackBar, { SnackBarVariant } from '../components/SnackBar';
 import { GridProps } from '@material-ui/core/Grid';
 import { selectIsLoggedIn } from '../store/selectors/user';
+import CardComponent from '../components/CardComponent';
 
 interface ResponseObject {
   header: string
@@ -94,8 +95,8 @@ class Quick extends React.Component<Props, State> {
     const cardDescription = isSuccess ? <Typography component="p">{cardData.description}</Typography> :
       <>
         <Typography component="p" align={'left'}>
-          QuickBook™ Automagically™ books the first available room for the coming hour. Already got a QuickBook™ room
-          for this hour? Click again to Automagically™ get a booking for the next free hour!
+          QuickBook™ Automagically™ books the first available room for the chosen hour. Already got a QuickBook™ room
+          for this hour? Click a different time to Automagically™ get a booking for that hour!
         </Typography>
         <Typography component="p" align={'left'}>
           Ready to get started? Click below!
@@ -103,34 +104,17 @@ class Quick extends React.Component<Props, State> {
       </>;
 
     const bookNowTime = isSuccess ? currentHour + 1 : currentHour;
+    const cardActions = [
+      <Button size="medium" color="primary" onClick={this.sendPostReq.bind(this, bookNowTime)}>
+        Book Now
+      </Button>,
+      <Button size="medium" color="secondary" onClick={this.sendPostReq.bind(this, bookNowTime + 1)}>
+        Book for {getPrettyHour(bookNowTime + 1)} - {getPrettyHour(bookNowTime + 2, true)}
+      </Button>
+    ];
 
     return (
-      <Grid item {...gridWidth}>
-        <div className="quick">
-          <Card className="quick__main-card">
-            <CardMedia
-              className="quick__main-card__img"
-              image={cardImg}
-              title={isSuccess ? cardData.room : 'ILC'}
-            />
-            <CardContent>
-              <Typography gutterBottom variant="h5" component="h2">
-                {cardHeaderText}
-              </Typography>
-              {cardDescription}
-              <CardActions>
-                <Button size="medium" color="primary" onClick={this.sendPostReq.bind(this, bookNowTime)}>
-                  Book Now
-                </Button>
-                <Button size="medium" color="secondary" onClick={this.sendPostReq.bind(this, bookNowTime + 1)}>
-                  Book for {getPrettyHour(bookNowTime + 1)} - {getPrettyHour(bookNowTime + 2, true)}
-                </Button>
-              </CardActions>
-            </CardContent>
-          </Card>
-
-        </div>
-      </Grid>
+      <CardComponent baseClass="quick" cardDescription={cardDescription} cardHeaderText={cardHeaderText} cardImageTitle="ILC" cardImg={cardImg} cardActions={cardActions} gridWidth={gridWidth} />
     );
 
   }
