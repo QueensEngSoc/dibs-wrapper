@@ -74,6 +74,10 @@ router.post('/quicky', async function (req, res, next) {
   var time = (dataObj && dataObj.time) || roomDB.getNextValidHalfHour(false, true);
   console.log('time (pt 1) is: ', time, ' quick: ', quick);
 
+  const minute = new Date().getMinutes();
+  if (minute < 30)
+    time --;
+
   if (time >= 23) {
     time = time % 23 + 7;
     bookDay++;

@@ -8,9 +8,9 @@
 @import './Home';
 @import './Quick';
 
-@import url('../../public/CSS/font-nunito.css');
-@import url('../../public/CSS/font-montserrat.css');
-@import url('../../public/CSS/font-roboto.css');
+//@import url('../../public/CSS/font-nunito.css');
+//@import url('../../public/CSS/font-montserrat.css');
+//@import url('../../public/CSS/font-roboto.css');
 
 
 body {
@@ -40,6 +40,11 @@ body, wrapper {
 
   &--add-margin {
     margin-bottom: 8px;
+  }
+
+  &--side-margin {
+    margin-right: 4px;
+    margin-left: 4px;
   }
 }
 

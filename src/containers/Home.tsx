@@ -12,7 +12,7 @@ import {
   MenuItem,
   Typography,
   ExpansionPanelDetails,
-  Select,
+  Select, Grid,
 } from '@material-ui/core/';
 import { ExpandMore } from '@material-ui/icons';
 import MaterialDatePicker from '../components/MaterialDatePicker';
@@ -119,20 +119,20 @@ class Home extends Component<Props, State> {
     const dbTime = selectedTime - 7;
 
     const roomButtons = roomData && roomData.map((room) => {
+      let className = 'nroom';
+      const shouldShow = this.checkFilters(room, dbTime);
       if (room.isFree[dbTime]) {
-        let className = (room.isFree[dbTime] as RoomFreeTable).free ? 'yroom' : 'nroom';
+        className = (room.isFree[dbTime] as RoomFreeTable).free ? 'yroom' : 'nroom';
         className = (room.isFree[dbTime] as RoomFreeTable).isMine ? 'mroom' : className;
-        const shouldShow = this.checkFilters(room, dbTime);
-
-        // {/*<Typography className="room-btn__text" variant={'body2'}>{room.roomNum}</Typography>*/}
-        if (shouldShow) {
-          return (
-            <a key={room.roomID} className={`btn btn-lg ${className} mobileBtn`}
-               href={`/book/${room.roomID}${prettyDate ? ('/' + prettyDate) : ''}`} role="button"
-               id={room.roomNum}>{room.roomNum}
-            </a>
-          );
-        }
+      }
+      // {/*<Typography className="room-btn__text" variant={'body2'}>{room.roomNum}</Typography>*/}
+      if (shouldShow) {
+        return (
+          <a key={room.roomID} className={`btn btn-lg ${className} mobileBtn`}
+             href={`/book/${room.roomID}${prettyDate ? ('/' + prettyDate) : ''}`} role="button"
+             id={room.roomNum}>{room.roomNum}
+          </a>
+        );
       }
     });
 
@@ -244,22 +244,24 @@ class Home extends Component<Props, State> {
     const minTime = (intDay === 0 && currentHour >= 7 && currentHour <= 23) ? currentHour : 7;
 
     return (
-      <div className="row justify-content-center row--add-margin">
-        <div className="col-md-auto">
+      <Grid container spacing={16} className="row--add-margin row--side-margin justify-content-center">
+        <Grid item xs={6} sm={5} md={3} lg={2} xl={1}>
           <div className="form-group text-center">
-            <Typography variant={'h5'}>Pick a day: </Typography>
+            <Typography align='right' variant={'h5'}>Pick a day: </Typography>
           </div>
-        </div>
-        <div className="material-date-picker-wrapper">
-          <MaterialDatePicker className="material-date-picker-wrapper__inner" daysToSpan={13}
-                              onChange={this.handleDateChange.bind(this)} />
-        </div>
-        <div className="col-md-auto">
+        </Grid>
+        <Grid item xs={6} sm={5} md={3} lg={2} xl={1}>
+          <div className="material-date-picker-wrapper">
+            <MaterialDatePicker className="material-date-picker-wrapper__inner" daysToSpan={13}
+                                onChange={this.handleDateChange.bind(this)} />
+          </div>
+        </Grid>
+        <Grid alignContent={'flex-end'} item xs={6} sm={5} md={3} lg={2} xl={1}>
           <div className="form-group text-center">
-            <Typography variant={'h5'}>Pick a time: </Typography>
+            <Typography align='right' variant={'h5'}>Pick a time: </Typography>
           </div>
-        </div>
-        <div>
+        </Grid>
+        <Grid item xs={6} sm={5} md={3} lg={2} xl={1}>
           <Select value={selectedTime > minTime ? selectedTime : minTime} onChange={this.onTimeChange.bind(this)}
                   className="selectpicker material-date-picker-wrapper__inner" id="timepicker" data-live-search="true"
                   data-size="10" displayEmpty>
@@ -270,12 +272,13 @@ class Home extends Component<Props, State> {
               return (<MenuItem key={time.twenty4Hour} data-tokens={`${time.hour} ${time.twenty4Hour}`}
                                 value={time.twenty4Hour}
                                 data-content={`<span><span class='badge badge-pill ${time.pillClass}>${time.totalFree}</span> ${time.timeString}</span>`}>
-                <span><span className={`badge badge-pill ${time.pillClass} home__time-picker__item__badge`}>{time.totalFree}</span>{time.timeString}</span>
+                  <span><span
+                    className={`badge badge-pill ${time.pillClass} home__time-picker__item__badge`}>{time.totalFree}</span>{time.timeString}</span>
               </MenuItem>);
             })}
           </Select>
-        </div>
-      </div>
+        </Grid>
+      </Grid>
     );
   }
 
