@@ -1,6 +1,6 @@
 // src/template.js
 
-export default ({ body, title, cssPath = [''], compiledCss = null }) => {
+export default ({ body, title, cssPath = [''], compiledCss = null, MuiCss = null }) => {
   return `<!DOCTYPE html>
     <html lang="en">
       <head>
@@ -30,6 +30,8 @@ export default ({ body, title, cssPath = [''], compiledCss = null }) => {
         ${compiledCss && `<style>
             ${compiledCss}
         </style>`}
+        
+        ${MuiCss && `<style id="jss-server-side">${MuiCss}</style>`}
 
         <!--<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>-->
         <link rel="manifest" href="/manifest.json">

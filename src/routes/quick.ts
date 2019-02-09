@@ -38,7 +38,7 @@ router.get('/quicky', async function (req, res, next) { //the request to render 
 
   const store = await createStoreInstance(req, current_hour);
   const context = {};
-  const body = renderAppToString(req, context, store);
+  const { html: body, css: MuiCss } = renderAppToString(req, context, store);
   const title = 'Quick Book';
   const theme = req.theme === "custom" ? false : req.theme || 'default';
   const cssPath = [`/CSS/room-style/${theme}-room-style.css`];
@@ -48,7 +48,8 @@ router.get('/quicky', async function (req, res, next) { //the request to render 
     body,
     title,
     compiledCss,
-    cssPath
+    cssPath,
+    MuiCss
   }));
 });
 

@@ -78,7 +78,7 @@ router.get('/admin-v2', async function (req, res, next) {
 
   const store = await createStoreInstance(req, listFree, current_hour, timecount);
   const context = {};
-  const body = renderAppToString(req, context, store);
+  const { html: body, css: MuiCss } = renderAppToString(req, context, store);
   const title = 'QBook Admin Dashboard';
   const theme = req.theme === "custom" ? false : req.theme || 'default';
   const cssPath = [`/CSS/room-style/${theme}-room-style.css`];
@@ -88,7 +88,8 @@ router.get('/admin-v2', async function (req, res, next) {
     body,
     title,
     compiledCss,
-    cssPath
+    cssPath,
+    MuiCss
   }));
 
 });
