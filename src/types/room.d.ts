@@ -57,6 +57,7 @@ export interface RoomState {
 
 export interface RoomPostData {
   day: Date;
+  intDay: number;
   currentHour: number;
   list: Array<Room>;
   prettyDate: string;

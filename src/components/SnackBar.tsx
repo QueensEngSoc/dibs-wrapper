@@ -1,3 +1,4 @@
+// @ts-ignore
 import React, { Component, ReactNode } from 'react';
 import classNames from 'classnames';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';

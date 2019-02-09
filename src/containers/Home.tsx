@@ -12,9 +12,7 @@ import {
   MenuItem,
   Typography,
   ExpansionPanelDetails,
-  Input,
   Select,
-  Drawer, List, ListItem, ListItemIcon, ListItemText, Divider, Badge
 } from '@material-ui/core/';
 import { ExpandMore } from '@material-ui/icons';
 import MaterialDatePicker from '../components/MaterialDatePicker';
@@ -229,11 +227,11 @@ class Home extends Component<Props, State> {
 
   handleDateChange = async date => {
     const { selectedTime } = this.state;
-    const res = await fetchData(date, selectedTime);
+    const res = await fetchData(date, selectedTime) as RoomPostData;
 
     this.setState({
       currentHour: res.currentHour,
-      intDay: res.day,
+      intDay: res.intDay,
       prettyDate: res.prettyDate,
       roomData: res.list || this.state.roomData,
       selectedDate: date,

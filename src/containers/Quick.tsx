@@ -105,16 +105,16 @@ class Quick extends React.Component<Props, State> {
 
     const bookNowTime = isSuccess ? currentHour + 1 : currentHour;
     const cardActions = [
-      <Button size="medium" color="primary" onClick={this.sendPostReq.bind(this, bookNowTime)}>
+      <Button key={bookNowTime} size="medium" color="primary" onClick={this.sendPostReq.bind(this, bookNowTime)}>
         Book Now
       </Button>,
-      <Button size="medium" color="secondary" onClick={this.sendPostReq.bind(this, bookNowTime + 1)}>
+      <Button key={bookNowTime + 1} size="medium" color="secondary" onClick={this.sendPostReq.bind(this, bookNowTime + 1)}>
         Book for {getPrettyHour(bookNowTime + 1)} - {getPrettyHour(bookNowTime + 2, true)}
       </Button>
     ];
 
     return (
-      <CardComponent baseClass="quick" cardDescription={cardDescription} cardHeaderText={cardHeaderText} cardImageTitle="ILC" cardImg={cardImg} cardActions={cardActions} gridWidth={gridWidth} />
+      <CardComponent key={cardHeaderText.trim()} baseClass="quick" cardDescription={cardDescription} cardHeaderText={cardHeaderText} cardImageTitle="ILC" cardImg={cardImg} cardActions={cardActions} gridWidth={gridWidth} />
     );
 
   }
