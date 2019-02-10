@@ -177,13 +177,13 @@ class Home extends Component<Props, State> {
                 <Typography className={''}>Show More Filters</Typography>
               </ExpansionPanelSummary>
               <ExpansionPanelDetails>
-                <div className='row'>
-                  <div className="col-md-auto">
+                <Grid container spacing={16} className='row'>
+                  <Grid item xs={10} sm={6} md={4} lg={4} xl={3}>
                     <Typography>
                       Toggle additional filters on and off here
                     </Typography>
-                  </div>
-                  <div className="col-md-auto moreFiltersContainer">
+                  </Grid>
+                  <Grid item xs={10} sm={6} md={8} lg={8} xl={6} className="moreFiltersContainer">
                     <Button className="filterButton" variant="contained"
                             color={this.state.filterPhone ? 'primary' : 'default'}
                             onClick={() => this.toggleAdditionalFilters('phone')}>
@@ -199,8 +199,8 @@ class Home extends Component<Props, State> {
                             onClick={() => this.toggleAdditionalFilters('unavailable')}>
                       Hide Unavailable
                     </Button>
-                  </div>
-                </div>
+                  </Grid>
+                </Grid>
               </ExpansionPanelDetails>
             </ExpansionPanel>
           </div>
@@ -256,7 +256,7 @@ class Home extends Component<Props, State> {
                                 onChange={this.handleDateChange.bind(this)} />
           </div>
         </Grid>
-        <Grid alignContent={'flex-end'} item xs={6} sm={5} md={3} lg={2} xl={1}>
+        <Grid item xs={6} sm={5} md={3} lg={2} xl={1}>
           <div className="form-group text-center">
             <Typography align='right' variant={'h5'}>Pick a time: </Typography>
           </div>

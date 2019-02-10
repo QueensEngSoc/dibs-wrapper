@@ -34,6 +34,11 @@
 .moreFiltersContainer .filterButton {
   margin-right: 20px;
   margin-top: -8px;
+  margin-bottom: 22px;
+
+  @media (min-width: 1200px) {
+    margin-bottom: 0;
+  }
 }
 
 /* Radio Buttons (Filters on Home page) */
