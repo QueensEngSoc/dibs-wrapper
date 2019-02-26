@@ -13,7 +13,8 @@ const roomDatabase = db.get('roomDatabase');
 import * as userFuncs from '../../models/userFunctions';
 import * as consts from '../../config/config';
 
-import randomstring from 'randomstring'; // used to generate the random hash to see if the room is part of the same booking
+import randomstring from 'randomstring';
+import { RoomFreeTable } from '../types/room'; // used to generate the random hash to see if the room is part of the same booking
 
 function getPrettyDay(intDay) {
   if (intDay == 0)
@@ -37,9 +38,24 @@ export function getTotalBookedHoursPerRoom(totalBooked, temp, usrid) {
   return totalBooked;
 }
 
+export interface BookingOutput {
+  header: string;
+  bookMsg: string;
+  success: boolean;
+  day?: number;
+  room?: string;
+  roomNum?: string;
+  free?: Array<RoomFreeTable>;
+  pic?: string;
+  roomid?: number;
+  intDay?: number;
+  prettyDay?: string;
+  description?: string;
+  times?: Array<any>;
+}
 
-export function bookMultiple(day: number, times: Array<number>, roomID: number, usrid, req) {
-  return new Promise(function (resolve, reject) {
+export function bookMultiple(day: number, times: Array<number>, roomID: number, usrid, req): Promise<any> {
+  return new Promise(function (resolve, reject): BookingOutput {
     const isAdmin = userFuncs.getAdminStatus(req);
 
     if (!isAdmin) {
