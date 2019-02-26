@@ -30,7 +30,7 @@ import { selectIsAdmin, selectIsLoggedIn } from '../store/selectors/user';
 import { Link } from 'react-router-dom'
 
 const topMenuData = [
-  { name: 'Grid View', icon: <ViewModuleRounded />, to: '/react', isReact: 'true', showOption: '/react' },
+  { name: 'Grid View', icon: <ViewModuleRounded />, to: '/', isReact: 'true', showOption: '/' },
   { name: 'Map View', icon: <MapRounded />, to: '/map', showOption: '/map' },
   { name: 'Quick Book', icon: <ImportContactsRounded />, to: '/quicky', if: 'isLoggedIn', isReact: 'true' }
 ];

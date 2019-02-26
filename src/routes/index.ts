@@ -24,7 +24,7 @@ async function createStoreInstance(req, data, current_hour, timeCount) {
   return store;
 }
 
-router.get('/react', async function (req, res, next) {
+router.get('/', async function (req, res, next) {
   var dateObj = new Date();
   var current_hour = dateObj.getHours();
   var current_min = dateObj.getMinutes();
@@ -111,3 +111,79 @@ function formatDate(date) {
 }
 
 export default router;
+
+router.post('/index', async function (req, res) {
+  const data = JSON.stringify(req.body);
+  const obj = JSON.parse(data);
+  const dateStr = obj.day;
+  const date = new Date(dateStr);
+
+  const dateObj = new Date();
+  let current_hour = dateObj.getHours();
+  const current_min = dateObj.getMinutes();
+  let day: any = +date - +dateObj;  // from https://github.com/Microsoft/TypeScript/issues/5710, the '+' forces the date to a number (presumably using the getTime() func)
+  day = Math.ceil(day / (1000 * 3600 * 24));
+
+  if (day < 0 || day > 13)
+    res.send("404", {
+      list: "",
+      prettyDate: ""
+    });
+
+  else {
+    if (current_min < 30)
+      current_hour--;
+
+    var usrid = accountFuncs.getUserID(req);
+
+    const listFree = await roomDB.getListOfRoomState(day, -1, usrid);
+    var timecount = [];
+
+    for (var i = 0; i < listFree[i].isFree.length; i++) {
+      let amOrPm = (i >= 4) ? " PM" : " AM";
+      const startTime = (((i + 7) % 12 === 0) ? '12' : (i + 7) % 12) + ":30";
+      const endTime = (((i + 7 + 1) % 12 === 0) ? '12' : (i + 7 + 1) % 12) + ":30";
+
+      timecount.push({
+        hourCount: 0,
+        totalCount: 0,
+        timeString: startTime + '-' + endTime + amOrPm,
+        totalFree: 0,
+        hour: (i + 7) % 12,
+        twenty4Hour: i + 7,
+        pillClass: 'badge-success'
+      });
+    }
+
+    for (var i = 0; i < listFree.length; i++) {
+      var count = 0;
+      var mine = 0;
+      for (var j = 0; j < listFree[i].isFree.length; j++) {
+        if (!listFree[i].isFree[j].free) {
+          count++;
+          timecount[j].hourCount++;
+        }
+        if (listFree[i].isFree[j].owner == usrid) {
+          mine++;
+          listFree[i].isFree[j].isMine = true;
+        } else
+          listFree[i].isFree[j].isMine = false;
+
+        timecount[j].totalCount++;
+      }
+    }
+
+    for (var i = 0; i < timecount.length; i++)
+      timecount[i].totalFree = timecount[i].totalCount - timecount[i].hourCount;
+
+    var prettyDate = formatDate(date);
+
+    res.send({
+      list: listFree,
+      timeCount: timecount,
+      currentHour: current_hour,
+      prettyDate: prettyDate,
+      day: day
+    });
+  }
+});

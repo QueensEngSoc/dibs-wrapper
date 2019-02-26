@@ -1,6 +1,5 @@
 //Serving routes
-import index from "../routes/index";
-import indexReact from "../src/routes/index";
+import index from "../src/routes/index";
 import welcome from "../routes/welcome";
 import bookCheckout from "../routes/bookCheckout";
 import bookRoom from "../routes/bookRoom";
@@ -26,9 +25,9 @@ export default function (app, passport) {
   // =====================================
   // HOME PAGE (with login links) ========
   // =====================================
+  // app.get('/', index);
   app.get('/', index);
   app.post('/index', index);
-  app.get('/react', indexReact);
 
   // =============================================
   // BOOK AND BOOKROOM PAGE (with login links) ===

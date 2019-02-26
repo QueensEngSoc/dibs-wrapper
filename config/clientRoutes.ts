@@ -4,7 +4,7 @@ import Quick from "../src/containers/Quick";
 
 export const routes = [
   {
-    path: '/react',
+    path: '/',
     component: Home,
     exact: true
   },
