@@ -26,3 +26,15 @@ export function sanitiseTime(hour: number, checkMinutes: boolean = false): numbe
 
   return testHour;
 }
+
+export function getDaysFromToday(dateToCheck: Date): number {
+  dateToCheck.setHours(8, 0, 0, 0); // set both dates to be at 8am, thus the math does not break in situations where the difference in time is not equal to the difference in calendar days.
+  // Eg: 11:59pm and 7:30am are less than 24h apart, but it is the next calendar day, or annoyingly cases like 8:58:49 vs 8:46:20 which falsely gives a difference of one day instead of zero
+  const today = new Date();
+  today.setHours(8, 0, 0, 0);
+
+  let number = Math.ceil((+dateToCheck - +today)/(1000*60*60*24)); // from https://github.com/Microsoft/TypeScript/issues/5710, the '+' forces the date to a number (presumably using the getTime() func)
+  if (number === -0)
+    number = 0;
+  return number;
+}

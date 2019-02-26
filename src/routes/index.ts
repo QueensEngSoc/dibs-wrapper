@@ -8,6 +8,7 @@ import * as accountFuncs from '../../models/userFunctions';
 import { setAccountType, setLoggedIn } from '../store/actions/user';
 import { compile } from '../server/compileSass';
 import { UserAccountType } from '../types/enums/user';
+import { getDaysFromToday } from '../lib/dateFuncs';
 
 const express = require('express');
 const router = express.Router();
@@ -98,33 +99,19 @@ router.get('/', async function (req, res, next) {
 
 });
 
-function formatDate(date) {
-  let d = new Date(date),
-    month = '' + (d.getMonth() + 1),
-    day = '' + d.getDate(),
-    year = d.getFullYear();
-
-  if (month.length < 2) month = '0' + month;
-  if (day.length < 2) day = '0' + day;
-
-  return [year, month, day].join('-');
-}
-
-export default router;
-
 router.post('/index', async function (req, res) {
   const data = JSON.stringify(req.body);
   const obj = JSON.parse(data);
   const dateStr = obj.day;
-  const date = new Date(dateStr);
-
+  const postDataDate = new Date(dateStr);
+  console.log("got the post! ", obj);
   const dateObj = new Date();
   let current_hour = dateObj.getHours();
   const current_min = dateObj.getMinutes();
-  let day: any = +date - +dateObj;  // from https://github.com/Microsoft/TypeScript/issues/5710, the '+' forces the date to a number (presumably using the getTime() func)
-  day = Math.ceil(day / (1000 * 3600 * 24));
 
-  if (day < 0 || day > 13)
+  const daysFromToday = getDaysFromToday(postDataDate);
+
+  if (daysFromToday < 0 || daysFromToday > 13)
     res.send("404", {
       list: "",
       prettyDate: ""
@@ -134,12 +121,13 @@ router.post('/index', async function (req, res) {
     if (current_min < 30)
       current_hour--;
 
-    var usrid = accountFuncs.getUserID(req);
+    const usrid = accountFuncs.getUserID(req);
 
-    const listFree = await roomDB.getListOfRoomState(day, -1, usrid);
-    var timecount = [];
+    const listFree = await roomDB.getListOfRoomState(daysFromToday, -1, usrid);
+    console.log('getting data for: ', daysFromToday, current_hour);
+    const timecount = [];
 
-    for (var i = 0; i < listFree[i].isFree.length; i++) {
+    for (let i = 0; i < listFree[i].isFree.length; i++) {
       let amOrPm = (i >= 4) ? " PM" : " AM";
       const startTime = (((i + 7) % 12 === 0) ? '12' : (i + 7) % 12) + ":30";
       const endTime = (((i + 7 + 1) % 12 === 0) ? '12' : (i + 7 + 1) % 12) + ":30";
@@ -155,10 +143,10 @@ router.post('/index', async function (req, res) {
       });
     }
 
-    for (var i = 0; i < listFree.length; i++) {
-      var count = 0;
-      var mine = 0;
-      for (var j = 0; j < listFree[i].isFree.length; j++) {
+    for (let i = 0; i < listFree.length; i++) {
+      let count = 0;
+      let mine = 0;
+      for (let j = 0; j < listFree[i].isFree.length; j++) {
         if (!listFree[i].isFree[j].free) {
           count++;
           timecount[j].hourCount++;
@@ -173,17 +161,31 @@ router.post('/index', async function (req, res) {
       }
     }
 
-    for (var i = 0; i < timecount.length; i++)
+    for (let i = 0; i < timecount.length; i++)
       timecount[i].totalFree = timecount[i].totalCount - timecount[i].hourCount;
 
-    var prettyDate = formatDate(date);
+    const prettyDate = formatDate(postDataDate);
 
     res.send({
       list: listFree,
       timeCount: timecount,
       currentHour: current_hour,
       prettyDate: prettyDate,
-      day: day
+      day: daysFromToday
     });
   }
 });
+
+function formatDate(date) {
+  let d = new Date(date),
+    month = '' + (d.getMonth() + 1),
+    day = '' + d.getDate(),
+    year = d.getFullYear();
+
+  if (month.length < 2) month = '0' + month;
+  if (day.length < 2) day = '0' + day;
+
+  return [year, month, day].join('-');
+}
+
+export default router;

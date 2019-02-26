@@ -1,7 +1,7 @@
 import { RoomPostData } from '../types/room';
 
 export default function sendReq(url: string, data: object = null): RoomPostData | object {
-  console.log(JSON.stringify(data))
+  console.log('Sending the POST ', JSON.stringify(data));
   return fetch(url, {
     method: data ? "POST" : "GET", // *GET, POST, PUT, DELETE, etc.
     mode: "cors", // no-cors, cors, *same-origin

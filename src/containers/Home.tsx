@@ -21,6 +21,7 @@ import { sanitiseTime } from '../lib/dateFuncs';
 
 async function fetchData(date, time) {
   const dateToSend = date || new Date();
+  console.log('post data: ', dateToSend, date, time)
   if (time) {
     dateToSend.setHours(time);
   }

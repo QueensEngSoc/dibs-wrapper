@@ -67,6 +67,7 @@
     "nodemon": "^1.18.10",
     "sass-loader": "^7.1.0",
     "sass-mq": "^5.0.0",
+    "sinon": "^7.2.4",
     "style-loader": "^0.23.1",
     "typescript": "^3.3.3333",
     "webpack": "^4.29.5",
