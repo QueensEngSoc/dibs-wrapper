@@ -12,6 +12,7 @@ import admin_V2 from '../src/routes/admin';
 import signupPage from "../routes/signup";
 import accountPage from "../routes/accounts";
 import loginPage from "../routes/login";
+import notFound from "../src/routes/notFound";
 
 import getTheme from "../middleware/getThemePref";
 
@@ -112,14 +113,7 @@ export default function (app, passport) {
   app.get('/map', map);
   app.post('/map', map);
 
-  app.use(function (req, res, next) {
-    res.statusCode = 404;
-    res.render("404", {
-      message: "<p>You seem to have wandered off the beaten path!</p>" +
-        "<p><a href='/'>Go back to the homepage</a> or <a href='/quicky'>QuickBook a room</a>!</p>",
-      image: "trail.jpg"
-    });
-  });
+  app.get('*', notFound);
 
   app.use(function (err, req, res, next) { // catches URL errors
     console.error(err.stack);

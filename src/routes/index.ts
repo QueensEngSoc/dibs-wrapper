@@ -84,7 +84,7 @@ router.get('/', async function (req, res, next) {
   const store = await createStoreInstance(req, listFree, current_hour, timecount);
   const context = {};
   const { html: body, css: MuiCss } = renderAppToString(req, context, store);
-  const title = 'Server side Rendering with Styled Components';
+  const title = 'QBook';
   const theme = req.theme === "custom" ? false : req.theme || 'default';
   const cssPath = [`/CSS/room-style/${theme}-room-style.css`];
   const compiledCss = compile('src/SCSS/main.scss');

@@ -55,10 +55,10 @@ interface State {
 class Home extends Component<Props, State> {
   constructor(props) {
     super(props);
-
+    const now = sanitiseTime(new Date().getHours(), true);
     this.state = {
-      currentHour: this.props.currentHour,
-      roomData: this.props.roomData,
+      currentHour: this.props.currentHour || now,
+      roomData: this.props.roomData || null,
       filterSize: null,
       filterPhone: false,
       filterTv: false,
@@ -66,19 +66,19 @@ class Home extends Component<Props, State> {
       intDay: 0,
       prettyDate: null,
       showExtraFilters: false,
-      selectedTime: (this.props.currentHour >= 7 && this.props.currentHour <= 23 && this.props.currentHour) || this.props.timeCount[0].twenty4Hour, // take either the current hour (if it is valid), or the first valid booking slot from the server response
+      selectedTime: (this.props.currentHour && this.props.currentHour >= 7 && this.props.currentHour <= 23 && this.props.currentHour)
+        || this.props.timeCount && this.props.timeCount[0].twenty4Hour || now, // take either the current hour (if it is valid), or the first valid booking slot from the server response, or the current time slot
       selectedDate: new Date(),
-      timeCount: this.props.timeCount
+      timeCount: this.props.timeCount || null
     };
   }
 
   async componentDidMount() {
     if (!this.state.roomData) {
       const selectedDate = new Date();
-      const currentHour = sanitiseTime(selectedDate.getHours());
+      const currentHour = sanitiseTime(selectedDate.getHours(), true);
 
       const res: RoomPostData = await fetchData(selectedDate, currentHour) as RoomPostData;
-
       this.setState({
         currentHour: res.currentHour,
         prettyDate: null,

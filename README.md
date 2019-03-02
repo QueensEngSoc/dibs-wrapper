@@ -33,6 +33,7 @@ Automated tests are currently being created. Check the test folder for current p
 
 ### Version History
 
+* **2.0.0 alpha 1 ** - This release is a complete rebuild in Typescript / React, with React Router client side routing.  Currently in alpha testing, find our alpha at http://dibs-beta.herokuapp.com/.
 * **1.1.23** - Currently in beta testing, find our beta at http://dibs-beta.herokuapp.com/.
 
 ## Authors
