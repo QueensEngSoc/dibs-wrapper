@@ -4,7 +4,7 @@ QBook is managed and created by the Engineering Society Software Development Tea
 
 ## Getting Started
 
-QBook is programmed entirely in Javascript, running Node.js on the backend and standard Javascript on the front end. It utilizes MongoDB for the database and Handlebars to create pages. For this app to run correctly, the MongoDB server will need to be running (cmd command: `mongod` in the bin directory of MongoDB; go to https://docs.mongodb.com/tutorials/install-mongodb-on-windows/ to learn more). To initialize and setup the server run the databaseSetup.js, with node.js, found in developer_tools. See a detailed version below or in the developer_tools README.
+QBook is programmed in Javascript and Typescript, running a Node.js Express server on the backend and a mix of standard Javascript and React on the front end. We use Babel and Webpack to bundle our ES6 / Typescript code into native JS.  The new React pages also use React Router to enable client side routing between different pages.  It utilizes MongoDB for the database and either Handlebars or React to create pages. For this app to run correctly, the MongoDB server will need to be running (cmd command: `mongod` in the bin directory of MongoDB; go to https://docs.mongodb.com/tutorials/install-mongodb-on-windows/ to learn more). To initialize and setup the server run the databaseSetup.js, with node, found in developer_tools. See a detailed version below or in the developer_tools README.
 
 ## Running the server
 
@@ -44,7 +44,7 @@ Automated tests are currently being created. Check the test folder for current p
 
 See https://github.com/essdev-team/dibs-wrapper/graphs/contributors for a detailed breakdown of contributions.
 
-2018 ESSDEV Dibs Team
+2019 ESSDEV Dibs Team
 
 Thanks to BrowserStack
 <a href="https://browserstack.com"> <img src="archive/Browserstack-logo.png" width="12%"> </a>

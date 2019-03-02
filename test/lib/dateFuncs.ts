@@ -4,7 +4,7 @@ import sinon from 'sinon';
 
 const sandbox = sinon.createSandbox();
 
-describe.only('Get Days From Today', () => {
+describe('Get Days From Today', () => {
 
   beforeEach(() => {
     sandbox.useFakeTimers({
