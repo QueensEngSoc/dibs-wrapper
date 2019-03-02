@@ -4,7 +4,7 @@ var express = require('express');
 var router = express.Router();
 
 var roomFuncs = require('../models/roomDatabase');
-var accountFuncs = require('../models/userFunctions');
+var accountFuncs = require('../src/lib/userFunctions');
 
 router.post('/map', async function (req, res) {
     const data = JSON.stringify(req.body);

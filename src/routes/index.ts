@@ -3,8 +3,8 @@ import template from '../server/template';
 import createStore from '../store/createStore';
 import renderAppToString from '../server/renderAppToString';
 
-import * as roomDB from '../../models/roomDatabase.js'; //the roomDatabase interface which provide 5 functions. Look in the file for how to use them
-import * as accountFuncs from '../../models/userFunctions';
+import { getListOfRoomState } from '../../models/roomDatabase.js'; //the roomDatabase interface which provide 5 functions. Look in the file for how to use them
+import { getAdminStatus, getUserID } from '../lib/userFunctions';
 import { setAccountType, setLoggedIn } from '../store/actions/user';
 import { compile } from '../server/compileSass';
 import { UserAccountType } from '../types/enums/user';
@@ -19,29 +19,29 @@ async function createStoreInstance(req, data, current_hour, timeCount) {
   await store.dispatch(setCurrentHour(current_hour));
   await store.dispatch(setTimeCount(timeCount));
   await store.dispatch(setLoggedIn(req.isAuthenticated()));
-  const accountType = accountFuncs.getAdminStatus(req) ? UserAccountType.Admin : UserAccountType.Regular;
+  const accountType = getAdminStatus(req) ? UserAccountType.Admin : UserAccountType.Regular;
 
   await store.dispatch(setAccountType(accountType));
   return store;
 }
 
 router.get('/', async function (req, res, next) {
-  var dateObj = new Date();
-  var current_hour = dateObj.getHours();
-  var current_min = dateObj.getMinutes();
-  var day = 0;
+  const dateObj = new Date();
+  let current_hour = dateObj.getHours();
+  const current_min = dateObj.getMinutes();
+  let day = 0;
 
   if (current_min < 30)   // logic here is that we are returning the status based on the start hour.  Since the min booking time is
     current_hour--;       // 1 hour, if the current minute is less than 30, we are still within the previous booking slot
                           // and we should therefore subtract 1 from the hour to get the right data (eg. if it is 7:10pm
                           // right now, then we really want the data from 6:30 - 7:30, not 7:30 - 8:30)
 
-  var userid = accountFuncs.getUserID(req);
+  const userid = getUserID(req);
 
-  const listFree = await roomDB.getListOfRoomState(day, -1, userid);
-  var timecount = [];
+  const listFree = await getListOfRoomState(day, -1, userid);
+  const timecount = [];
 
-  var startCheck = (current_hour < 7) ? 7 : current_hour;
+  const startCheck = (current_hour < 7) ? 7 : current_hour;
 
   for (let i = startCheck - 7; i < listFree[i].isFree.length; i++) {
     let amOrPm = (startCheck >= 11) ? " PM" : " AM";
@@ -121,9 +121,9 @@ router.post('/index', async function (req, res) {
     if (current_min < 30)
       current_hour--;
 
-    const usrid = accountFuncs.getUserID(req);
+    const usrid = getUserID(req);
 
-    const listFree = await roomDB.getListOfRoomState(daysFromToday, -1, usrid);
+    const listFree = await getListOfRoomState(daysFromToday, -1, usrid);
     console.log('getting data for: ', daysFromToday, current_hour);
     const timecount = [];
 

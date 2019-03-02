@@ -1,6 +1,6 @@
 import * as consts from "../config/config";
 import User from "../models/user";
-import * as userFuncs from "./userFunctions";
+import * as userFuncs from "../src/lib/userFunctions";
 
 export function getPrefsObj(req) {
     return new Promise(function (resolve, reject) {

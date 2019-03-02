@@ -1,10 +1,12 @@
 // Stores the functions used for account based access
-import User from "../models/user";
-import * as consts from "../config/config";
-
+import User from "../../models/user";
+import { room_hour_limit } from "../../config/config";
+import { Room } from '../types/room';
+import { object } from 'prop-types';
+import { Quicky } from '../types/quick';
 const passport = require('passport');
 
-export function getUserID(req) {
+export function getUserID(req): number {
     let usrid = -1;
 
     if (req.isAuthenticated()) {
@@ -19,7 +21,7 @@ export function getUserID(req) {
     return usrid;
 }
 
-export function getAdminStatus(req) {
+export function getAdminStatus(req): boolean {
     if (req.isAuthenticated()) {
         try {
             const user = req.user;
@@ -33,13 +35,13 @@ export function getAdminStatus(req) {
 }
 
 
-export function canBookMoreRooms(req) {
+export function canBookMoreRooms(req): boolean {
 
     if (req.isAuthenticated()) {
         try {
             const user = req.user;
             const bookingCount = user.local.booking_count;
-            if (bookingCount >= consts.room_hour_limit)
+            if (bookingCount >= room_hour_limit)
                 return false;
         } catch (exception) {
             console.error('Crash at "canBookMoreRooms": ', exception);
@@ -49,7 +51,7 @@ export function canBookMoreRooms(req) {
     return true;
 }
 
-export function getBookingCount(req) {
+export function getBookingCount(req): number {
     let bookingCount = -1;
 
     if (req.isAuthenticated()) {
@@ -61,17 +63,16 @@ export function getBookingCount(req) {
         }
     }
     return bookingCount;
-
 }
 
-export function updateBookingCount(toAdd, req) {
+export function updateBookingCount(toAdd, req): boolean {
     if (req.isAuthenticated()) {
 
         try {
             const user = req.user;
             user.local.booking_count += toAdd;
-            if (user.local.booking_count > consts.room_hour_limit && !getAdminStatus(req))
-                user.local.booking_count = consts.room_hour_limit;  // if something messed up and the user booked more than they should have, set the booked amount to the max
+            if (user.local.booking_count > room_hour_limit && !getAdminStatus(req))
+                user.local.booking_count = room_hour_limit;  // if something messed up and the user booked more than they should have, set the booked amount to the max
             User.findOneAndUpdate({'local.email': user.local.email}, {'local.booking_count': user.local.booking_count}, function (err, resp) {
                 if (err)
                     console.error('Error updateBookingCount: ', err);
@@ -86,7 +87,7 @@ export function updateBookingCount(toAdd, req) {
     }
 }
 
-export function endOfDayBookingCountReset(toAdd, usrid) {
+export function endOfDayBookingCountReset(toAdd, usrid): boolean {
     try {
         User.findById(usrid, function (err, user) {
             console.log("Found user!");
@@ -95,7 +96,7 @@ export function endOfDayBookingCountReset(toAdd, usrid) {
             if (user.local.booking_count < 0)   // booking count can't be negative
                 user.local.booking_count = 0;
             User.findOneAndUpdate({'local.email': user.local.email}, {'local.booking_count': user.local.booking_count}, function (err, resp) {
-                console.log("Updated booked hour count by " + toAdd + " -> now " + user.local.booking_count + " of " + consts.room_hour_limit);
+                console.log("Updated booked hour count by " + toAdd + " -> now " + user.local.booking_count + " of " + room_hour_limit);
                 return true;
             });
 
@@ -106,7 +107,7 @@ export function endOfDayBookingCountReset(toAdd, usrid) {
     }
 }
 
-export function resetBookingCount(req) {
+export function resetBookingCount(req): boolean {
     if (req.isAuthenticated()) {
         try {
             const user = req.user;
@@ -123,7 +124,7 @@ export function resetBookingCount(req) {
     }
 }
 
-export function setLastBookedRooms(req, roomid, day, time, length, building){
+export function setLastBookedRooms(req, roomid: number, day: number, time: number, length: number, building: number): boolean {
     if (req.isAuthenticated()) {
         try {
             const user = req.user;
@@ -152,7 +153,7 @@ export function setLastBookedRooms(req, roomid, day, time, length, building){
     }
 }
 
-export function getLastBookedRooms(req){
+export function getLastBookedRooms(req): Room | object {
     if (req.isAuthenticated()) {
         try {
             const user = req.user;
@@ -165,7 +166,7 @@ export function getLastBookedRooms(req){
     }
 }
 
-export function getQuickyStatus(req){
+export function getQuickyStatus(req): Quicky {
     if (req.isAuthenticated()) {
         try {
             const user = req.user;
@@ -173,12 +174,12 @@ export function getQuickyStatus(req){
 
         } catch (exception) {
             console.error(exception);
-            return ({});
+            return null;
         }
     }
 }
 
-export function setQuickyStatus(req, quick){
+export function setQuickyStatus(req, quick: Quicky): boolean {
     if (req.isAuthenticated()) {
         try {
             const user = req.user;

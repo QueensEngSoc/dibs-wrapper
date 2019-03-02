@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var roomDB = require('../models/roomDatabase.js'); //the roomDatabase interface which provide 5 functions. Look in the file for how to use them
-var accountFuncs = require('../models/userFunctions');
+var accountFuncs = require('../src/lib/userFunctions');
 
 function addDays(date, days) {
   var result = new Date(date);

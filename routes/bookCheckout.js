@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var accountFuncs = require('../models/userFunctions');
+var accountFuncs = require('../src/lib/userFunctions');
 var roomBook = require('../models/roomBooking');
 
 router.post('/bookcheckout', function (req, res) { //similar to the book function with a few changes which will be commented below

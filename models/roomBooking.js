@@ -7,7 +7,7 @@ else
   var db = monk('mongodb://heroku_08d6gg04:tbjjetli24bdv2nqrpiu6gdlta@ds153978.mlab.com:53978/heroku_08d6gg04');
 
 var roomDatabase = db.get('roomDatabase');
-import * as userFuncs from "../models/userFunctions";
+import * as userFuncs from "../src/lib/userFunctions";
 import * as consts from "../config/config";
 var randomstring = require("randomstring"); // used to generate the random hash to see if the room is part of the same booking
 

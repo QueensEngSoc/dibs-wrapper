@@ -1,5 +1,5 @@
 var assert = require('assert');
-var database = require('../../models/userFunctions');
+var database = require('../../src/lib/userFunctions');
 
 describe('Database URL Test', function () {
   describe('Correct database URL set', function () {

@@ -8,7 +8,7 @@ else
 
 var roomDatabase = db.get('roomDatabase');
 var schedule = require('node-schedule');
-var accountFuncs = require('./userFunctions');
+var accountFuncs = require('../src/lib/userFunctions');
 var adminFuncs = require('./adminDatabase');
 var roomBook = require('./roomBooking');
 

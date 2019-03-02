@@ -5,7 +5,7 @@ import renderAppToString from '../server/renderAppToString';
 
 import * as roomDB from '../../models/roomDatabase'; //the roomDatabase interface which provide 5 functions. Look in the file for how to use them
 import { bookMultiple } from '../lib/roomBooking';
-import * as accountFuncs from '../../models/userFunctions';
+import * as accountFuncs from '../lib/userFunctions';
 import { setAccountType, setLoggedIn } from '../store/actions/user';
 import { compile } from '../server/compileSass';
 import { UserAccountType } from '../types/enums/user';

@@ -4,7 +4,7 @@ import createStore from '../store/createStore';
 import renderAppToString from "../server/renderAppToString";
 
 import * as roomDB from '../../models/roomDatabase.js'; //the roomDatabase interface which provide 5 functions. Look in the file for how to use them
-import * as accountFuncs from '../../models/userFunctions';
+import * as accountFuncs from '../lib/userFunctions';
 import { setLoggedIn } from '../store/actions/user';
 import { compile } from '../server/compileSass';
 

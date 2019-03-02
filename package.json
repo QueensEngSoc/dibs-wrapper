@@ -18,8 +18,8 @@
     "express-handlebars": "^3.0.2",
     "express-session": "^1.15.6",
     "handlebars": "^4.1.0",
-    "material-ui-pickers": "^2.2.1",
-    "mongoose": "^5.4.15",
+    "material-ui-pickers": "^2.2.2",
+    "mongoose": "^5.4.16",
     "monk": "^6.0.6",
     "mysql": "^2.16.0",
     "mysql2": "^1.6.5",
@@ -40,7 +40,7 @@
     "request": "^2.88.0",
     "reselect": "^4.0.0",
     "resolve": "^1.10.0",
-    "sequelize": "^4.42.0"
+    "sequelize": "^4.42.1"
   },
   "devDependencies": {
     "@babel/core": "^7.3.4",
@@ -52,7 +52,7 @@
     "@babel/register": "^7.0.0",
     "@babel/runtime": "^7.3.4",
     "@types/mocha": "^5.2.6",
-    "@types/react": "^16.8.5",
+    "@types/react": "^16.8.6",
     "@types/react-dom": "^16.8.2",
     "@types/react-redux": "^7.0.1",
     "@types/react-router": "^4.4.4",
@@ -67,10 +67,10 @@
     "nodemon": "^1.18.10",
     "sass-loader": "^7.1.0",
     "sass-mq": "^5.0.0",
-    "sinon": "^7.2.4",
+    "sinon": "^7.2.6",
     "style-loader": "^0.23.1",
     "typescript": "^3.3.3333",
-    "webpack": "^4.29.5",
+    "webpack": "^4.29.6",
     "webpack-cli": "^3.2.3",
     "webpack-node-externals": "^1.7.2"
   },

@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const accountFuncs = require('../models/userFunctions');
+const accountFuncs = require('../src/lib/userFunctions');
 const roomBook = require('../models/roomBooking');
 
 router.post('/bookroom', async function (req, res) {

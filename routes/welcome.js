@@ -2,7 +2,7 @@
 // followed this tutorial for building the basics.
 var express = require('express');
 var router = express.Router();
-var accountFuncs = require('../models/userFunctions');
+var accountFuncs = require('../src/lib/userFunctions');
 var consts = require('../config/config');
 var email = require('../models/sendEmail');
 var prefGetter = require('../models/preferences');

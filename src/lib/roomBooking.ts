@@ -10,7 +10,7 @@ if (env == 'dev') {
 }
 
 const roomDatabase = db.get('roomDatabase');
-import * as userFuncs from '../../models/userFunctions';
+import * as userFuncs from './userFunctions';
 import * as consts from '../../config/config';
 
 import randomstring from 'randomstring';

@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var adminFuncs = require('../models/adminDatabase');
-var userFuncs = require('../models/userFunctions');
+var userFuncs = require('../src/lib/userFunctions');
 
 router.get('/admin', function(req, res) {
     if (req.isAuthenticated() && userFuncs.getAdminStatus(req)) {
