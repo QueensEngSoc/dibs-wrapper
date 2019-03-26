@@ -221,7 +221,7 @@ class Home extends Component<Props, State> {
       currentHour: res.currentHour,
       prettyDate: null,
       roomData: (res as RoomPostData).list || this.state.roomData,
-      selectedTime: intVal,
+      selectedTime: intVal || res.currentHour,
       timeCount: (res as RoomPostData).timeCount || this.state.timeCount
     });
   }
@@ -236,6 +236,7 @@ class Home extends Component<Props, State> {
       prettyDate: res.prettyDate,
       roomData: res.list || this.state.roomData,
       selectedDate: date,
+      selectedTime: this.state.selectedTime <= 22 && this.state.selectedTime || res.currentHour,
       timeCount: res.timeCount || this.state.timeCount
     });
   };

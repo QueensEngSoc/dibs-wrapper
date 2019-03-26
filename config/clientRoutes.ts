@@ -22,7 +22,7 @@ export const routes = [
   {
     path: '/book-v2/:roomName',
     component: Book,
-    exact: false
+    exact: true
   },
   {
     path: '/book-v2/:roomName/:date',

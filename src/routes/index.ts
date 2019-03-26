@@ -82,6 +82,9 @@ router.post('/index', async function (req, res) {
     if (current_min < 30)
       current_hour--;
 
+    if (daysFromToday > 0 && current_hour >= 23)
+      current_hour = 7;
+
     const usrid = getUserID(req);
 
     const listFree = await getListOfRoomState(daysFromToday, -1, usrid);
