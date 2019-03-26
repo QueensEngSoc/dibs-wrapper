@@ -4,6 +4,7 @@ import welcome from "../routes/welcome";
 import bookCheckout from "../routes/bookCheckout";
 import bookRoom from "../routes/bookRoom";
 import book from "../routes/book";
+import bookV2 from "../src/routes/book";
 import map from "../routes/map";
 import quick from "../src/routes/quick";
 import prefPage from "../routes/preferences";
@@ -36,6 +37,8 @@ export default function (app, passport) {
   app.post('/bookroom', bookRoom);
   app.get('/book/:roomID', book);
   app.get('/book/:roomID/:date', book);
+  app.get('/book-v2/:roomID', bookV2);
+  app.get('/book-v2/:roomID/:date', bookV2);
 
   app.post('/bookcheckout', bookCheckout);
   app.post('/testDayShift', accountPage);

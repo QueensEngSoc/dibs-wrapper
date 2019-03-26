@@ -11,7 +11,8 @@ export interface RoomFreeTable {
 
 export interface Room {
   id: number;
-  isFree: Array<RoomFreeTable> | Array<Array<RoomFreeTable>>;
+  Free: Array<RoomFreeTable> | Array<Array<RoomFreeTable>>;
+  day?: number;
   Description?: string;
   Map?: string;
   Name?: string;
@@ -22,21 +23,26 @@ export interface Room {
   hasTV: boolean;
   hasPhone: boolean;
   size: number;
+  userId?: string;
 }
 
 export interface DBRoom {
-  isFree: Array<RoomFreeTable> | Array<Array<RoomFreeTable>>;
+  Free: Array<Array<RoomFreeTable>>;
   BuildingID: number;
   Description: string;
   Map: string;
   Name: string;
   Picture: string;
   RoomID: number;
-  roomNum: string;
   tv: boolean;
   size: number;
   special?: boolean;
   phone: boolean;
+}
+
+export interface ExtendedRoom extends Room {
+  day: number;
+  userId: string;
 }
 
 export interface TimeCountObject {

@@ -6,9 +6,19 @@
       "src": "/images/qlogo.png",
       "type": "image/png",
       "sizes": "650×440"
+    },
+    {
+      "src": "/images/qbook-144.png",
+      "type": "image/png",
+      "sizes": "144×144"
+    },
+    {
+      "src": "/images/qbook-512.png",
+      "type": "image/png",
+      "sizes": "512×512"
     }
   ],
-  "start_url": "/react",
+  "start_url": "/",
   "background_color": "#673ab7",
   "display": "standalone",
   "scope": "/",

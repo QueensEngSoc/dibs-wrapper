@@ -9,6 +9,7 @@ import { setAccountType, setLoggedIn } from '../store/actions/user';
 import { compile } from '../server/compileSass';
 import { UserAccountType } from '../types/enums/user';
 import { getDaysFromToday } from '../lib/dateFuncs';
+import { getTimecount } from '../lib/roomBooking';
 
 const express = require('express');
 const router = express.Router();
@@ -39,47 +40,7 @@ router.get('/', async function (req, res, next) {
   const userid = getUserID(req);
 
   const listFree = await getListOfRoomState(day, -1, userid);
-  const timecount = [];
-
-  const startCheck = (current_hour < 7) ? 7 : current_hour;
-
-  for (let i = startCheck - 7; i < listFree[i].isFree.length; i++) {
-    let amOrPm = (startCheck >= 11) ? " PM" : " AM";
-    const startTime = (((i + 7) % 12 === 0) ? '12' : (i + 7) % 12) + ":30";
-    const endTime = (((i + 7 + 1) % 12 === 0) ? '12' : (i + 7 + 1) % 12) + ":30";
-
-    timecount.push({
-      hourCount: 0,
-      totalCount: 0,
-      timeString: startTime + '-' + endTime + amOrPm,
-      totalFree: 0,
-      hour: (i + 7) % 12,
-      twenty4Hour: i + 7,
-      pillClass: 'badge-success'
-    });
-  }
-
-  for (let i = 0; i < listFree.length; i++) {
-    let count = 0;
-    let mine = 0;
-    for (let j = startCheck - 7; j < listFree[i].isFree.length; j++) {
-      if (!listFree[i].isFree[j].free) {
-        count++;
-        timecount[j - startCheck + 7].hourCount++;
-      }
-
-      if (listFree[i].isFree[j].owner == userid) {
-        mine++;
-        listFree[i].isFree[j].isMine = true;
-      } else
-        listFree[i].isFree[j].isMine = false;
-
-      timecount[j - startCheck + 7].totalCount++;
-    }
-  }
-
-  for (let i = 0; i < timecount.length; i++)
-    timecount[i].totalFree = timecount[i].totalCount - timecount[i].hourCount;
+  const timecount = getTimecount(day, userid, current_hour, listFree);
 
   const store = await createStoreInstance(req, listFree, current_hour, timecount);
   const context = {};
@@ -127,7 +88,7 @@ router.post('/index', async function (req, res) {
     console.log('getting data for: ', daysFromToday, current_hour);
     const timecount = [];
 
-    for (let i = 0; i < listFree[i].isFree.length; i++) {
+    for (let i = 0; i < listFree[i].Free.length; i++) {
       let amOrPm = (i >= 4) ? " PM" : " AM";
       const startTime = (((i + 7) % 12 === 0) ? '12' : (i + 7) % 12) + ":30";
       const endTime = (((i + 7 + 1) % 12 === 0) ? '12' : (i + 7 + 1) % 12) + ":30";
@@ -146,16 +107,16 @@ router.post('/index', async function (req, res) {
     for (let i = 0; i < listFree.length; i++) {
       let count = 0;
       let mine = 0;
-      for (let j = 0; j < listFree[i].isFree.length; j++) {
-        if (!listFree[i].isFree[j].free) {
+      for (let j = 0; j < listFree[i].Free.length; j++) {
+        if (!listFree[i].Free[j].free) {
           count++;
           timecount[j].hourCount++;
         }
-        if (listFree[i].isFree[j].owner == usrid) {
+        if (listFree[i].Free[j].owner == usrid) {
           mine++;
-          listFree[i].isFree[j].isMine = true;
+          listFree[i].Free[j].isMine = true;
         } else
-          listFree[i].isFree[j].isMine = false;
+          listFree[i].Free[j].isMine = false;
 
         timecount[j].totalCount++;
       }

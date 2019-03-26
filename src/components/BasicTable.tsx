@@ -17,7 +17,7 @@ const styles = theme => ({
 
 export function convertRoomDataToTable(roomData: Array<Room>, hour) {
   return roomData && roomData.map((room) => {
-    const freeTable: RoomFreeTable = (room.isFree as Array<RoomFreeTable>)[hour - 7];
+    const freeTable: RoomFreeTable = (room.Free as Array<RoomFreeTable>)[hour - 7];
 
     return {
       id: room.id,

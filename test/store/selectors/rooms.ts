@@ -11,7 +11,7 @@ const mockRoom: Room = {
   size: 3,
   hasTV: true,
   hasPhone: true,
-  isFree: [],
+  Free: [],
   id: 1
 };
 

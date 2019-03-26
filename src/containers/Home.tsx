@@ -101,7 +101,7 @@ class Home extends Component<Props, State> {
     if (filterTv && !room.hasTV)
       return false;
 
-    if (filterUnavailable && !room.isFree[currentTime].free)
+    if (filterUnavailable && !room.Free[currentTime].free)
       return false;
 
     return true;
@@ -122,9 +122,9 @@ class Home extends Component<Props, State> {
     const roomButtons = roomData && roomData.map((room) => {
       let className = 'nroom';
       const shouldShow = this.checkFilters(room, dbTime);
-      if (room.isFree[dbTime]) {
-        className = (room.isFree[dbTime] as RoomFreeTable).free ? 'yroom' : 'nroom';
-        className = (room.isFree[dbTime] as RoomFreeTable).isMine ? 'mroom' : className;
+      if (room.Free[dbTime]) {
+        className = (room.Free[dbTime] as RoomFreeTable).free ? 'yroom' : 'nroom';
+        className = (room.Free[dbTime] as RoomFreeTable).isMine ? 'mroom' : className;
       }
       // {/*<Typography className="room-btn__text" variant={'body2'}>{room.roomNum}</Typography>*/}
       if (shouldShow) {

@@ -14,7 +14,8 @@ import * as userFuncs from './userFunctions';
 import * as consts from '../../config/config';
 
 import randomstring from 'randomstring';
-import { RoomFreeTable } from '../types/room'; // used to generate the random hash to see if the room is part of the same booking
+import { RoomFreeTable } from '../types/room';
+import { getListOfRoomState } from '../../models/roomDatabase'; // used to generate the random hash to see if the room is part of the same booking
 
 function getPrettyDay(intDay) {
   if (intDay == 0)
@@ -165,4 +166,50 @@ export function bookMultiple(day: number, times: Array<number>, roomID: number, 
     });
   });
 
+}
+
+export function getTimecount(day: number, userid: number, currentHour: number, listFree) {
+  const timecount = [];
+
+  const startCheck = (currentHour < 7) ? 7 : currentHour;
+
+  for (let i = startCheck - 7; i < listFree[i].Free.length; i++) {
+    let amOrPm = (startCheck >= 11) ? " PM" : " AM";
+    const startTime = (((i + 7) % 12 === 0) ? '12' : (i + 7) % 12) + ":30";
+    const endTime = (((i + 7 + 1) % 12 === 0) ? '12' : (i + 7 + 1) % 12) + ":30";
+
+    timecount.push({
+      hourCount: 0,
+      totalCount: 0,
+      timeString: startTime + '-' + endTime + amOrPm,
+      totalFree: 0,
+      hour: (i + 7) % 12,
+      twenty4Hour: i + 7,
+      pillClass: 'badge-success'
+    });
+  }
+
+  for (let i = 0; i < listFree.length; i++) {
+    let count = 0;
+    let mine = 0;
+    for (let j = startCheck - 7; j < listFree[i].Free.length; j++) {
+      if (!listFree[i].Free[j].free) {
+        count++;
+        timecount[j - startCheck + 7].hourCount++;
+      }
+
+      if (listFree[i].Free[j].owner == userid) {
+        mine++;
+        listFree[i].Free[j].isMine = true;
+      } else
+        listFree[i].Free[j].isMine = false;
+
+      timecount[j - startCheck + 7].totalCount++;
+    }
+  }
+
+  for (let i = 0; i < timecount.length; i++)
+    timecount[i].totalFree = timecount[i].totalCount - timecount[i].hourCount;
+
+  return timecount;
 }

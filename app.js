@@ -1,6 +1,6 @@
 import express from "express";
 
-import configRoutes from "./config/routes.js";
+import configRoutes from "./config/routes.ts";
 import configPassport from "./config/passport";
 import path from "path";
 import exphbs from "express-handlebars";

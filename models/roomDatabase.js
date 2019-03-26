@@ -127,7 +127,7 @@ export function getInfo(roomID) { //gets the info of the selected room (roomID)
       resolve(out);
     }).catch(function (data, i) {
       console.log("error: room id " + roomID + " not found!");
-      reject(new Error('No Room Found!'));
+      reject(new Error('No Room Found with ID ' + roomID));
     });
   });
 
@@ -158,7 +158,7 @@ export function getInfoByName(roomName) { //gets the info of the selected room (
 
     }).catch(function (data, i) {    // the room was not found!
       console.log("error: room " + roomName + " not found!");
-      reject(new Error('No Room Found!'));
+      reject(new Error('No Room Found called ' + roomName));
     });
   });
 
