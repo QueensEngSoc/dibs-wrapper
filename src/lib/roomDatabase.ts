@@ -1,7 +1,8 @@
 import { getNextValidHalfHour } from '../../models/roomDatabase';
 import { getDisabledRoomIDs } from '../../models/adminDatabase';
 import monk from 'monk';
-import { Room, RoomFreeTable } from '../types/room';
+import { ExtendedRoom, Room, RoomFreeTable } from '../types/room';
+import { isValidTime } from './dateFuncs';
 
 const env = process.env.NODE_ENV || 'dev';
 
@@ -28,6 +29,66 @@ export async function getAllFreeNow() {
 
   console.log(data, 'out= ', out);
   return data;
+}
+
+export async function getListOfRoomState(day: number, time: number, usrid: number): Promise<Array<ExtendedRoom>> {
+  const listFree: Array<ExtendedRoom> = [];
+  usrid = typeof usrid !== 'undefined' ? usrid : -1;
+
+  const data = await roomDatabase.find({});
+  const disabledRooms = await getDisabledRoomIDs();
+
+  for (const roomData of data) {
+    const roomNum = roomData.Name.match(/\d+/)[0]; // get the number from the room
+    const mapRoomName = "BMH" + roomNum;
+    const listRoomName = "bmh-" + roomNum;
+    const isNotValidTime = time !== -1 ? !isValidTime(time) : false;
+
+    if (isNotValidTime || disabledRooms.includes(roomData.RoomID)) {
+      listFree.push({
+        room: roomData.Name,
+        roomNum: mapRoomName,
+        roomID: listRoomName,
+        Free: generateFreeTable(roomData.Free.last, 16),
+        size: roomData.size,
+        hasTV: roomData.tv,
+        hasPhone: roomData.phone,
+        id: roomData.RoomID
+      });
+    } else if (time == -1) {
+      listFree.push({
+        room: roomData.Name,
+        roomNum: mapRoomName,
+        roomID: listRoomName,
+        size: roomData.size,
+        hasTV: roomData.tv,
+        hasPhone: roomData.phone,
+        Free: roomData.Free[day],
+        id: roomData.RoomID
+      });
+    } else {
+      if (roomData.Free[day][time - 7] == undefined) {
+        console.log("Error: something really bad happened!");
+        console.log("Value of roomData.Free table for day " + day + ": (broke accessing time " + time + ")");
+        console.log(roomData.Free[day]);
+
+      } else {  // error should be caught above, and this should no longer error out.  ToDo: Make this a proper try/catch logic block later
+        listFree.push({
+          room: roomData.Name,
+          roomNum: mapRoomName,
+          roomID: listRoomName,
+          size: roomData.size,
+          hasTV: roomData.tv,
+          hasPhone: roomData.phone,
+          id: roomData.RoomID,
+          Free: roomData.Free[day][time - 7].free,
+          isMine: (roomData.Free[day][time - 7].owner == usrid)  // true if the user booked the room, false otherwise
+        });
+      }
+    }
+  }
+
+  return listFree;
 }
 
 export async function getInfoByName(roomName): Promise<Room> { //gets the info of the selected room (roomName)

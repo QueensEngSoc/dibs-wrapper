@@ -14,7 +14,7 @@ import * as userFuncs from './userFunctions';
 import * as consts from '../../config/config';
 
 import randomstring from 'randomstring';
-import { RoomFreeTable } from '../types/room';
+import { RoomFreeTable, TimeCountObject } from '../types/room';
 import { getListOfRoomState } from '../../models/roomDatabase'; // used to generate the random hash to see if the room is part of the same booking
 
 function getPrettyDay(intDay) {
@@ -168,8 +168,8 @@ export function bookMultiple(day: number, times: Array<number>, roomID: number, 
 
 }
 
-export function getTimecount(day: number, userid: number, currentHour: number, listFree) {
-  const timecount = [];
+export function getTimecount(day: number, userId: number, currentHour: number, listFree): Array<TimeCountObject> {
+  const timeCount = [];
 
   const startCheck = (currentHour < 7) ? 7 : currentHour;
 
@@ -178,7 +178,7 @@ export function getTimecount(day: number, userid: number, currentHour: number, l
     const startTime = (((i + 7) % 12 === 0) ? '12' : (i + 7) % 12) + ":30";
     const endTime = (((i + 7 + 1) % 12 === 0) ? '12' : (i + 7 + 1) % 12) + ":30";
 
-    timecount.push({
+    timeCount.push({
       hourCount: 0,
       totalCount: 0,
       timeString: startTime + '-' + endTime + amOrPm,
@@ -195,21 +195,21 @@ export function getTimecount(day: number, userid: number, currentHour: number, l
     for (let j = startCheck - 7; j < listFree[i].Free.length; j++) {
       if (!listFree[i].Free[j].free) {
         count++;
-        timecount[j - startCheck + 7].hourCount++;
+        timeCount[j - startCheck + 7].hourCount++;
       }
 
-      if (listFree[i].Free[j].owner == userid) {
+      if (listFree[i].Free[j].owner == userId) {
         mine++;
         listFree[i].Free[j].isMine = true;
       } else
         listFree[i].Free[j].isMine = false;
 
-      timecount[j - startCheck + 7].totalCount++;
+      timeCount[j - startCheck + 7].totalCount++;
     }
   }
 
-  for (let i = 0; i < timecount.length; i++)
-    timecount[i].totalFree = timecount[i].totalCount - timecount[i].hourCount;
+  for (let i = 0; i < timeCount.length; i++)
+    timeCount[i].totalFree = timeCount[i].totalCount - timeCount[i].hourCount;
 
-  return timecount;
+  return timeCount;
 }

@@ -3,7 +3,7 @@ import template from '../server/template';
 import createStore from '../store/createStore';
 import renderAppToString from '../server/renderAppToString';
 
-import { getListOfRoomState } from '../../models/roomDatabase.js'; //the roomDatabase interface which provide 5 functions. Look in the file for how to use them
+import { getListOfRoomState } from '../lib/roomDatabase'; //the roomDatabase interface which provide 5 functions. Look in the file for how to use them
 import { getAdminStatus, getUserID } from '../lib/userFunctions';
 import { setAccountType, setLoggedIn } from '../store/actions/user';
 import { compile } from '../server/compileSass';
@@ -86,50 +86,12 @@ router.post('/index', async function (req, res) {
 
     const listFree = await getListOfRoomState(daysFromToday, -1, usrid);
     console.log('getting data for: ', daysFromToday, current_hour);
-    const timecount = [];
-
-    for (let i = 0; i < listFree[i].Free.length; i++) {
-      let amOrPm = (i >= 4) ? " PM" : " AM";
-      const startTime = (((i + 7) % 12 === 0) ? '12' : (i + 7) % 12) + ":30";
-      const endTime = (((i + 7 + 1) % 12 === 0) ? '12' : (i + 7 + 1) % 12) + ":30";
-
-      timecount.push({
-        hourCount: 0,
-        totalCount: 0,
-        timeString: startTime + '-' + endTime + amOrPm,
-        totalFree: 0,
-        hour: (i + 7) % 12,
-        twenty4Hour: i + 7,
-        pillClass: 'badge-success'
-      });
-    }
-
-    for (let i = 0; i < listFree.length; i++) {
-      let count = 0;
-      let mine = 0;
-      for (let j = 0; j < listFree[i].Free.length; j++) {
-        if (!listFree[i].Free[j].free) {
-          count++;
-          timecount[j].hourCount++;
-        }
-        if (listFree[i].Free[j].owner == usrid) {
-          mine++;
-          listFree[i].Free[j].isMine = true;
-        } else
-          listFree[i].Free[j].isMine = false;
-
-        timecount[j].totalCount++;
-      }
-    }
-
-    for (let i = 0; i < timecount.length; i++)
-      timecount[i].totalFree = timecount[i].totalCount - timecount[i].hourCount;
-
+    const timeCount = getTimecount(daysFromToday, usrid, current_hour, listFree);
     const prettyDate = formatDate(postDataDate);
 
     res.send({
       list: listFree,
-      timeCount: timecount,
+      timeCount: timeCount,
       currentHour: current_hour,
       prettyDate: prettyDate,
       day: daysFromToday

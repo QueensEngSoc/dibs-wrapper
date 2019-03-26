@@ -51,4 +51,11 @@ export function getDaysFromToday(dateToCheck: Date): number {
   return number;
 }
 
+export function isValidTime(time: number, day: number = 0): boolean {
+  const current_min = new Date().getMinutes();
 
+  if (time < 7 || time > 23 || (time == 23 && current_min > 30) || (time == 7 && current_min < 30))
+    return false;
+
+  return true;
+}

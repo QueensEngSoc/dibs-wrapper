@@ -41,8 +41,9 @@ export interface DBRoom {
 }
 
 export interface ExtendedRoom extends Room {
-  day: number;
-  userId: string;
+  day?: number;
+  userId?: string;
+  isMine?: boolean;
 }
 
 export interface TimeCountObject {
