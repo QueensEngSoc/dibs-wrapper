@@ -89,7 +89,7 @@ router.post('/index', async function (req, res) {
 
     const listFree = await getListOfRoomState(daysFromToday, -1, usrid);
     console.log('getting data for: ', daysFromToday, current_hour);
-    const timeCount = getTimecount(daysFromToday, usrid, current_hour, listFree);
+    const timeCount = getTimecount(daysFromToday, usrid, 7, listFree);
     const prettyDate = formatDate(postDataDate);
 
     res.send({

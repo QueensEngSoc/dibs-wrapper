@@ -171,10 +171,10 @@ export function bookMultiple(day: number, times: Array<number>, roomID: number, 
 export function getTimecount(day: number, userId: number, currentHour: number, listFree): Array<TimeCountObject> {
   const timeCount = [];
 
-  const startCheck = (currentHour < 7) ? 7 : currentHour;
+  const startCheckHour = (currentHour < 7) ? 7 : currentHour;  // this is the hour (in 24 hour time) on which we start to check for the booking statuses, it'll go from n to 22h (where n >= 7 && n <= 22)
 
-  for (let i = startCheck - 7; i < listFree[i].Free.length; i++) {
-    let amOrPm = (startCheck >= 11) ? " PM" : " AM";
+  for (let i = startCheckHour - 7; i < listFree[i].Free.length; i++) {
+    const amOrPm = ((i + 7) >= 11) ? " PM" : " AM"; // i + 7 is back to being in 24h time, thus anything 11 or larger will be PM (since it's a 1h time slot starting on the half hour, eg: 11:30-12:30 PM)
     const startTime = (((i + 7) % 12 === 0) ? '12' : (i + 7) % 12) + ":30";
     const endTime = (((i + 7 + 1) % 12 === 0) ? '12' : (i + 7 + 1) % 12) + ":30";
 
@@ -192,10 +192,10 @@ export function getTimecount(day: number, userId: number, currentHour: number, l
   for (let i = 0; i < listFree.length; i++) {
     let count = 0;
     let mine = 0;
-    for (let j = startCheck - 7; j < listFree[i].Free.length; j++) {
+    for (let j = startCheckHour - 7; j < listFree[i].Free.length; j++) {
       if (!listFree[i].Free[j].free) {
         count++;
-        timeCount[j - startCheck + 7].hourCount++;
+        timeCount[j - startCheckHour + 7].hourCount++;
       }
 
       if (listFree[i].Free[j].owner == userId) {
@@ -204,7 +204,7 @@ export function getTimecount(day: number, userId: number, currentHour: number, l
       } else
         listFree[i].Free[j].isMine = false;
 
-      timeCount[j - startCheck + 7].totalCount++;
+      timeCount[j - startCheckHour + 7].totalCount++;
     }
   }
 

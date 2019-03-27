@@ -51,3 +51,9 @@ body, wrapper {
 .content__wrapper {
   flex-grow: 1;
 }
+
+.remove-spacing {
+  &--16 {
+    width: calc(100% - 16px);
+  }
+}

@@ -3,17 +3,17 @@
   "name": "QBook",
   "icons": [
     {
-      "src": "/images/qlogo.png",
+      "src": "/img/qlogo.png",
       "type": "image/png",
       "sizes": "650×440"
     },
     {
-      "src": "/images/qbook-144.png",
+      "src": "/img/qbook-144.png",
       "type": "image/png",
       "sizes": "144×144"
     },
     {
-      "src": "/images/qbook-512.png",
+      "src": "/img/qbook-512.png",
       "type": "image/png",
       "sizes": "512×512"
     }
