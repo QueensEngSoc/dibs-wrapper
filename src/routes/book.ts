@@ -6,6 +6,7 @@ import renderAppToString from '../server/renderAppToString';
 import { compile } from '../server/compileSass';
 import { DBRoom, Room } from '../types/room';
 import { getFreeTable, getInfoByName } from '../lib/roomDatabase';
+import { getDaysFromToday } from '../lib/dateFuncs';
 
 const express = require('express');
 const router = express.Router();
@@ -36,10 +37,15 @@ router.get('/book-v2/:roomName/', async function (req, res, next) {
   room = room.toUpperCase();
   room = room.replace(/-/g, ' '); // strip out dashes
   if (room.indexOf('app.bundle.js') >= 0) // https://stackoverflow.com/questions/51358714/react-routing-causes-inexplicable-behavior - no idea why this is happening :(
-    return;
+  {
+    res.render('roomInfo'); // do nothing here, and end the "render" call
+    return null;
+  }
 
   const roomInfo: Room = await getInfoByName(room);
-  if (!roomInfo) {
+  if (!roomInfo) { // invalid room, the user specified an invalid room, so we will show the 404 page
+    // do nothing here, and end the "render" call
+    res.render('404');
     return null;
   }
 
@@ -80,13 +86,9 @@ router.get('/book-v2/:roomName/:date', function (req, res, next) {
   // new Date(year, month [, day [, hours[, minutes[, seconds[, ms]]]]])
   const date = new Date(parts[0], parts[1] - 1, parts[2]); // Note: months are 0-based
   const today = new Date();
-  let diff = date - today;
-  diff = Math.ceil(diff / (1000 * 3600 * 24));
-  //one_day means 1000*60*60*24
-  //one_hour means 1000*60*60
-  //one_minute means 1000*60
-  //one_second means 1000
-  if (isNaN(date.getTime())) {  // invalid date, the user only specified the room, not the date as well...
+  const diff = getDaysFromToday(date);
+
+  if (isNaN(date.getTime()) || !diff) {  // invalid date, the user only specified the room, not the date as well...
     // do nothing here, and end the "render" call
     res.render('roomInfo');
   } else if (diff < 0) {

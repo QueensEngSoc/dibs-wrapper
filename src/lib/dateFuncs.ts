@@ -40,6 +40,9 @@ export function getCurrentHour() {
 }
 
 export function getDaysFromToday(dateToCheck: Date): number {
+  if (!dateToCheck)
+    return null;
+
   dateToCheck.setHours(8, 0, 0, 0); // set both dates to be at 8am, thus the math does not break in situations where the difference in time is not equal to the difference in calendar days.
   // Eg: 11:59pm and 7:30am are less than 24h apart, but it is the next calendar day, or annoyingly cases like 8:58:49 vs 8:46:20 which falsely gives a difference of one day instead of zero
   const today = new Date();

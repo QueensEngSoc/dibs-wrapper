@@ -8,17 +8,7 @@
     }
   }
 
-  &__main-card {
-    margin: 8px;
-
-    @media screen and (max-width: $medium-breakpoint) {
-      margin: 8px 12px;
-    }
-
-    &__img {
-      height: 300px;
-    }
-  }
+  @include cardStyles;
 
   .snack-bar &__error-alert {
     max-width: 650px;

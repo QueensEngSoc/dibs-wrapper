@@ -3,15 +3,10 @@
 @import './Footer';
 @import './Breakpoints';
 @import './Error';
-
+@import './Card';
 @import './Admin';
 @import './Home';
 @import './Quick';
-
-//@import url('../../public/CSS/font-nunito.css');
-//@import url('../../public/CSS/font-montserrat.css');
-//@import url('../../public/CSS/font-roboto.css');
-
 
 body {
   font-family: "Nunito", Helvitica, sans-serif !important;
@@ -20,11 +15,11 @@ body {
 html,
 body,
 body, wrapper {
-  min-height:100vh;
+  min-height: 100vh;
 }
 
 #main {
-  flex:1;
+  flex: 1;
   display: flex;
   min-height: 100vh;
   flex-direction: column;
@@ -56,4 +51,8 @@ body, wrapper {
   &--16 {
     width: calc(100% - 16px);
   }
+}
+
+.qbook {
+  @include cardStyles;
 }
