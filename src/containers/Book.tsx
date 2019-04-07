@@ -27,8 +27,6 @@ class Book extends React.Component<Props, State> {
   constructor(props) {
     super(props);
 
-    // const sanitisedHour = sanitiseTime(this.props.currentHour);
-
     this.state = {
       alert: null,
       currentHour: sanitiseTime(this.props.currentHour || new Date().getHours(), true),
@@ -55,13 +53,15 @@ class Book extends React.Component<Props, State> {
       const buttonClass = hour.isMine ? 'mtime' : hour.free ? 'ytime' : 'ntime';
 
       return (
-        <button key={roomData[0].room + hour.time} className={buttonClass}>{hour.time}</button>
+        <Grid key={roomData[0].room + hour.time} item>
+          <button className={buttonClass}>{hour.time}</button>
+        </Grid>
       );
     });
 
     return (
-      <Grid item {...GridItemWidths.xl}>
-        <div>
+      <Grid item>
+        <div className='row--add-margin-top'>
           <Grid container spacing={16}>
             {hourButtons}
           </Grid>

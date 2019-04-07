@@ -35,6 +35,10 @@ body, wrapper {
 
   &--add-margin {
     margin-bottom: 8px;
+
+    &-top {
+      margin-top: 8px;
+    }
   }
 
   &--side-margin {

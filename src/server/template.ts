@@ -15,13 +15,6 @@ export default ({ body, title, cssPath = [''], compiledCss = null, MuiCss = null
         <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" />
 
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous" />
-        <link rel="stylesheet" href="/CSS/font-awesome-all.css" />
-        
-        <!--files for offline use-->
-        <!--<link rel="stylesheet" href="/CSS/bootstrap.min.css">-->
-        <!--<link rel="stylesheet" href="/CSS/font-awesome-all.css">-->
-        <!--<script src="/JS/bootstrap.min.js"></script>-->
-        <!--End offline section-->
 
         ${cssPath.map((path) => {
           return `<link rel="stylesheet" href="${path}" />`;
@@ -41,6 +34,6 @@ export default ({ body, title, cssPath = [''], compiledCss = null, MuiCss = null
         ${body}
       </body>
       
-      <script src="app.bundle.js"></script>
+      <script src="/app.bundle.js"></script>
     </html>`;
 };

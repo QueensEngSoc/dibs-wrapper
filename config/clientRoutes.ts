@@ -20,13 +20,13 @@ export const routes = [
     exact: true
   },
   {
-    path: '/book-v2/:roomName',
+    path: '/book-v2/:roomName/:date',
     component: Book,
     exact: true
   },
   {
-    path: '/book-v2/:roomName/:date',
+    path: '/book-v2/:roomName',
     component: Book,
     exact: true
-  }
+  },
 ];
