@@ -5,6 +5,7 @@
 @import './Error';
 @import './Card';
 @import './Admin';
+@import './Book';
 @import './Home';
 @import './Quick';
 
@@ -59,4 +60,8 @@ body, wrapper {
 
 .qbook {
   @include cardStyles;
+}
+
+.section {
+  margin-top: 24px;
 }

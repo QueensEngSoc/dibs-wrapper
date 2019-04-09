@@ -5,10 +5,11 @@ import { connect } from 'react-redux';
 import * as React from 'react';
 import { Room, RoomFreeTable } from '../types/room';
 import { getDaysFromToday, sanitiseTime } from '../lib/dateFuncs';
-import { Avatar, Card, CardContent, CardMedia, Grid, Paper, Typography } from '@material-ui/core';
+import { Avatar, Button, Card, CardActions, CardContent, CardMedia, Grid, Paper, Typography } from '@material-ui/core';
 import { PhoneRounded, TvOffRounded, TvRounded } from '@material-ui/icons';
 import { GridItemWidths } from '../types/enums/grid';
 import CardComponent from '../components/CardComponent';
+import postReq from '../client/postReq';
 
 interface Props {
   currentHour: number;
@@ -21,6 +22,7 @@ interface State {
   alert: null,
   currentHour: number;
   response: Array<any>;
+  selectedTimes: Array<number>;
 }
 
 class Book extends React.Component<Props, State> {
@@ -30,9 +32,47 @@ class Book extends React.Component<Props, State> {
     this.state = {
       alert: null,
       currentHour: sanitiseTime(this.props.currentHour || new Date().getHours(), true),
-      response: []
+      response: [],
+      selectedTimes: []
     };
   }
+
+  bookRoom = async () => {
+    const { selectedTimes } = this.state;
+
+    if (selectedTimes.length) {
+      console.log('selectedTimes: ', selectedTimes.toString());
+      // const serverResponse: ResponseObject = await postReq('/quicky', { time: hour }) as ResponseObject;
+      // console.log('serverResponse: ', serverResponse);
+
+      // if (serverResponse.success) {
+      //   this.setState({
+      //     response: this.state.response.concat(serverResponse)
+      //   });
+      // } else {
+      //   this.setState({
+      //     alert: serverResponse
+      //   });
+      // }
+    }
+  };
+
+  setSelectedTimes = (hour) => {
+    console.log(hour);
+    if (hour) {
+      const { selectedTimes } = this.state;
+      const hourIndex = selectedTimes.indexOf(hour);
+      if (hourIndex < 0)
+        selectedTimes.push(hour);
+      else
+        selectedTimes.splice(hourIndex, 1);
+
+      console.log(selectedTimes);
+      this.setState({
+        selectedTimes: selectedTimes
+      });
+    }
+  };
 
   componentDidMount() {
     console.log('logged in?: ', this.props.isLoggedIn);
@@ -40,7 +80,7 @@ class Book extends React.Component<Props, State> {
 
   renderTimeButtons() {
     const { roomData, day } = this.props;
-    const { currentHour } = this.state;
+    const { currentHour, selectedTimes } = this.state;
 
     if (!this.props.roomData || !this.props.roomData.length)
       return;
@@ -51,17 +91,19 @@ class Book extends React.Component<Props, State> {
         return;
 
       const buttonClass = hour.isMine ? 'mtime' : hour.free ? 'ytime' : 'ntime';
+      const isSelected = selectedTimes.includes(hour.startTime);
 
       return (
         <Grid key={roomData[0].room + hour.time} item>
-          <button className={buttonClass}>{hour.time}</button>
+          <button className={isSelected ? 'ctime' : buttonClass}
+                  onClick={this.setSelectedTimes.bind(this, hour.startTime)}>{hour.time}</button>
         </Grid>
       );
     });
 
     return (
       <Grid item>
-        <div className='row--add-margin-top'>
+        <div className='section'>
           <Grid container spacing={16}>
             {hourButtons}
           </Grid>
@@ -86,10 +128,10 @@ class Book extends React.Component<Props, State> {
         </Typography>
         <Grid container>
           <Grid item>
-            {hasTV && <TvRounded />}
+            {hasTV && <TvRounded className="book__feature-icon" />}
           </Grid>
           <Grid item>
-            {hasPhone && <PhoneRounded />}
+            {hasPhone && <PhoneRounded className="book__feature-icon" />}
           </Grid>
           <Grid item>
             <Avatar>{sizeName}</Avatar>
@@ -113,7 +155,7 @@ class Book extends React.Component<Props, State> {
           <Grid item {...GridItemWidths.xl}>
             <Card>
               <CardMedia
-                className="qbook__main-card__img"
+                className="qbook__main-card__img--tall"
                 image={Picture}
                 title={roomName}
               />
@@ -126,6 +168,11 @@ class Book extends React.Component<Props, State> {
                   {this.renderTimeButtons()}
                 </Grid>
               </CardContent>
+              <CardActions>
+                <Button size="medium" color="primary" onClick={this.bookRoom.bind(this)}>
+                  Book Selected Hours
+                </Button>
+              </CardActions>
             </Card>
           </Grid>
         </Grid>

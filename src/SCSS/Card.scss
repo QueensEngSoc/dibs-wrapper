@@ -8,6 +8,10 @@
 
     &__img {
       height: 300px;
+
+      &--tall {
+        height: 350px;
+      }
     }
   }
 }
