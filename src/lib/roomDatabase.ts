@@ -115,7 +115,7 @@ export async function getInfoByName(roomName): Promise<Room> { //gets the info o
   }
 }
 
-export async function getFreeTable(roomID: string): Promise<Array<Array<RoomFreeTable>>> { //gets the free table of the roomID for all days
+export async function getFreeTable(roomID: string, day: number = -1): Promise<Array<Array<RoomFreeTable>>> { //gets the free table of the roomID for all days
   const disabledRooms = await getDisabledRoomIDs();
   const roomData = await roomDatabase.find({ RoomID: roomID });
 
@@ -125,6 +125,9 @@ export async function getFreeTable(roomID: string): Promise<Array<Array<RoomFree
   if (disabledRooms.includes(roomID)) {
     return generateFreeTable(roomData[0].Free.length, roomData[0].Free[0].length)
   }
+
+  if (day >= 0 && day <= 13)
+    return roomData[0] && roomData[0].Free[day];
 
   return roomData[0] && roomData[0].Free;
 }

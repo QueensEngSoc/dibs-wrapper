@@ -1,12 +1,14 @@
 import { Route, Link } from 'react-router-dom';
 import * as React from 'react';
 import { Button, Card, CardActions, CardContent, CardMedia, Grid, Typography } from '@material-ui/core';
-import { getPrettyHour } from '../lib/dateFuncs';
 import { GridProps } from '@material-ui/core/Grid';
 
 function renderFunction({ staticContext }) {
+  let message = null;
+
   if (staticContext) {
     staticContext.statusCode = 404;
+    message = staticContext.statusMessage
   }
 
   const gridWidth: GridProps = { xs: 12, sm: 9, md: 7, lg: 5, xl: 3 };
@@ -25,7 +27,7 @@ function renderFunction({ staticContext }) {
               />
               <CardContent>
                 <Typography gutterBottom variant="h5" component="h2">
-                  You seem to have wandered off the beaten path
+                  { message ? message : 'You seem to have wandered off the beaten path' }
                 </Typography>
                 <p><Link to={'/'}>Go back to the homepage</Link> or <Link to={'/quicky'}>QuickBook a room</Link>!</p>
                 <CardActions>

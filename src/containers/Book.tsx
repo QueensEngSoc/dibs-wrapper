@@ -8,7 +8,6 @@ import { getDaysFromToday, sanitiseTime } from '../lib/dateFuncs';
 import { Avatar, Button, Card, CardActions, CardContent, CardMedia, Grid, Paper, Typography } from '@material-ui/core';
 import { PhoneRounded, TvOffRounded, TvRounded } from '@material-ui/icons';
 import { GridItemWidths } from '../types/enums/grid';
-import CardComponent from '../components/CardComponent';
 import postReq from '../client/postReq';
 
 interface Props {
@@ -126,7 +125,7 @@ class Book extends React.Component<Props, State> {
         <Typography>
           {Description}
         </Typography>
-        <Grid container>
+        <Grid container spacing={8}>
           <Grid item>
             {hasTV && <TvRounded className="book__feature-icon" />}
           </Grid>
@@ -143,6 +142,7 @@ class Book extends React.Component<Props, State> {
 
   render() {
     const { roomData, day } = this.props;
+    const { selectedTimes } = this.state;
 
     if (!roomData.length)
       return;
@@ -169,7 +169,7 @@ class Book extends React.Component<Props, State> {
                 </Grid>
               </CardContent>
               <CardActions>
-                <Button size="medium" color="primary" onClick={this.bookRoom.bind(this)}>
+                <Button size="medium" color="primary" disabled={!selectedTimes.length} onClick={this.bookRoom.bind(this)}>
                   Book Selected Hours
                 </Button>
               </CardActions>
