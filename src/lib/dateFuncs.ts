@@ -12,6 +12,38 @@ export function getPrettyHour(hour: number, showAmPm: boolean = false): string {
   return hour.toString() + ':30' + amOrPm;
 }
 
+export function formatDateAsYMD(date: Date): string {
+  let d = new Date(date),
+    month = '' + (d.getMonth() + 1),
+    day = '' + d.getDate(),
+    year = d.getFullYear();
+
+  if (month.length < 2) month = '0' + month;
+  if (day.length < 2) day = '0' + day;
+
+  return [year, month, day].join('-');
+}
+
+export function getPrettyDay(intDay: number, fullString: boolean = false): string {
+  const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+
+  if (!fullString) {
+    if (intDay == 0)
+      return 'Today';
+
+    if (intDay == 1)
+      return 'Tomorrow';
+
+    if (intDay == -1)
+      return 'Yesterday';
+  }
+
+  const today = new Date();
+  today.setTime(today.getTime() + intDay * 24 * 60 * 60 * 1000);
+
+  return today.toLocaleDateString(undefined, dateOptions);
+}
+
 export function sanitiseTime(hour: number, checkMinutes: boolean = false): number {
   const minutes = new Date().getMinutes();
   let testHour = hour;

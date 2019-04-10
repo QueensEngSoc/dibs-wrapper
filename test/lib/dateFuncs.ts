@@ -1,5 +1,5 @@
 import * as assert from 'assert';
-import { getDaysFromToday } from '../../src/lib/dateFuncs';
+import { getDaysFromToday, getPrettyDay } from '../../src/lib/dateFuncs';
 import sinon from 'sinon';
 
 const sandbox = sinon.createSandbox();
@@ -71,6 +71,113 @@ describe('Get Days From Today', () => {
     dayToSend.setHours(0,10,0,0);
     const result = getDaysFromToday(dayToSend);
     assert.strictEqual(result, 1, `Expected to see that the difference is 1 day, but got ${result} days instead`);
+  });
+
+});
+
+describe('Get Pretty Day', () => {
+
+  beforeEach(() => {
+    sandbox.useFakeTimers({
+      toFake: ['setTimeout']
+    });
+  });
+
+  afterEach(() => {
+    // Restore the default sandbox here
+    sinon.restore();
+  });
+
+  it('returns "Today" for the current calendar day', () => {
+    const timeToFake = new Date();
+    timeToFake.setHours(13, 12, 2);
+    sinon.useFakeTimers(timeToFake);
+
+    const dayToSend = 0;
+
+    const result = getPrettyDay(dayToSend);
+    assert.strictEqual(result, 'Today', `Expected to see Today, but got ${result} instead`);
+  });
+
+  it('returns "Today" for the current calendar day, even at the end of the day', () => {
+    const timeToFake = new Date();
+    timeToFake.setHours(23, 29, 2);
+    sinon.useFakeTimers(timeToFake);
+
+    const dayToSend = 0;
+
+    const result = getPrettyDay(dayToSend);
+    assert.strictEqual(result, 'Today', `Expected to see Today, but got ${result} instead`);
+  });
+
+  it('returns "Today" for the current calendar day, even at the start of the day', () => {
+    const timeToFake = new Date();
+    timeToFake.setHours(1, 12, 2);
+    sinon.useFakeTimers(timeToFake);
+
+    const dayToSend = 0;
+
+    const result = getPrettyDay(dayToSend);
+    assert.strictEqual(result, 'Today', `Expected to see Today, but got ${result} instead`);
+  });
+
+  it('returns "Tomorrow" for the next calendar day', () => {
+    const timeToFake = new Date();
+    timeToFake.setHours(13, 12, 2);
+    sinon.useFakeTimers(timeToFake);
+
+    const dayToSend = 1;
+
+    const result = getPrettyDay(dayToSend);
+    assert.strictEqual(result, 'Tomorrow', `Expected to see Tomorrow, but got ${result} instead`);
+  });
+
+  it('returns "Tomorrow" for the current calendar day, even at the start of the day', () => {
+    const timeToFake = new Date();
+    timeToFake.setHours(0, 12, 2);
+    sinon.useFakeTimers(timeToFake);
+
+    const dayToSend = 1;
+
+    const result = getPrettyDay(dayToSend);
+    assert.strictEqual(result, 'Tomorrow', `Expected to see Tomorrow, but got ${result} instead`);
+  });
+
+  it('returns "Yesterday" for the previous calendar day', () => {
+    const timeToFake = new Date();
+    timeToFake.setHours(18, 12, 2);
+    sinon.useFakeTimers(timeToFake);
+
+    const dayToSend = -1;
+
+    const result = getPrettyDay(dayToSend);
+    assert.strictEqual(result, 'Yesterday', `Expected to see Yesterday, but got ${result} instead`);
+  });
+
+  it('returns the date object to a readable string for every other day', () => {
+    sandbox.useFakeTimers(new Date('2019-01-01T00:00:00Z'));
+
+    const timeToFake = new Date();
+    timeToFake.setHours(0, 12, 2);
+    sinon.useFakeTimers(timeToFake);
+
+    const dayToSend = 2;
+
+    const result = getPrettyDay(dayToSend);
+    assert.strictEqual(result, 'Thu Jan 03 2019', `Expected to see Thu Jan 03 2019, but got ${result} instead`);
+  });
+
+  it('returns the date object to a readable string even across years', () => {
+    sandbox.useFakeTimers(new Date('2019-01-01T00:00:00Z'));
+
+    const timeToFake = new Date();
+    timeToFake.setHours(0, 12, 2);
+    sinon.useFakeTimers(timeToFake);
+
+    const dayToSend = -2;
+
+    const result = getPrettyDay(dayToSend);
+    assert.strictEqual(result, 'Sun Dec 30 2018', `Expected to see Sun Dec 30 2018, but got ${result} instead`);
   });
 
 });

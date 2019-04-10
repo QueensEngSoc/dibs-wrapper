@@ -4,7 +4,7 @@ import { selectIsLoggedIn } from '../store/selectors/user';
 import { connect } from 'react-redux';
 import * as React from 'react';
 import { Room, RoomFreeTable } from '../types/room';
-import { getDaysFromToday, sanitiseTime } from '../lib/dateFuncs';
+import { getDaysFromToday, getPrettyDay, sanitiseTime } from '../lib/dateFuncs';
 import { Avatar, Button, Card, CardActions, CardContent, CardMedia, Grid, Paper, Typography } from '@material-ui/core';
 import { PhoneRounded, TvOffRounded, TvRounded } from '@material-ui/icons';
 import { GridItemWidths } from '../types/enums/grid';
@@ -41,7 +41,7 @@ class Book extends React.Component<Props, State> {
 
     if (selectedTimes.length) {
       console.log('selectedTimes: ', selectedTimes.toString());
-      // const serverResponse: ResponseObject = await postReq('/quicky', { time: hour }) as ResponseObject;
+      const serverResponse = await postReq('/quicky', { time: hour }) as ResponseObject;
       // console.log('serverResponse: ', serverResponse);
 
       // if (serverResponse.success) {
@@ -161,7 +161,7 @@ class Book extends React.Component<Props, State> {
               />
               <CardContent>
                 <Typography gutterBottom align={'center'} variant="h5" component="h2">
-                  Book {roomName} for {day || new Date().toDateString()}
+                  Book {roomName} for {day || getPrettyDay(0, true)}
                 </Typography>
                 {this.renderRoomInfo()}
                 <Grid container spacing={16} alignContent={'center'}>
