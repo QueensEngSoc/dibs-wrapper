@@ -106,6 +106,7 @@ interface SnackbarProps {
   timeout?: number;
   verticalPos?: 'bottom' | 'top';
   horizontalPos?: 'center' | 'left' | 'right';
+  onDismiss?: Function;
 };
 
 interface SnackBarState {
@@ -121,11 +122,17 @@ class CustomSnackBar extends Component<SnackbarProps, SnackBarState> {
   }
 
   handleClose = (event, reason) => {
+    const { onDismiss, timeout } = this.props;
+
     if (reason === 'clickaway') {
       return;
     }
 
     this.setState({ open: false });
+
+    if (onDismiss) {
+      setTimeout(() => onDismiss(), timeout); // put this as lowest priority, so that it goes after the animation
+    }
   };
 
   render() {

@@ -5,10 +5,11 @@ import { connect } from 'react-redux';
 import * as React from 'react';
 import { Room, RoomFreeTable } from '../types/room';
 import { getDaysFromToday, getPrettyDay, sanitiseTime } from '../lib/dateFuncs';
-import { Avatar, Button, Card, CardActions, CardContent, CardMedia, Grid, Paper, Typography } from '@material-ui/core';
-import { PhoneRounded, TvOffRounded, TvRounded } from '@material-ui/icons';
+import { Avatar, Button, Card, CardActions, CardContent, CardMedia, Grid, Typography } from '@material-ui/core';
+import { PhoneRounded, TvRounded } from '@material-ui/icons';
 import { GridItemWidths } from '../types/enums/grid';
 import postReq from '../client/postReq';
+import SnackBar, { SnackBarVariant } from '../components/SnackBar';
 
 interface Props {
   currentHour: number;
@@ -18,7 +19,10 @@ interface Props {
 }
 
 interface State {
-  alert: null,
+  alert: {
+    message: string;
+    variant?: SnackBarVariant;
+  },
   currentHour: number;
   response: Array<any>;
   selectedTimes: Array<number>;
@@ -56,9 +60,9 @@ class Book extends React.Component<Props, State> {
     }
   };
 
-  setSelectedTimes = (hour) => {
+  setSelectedTimes = (hour: number, free: boolean) => {
     console.log(hour);
-    if (hour) {
+    if (hour && free) {
       const { selectedTimes } = this.state;
       const hourIndex = selectedTimes.indexOf(hour);
       if (hourIndex < 0)
@@ -70,11 +74,32 @@ class Book extends React.Component<Props, State> {
       this.setState({
         selectedTimes: selectedTimes
       });
+    } else if (!free) {
+      this.setState({
+        alert: { message: 'Sorry, someone has already booked this time', variant: SnackBarVariant.Warning }
+      });
     }
   };
 
   componentDidMount() {
     console.log('logged in?: ', this.props.isLoggedIn);
+  }
+
+  resetAlertState() {
+    this.setState({
+      alert: null
+    })
+  }
+
+  renderAlert() {
+    const { alert } = this.state;
+
+    if (!alert)
+      return (null);
+
+    return (
+      <SnackBar type={alert.variant || SnackBarVariant.Error} className='quick__error-alert' message={alert.message} onDismiss={this.resetAlertState.bind(this)} />
+    );
   }
 
   renderTimeButtons() {
@@ -95,7 +120,7 @@ class Book extends React.Component<Props, State> {
       return (
         <Grid key={roomData[0].room + hour.time} item>
           <button className={isSelected ? 'ctime' : buttonClass}
-                  onClick={this.setSelectedTimes.bind(this, hour.startTime)}>{hour.time}</button>
+                  onClick={this.setSelectedTimes.bind(this, hour.startTime, hour.free)}>{hour.time}</button>
         </Grid>
       );
     });
@@ -176,6 +201,7 @@ class Book extends React.Component<Props, State> {
             </Card>
           </Grid>
         </Grid>
+        {this.renderAlert()}
       </div>
     );
   }
