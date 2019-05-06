@@ -173,7 +173,7 @@ export function getTimecount(day: number, userId: number, currentHour: number, l
 
   const startCheckHour = (currentHour < 7) ? 7 : currentHour;  // this is the hour (in 24 hour time) on which we start to check for the booking statuses, it'll go from n to 22h (where n >= 7 && n <= 22)
 
-  for (let i = startCheckHour - 7; i < listFree[i].Free.length; i++) {
+  for (let i = startCheckHour - 7; i < listFree[i].Free[day].length; i++) {
     const amOrPm = ((i + 7) >= 11) ? " PM" : " AM"; // i + 7 is back to being in 24h time, thus anything 11 or larger will be PM (since it's a 1h time slot starting on the half hour, eg: 11:30-12:30 PM)
     const startTime = (((i + 7) % 12 === 0) ? '12' : (i + 7) % 12) + ":30";
     const endTime = (((i + 7 + 1) % 12 === 0) ? '12' : (i + 7 + 1) % 12) + ":30";
@@ -192,17 +192,17 @@ export function getTimecount(day: number, userId: number, currentHour: number, l
   for (let i = 0; i < listFree.length; i++) {
     let count = 0;
     let mine = 0;
-    for (let j = startCheckHour - 7; j < listFree[i].Free.length; j++) {
-      if (!listFree[i].Free[j].free) {
+    for (let j = startCheckHour - 7; j < listFree[i].Free[day].length; j++) {
+      if (!listFree[i].Free[day][j].free) {
         count++;
         timeCount[j - startCheckHour + 7].hourCount++;
       }
 
-      if (listFree[i].Free[j].owner == userId) {
+      if (listFree[i].Free[day][j].owner == userId) {
         mine++;
-        listFree[i].Free[j].isMine = true;
+        listFree[i].Free[day][j].isMine = true;
       } else
-        listFree[i].Free[j].isMine = false;
+        listFree[i].Free[day][j].isMine = false;
 
       timeCount[j - startCheckHour + 7].totalCount++;
     }

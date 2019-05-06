@@ -1,16 +1,18 @@
 import template from '../server/template';
 import createStore from '../store/createStore';
-import { setCurrentHour, setRooms } from '../store/actions/rooms';
+import { setCurrentHour, setRooms, setTimeCount } from '../store/actions/rooms';
 import { setLoggedIn } from '../store/actions/user';
 import renderAppToString from '../server/renderAppToString';
 import { compile } from '../server/compileSass';
-import { DBRoom, Room } from '../types/room';
-import { getFreeTable, getInfoByName } from '../lib/roomDatabase';
+import { Room } from '../types/room';
+import { getFreeTable, getInfoByName, getListOfRoomState } from '../lib/roomDatabase';
 import { getDaysFromToday } from '../lib/dateFuncs';
+import { getInfo } from '../../models/roomDatabase';
+import { getTimecount } from '../lib/roomBooking';
+import { getUserID } from '../lib/userFunctions';
 
 const express = require('express');
 const router = express.Router();
-const roomDB = require('../../models/roomDatabase.js'); //the roomDatabase interface which provide 5 functions. Look in the file for how to use them
 const accountFuncs = require('../lib/userFunctions');
 
 function addDays(date, days) {
@@ -21,9 +23,9 @@ function addDays(date, days) {
 
 async function createStoreInstance(req, data, current_hour, timeCount) {
   const store = createStore({});
-  await store.dispatch(setRooms([data]));
+  await store.dispatch(setRooms(data));
   await store.dispatch(setCurrentHour(current_hour));
-  // await store.dispatch(setTimeCount(timeCount));
+  await store.dispatch(setTimeCount(timeCount));
   await store.dispatch(setLoggedIn(req.isAuthenticated()));
   return store;
 }
@@ -49,12 +51,16 @@ router.get('/book-v2/:roomName/', async function (req, res, next) {
   const imgID = room.replace(/\s+/g, '') + '.jpg';
   roomInfo.userId = usrid;
   roomInfo.Free = roomFreeTable;
-  roomInfo.Picture = '../img/' + imgID;
+  roomInfo.Picture = '/img/' + imgID;
   roomInfo.day = 0;
 
   const themeColors = req.colors;
 
-  const store = await createStoreInstance(req, roomInfo, current_hour, null);
+  const userid = getUserID(req);
+  const listFree = await getListOfRoomState(day, -1, userid);
+  const timecount = getTimecount(day, userid, current_hour, listFree);
+
+  const store = await createStoreInstance(req, listFree, current_hour, timecount);
   const context = {};
   const { html: body, css: MuiCss } = renderAppToString(req, context, store);
   const title = `QBook - Book ${roomInfo.room} for ${dateObj.toDateString()}`;
@@ -75,6 +81,7 @@ router.get('/book-v2/:roomName/:date', async function (req, res, next) {
   const dateObj = new Date();
   let current_hour = dateObj.getHours();
   const day = 0;
+  const userid = getUserID(req);
 
   const datestr = req.params.date;
   let room = req.params.roomName;
@@ -105,18 +112,21 @@ router.get('/book-v2/:roomName/:date', async function (req, res, next) {
     return null;
   }
 
+  const listFree = await getListOfRoomState(day, -1, userid);
+  const timecount = getTimecount(day, userid, current_hour, listFree);
+
   const roomID = roomInfo.roomID;
   const roomFreeTable = await getFreeTable(roomID);
   const usrid = accountFuncs.getUserID(req);
   const imgID = room.replace(/\s+/g, '') + '.jpg';
   roomInfo.userId = usrid;
   roomInfo.Free = roomFreeTable;
-  roomInfo.Picture = '../img/' + imgID;
+  roomInfo.Picture = '/img/' + imgID;
   roomInfo.day = 0;
 
   const themeColors = req.colors;
 
-  const store = await createStoreInstance(req, roomInfo, current_hour, null);
+  const store = await createStoreInstance(req, listFree, current_hour, timecount);
   const context = {};
   const { html: body, css: MuiCss } = renderAppToString(req, context, store);
   const title = `QBook - Book ${roomInfo.room} for ${dateObj.toDateString()}`;
@@ -131,6 +141,33 @@ router.get('/book-v2/:roomName/:date', async function (req, res, next) {
     cssPath,
     MuiCss
   }));
+});
+
+router.post('/book-v2', async (req, res) => {
+  console.log('got the post! ***************** ', req.isAuthenticated());
+
+  const usrid = accountFuncs.getUserID(req);
+
+  const data = JSON.stringify(req.body);
+  const dataObj = JSON.parse(data);
+
+  const roomName = dataObj.roomName;
+
+  const roomInfo: Room = await getInfo(roomName);
+  if (!roomInfo) { // invalid room, the user specified an invalid room, so we will show the 404 page
+    // do nothing here, and end the "render" call
+    return null;
+  }
+
+  const roomFreeTable = await getFreeTable(roomInfo.roomID);
+
+  const imgID = roomInfo.Name.replace(/\s+/g, '') + '.jpg';
+  roomInfo.userId = usrid;
+  roomInfo.Free = roomFreeTable;
+  roomInfo.Picture = '../img/' + imgID;
+  roomInfo.day = 0;
+
+  res.send(roomInfo);
 });
 
 export default router;

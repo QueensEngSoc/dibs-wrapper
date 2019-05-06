@@ -61,7 +61,7 @@ function getAPIInfo() {
 
                 var roomNum = data.Name.match(/\d+/)[0]; // get the number from the room
                 var roomPicName = "BMH" + roomNum + ".jpg";
-                data.Picture = "img/" + roomPicName;
+                data.Picture = "/img/" + roomPicName;
 
                 // if (fs.existsSync("../public/img/" + roomPicName)) {
                 //     data.Picture = "img/" + roomPicName;

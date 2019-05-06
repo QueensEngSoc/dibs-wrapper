@@ -164,7 +164,7 @@ describe('Get Pretty Day', () => {
     const dayToSend = 2;
 
     const result = getPrettyDay(dayToSend);
-    assert.strictEqual(result, 'Thu Jan 03 2019', `Expected to see Thu Jan 03 2019, but got ${result} instead`);
+    assert.strictEqual(result, 'Thursday, January 3, 2019', `Expected to see Thursday, January 3, 2019, but got ${result} instead`);
   });
 
   it('returns the date object to a readable string even across years', () => {
@@ -177,7 +177,7 @@ describe('Get Pretty Day', () => {
     const dayToSend = -2;
 
     const result = getPrettyDay(dayToSend);
-    assert.strictEqual(result, 'Sun Dec 30 2018', `Expected to see Sun Dec 30 2018, but got ${result} instead`);
+    assert.strictEqual(result, 'Sunday, December 30, 2018', `Expected to see Sunday, December 30, 2018, but got ${result} instead`);
   });
 
 });

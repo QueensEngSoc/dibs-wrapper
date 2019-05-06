@@ -2,6 +2,7 @@
 import index from "../src/routes/index";
 import welcome from "../routes/welcome";
 import bookCheckout from "../routes/bookCheckout";
+import bookCheckoutv2 from "../src/routes/bookCheckout";
 import bookRoom from "../routes/bookRoom";
 import book from "../routes/book";
 import bookV2 from "../src/routes/book";
@@ -34,7 +35,7 @@ export default function (app, passport) {
   // =============================================
   // BOOK AND BOOKROOM PAGE (with login links) ===
   // =============================================
-  app.post('/bookroom', bookRoom);
+  app.post('/bookroom', bookCheckoutv2);
   app.get('/book/:roomID', book);
   app.get('/book/:roomID/:date', book);
   app.get('/book-v2/:roomID', bookV2);

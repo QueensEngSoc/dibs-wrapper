@@ -15,9 +15,10 @@ import {
   Select, Grid,
 } from '@material-ui/core/';
 import { ExpandMore } from '@material-ui/icons';
+import { Link } from 'react-router-dom'
 import MaterialDatePicker from '../components/MaterialDatePicker';
 import postReq from '../client/postReq';
-import { sanitiseTime } from '../lib/dateFuncs';
+import { sanitiseTime, getDaysFromToday } from '../lib/dateFuncs';
 
 async function fetchData(date, time) {
   const dateToSend = date || new Date();
@@ -74,6 +75,7 @@ class Home extends Component<Props, State> {
   }
 
   async componentDidMount() {
+    console.log(this.state)
     if (!this.state.roomData) {
       const selectedDate = new Date();
       const currentHour = sanitiseTime(selectedDate.getHours(), true);
@@ -115,24 +117,23 @@ class Home extends Component<Props, State> {
   }
 
   renderTimeButtons() {
-    const { roomData, selectedTime, prettyDate } = this.state;
-
+    const { roomData, selectedTime, prettyDate, intDay } = this.state;
     const dbTime = selectedTime - 7;
+    console.log(dbTime, roomData, selectedTime, prettyDate, intDay)
 
     const roomButtons = roomData && roomData.map((room) => {
       let className = 'nroom';
       const shouldShow = this.checkFilters(room, dbTime);
-      if (room.Free[dbTime]) {
-        className = (room.Free[dbTime] as RoomFreeTable).free ? 'yroom' : 'nroom';
-        className = (room.Free[dbTime] as RoomFreeTable).isMine ? 'mroom' : className;
+      if (room.Free[intDay][dbTime]) {
+        className = (room.Free[intDay][dbTime] as RoomFreeTable).free ? 'yroom' : 'nroom';
+        className = (room.Free[intDay][dbTime] as RoomFreeTable).isMine ? 'mroom' : className;
       }
-      // {/*<Typography className="room-btn__text" variant={'body2'}>{room.roomNum}</Typography>*/}
       if (shouldShow) {
         return (
-          <a key={room.roomID} className={`btn btn-lg ${className} mobileBtn`}
-             href={`/book/${room.roomID}${prettyDate ? ('/' + prettyDate) : ''}`} role="button"
-             id={room.roomNum}>{room.roomNum}
-          </a>
+          <Link key={room.roomID} className={`btn btn-lg ${className} mobileBtn`}
+                to={`/book-v2/${room.roomID}${prettyDate ? ('/' + prettyDate) : ''}`} role="button"
+                id={room.room}>{room.room}
+          </Link>
         );
       }
     });
@@ -213,32 +214,60 @@ class Home extends Component<Props, State> {
   async onTimeChange(event) {
     const selectedValue = event.target.value;
     const intVal = selectedValue !== '' ? parseInt(selectedValue) : null;
-    const { selectedDate } = this.state;
+    const { selectedDate, roomData, intDay } = this.state;
 
-    const res: RoomPostData = await fetchData(selectedDate, intVal) as RoomPostData;
+    if (!roomData[0].Free[intDay]) {
+      const res: RoomPostData = await fetchData(selectedDate, intVal) as RoomPostData;
 
-    this.setState({
-      currentHour: res.currentHour,
-      prettyDate: null,
-      roomData: (res as RoomPostData).list || this.state.roomData,
-      selectedTime: intVal || res.currentHour,
-      timeCount: (res as RoomPostData).timeCount || this.state.timeCount
-    });
+      this.setState({
+        currentHour: res.currentHour,
+        prettyDate: null,
+        roomData: (res as RoomPostData).list || this.state.roomData,
+        selectedTime: intVal || res.currentHour,
+        timeCount: (res as RoomPostData).timeCount || this.state.timeCount
+      });
+    } else {
+      this.setState({
+        currentHour: intDay === 0 ? sanitiseTime(new Date().getHours(), true) : this.state.currentHour
+      });
+    }
   }
 
   handleDateChange = async date => {
-    const { selectedTime } = this.state;
-    const res = await fetchData(date, selectedTime) as RoomPostData;
+    const { selectedTime, roomData, intDay } = this.state;
 
-    this.setState({
-      currentHour: res.currentHour,
-      intDay: res.intDay,
-      prettyDate: res.prettyDate,
-      roomData: res.list || this.state.roomData,
-      selectedDate: date,
-      selectedTime: this.state.selectedTime <= 22 && this.state.selectedTime || res.currentHour,
-      timeCount: res.timeCount || this.state.timeCount
-    });
+    if (!roomData[0].Free[intDay]) {
+      const res = await fetchData(date, selectedTime) as RoomPostData;
+
+      this.setState({
+        currentHour: res.currentHour,
+        intDay: res.intDay,
+        prettyDate: res.prettyDate,
+        roomData: res.list || this.state.roomData,
+        selectedDate: date,
+        selectedTime: this.state.selectedTime <= 22 && this.state.selectedTime || res.currentHour,
+        timeCount: res.timeCount || this.state.timeCount
+      });
+    } else {
+      const res = await fetchData(date, selectedTime) as RoomPostData;
+
+      this.setState({
+        currentHour: res.currentHour,
+        intDay: getDaysFromToday(date),
+        roomData: res.list || this.state.roomData,
+        timeCount: res.timeCount || this.state.timeCount
+      });
+    }
+
+    // this.setState({
+    //   currentHour: res.currentHour,
+    //   intDay: res.intDay,
+    //   prettyDate: res.prettyDate,
+    //   roomData: res.list || this.state.roomData,
+    //   selectedDate: date,
+    //   selectedTime: this.state.selectedTime <= 22 && this.state.selectedTime || res.currentHour,
+    //   timeCount: res.timeCount || this.state.timeCount
+    // });
   };
 
   renderTimeSwitcher() {

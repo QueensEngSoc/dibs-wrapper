@@ -53,7 +53,8 @@ export async function getListOfRoomState(day: number, time: number, usrid: numbe
         size: roomData.size,
         hasTV: roomData.tv,
         hasPhone: roomData.phone,
-        id: roomData.RoomID
+        id: roomData.RoomID,
+        Picture: roomData.Picture
       });
     } else if (time == -1) {
       listFree.push({
@@ -63,14 +64,15 @@ export async function getListOfRoomState(day: number, time: number, usrid: numbe
         size: roomData.size,
         hasTV: roomData.tv,
         hasPhone: roomData.phone,
-        Free: roomData.Free[day],
-        id: roomData.RoomID
+        Free: roomData.Free,
+        id: roomData.RoomID,
+        Picture: roomData.Picture
       });
     } else {
       if (roomData.Free[day][time - 7] == undefined) {
-        console.log("Error: something really bad happened!");
-        console.log("Value of roomData.Free table for day " + day + ": (broke accessing time " + time + ")");
-        console.log(roomData.Free[day]);
+        console.error("Error: something really bad happened!");
+        console.error("Value of roomData.Free table for day " + day + ": (broke accessing time " + time + ")");
+        console.error(roomData.Free[day]);
 
       } else {  // error should be caught above, and this should no longer error out.  ToDo: Make this a proper try/catch logic block later
         listFree.push({
@@ -81,6 +83,7 @@ export async function getListOfRoomState(day: number, time: number, usrid: numbe
           hasTV: roomData.tv,
           hasPhone: roomData.phone,
           id: roomData.RoomID,
+          Picture: roomData.Picture,
           Free: roomData.Free[day][time - 7].free,
           isMine: (roomData.Free[day][time - 7].owner == usrid)  // true if the user booked the room, false otherwise
         });
