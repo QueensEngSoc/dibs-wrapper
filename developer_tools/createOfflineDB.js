@@ -51,14 +51,14 @@ function getAPIInfo() {
         }
         else
         {
-            var obj = JSON.parse(fs.readFileSync('offlineDBSetupFile.json', 'utf8'));
+            const obj = JSON.parse(fs.readFileSync('offlineDBSetupFile.json', 'utf8'));
 
-            for (var json in obj) {
-                var data = JSON.parse(body)[json];
+            for (const json in obj) {
+                let data = JSON.parse(body)[json];
                 if (data.Name.indexOf("BMH 111") >= 0)
                     data.Name = "BMH 111";
 
-                var description = data.Description;
+                const description = data.Description;
                 if (description.indexOf("TV") > 0 || description.indexOf("Projector") > 0)
                     data.tv = true;
                 else
@@ -75,8 +75,8 @@ function getAPIInfo() {
                     data.special = true;
                 }
 
-                var roomNum = data.Name.match(/\d+/)[0]; // get the number from the room
-                var roomPicName = "BMH" + roomNum + ".jpg";
+                const roomNum = data.Name.match(/\d+/)[0]; // get the number from the room
+                const roomPicName = "BMH" + roomNum + ".jpg";
                 if (fs.existsSync("../public/img/" + roomPicName)) {
                     data.Picture = "/img/" + roomPicName;
                 }
@@ -100,10 +100,10 @@ function getAPIInfo() {
 }
 
 function createFreeArray(val, len, weeks) {
-    var out = new Array(weeks * 7);
-    for (var j = 0; j < weeks * 7; j++) {
-        var curDay = new Array(len);
-        for (var i = 0; i < len; i++) {
+    let out = new Array(weeks * 7);
+    for (let j = 0; j < weeks * 7; j++) {
+        let curDay = new Array(len);
+        for (let i = 0; i < len; i++) {
             curDay[i] = {
                 free: val,
                 time: ((7 + i) >= 10 ? (7 + i) : "0" + (7 + i)) + ":30 - " + ((8 + i) >= 10 ? (8 + i) : "0" + (8 + i)) + ":30",
