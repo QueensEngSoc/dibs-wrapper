@@ -37,6 +37,7 @@ interface State {
     message: string;
     variant?: SnackBarVariant;
   };
+  day: number;
   roomName: string;
   roomData: Array<Room>;
   currentHour: number;
@@ -51,6 +52,7 @@ class Book extends React.Component<Props, State> {
 
     this.state = {
       alert: null,
+      day: this.props.day && getDaysFromToday(new Date(this.props.day)) || 0,
       currentHour: sanitiseTime(this.props.currentHour || new Date().getHours(), true),
       response: [],
       selectedTimes: [],
@@ -59,8 +61,10 @@ class Book extends React.Component<Props, State> {
     };
   }
 
-  getRoomData() {
-    const { roomData, match } = this.props;
+  getRoomData(roomArr?: Array<Room>) {
+    const { roomData: propRoomData, match } = this.props;
+
+    const roomData = roomArr || propRoomData;
 
     if (!roomData || !roomData.length || !match || !match.params || !match.params.roomName) {
       return null;
@@ -78,30 +82,32 @@ class Book extends React.Component<Props, State> {
       console.log('fetchign ', roomName, this.props.match, this.props.match.params, this.props.match.params.roomName, this.props.match && this.props.match.params && this.props.match.params.roomName);
       const roomData = await fetchData(roomName);
       console.log('got ', roomData);
+      const room = this.getRoomData(roomData as Array<Room>);
+
       this.setState({
-        roomData: [roomData as Room]
+        roomData: room
       });
     }
-
-    // if (roomData.length !== 1) {
-    //   const roomData = await fetchData(roomID);
-    //   this.setState({
-    //     roomData: [roomData as Room]
-    //   });
-    // }
   }
 
   bookRoom = async () => {
-    const { selectedTimes } = this.state;
+    const { selectedTimes, roomData, roomName, day } = this.state;
 
     if (selectedTimes.length) {
       console.log('selectedTimes: ', selectedTimes.toString());
-      const serverResponse = await postReq('/bookcheckout', { times: selectedTimes }) as BookingResponseObject;
+
+      const roomName = roomData && roomData[0].room || roomName;
+      const serverResponse = await postReq('/bookroom', {
+        times: selectedTimes,
+        roomName,
+        day
+      }) as BookingResponseObject;
       console.log('serverResponse: ', serverResponse);
 
       if (serverResponse.BookStatus) {
         this.setState({
-          response: this.state.response.concat(serverResponse)
+          response: this.state.response.concat(serverResponse),
+          alert: { message: serverResponse.HeaderMsg, variant: SnackBarVariant.Success }
         });
       } else {
         this.setState({
@@ -160,8 +166,8 @@ class Book extends React.Component<Props, State> {
   }
 
   renderTimeButtons() {
-    const { roomData, day } = this.props;
-    const { currentHour, selectedTimes } = this.state;
+    const { day } = this.props;
+    const { currentHour, selectedTimes, roomData } = this.state;
 
     if (!this.props.roomData || !this.props.roomData.length)
       return null;
@@ -199,7 +205,7 @@ class Book extends React.Component<Props, State> {
     if (!roomData.length)
       return null;
 
-    const { Picture, Map, hasPhone, hasTV, size, Description } = roomData[0];
+    const { hasPhone, hasTV, size, Description } = roomData[0];
     const sizeName = size === 0 ? 'S' : size === 1 ? 'M' : size === 2 ? 'L' : 'XL';
 
     return (

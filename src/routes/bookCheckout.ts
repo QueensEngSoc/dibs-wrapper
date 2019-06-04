@@ -1,40 +1,35 @@
 import express from 'express';
 import { getUserID } from '../lib/userFunctions';
-import { bookMultiple } from '../lib/roomBooking';
+import { bookMultiple, bookMultipleByName } from '../lib/roomBooking';
 
 const router = express.Router();
-router.post('/bookcheckout', async function (req, res) { //similar to the book function with a few changes which will be commented below
+router.post('/bookroom', async function (req, res) { // similar to the book function with a few changes which will be commented below
+  console.log('got the post! ', req.body);
   const roomToBook = JSON.stringify(req.body);
   const postData = JSON.parse(roomToBook);
 
-  const roomID = parseInt(postData.roomID, 10);
+  const roomName = postData.roomName;
   const usrid = getUserID(req);
   const day = parseInt(postData.day, 10);
-  let times = postData.times; //get the array of times sent over (instead of a singular one)
-
-  if (Array.isArray(times)) { //make sure it's an array
-    for (const i in times) {
-      times[i] = parseInt(times[i], 10);
-    }
-  } else {
-    times = [times];
-  }
-
+  const times = Array.isArray(postData.times) ? postData.times : [postData.times]; // get the array of times sent over (instead of a singular one)
+  console.log('post: ', roomName, usrid, day, times);
   if (usrid === -1 || usrid === undefined) {
     req.flash('bookingMessage', roomToBook);
     res.send({
       HeaderMsg: 'You must login',
-      BookingStatusMsg: roomID + '-' + times[0] + '-' + 1 + '-' + day,
+      BookingStatusMsg: roomName + '-' + times[0] + '-' + 1 + '-' + day,
       BookStatus: false
     });
   } else {
-    await book(day, times, roomID, usrid, req, res); //the function to book the room
+    console.log('booking');
+    await book(day, times, roomName, usrid, req, res); // the function to book the room
   }
 });
 
-async function book(day, times, roomID, usrid, req, res) {
-  const data = await bookMultiple(day, times, roomID, usrid, req); //Similar to the bookRoom function with a few minor differences
-  console.log('Request Body: ' + JSON.stringify(req.body) + ' room id: ' + roomID + ' Success: ' + data.success);
+async function book(day, times, roomName, usrid, req, res) {
+  console.log('booking: ', day, times, roomName, usrid, req, res);
+  const data = await bookMultipleByName(day, times, roomName, usrid, req); //Similar to the bookRoom function with a few minor differences
+  console.log('Request Body: ' + JSON.stringify(req.body) + ' room id: ' + roomName + ' Success: ' + data.success);
   res.send({ HeaderMsg: data.header, BookingStatusMsg: data.bookMsg, BookStatus: data.success });
 }
 

@@ -22,8 +22,8 @@ describe('Homepage', () => {
 
   it('has a time button for each room in the database', async () => {
     const res = await request(server)
-      .get('/some-odd-page/meow')
-      .expect(404);
+      .get('/')
+      .expect(200);
 
     const $ = cheerio.load(res.text);
     const $errorContainer = $('#main .error');

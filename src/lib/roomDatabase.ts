@@ -40,8 +40,8 @@ export async function getListOfRoomState(day: number, time: number, usrid: numbe
 
   for (const roomData of data) {
     const roomNum = roomData.Name.match(/\d+/)[0]; // get the number from the room
-    const mapRoomName = "BMH" + roomNum;
-    const listRoomName = "bmh-" + roomNum;
+    const mapRoomName = 'BMH' + roomNum;
+    const listRoomName = 'bmh-' + roomNum;
     const isNotValidTime = time !== -1 ? !isValidTime(time) : false;
 
     if (isNotValidTime || disabledRooms.includes(roomData.RoomID)) {
@@ -70,8 +70,8 @@ export async function getListOfRoomState(day: number, time: number, usrid: numbe
       });
     } else {
       if (roomData.Free[day][time - 7] == undefined) {
-        console.error("Error: something really bad happened!");
-        console.error("Value of roomData.Free table for day " + day + ": (broke accessing time " + time + ")");
+        console.error('Error: something really bad happened!');
+        console.error('Value of roomData.Free table for day ' + day + ': (broke accessing time ' + time + ')');
         console.error(roomData.Free[day]);
 
       } else {  // error should be caught above, and this should no longer error out.  ToDo: Make this a proper try/catch logic block later
@@ -118,7 +118,34 @@ export async function getInfoByName(roomName): Promise<Room> { //gets the info o
   }
 }
 
-export async function getFreeTable(roomID: string, day: number = -1): Promise<Array<Array<RoomFreeTable>>> { //gets the free table of the roomID for all days
+function parseHour(hour: RoomFreeTable, usrid): RoomFreeTable {
+  if (hour.free && hour.owner === usrid)
+    return { ...hour, isMine: true };
+
+  return hour;
+}
+
+export async function getFreeTableWithUserData(roomID: string, day: number = -1, usrid: string = ''): Promise<RoomFreeTable[] | Array<Array<RoomFreeTable>>> { //gets the free table of the roomID for all days
+  const freeTable = await getFreeTable(roomID, day);
+
+  if (!usrid || !freeTable)
+    return freeTable || null;
+
+  // @ts-ignore
+  freeTable.map((day) => {
+    if (day.length) { // this is a multi-day array, so let's parse each hour in the array as well
+      return (day as RoomFreeTable[]).map((hour) => {
+        return parseHour(hour, usrid);
+      });
+    }
+
+      // this is a single-day array, so we'll just parse the given day :)
+      // Because this is just a single day, we know that "day" is really an hour at this point, so the map will give us what we want
+      return parseHour(day as RoomFreeTable, usrid);
+  });
+}
+
+export async function getFreeTable(roomID: string, day: number = -1): Promise<RoomFreeTable[] | Array<RoomFreeTable[]>> { //gets the free table of the roomID for all days
   const disabledRooms = await getDisabledRoomIDs();
   const roomData = await roomDatabase.find({ RoomID: roomID });
 
