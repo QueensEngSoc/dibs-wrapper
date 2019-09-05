@@ -103,7 +103,13 @@ export default function (passport) {
               if (err)
                 throw err;
 
-              emailFuncs.sendVerificationMail(newUser.local.email, consts.fromEmail, newUser.local.verify_token, req);
+              try {
+                emailFuncs.sendVerificationMail(newUser.local.email, consts.fromEmail, newUser.local.verify_token, req);
+              } catch (e) {
+                console.error("Email sending failed :(", e);
+                req.flash('signupMessage', 'Sorry, something went wrong, please try again. \nError: EMAIL UNAVAIL')
+              }
+
               return done(null, newUser, req.flash('signupMessage', 'signup_successful!'));
             });
           }

@@ -61,7 +61,7 @@ class Home extends Component<Props, State> {
       currentHour: this.props.currentHour || now,
       roomData: this.props.roomData || null,
       filterSize: null,
-      filterPhone: false,
+      filterPhone: false,:q
       filterTv: false,
       filterUnavailable: false,
       intDay: 0,
@@ -75,7 +75,7 @@ class Home extends Component<Props, State> {
   }
 
   async componentDidMount() {
-    console.log(this.state)
+    console.log(this.state);
     if (!this.state.roomData) {
       const selectedDate = new Date();
       const currentHour = sanitiseTime(selectedDate.getHours(), true);
@@ -316,11 +316,13 @@ class Home extends Component<Props, State> {
   }
 
   render() {
+    console.log("Hi, I'm rendering!");
+
     return (
       <div className="content__wrapper">
-        {this.renderTimeSwitcher()}
-        {this.renderFilters()}
-        {this.renderTimeButtons()}
+        {/*{this.renderTimeSwitcher()}*/}
+        {/*{this.renderFilters()}*/}
+        {/*{this.renderTimeButtons()}*/}
       </div>
     );
   }

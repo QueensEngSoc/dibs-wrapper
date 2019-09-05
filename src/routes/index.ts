@@ -8,7 +8,7 @@ import { getAdminStatus, getUserID } from '../lib/userFunctions';
 import { setAccountType, setLoggedIn } from '../store/actions/user';
 import { compile } from '../server/compileSass';
 import { UserAccountType } from '../types/enums/user';
-import { getDaysFromToday } from '../lib/dateFuncs';
+import { formatDate, getDaysFromToday } from '../lib/dateFuncs';
 import { getTimecount } from '../lib/roomBooking';
 
 const express = require('express');
@@ -101,17 +101,5 @@ router.post('/index', async function (req, res) {
     });
   }
 });
-
-function formatDate(date) {
-  let d = new Date(date),
-    month = '' + (d.getMonth() + 1),
-    day = '' + d.getDate(),
-    year = d.getFullYear();
-
-  if (month.length < 2) month = '0' + month;
-  if (day.length < 2) day = '0' + day;
-
-  return [year, month, day].join('-');
-}
 
 export default router;

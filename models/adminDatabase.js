@@ -8,11 +8,6 @@ else
 
 var adminDB = db.get('adminDatabase');
 
-// addSchedule(createSchedule(new Date(2018, 3, 1), 2, [7], [1]));
-// getInRange(1).then(function (data) {
-//     console.log(data);
-// });
-
 /**
  *
  * @returns {Promise<any>}
@@ -133,7 +128,7 @@ export function setStatus(roomID, status) {
  */
 export async function getDisabled() {
   const data = await getAll();
-  data && data.length && data.filter((room) => !room.enabled) || [];
+  return data && data.length && data.filter((room) => !room.enabled) || [];
 }
 
 /** Gets the list of room ids which are currently disabled
@@ -142,7 +137,7 @@ export async function getDisabled() {
  */
 export async function getDisabledRoomIDs() {
   const disabledRooms = await getDisabled();
-  return disabledRooms.map((room) => room.roomID);
+  return disabledRooms && disabledRooms.map((room) => room.roomID) || [];
 }
 
 
@@ -160,14 +155,3 @@ function getDaysWithinFortnight(date) {
 
   return Math.floor((fortnightMS - dateMS) / 86400000);
 }
-
-//
-// export = {
-//     addSchedule: addSchedule,
-//     createSchedule: createSchedule,
-//     getInRange: getInRange,
-//     getAll: getAll,
-//     setStatus: setStatus,
-//     getDisabled,
-//     getDisabledRoomIDs
-// };

@@ -1,3 +1,5 @@
+import router from "../routes";
+
 export function getPrettyHour(hour: number, showAmPm: boolean = false): string {
   let amOrPm = showAmPm ? (hour >= 12 ? ' PM' : ' AM') : '';
 
@@ -10,6 +12,18 @@ export function getPrettyHour(hour: number, showAmPm: boolean = false): string {
   }
 
   return hour.toString() + ':30' + amOrPm;
+}
+
+export function formatDate(date) {
+  let d = new Date(date),
+      month = '' + (d.getMonth() + 1),
+      day = '' + d.getDate(),
+      year = d.getFullYear();
+
+  if (month.length < 2) month = '0' + month;
+  if (day.length < 2) day = '0' + day;
+
+  return [year, month, day].join('-');
 }
 
 export function formatDateAsYMD(date: Date): string {
@@ -40,7 +54,6 @@ export function getPrettyDay(intDay: number, fullString: boolean = false): strin
 
   const today = new Date();
   today.setTime(today.getTime() + intDay * 24 * 60 * 60 * 1000);
-
   return today.toLocaleDateString(undefined, dateOptions);
 }
 
