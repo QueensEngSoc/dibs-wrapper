@@ -61,7 +61,7 @@ class Home extends Component<Props, State> {
       currentHour: this.props.currentHour || now,
       roomData: this.props.roomData || null,
       filterSize: null,
-      filterPhone: false,:q
+      filterPhone: false,
       filterTv: false,
       filterUnavailable: false,
       intDay: 0,
