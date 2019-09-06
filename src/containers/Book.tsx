@@ -1,21 +1,21 @@
-import { StoreState } from '../types/store';
-import { selectCurrentHour, selectRoomData, selectTimeCount } from '../store/selectors/rooms';
-import { selectIsLoggedIn } from '../store/selectors/user';
-import { connect } from 'react-redux';
+import {StoreState} from '../types/store';
+import {selectCurrentHour, selectRoomData, selectTimeCount} from '../store/selectors/rooms';
+import {selectIsLoggedIn} from '../store/selectors/user';
+import {connect} from 'react-redux';
 import * as React from 'react';
-import { Room, RoomFreeTable } from '../types/room';
-import { getDaysFromToday, getPrettyDay, sanitiseTime } from '../lib/dateFuncs';
-import { Avatar, Button, Card, CardActions, CardContent, CardMedia, Grid, Typography } from '@material-ui/core';
-import { PhoneRounded, TvRounded } from '@material-ui/icons';
-import { GridItemWidths } from '../types/enums/grid';
+import {Room, RoomFreeTable} from '../types/room';
+import {getDaysFromToday, getPrettyDay, sanitiseTime} from '../lib/dateFuncs';
+import {Avatar, Button, Card, CardActions, CardContent, CardMedia, Grid, Typography} from '@material-ui/core';
+import {PhoneRounded, TvRounded} from '@material-ui/icons';
+import {GridItemWidths} from '../types/enums/grid';
 import postReq from '../client/postReq';
-import SnackBar, { SnackBarVariant } from '../components/SnackBar';
-import { BookingResponseObject } from '../types/book';
-import { RouteComponentProps } from 'react-router';
+import SnackBar, {SnackBarVariant} from '../components/SnackBar';
+import {BookingResponseObject} from '../types/book';
+import {RouteComponentProps} from 'react-router';
 
 async function fetchData(roomID) {
   if (roomID) {
-    const response = await postReq('book-v2', { roomID });
+    const response = await postReq('book-v2', {roomID});
     console.log('response was: ', response);
     return response;
   }
@@ -62,7 +62,7 @@ class Book extends React.Component<Props, State> {
   }
 
   getRoomData(roomArr?: Array<Room>) {
-    const { roomData: propRoomData, match } = this.props;
+    const {roomData: propRoomData, match} = this.props;
 
     const roomData = roomArr || propRoomData;
 
@@ -76,7 +76,7 @@ class Book extends React.Component<Props, State> {
   }
 
   async buildRoomData() {
-    const { roomData, roomName } = this.state;
+    const {roomData, roomName} = this.state;
 
     if (!roomData || !roomData.length || roomData.length !== 1) {
       console.log('fetchign ', roomName, this.props.match, this.props.match.params, this.props.match.params.roomName, this.props.match && this.props.match.params && this.props.match.params.roomName);
@@ -91,12 +91,12 @@ class Book extends React.Component<Props, State> {
   }
 
   bookRoom = async () => {
-    const { selectedTimes, roomData, roomName, day } = this.state;
+    const {selectedTimes, roomData, roomName: stateRoomName, day} = this.state;
 
     if (selectedTimes.length) {
       console.log('selectedTimes: ', selectedTimes.toString());
 
-      const roomName = roomData && roomData[0].room || roomName;
+      const roomName = roomData && roomData[0].room || stateRoomName;
       const serverResponse = await postReq('/bookroom', {
         times: selectedTimes,
         roomName,
@@ -107,20 +107,20 @@ class Book extends React.Component<Props, State> {
       if (serverResponse.BookStatus) {
         this.setState({
           response: this.state.response.concat(serverResponse),
-          alert: { message: serverResponse.HeaderMsg, variant: SnackBarVariant.Success }
+          alert: {message: serverResponse.HeaderMsg, variant: SnackBarVariant.Success}
         });
       } else {
         this.setState({
-          alert: { message: serverResponse.HeaderMsg }
+          alert: {message: serverResponse.HeaderMsg}
         });
       }
     }
   };
 
-  setSelectedTimes = (hour: number, free: boolean) => {
+  setSelectedTimes = (hour: number, free: boolean, isMine: boolean) => {
     console.log(hour);
     if (hour && free) {
-      const { selectedTimes } = this.state;
+      const {selectedTimes} = this.state;
       const hourIndex = selectedTimes.indexOf(hour);
       if (hourIndex < 0)
         selectedTimes.push(hour);
@@ -131,15 +131,19 @@ class Book extends React.Component<Props, State> {
       this.setState({
         selectedTimes: selectedTimes
       });
+    } else if (isMine) {
+      this.setState({
+        alert: {message: 'Sorry, you\'ve already booked this slot', variant: SnackBarVariant.Info}
+      });
     } else if (!free) {
       this.setState({
-        alert: { message: 'Sorry, someone has already booked this time', variant: SnackBarVariant.Warning }
+        alert: {message: 'Sorry, someone has already booked this time', variant: SnackBarVariant.Warning}
       });
     }
   };
 
   async componentDidMount() {
-    const { roomData } = this.state;
+    const {roomData} = this.state;
 
     console.log('logged in?: ', this.props.isLoggedIn);
     console.log(this.props, this.state);
@@ -154,20 +158,20 @@ class Book extends React.Component<Props, State> {
   }
 
   renderAlert() {
-    const { alert } = this.state;
+    const {alert} = this.state;
 
     if (!alert)
       return (null);
 
     return (
       <SnackBar type={alert.variant || SnackBarVariant.Error} className='quick__error-alert' message={alert.message}
-                onDismiss={this.resetAlertState.bind(this)} />
+                onDismiss={this.resetAlertState.bind(this)}/>
     );
   }
 
   renderTimeButtons() {
-    const { day } = this.props;
-    const { currentHour, selectedTimes, roomData } = this.state;
+    const {day} = this.props;
+    const {currentHour, selectedTimes, roomData} = this.state;
 
     if (!this.props.roomData || !this.props.roomData.length)
       return null;
@@ -183,7 +187,7 @@ class Book extends React.Component<Props, State> {
       return (
         <Grid key={roomData[0].room + hour.time} item>
           <button className={isSelected ? 'ctime' : buttonClass}
-                  onClick={this.setSelectedTimes.bind(this, hour.startTime, hour.free)}>{hour.time}</button>
+                  onClick={this.setSelectedTimes.bind(this, hour.startTime, hour.free, hour.isMine)}>{hour.time}</button>
         </Grid>
       );
     });
@@ -200,12 +204,12 @@ class Book extends React.Component<Props, State> {
   }
 
   renderRoomInfo() {
-    const { roomData } = this.state;
+    const {roomData} = this.state;
 
     if (!roomData.length)
       return null;
 
-    const { hasPhone, hasTV, size, Description } = roomData[0];
+    const {hasPhone, hasTV, size, Description} = roomData[0];
     const sizeName = size === 0 ? 'S' : size === 1 ? 'M' : size === 2 ? 'L' : 'XL';
 
     return (
@@ -213,12 +217,12 @@ class Book extends React.Component<Props, State> {
         <Typography>
           {Description}
         </Typography>
-        <Grid container spacing={8}>
+        <Grid container spacing={1}>
           <Grid item>
-            {hasTV && <TvRounded className="book__feature-icon" />}
+            {hasTV && <TvRounded className="book__feature-icon"/>}
           </Grid>
           <Grid item>
-            {hasPhone && <PhoneRounded className="book__feature-icon" />}
+            {hasPhone && <PhoneRounded className="book__feature-icon"/>}
           </Grid>
           <Grid item>
             <Avatar>{sizeName}</Avatar>
@@ -229,14 +233,14 @@ class Book extends React.Component<Props, State> {
   }
 
   render() {
-    const { day } = this.props;
-    const { selectedTimes, roomData } = this.state;
+    const {day} = this.props;
+    const {selectedTimes, roomData} = this.state;
 
     if (!roomData.length)
       return null;
 
     console.log('room0', roomData[0], roomData);
-    const { room: roomName, Picture } = roomData[0];
+    const {room: roomName, Picture} = roomData[0];
 
     return (
       <div className="content__wrapper">

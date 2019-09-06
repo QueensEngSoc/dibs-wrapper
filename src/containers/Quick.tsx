@@ -33,7 +33,6 @@ interface State {
   alert: any;
 }
 
-// @ts-ignore
 interface Props extends RouteComponentProps<Props> {
   currentHour: number;
   isLoggedIn: boolean;

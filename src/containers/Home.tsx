@@ -316,8 +316,6 @@ class Home extends Component<Props, State> {
   }
 
   render() {
-    console.log("Hi, I'm rendering!");
-
     return (
       <div className="content__wrapper">
         {this.renderTimeSwitcher()}

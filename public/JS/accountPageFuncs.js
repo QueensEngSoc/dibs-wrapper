@@ -137,7 +137,6 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   if (cards.length === 0) {
-    console.log('hi')
     cardsDiv.insertAdjacentHTML('afterend', noBookingsCard); // show the no upcoming bookings card
 
   }
