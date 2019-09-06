@@ -179,7 +179,7 @@ class Home extends Component<Props, State> {
                 <Typography className={''}>Show More Filters</Typography>
               </ExpansionPanelSummary>
               <ExpansionPanelDetails>
-                <Grid container spacing={16} className='row'>
+                <Grid container spacing={2} className='row'>
                   <Grid item xs={10} sm={6} md={4} lg={4} xl={3}>
                     <Typography>
                       Toggle additional filters on and off here
@@ -276,7 +276,7 @@ class Home extends Component<Props, State> {
 
     return (
       <div className="remove-spacing--16">
-        <Grid container spacing={16} className="row--add-margin justify-content-center">
+        <Grid container spacing={2} className="row--add-margin justify-content-center">
           <Grid item xs={6} sm={5} md={3} lg={2} xl={1}>
             <div className="form-group text-center">
               <Typography align='right' variant={'h5'}>Pick a day: </Typography>
@@ -320,9 +320,9 @@ class Home extends Component<Props, State> {
 
     return (
       <div className="content__wrapper">
-        {/*{this.renderTimeSwitcher()}*/}
-        {/*{this.renderFilters()}*/}
-        {/*{this.renderTimeButtons()}*/}
+        {this.renderTimeSwitcher()}
+        {this.renderFilters()}
+        {this.renderTimeButtons()}
       </div>
     );
   }

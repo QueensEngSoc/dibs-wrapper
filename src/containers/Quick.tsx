@@ -125,7 +125,7 @@ class Quick extends React.Component<Props, State> {
 
     return (
       <div className="justify-content-center quick__card-container">
-        <Grid container spacing={16} className="justify-content-center">
+        <Grid container spacing={2} className="justify-content-center">
           {!response.length && this.renderCard([], currentHour, false, { xs: 12, sm: 10, md: 8, lg: 6, xl: 5 })}
           {response.map((bookingData) => {
             return this.renderCard(bookingData, currentHour, isSuccess);

@@ -41,7 +41,7 @@ class Admin extends React.Component<Props, State> {
     ];
 
     return (
-      <Grid container spacing={16} className="justify-content-center">
+      <Grid container spacing={2} className="justify-content-center">
         <Grid item {...tableGridWidth}>
           <div>
             <BasicTable headings={headings}
@@ -108,7 +108,7 @@ class Admin extends React.Component<Props, State> {
 
     return (
       <div className="admin__const-card__container">
-        <Grid container spacing={16} className="justify-content-center">
+        <Grid container spacing={2} className="justify-content-center">
           {cards}
         </Grid>
       </div>

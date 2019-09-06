@@ -15,7 +15,7 @@ function renderFunction({ staticContext }) {
 
   return (
     <div className="content__wrapper justify-content-center">
-      <Grid container spacing={16} className="justify-content-center">
+      <Grid container spacing={2} className="justify-content-center">
         <Grid item {...gridWidth}>
           <div className="error">
             <Card className="error__main-card">

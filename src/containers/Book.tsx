@@ -191,7 +191,7 @@ class Book extends React.Component<Props, State> {
     return (
       <Grid item>
         <div className='section'>
-          <Grid container spacing={16}>
+          <Grid container spacing={2}>
             {hourButtons}
           </Grid>
         </div>
@@ -253,7 +253,7 @@ class Book extends React.Component<Props, State> {
                   Book {roomName} for {day || getPrettyDay(0, true)}
                 </Typography>
                 {this.renderRoomInfo()}
-                <Grid container spacing={16} alignContent={'center'}>
+                <Grid container spacing={2} alignContent={'center'}>
                   {this.renderTimeButtons()}
                 </Grid>
               </CardContent>

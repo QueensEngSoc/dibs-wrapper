@@ -156,7 +156,6 @@ describe('Get Pretty Day', () => {
 
   it.only('returns the date object to a readable string for every other day', () => {
     sandbox.useFakeTimers(new Date('2019-01-01T00:00:00Z'));
-    sandbox.stub(window.navigator, 'language', 'en-us');
 
     const timeToFake = new Date();
     timeToFake.setHours(0, 12, 2);
@@ -170,7 +169,7 @@ describe('Get Pretty Day', () => {
 
   it('returns the date object to a readable string even across years', () => {
     sandbox.useFakeTimers(new Date('2019-01-01T00:00:00Z'));
-    sandbox.stub(window.navigator, 'language', 'en-us');
+    // sandbox.stub(window.navigator, 'language', 'en-us');
 
     const timeToFake = new Date();
     timeToFake.setHours(0, 12, 2);

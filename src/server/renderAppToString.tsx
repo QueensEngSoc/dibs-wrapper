@@ -1,22 +1,16 @@
 import * as ReactDOM from 'react-dom/server';
 import { Provider } from 'react-redux';
 import { StaticRouter as Router } from 'react-router';
-import { SheetsRegistry } from 'jss';
-import { JssProvider } from 'react-jss';
+import { ServerStyleSheets, ThemeProvider } from '@material-ui/styles';
 import App from '../components/App';
 import * as React from 'react';
 
 import {
-  MuiThemeProvider,
   createMuiTheme,
-  createGenerateClassName,
 } from '@material-ui/core/styles';
 
 export default function renderAppToString(req, context, store) {
-  const sheetsRegistry = new SheetsRegistry();
-
-  // Create a sheetsManager instance.
-  const sheetsManager = new Map();
+  const sheets = new ServerStyleSheets();
 
   // Create a theme instance.
   const theme = createMuiTheme({
@@ -25,25 +19,22 @@ export default function renderAppToString(req, context, store) {
     //   accent: red,
     //   type: 'light',
     // },
-    typography: {
-      useNextVariants: true,
-    },
+    typography: {},
   });
 
-  // Create a new class name generator.
-  const generateClassName = createGenerateClassName();
-
   const appString = ReactDOM.renderToString(
-    <Provider store={store}>
+    sheets.collect(
+      <Provider store={store}>
       <Router context={context} location={req.url}>
-        <JssProvider registry={sheetsRegistry} generateClassName={generateClassName}>
-          <MuiThemeProvider theme={theme} sheetsManager={sheetsManager}>
-            <App />
-          </MuiThemeProvider>
-        </JssProvider>
+        <ThemeProvider theme={theme}>
+          <App />
+        </ThemeProvider>
       </Router>
     </Provider>
+    ),
   );
+
+  const css = sheets.toString();
 
   const storeScript = `<script>
     window.ESSDEV = {};
@@ -52,5 +43,5 @@ export default function renderAppToString(req, context, store) {
     '\\u003c'
   )};</script>`;
 
-  return { html: `<div id="main" role="main">${appString}</div>` + storeScript, css: sheetsRegistry.toString() };
+  return { html: `<div id="main" role="main">${appString}</div>` + storeScript, css };
 }
