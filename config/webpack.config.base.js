@@ -3,6 +3,7 @@ const path = require('path');
 
 const srcPath = path.resolve(__dirname, '../');
 const env = process.env.NODE_ENV === 'dev' ? 'development' : 'production';
+console.log('ENV IS: ', env);
 
 const isProduction = env === 'production';
 

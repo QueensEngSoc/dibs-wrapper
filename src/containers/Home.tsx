@@ -19,6 +19,7 @@ import { Link } from 'react-router-dom'
 import MaterialDatePicker from '../components/MaterialDatePicker';
 import postReq from '../client/postReq';
 import { sanitiseTime, getDaysFromToday } from '../lib/dateFuncs';
+import { firstBookingStartHour, lastBookingStartHour } from "../../config/config";
 
 async function fetchData(date, time) {
   const dateToSend = date || new Date();
@@ -67,8 +68,8 @@ class Home extends Component<Props, State> {
       intDay: 0,
       prettyDate: null,
       showExtraFilters: false,
-      selectedTime: (this.props.currentHour && this.props.currentHour >= 7 && this.props.currentHour <= 23 && this.props.currentHour)
-        || this.props.timeCount && this.props.timeCount[0].twenty4Hour || now, // take either the current hour (if it is valid), or the first valid booking slot from the server response, or the current time slot
+      selectedTime: (this.props.currentHour && this.props.currentHour >= firstBookingStartHour && this.props.currentHour <= lastBookingStartHour && this.props.currentHour)
+        || this.props.timeCount && this.props.timeCount.length && this.props.timeCount[0].twenty4Hour || now, // take either the current hour (if it is valid), or the first valid booking slot from the server response, or the current time slot
       selectedDate: new Date(),
       timeCount: this.props.timeCount || null
     };
@@ -118,7 +119,7 @@ class Home extends Component<Props, State> {
 
   renderTimeButtons() {
     const { roomData, selectedTime, prettyDate, intDay } = this.state;
-    const dbTime = selectedTime - 7;
+    const dbTime = selectedTime - firstBookingStartHour;
     console.log(dbTime, roomData, selectedTime, prettyDate, intDay)
 
     const roomButtons = roomData && roomData.map((room) => {
@@ -226,9 +227,11 @@ class Home extends Component<Props, State> {
         selectedTime: intVal || res.currentHour,
         timeCount: (res as RoomPostData).timeCount || this.state.timeCount
       });
+
     } else {
       this.setState({
-        currentHour: intDay === 0 ? sanitiseTime(new Date().getHours(), true) : this.state.currentHour
+        currentHour: intDay === 0 ? sanitiseTime(new Date().getHours(), true) : this.state.currentHour,
+        selectedTime: intVal || this.state.selectedTime,
       });
     }
   }
@@ -245,7 +248,8 @@ class Home extends Component<Props, State> {
         prettyDate: res.prettyDate,
         roomData: res.list || this.state.roomData,
         selectedDate: date,
-        selectedTime: this.state.selectedTime <= 22 && this.state.selectedTime || res.currentHour,
+        selectedTime: this.state.selectedTime <= lastBookingStartHour && this.state.selectedTime || // set the new selectedTime to either be the previously set selected time (if still valid)
+          res.currentHour <= lastBookingStartHour && res.currentHour || firstBookingStartHour,      // or set it to be the current hour (server time) (if valid). If neither are valid, use the opening timeslot
         timeCount: res.timeCount || this.state.timeCount
       });
     } else {
@@ -258,21 +262,11 @@ class Home extends Component<Props, State> {
         timeCount: res.timeCount || this.state.timeCount
       });
     }
-
-    // this.setState({
-    //   currentHour: res.currentHour,
-    //   intDay: res.intDay,
-    //   prettyDate: res.prettyDate,
-    //   roomData: res.list || this.state.roomData,
-    //   selectedDate: date,
-    //   selectedTime: this.state.selectedTime <= 22 && this.state.selectedTime || res.currentHour,
-    //   timeCount: res.timeCount || this.state.timeCount
-    // });
   };
 
   renderTimeSwitcher() {
     const { timeCount, intDay, selectedTime, currentHour } = this.state;
-    const minTime = (intDay === 0 && currentHour >= 7 && currentHour <= 23) ? currentHour : 7;
+    const minTime = (intDay === 0 && currentHour >= firstBookingStartHour && currentHour <= lastBookingStartHour) ? currentHour : 7;
 
     return (
       <div className="remove-spacing--16">
@@ -294,7 +288,7 @@ class Home extends Component<Props, State> {
             </div>
           </Grid>
           <Grid item xs={6} sm={5} md={3} lg={2} xl={1}>
-            <Select value={selectedTime > minTime ? selectedTime : minTime} onChange={this.onTimeChange.bind(this)}
+            <Select value={ (selectedTime > minTime && selectedTime <= lastBookingStartHour ) ? selectedTime : minTime} onChange={this.onTimeChange.bind(this)}
                     className="selectpicker material-date-picker-wrapper__inner" id="timepicker" data-live-search="true"
                     data-size="10" displayEmpty>
               {timeCount && timeCount.map((time) => {

@@ -4,7 +4,9 @@ QBook is managed and created by the Engineering Society Software Development Tea
 
 ## Getting Started
 
-QBook is programmed in Javascript and Typescript, running a Node.js Express server on the backend and a mix of standard Javascript and React on the front end. We use Babel and Webpack to bundle our ES6 / Typescript code into native JS.  The new React pages also use React Router to enable client side routing between different pages.  It utilizes MongoDB for the database and either Handlebars or React to create pages. For this app to run correctly, the MongoDB server will need to be running (cmd command: `mongod` in the bin directory of MongoDB; go to https://docs.mongodb.com/tutorials/install-mongodb-on-windows/ to learn more). To initialize and setup the server run the databaseSetup.js, with node, found in developer_tools. See a detailed version below or in the developer_tools README.
+QBook is programmed in Javascript and Typescript, running a Node.js Express server on the backend and a mix of standard Javascript and React on the front end. We use Babel and Webpack to bundle our ES6 / Typescript code into native JS.  The new React pages also use React Router to enable client side routing between different pages.  It utilizes MongoDB for the database and either Handlebars or React to create pages. 
+
+For this app to run correctly, the MongoDB server will need to be running (cmd command: `mongod` in the bin directory of MongoDB; go to https://docs.mongodb.com/tutorials/install-mongodb-on-windows/ to learn more). To initialize and setup the server run the databaseSetup.js, with node, found in developer_tools. See a detailed version below or in the developer_tools README.
 
 ## Running the server
 
@@ -22,18 +24,18 @@ Once this is done, all you have to do is type `npm run debug:windows` into CMD t
 
 ### Dependencies
 
-This program requires that you have Node.js version 8.10.0 or greater and npm version 5.6.0 or greater. If you are unsure, make sure you have Node.js and npm installed and in command prompt run: `node -v` for Node version and `npm -v` for npm version.
+This program requires that you have Node.js version 10.x or greater and npm version 6.x or greater. If you are unsure, make sure you have Node.js and npm installed and in command prompt run: `node -v` for Node version and `npm -v` for npm version.
 
 Numerous Node.js modules are needed for this project. Go to the main directory in command prompt and run `npm install`.
 Check the dependencies object in package.json.
 
 ### Running Tests
 
-Automated tests are currently being created. Check the test folder for current progress or check back later. We are using Mocha as our testing framework and Chai as the assertion library.
+Automated tests are currently being created. Check the test folder for current progress or check back later. We are using Mocha as our testing framework along with Sinon for sanndboxing functions.
 
 ### Version History
 
-* **2.0.0 alpha 1 ** - This release is a complete rebuild in Typescript / React, with React Router client side routing.  Currently in alpha testing, find our alpha at http://dibs-beta.herokuapp.com/.
+* **2.0.0 alpha** - This release is a complete rebuild in Typescript / React, with React Router client side routing.  Currently in alpha testing, find our alpha at http://dibs-beta.herokuapp.com/.
 * **1.1.23** - Currently in beta testing, find our beta at http://dibs-beta.herokuapp.com/.
 
 ## Authors
