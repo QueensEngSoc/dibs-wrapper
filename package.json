@@ -17,7 +17,7 @@
     "express": "^4.17.0",
     "express-handlebars": "^3.1.0",
     "express-session": "^1.16.1",
-    "handlebars": "^4.1.2",
+    "handlebars": "^4.3.0",
     "material-ui-pickers": "^2.2.4",
     "mongoose": "^5.5.10",
     "monk": "^7.0.0",
