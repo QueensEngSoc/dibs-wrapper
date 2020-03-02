@@ -20,6 +20,9 @@ To run the server, please check that the following are true:
 Once this is done, all you have to do is type `npm run debug` into a shell to start the app using Webpack and Babel.  Note: the old way of starting the app using `npm start` is deprecated.
 
 ### For Windows users
+If this is your first time running the server you'll have to run the following command:
+`npm install -g win-node-env`
+
 Once this is done, all you have to do is type `npm run debug:windows` into CMD to start the app using Webpack and Babel.  Note: the old way of starting the app using `node app.js` no longer works.
 
 ### Dependencies
