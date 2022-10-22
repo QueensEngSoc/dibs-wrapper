@@ -40,7 +40,7 @@
     "request": "^2.88.0",
     "reselect": "^4.0.0",
     "resolve": "^1.11.0",
-    "sequelize": "^5.8.6"
+    "sequelize": "^6.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.4.4",
